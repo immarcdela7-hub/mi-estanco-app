@@ -2,12 +2,84 @@ import streamlit as st
 import pandas as pd
 import re
 
-st.set_page_config(page_title="Gestión de Compras - Estancos", layout="wide")
+st.set_page_config(page_title="Gestión de Compras | Estancos", page_icon="🏢", layout="wide", initial_sidebar_state="collapsed")
 
-st.title("📊 Gestor de Compras y Promociones de Estancos")
-st.write("Sube el Excel de ventas diarias para filtrar y calcular promociones.")
+st.markdown("""
+<style>
+    /* Clean UI */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+    
+    .stApp {
+        background-color: #f8fafc;
+        font-family: 'Inter', sans-serif;
+    }
+    
+    /* Typography */
+    .main-header {
+        font-size: 2.8rem !important;
+        font-weight: 800 !important;
+        color: #0f172a;
+        margin-bottom: 0rem !important;
+        padding-bottom: 0rem !important;
+        text-align: center;
+    }
+    
+    .sub-header {
+        font-size: 1.2rem !important;
+        color: #64748b;
+        margin-top: 0.5rem !important;
+        margin-bottom: 2rem !important;
+        text-align: center;
+    }
+    
+    /* Upload Box */
+    .stFileUploader {
+        background-color: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+        border: 1px dashed #cbd5e1;
+    }
+    
+    /* Buttons */
+    .stButton > button {
+        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        color: white;
+        font-weight: 600;
+        border-radius: 8px;
+        border: none;
+        padding: 0.6rem 1.2rem;
+        box-shadow: 0 4px 6px -1px rgba(59,130,246,0.3);
+        transition: all 0.2s;
+    }
+    .stButton > button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 8px -1px rgba(59,130,246,0.4);
+    }
+    .stButton > button:active {
+        transform: translateY(0px);
+    }
+    
+    /* Dividers & Text */
+    hr {
+        border-color: #e2e8f0;
+    }
+    h3 {
+        color: #1e293b;
+        font-weight: 700;
+        margin-top: 1rem;
+    }
+</style>
+""", unsafe_allow_html=True)
 
-uploaded_file = st.file_uploader("📂 Sube tu archivo Excel aquí", type=["xlsx", "xls"])
+st.markdown('<h1 class="main-header">🏢 Centro de Liquidaciones</h1>', unsafe_allow_html=True)
+st.markdown('<p class="sub-header">Gestiona ventas y calcula promociones de estancos de forma automatizada.</p>', unsafe_allow_html=True)
+
+col_up1, col_up2, col_up3 = st.columns([1, 2, 1])
+with col_up2:
+    uploaded_file = st.file_uploader("📂 Sube tu archivo Excel de ventas diarias aquí", type=["xlsx", "xls"])
 
 if uploaded_file is not None:
     st.write("---")
@@ -141,8 +213,8 @@ if uploaded_file is not None:
             st.dataframe(df_limpio.head(5))
 
         # --- F I L T R O S   Y   P R O C E S A M I E N T O ---
-        st.write("---")
-        st.subheader("🎯 Filtros y Tabla de Promociones")
+        st.markdown("<br>", unsafe_allow_html=True)
+        st.markdown('<h3>🎯 Configuración de Promociones</h3>', unsafe_allow_html=True)
         
         col_filtros1, col_filtros2, col_filtros3 = st.columns(3)
         
@@ -162,7 +234,12 @@ if uploaded_file is not None:
                 ["DON TOMAS NICARAGUA", "CAO MORTAL COIL", "Ambas Promociones (Tabla Resumen)"]
             )
             
-        if st.button("🚀 Extraer Tabla y Calcular Promoción Seleccionada") and nombres_meses[0] != "(No detectado automáticamente)":
+        st.markdown("<br>", unsafe_allow_html=True)
+        col_btn1, col_btn2, col_btn3 = st.columns([1, 2, 1])
+        with col_btn2:
+            calcular_btn = st.button("🚀 Calcular Liquidación", use_container_width=True)
+            
+        if calcular_btn and nombres_meses[0] != "(No detectado automáticamente)":
             
             if busqueda_estanco.strip():
                 df_calc = df_limpio[df_limpio['Expendeduria_Limpia'].astype(str).str.contains(busqueda_estanco, case=False, na=False)].copy()
