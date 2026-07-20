@@ -12,12 +12,34 @@ CSV_TEMPLATE_COLUMNS = [
     "entradas", "importe_total", "comision_gyg",
 ]
 
+WEB_SNIPPET = """<script>
+(function () {
+  var ref = new URLSearchParams(location.search).get("ref");
+  if (ref) {
+    document.cookie = "ntl_ref=" + encodeURIComponent(ref) +
+      "; max-age=" + 30 * 24 * 3600 + "; path=/";
+  } else {
+    var m = document.cookie.match(/(?:^|; )ntl_ref=([^;]*)/);
+    if (m) ref = decodeURIComponent(m[1]);
+  }
+  if (!ref) return;
+  document.querySelectorAll('a[href*="getyourguide."]').forEach(function (a) {
+    try {
+      var u = new URL(a.href);
+      u.searchParams.set("cmp", ref);
+      a.href = u.toString();
+    } catch (e) {}
+  });
+})();
+</script>"""
+
 
 def render(user):
     ui.sidebar_brand(db.get_setting("brand_name"), "Panel de administración")
     page = st.sidebar.radio(
         "Navegación",
-        ["📊 Panel", "🏪 Establecimientos", "💶 Ventas", "💸 Liquidaciones", "⚙️ Ajustes"],
+        ["📊 Panel", "🏪 Establecimientos", "💶 Ventas", "💸 Liquidaciones",
+         "🌐 Integración web", "⚙️ Ajustes"],
         label_visibility="collapsed",
     )
     st.sidebar.divider()
@@ -36,6 +58,8 @@ def render(user):
         _sales()
     elif page == "💸 Liquidaciones":
         _payouts()
+    elif page == "🌐 Integración web":
+        _web_integration()
     elif page == "⚙️ Ajustes":
         _settings(user)
 
@@ -497,6 +521,53 @@ def _payouts():
             "⬇️ Exportar histórico (CSV)", data=csv,
             file_name="liquidaciones.csv", mime="text/csv",
         )
+
+
+# ---------------------------------------------------------------- integración web
+
+def _web_integration():
+    base_url = db.get_setting("base_url")
+    ui.page_header(
+        "Integración con la web",
+        "Cómo conectar los QR con los enlaces de GetYourGuide para no perder la atribución.",
+    )
+
+    st.markdown(
+        f"""
+        ### La cadena de atribución
+
+        1. El cliente escanea el QR del local → `{base_url}?ref=EST-XXXXX`.
+        2. La web guarda el `ref` en una cookie de 30 días y lo añade como
+           **`cmp=EST-XXXXX`** a todos los enlaces hacia GetYourGuide.
+        3. GYG registra la reserva con vuestra cuenta de partner **y** con esa campaña.
+        4. El informe de transacciones del Partner Portal trae la columna de campaña:
+           es el código del establecimiento.
+        5. Ese informe se importa en **💶 Ventas → 📥 Importar CSV** usando la campaña
+           como `codigo_establecimiento`.
+
+        ### Fragmento para pegar en la web
+
+        Copiar y pegar justo antes de cerrar `</body>` en la página de tickets:
+        """
+    )
+    st.code(WEB_SNIPPET, language="html")
+
+    st.markdown(
+        """
+        ### Verificación rápida
+
+        1. Abre la web con `?ref=PRUEBA1` en una ventana de incógnito.
+        2. Comprueba que los enlaces de GYG llevan `cmp=PRUEBA1`.
+        3. Vuelve sin el `?ref=`: deben seguir llevándolo (cookie).
+        4. Haz una reserva de prueba y busca la campaña `PRUEBA1` en el Partner Portal.
+        """
+    )
+    st.info(
+        "ℹ️ Si el cliente escanea con un móvil pero compra desde otro dispositivo, la "
+        "campaña se pierde (límite del modelo de afiliación). Si los enlaces de GYG se "
+        "generan con JavaScript o usáis widgets incrustados, el fragmento necesita "
+        "adaptarse — está documentado en `docs/integracion-web.md`."
+    )
 
 
 # ---------------------------------------------------------------- ajustes

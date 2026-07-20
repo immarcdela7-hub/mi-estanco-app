@@ -25,6 +25,7 @@ sustituirla por una propia antes de entrar al panel.
 | 🏪 Establecimientos | Alta/edición de locales, **QR único descargable**, % de comisión devuelta y creación de accesos al portal |
 | 💶 Ventas | Registro manual, **importación CSV** y validación de ventas (validar = GYG nos la ha abonado) |
 | 💸 Liquidaciones | Cálculo de lo pendiente por local, generación de pagos e histórico exportable |
+| 🌐 Integración web | Fragmento listo para copiar que conecta los QR con los enlaces de GYG (ver `docs/integracion-web.md`) |
 | ⚙️ Ajustes | Nombre de marca, URL base de los QR, % por defecto y contraseña |
 
 ### 🏪 Portal del establecimiento
