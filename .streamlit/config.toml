@@ -4,7 +4,14 @@ primaryColor = "#2563eb"
 backgroundColor = "#ffffff"
 secondaryBackgroundColor = "#f1f5f9"
 textColor = "#0f172a"
-font = "sans serif"
+font = "Plus Jakarta Sans, sans-serif"
+
+[[theme.fontFaces]]
+family = "Plus Jakarta Sans"
+url = "app/static/PlusJakartaSans.woff2"
+weight = "200 800"
+style = "normal"
 
 [server]
 maxUploadSize = 50
+enableStaticServing = true

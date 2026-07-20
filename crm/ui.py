@@ -20,6 +20,7 @@ MUTED = "#64748b"
 BORDER = "#e2e8f0"
 
 LOGO_PATH = Path(__file__).resolve().parent.parent / "assets" / "logo_ntl.png"
+FONT_PATH = Path(__file__).resolve().parent.parent / "assets" / "fonts" / "PlusJakartaSans.woff2"
 
 
 @lru_cache(maxsize=1)
@@ -29,6 +30,20 @@ def logo_data_uri():
         return ""
     encoded = base64.b64encode(LOGO_PATH.read_bytes()).decode()
     return f"data:image/png;base64,{encoded}"
+
+
+@lru_cache(maxsize=1)
+def font_face_css():
+    """Plus Jakarta Sans (variable) incrustada, sin depender de Google Fonts."""
+    if not FONT_PATH.exists():
+        return ("@import url('https://fonts.googleapis.com/css2?"
+                "family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');")
+    encoded = base64.b64encode(FONT_PATH.read_bytes()).decode()
+    return (
+        "@font-face { font-family: 'Plus Jakarta Sans'; font-style: normal; "
+        "font-weight: 200 800; font-display: swap; "
+        f"src: url(data:font/woff2;base64,{encoded}) format('woff2'); }}"
+    )
 
 
 # Iconos SVG monocromos (trazo, heredan color) para los componentes HTML propios.
@@ -71,14 +86,12 @@ def icon_svg(name, size=20):
 
 CSS = f"""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-
     #MainMenu {{visibility: hidden;}}
     footer {{visibility: hidden;}}
     header {{visibility: hidden;}}
 
     html, body, .stApp, [class*="css"] {{
-        font-family: 'Inter', 'Segoe UI', sans-serif;
+        font-family: 'Plus Jakarta Sans', 'Segoe UI', sans-serif;
     }}
 
     .stApp {{
@@ -457,6 +470,7 @@ CSS = f"""
 
 
 def inject_css():
+    st.markdown(f"<style>{font_face_css()}</style>", unsafe_allow_html=True)
     st.markdown(CSS, unsafe_allow_html=True)
 
 
