@@ -79,8 +79,8 @@ CREATE TABLE IF NOT EXISTS payouts (
 """
 
 DEFAULT_SETTINGS = {
-    "brand_name": "Mi Web de Entradas",
-    "base_url": "https://www.mi-web-de-entradas.com",
+    "brand_name": "NoTaxLost",
+    "base_url": "https://notaxlost.com/tickets",
     "default_commission_pct": "30",
     "default_admin_password": "1",
 }

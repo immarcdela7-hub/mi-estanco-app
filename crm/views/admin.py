@@ -519,8 +519,8 @@ def _settings(user):
             value=float(db.get_setting("default_commission_pct", "30")), step=1.0,
         )
         if st.form_submit_button("Guardar ajustes", type="primary"):
-            db.set_setting("brand_name", brand.strip() or "Mi Web de Entradas")
-            db.set_setting("base_url", base_url.strip() or "https://www.mi-web-de-entradas.com")
+            db.set_setting("brand_name", brand.strip() or "NoTaxLost")
+            db.set_setting("base_url", base_url.strip() or "https://notaxlost.com/tickets")
             db.set_setting("default_commission_pct", default_pct)
             ui.flash("Ajustes guardados.")
             st.rerun()
