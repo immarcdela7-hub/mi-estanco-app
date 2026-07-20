@@ -90,6 +90,32 @@ CSS = f"""
     footer {{visibility: hidden;}}
     header {{visibility: hidden;}}
 
+    /* Riel de reapertura cuando la barra lateral está plegada: franja navy a
+       toda altura con la flecha arriba (el botón solo existe estando plegada). */
+    button[data-testid="stExpandSidebarButton"] {{
+        visibility: visible;
+        position: fixed;
+        top: 0; left: 0;
+        height: 100vh;
+        width: 46px;
+        border-radius: 0;
+        background: linear-gradient(180deg, #0d3468 0%, {NAVY} 45%, #061c3a 100%);
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        padding-top: 16px;
+        z-index: 999990;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+    }}
+    button[data-testid="stExpandSidebarButton"]:hover {{
+        filter: brightness(1.25);
+    }}
+    button[data-testid="stExpandSidebarButton"] span {{
+        color: #ffffff !important;
+        font-size: 1.35rem;
+    }}
+
     html, body, .stApp, [class*="css"] {{
         font-family: 'Plus Jakarta Sans', 'Segoe UI', sans-serif;
     }}
@@ -126,12 +152,13 @@ CSS = f"""
     }}
 
     .crm-brand {{
-        display: flex;
+        display: inline-flex;
+        width: fit-content;
         align-items: center;
-        gap: 0.65rem;
+        gap: 0.5rem;
         background: #ffffff;
-        border-radius: 12px;
-        padding: 0.55rem 0.8rem;
+        border-radius: 10px;
+        padding: 0.35rem 0.6rem;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
     }}
     .crm-brand-img {{
