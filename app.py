@@ -29,14 +29,26 @@ def login_page():
     col1, col2, col3 = st.columns([1, 1.2, 1])
     with col2:
         st.markdown("<br><br>", unsafe_allow_html=True)
+        logo = ui.logo_data_uri()
+        if logo:
+            logo_html = (
+                f'<img src="{logo}" alt="{brand}" '
+                'style="width:190px; max-width:75%; display:block; margin:0 auto; '
+                'background:#ffffff; padding:14px 24px; border-radius:18px; '
+                'box-shadow:0 4px 14px rgba(15,23,42,0.08); border:1px solid #e2e8f0;">'
+            )
+        else:
+            logo_html = (
+                f'<div style="width:64px; height:64px; border-radius:16px; margin:0 auto;'
+                f'background:linear-gradient(135deg, {ui.BLUE} 0%, {ui.GREEN} 100%);'
+                'display:flex; align-items:center; justify-content:center;'
+                'font-size:2rem; box-shadow:0 6px 16px rgba(37,99,235,0.35);">🎟️</div>'
+            )
         st.markdown(
             f"""
             <div style="text-align:center; margin-bottom: 1.4rem;">
-                <div style="width:64px; height:64px; border-radius:16px; margin:0 auto;
-                            background:linear-gradient(135deg, {ui.BLUE} 0%, {ui.GREEN} 100%);
-                            display:flex; align-items:center; justify-content:center;
-                            font-size:2rem; box-shadow:0 6px 16px rgba(37,99,235,0.35);">🎟️</div>
-                <div style="font-size:1.7rem; font-weight:800; color:#0f172a; margin-top:0.8rem;
+                {logo_html}
+                <div style="font-size:1.35rem; font-weight:800; color:#0f172a; margin-top:0.9rem;
                             letter-spacing:-0.02em;">
                     {brand} <span style="color:{ui.BLUE};">CRM</span>
                 </div>

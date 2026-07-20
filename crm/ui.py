@@ -1,6 +1,21 @@
 """Tema visual y componentes compartidos."""
+import base64
+from functools import lru_cache
+from pathlib import Path
+
 import pandas as pd
 import streamlit as st
+
+LOGO_PATH = Path(__file__).resolve().parent.parent / "assets" / "logo_ntl.png"
+
+
+@lru_cache(maxsize=1)
+def logo_data_uri():
+    """Logo NTL como data URI para incrustar en HTML. '' si no existe el archivo."""
+    if not LOGO_PATH.exists():
+        return ""
+    encoded = base64.b64encode(LOGO_PATH.read_bytes()).decode()
+    return f"data:image/png;base64,{encoded}"
 
 BLUE = "#2563eb"
 BLUE_DARK = "#1e40af"
@@ -61,6 +76,11 @@ CSS = f"""
         font-size: 1.15rem;
         box-shadow: 0 3px 8px rgba(37, 99, 235, 0.3);
         flex-shrink: 0;
+    }}
+    .crm-brand-img {{
+        height: 34px;
+        width: auto;
+        display: block;
     }}
     .crm-brand-name {{
         font-size: 1.05rem;
@@ -358,10 +378,19 @@ def page_header(title, subtitle=""):
 # el parser de Markdown convierte las líneas indentadas en bloques de código.
 
 def sidebar_brand(brand_name, role_label):
+    logo = logo_data_uri()
+    if logo:
+        brand_html = (
+            f'<div class="crm-brand"><img class="crm-brand-img" src="{logo}" alt="{brand_name}">'
+            f'<div class="crm-brand-name"><span>CRM</span></div></div>'
+        )
+    else:
+        brand_html = (
+            f'<div class="crm-brand"><div class="crm-brand-logo">🎟️</div>'
+            f'<div class="crm-brand-name">{brand_name}<br><span>CRM</span></div></div>'
+        )
     st.sidebar.markdown(
-        f'<div class="crm-brand"><div class="crm-brand-logo">🎟️</div>'
-        f'<div class="crm-brand-name">{brand_name}<br><span>CRM</span></div></div>'
-        f'<div class="crm-tagline">{role_label}</div>',
+        brand_html + f'<div class="crm-tagline">{role_label}</div>',
         unsafe_allow_html=True,
     )
 
