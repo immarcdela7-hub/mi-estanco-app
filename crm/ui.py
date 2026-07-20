@@ -1,10 +1,23 @@
 """Tema visual y componentes compartidos."""
 import base64
+from contextlib import contextmanager
 from functools import lru_cache
 from pathlib import Path
 
 import pandas as pd
 import streamlit as st
+
+BLUE = "#2563eb"
+BLUE_DARK = "#1e40af"
+NAVY = "#092B57"
+GREEN = "#059669"
+GREEN_DARK = "#047857"
+GREEN_ACCENT = "#34d399"
+GREEN_LIGHT = "#d1fae5"
+BLUE_LIGHT = "#dbeafe"
+INK = "#0f172a"
+MUTED = "#64748b"
+BORDER = "#e2e8f0"
 
 LOGO_PATH = Path(__file__).resolve().parent.parent / "assets" / "logo_ntl.png"
 
@@ -17,15 +30,44 @@ def logo_data_uri():
     encoded = base64.b64encode(LOGO_PATH.read_bytes()).decode()
     return f"data:image/png;base64,{encoded}"
 
-BLUE = "#2563eb"
-BLUE_DARK = "#1e40af"
-GREEN = "#059669"
-GREEN_DARK = "#047857"
-GREEN_LIGHT = "#d1fae5"
-BLUE_LIGHT = "#dbeafe"
-INK = "#0f172a"
-MUTED = "#64748b"
-BORDER = "#e2e8f0"
+
+# Iconos SVG monocromos (trazo, heredan color) para los componentes HTML propios.
+_SVG = {
+    "doc": '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>'
+           '<polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/>'
+           '<line x1="16" y1="17" x2="8" y2="17"/>',
+    "euro": '<path d="M4 10h12"/><path d="M4 14h9"/>'
+            '<path d="M19 6a7.7 7.7 0 0 0-5.2-2A7.9 7.9 0 0 0 6 12c0 4.4 3.5 8 7.8 8 '
+            '2 0 3.8-.8 5.2-2"/>',
+    "users": '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>'
+             '<circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/>'
+             '<path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+    "clock": '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
+    "ticket": '<path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 '
+              '0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2"/>'
+              '<path d="M13 17v2"/><path d="M13 11v2"/>',
+    "wallet": '<path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/>'
+              '<path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/>'
+              '<path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/>',
+    "qr": '<rect x="3" y="3" width="7" height="7" rx="1"/>'
+          '<rect x="14" y="3" width="7" height="7" rx="1"/>'
+          '<rect x="3" y="14" width="7" height="7" rx="1"/>'
+          '<path d="M14 14h3v3h-3z"/><path d="M21 21h-3"/><path d="M21 14v3"/>',
+    "tag": '<path d="M12 2H2v10l9.3 9.3a2.4 2.4 0 0 0 3.4 0l6.6-6.6a2.4 2.4 0 0 0 '
+           '0-3.4Z"/><circle cx="7" cy="7" r="1.5"/>',
+    "store": '<path d="M3 9 4.9 3.6A1 1 0 0 1 5.8 3h12.4a1 1 0 0 1 .9.6L21 9"/>'
+             '<path d="M4 9v11a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V9"/>'
+             '<path d="M9 21v-6a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v6"/>',
+}
+
+
+def icon_svg(name, size=20):
+    return (
+        f'<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" '
+        'stroke="currentColor" stroke-width="2" stroke-linecap="round" '
+        f'stroke-linejoin="round">{_SVG[name]}</svg>'
+    )
+
 
 CSS = f"""
 <style>
@@ -40,7 +82,7 @@ CSS = f"""
     }}
 
     .stApp {{
-        background-color: #f6f8fb;
+        background-color: #f4f6f9;
     }}
 
     /* Barra de marca superior */
@@ -48,94 +90,107 @@ CSS = f"""
         content: "";
         position: fixed;
         top: 0; left: 0; right: 0;
-        height: 4px;
+        height: 3px;
         background: linear-gradient(90deg, {BLUE} 0%, {GREEN} 100%);
         z-index: 99999;
     }}
 
-    /* ------------------------------------------------ barra lateral */
+    .block-container {{
+        padding-top: 2.4rem;
+        max-width: 1250px;
+    }}
+
+    /* ------------------------------------------------ barra lateral (navy corporativo) */
     section[data-testid="stSidebar"] {{
-        background-color: #ffffff;
-        border-right: 1px solid {BORDER};
+        background: linear-gradient(180deg, #0d3468 0%, {NAVY} 45%, #061c3a 100%);
+        border-right: none;
     }}
     section[data-testid="stSidebar"] > div:first-child {{
         padding-top: 1.2rem;
+    }}
+    section[data-testid="stSidebar"] hr {{
+        border-color: rgba(255, 255, 255, 0.14);
     }}
 
     .crm-brand {{
         display: flex;
         align-items: center;
-        gap: 0.6rem;
-        padding: 0.2rem 0.2rem 0.1rem 0.2rem;
-    }}
-    .crm-brand-logo {{
-        width: 38px; height: 38px;
-        border-radius: 10px;
-        background: linear-gradient(135deg, {BLUE} 0%, {GREEN} 100%);
-        display: flex; align-items: center; justify-content: center;
-        font-size: 1.15rem;
-        box-shadow: 0 3px 8px rgba(37, 99, 235, 0.3);
-        flex-shrink: 0;
+        gap: 0.65rem;
+        background: #ffffff;
+        border-radius: 12px;
+        padding: 0.55rem 0.8rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
     }}
     .crm-brand-img {{
-        height: 34px;
+        height: 28px;
         width: auto;
         display: block;
     }}
     .crm-brand-name {{
-        font-size: 1.05rem;
+        font-size: 0.95rem;
         font-weight: 800;
-        color: {INK};
-        line-height: 1.15;
+        color: {NAVY};
+        letter-spacing: 0.01em;
     }}
     .crm-brand-name span {{ color: {BLUE}; }}
     .crm-tagline {{
-        font-size: 0.72rem;
-        color: {MUTED};
+        font-size: 0.68rem;
+        color: #8fa6c4;
         text-transform: uppercase;
-        letter-spacing: 0.06em;
+        letter-spacing: 0.08em;
         font-weight: 600;
-        margin: 0.5rem 0 0.9rem 0.2rem;
+        margin: 0.7rem 0 0.9rem 0.2rem;
     }}
 
-    /* Radio de navegación con aspecto de menú de aplicación */
+    /* Navegación: radio con aspecto de menú de aplicación */
     section[data-testid="stSidebar"] label[data-testid="stRadioOption"] {{
         display: flex;
         align-items: center;
-        padding: 0.5rem 0.8rem;
-        margin: 2px 0;
-        border-radius: 9px;
+        padding: 0.48rem 0.75rem;
+        margin: 1px 0;
+        border-radius: 8px;
         cursor: pointer;
-        color: #475569;
+        color: #c7d3e3;
         font-weight: 500;
         transition: background 0.12s ease;
         width: 100%;
     }}
     section[data-testid="stSidebar"] label[data-testid="stRadioOption"]:hover {{
-        background: #f1f5f9;
+        background: rgba(255, 255, 255, 0.08);
     }}
-    /* Ocultar el círculo del radio: es el div justo antes del contenedor de texto */
     section[data-testid="stSidebar"] label[data-testid="stRadioOption"]
         div:has(+ div[data-testid="stMarkdownContainer"]) {{
         display: none;
     }}
     section[data-testid="stSidebar"] label[data-testid="stRadioOption"][data-selected="true"] {{
-        background: #eff6ff;
-        color: {BLUE_DARK};
-        font-weight: 700;
-        box-shadow: inset 3px 0 0 {BLUE};
+        background: rgba(255, 255, 255, 0.11);
+        color: #ffffff;
+        font-weight: 600;
+        box-shadow: inset 3px 0 0 {GREEN_ACCENT};
     }}
     section[data-testid="stSidebar"] label[data-testid="stRadioOption"] p {{
-        font-size: 0.92rem;
+        font-size: 0.9rem;
         color: inherit;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+    }}
+    section[data-testid="stSidebar"] label[data-testid="stRadioOption"]
+        span[data-testid="stIconMaterial"] {{
+        font-size: 1.15rem;
+        color: #8fa6c4;
+    }}
+    section[data-testid="stSidebar"] label[data-testid="stRadioOption"][data-selected="true"]
+        span[data-testid="stIconMaterial"] {{
+        color: {GREEN_ACCENT};
     }}
 
     .crm-user-chip {{
         display: flex;
         align-items: center;
         gap: 0.55rem;
-        background: #f8fafc;
-        border: 1px solid {BORDER};
+        background: rgba(255, 255, 255, 0.07);
+        border: 1px solid rgba(255, 255, 255, 0.15);
         border-radius: 10px;
         padding: 0.5rem 0.7rem;
         margin-bottom: 0.5rem;
@@ -143,7 +198,7 @@ CSS = f"""
     .crm-user-avatar {{
         width: 30px; height: 30px;
         border-radius: 50%;
-        background: linear-gradient(135deg, {BLUE} 0%, {GREEN} 100%);
+        background: {GREEN};
         color: white;
         display: flex; align-items: center; justify-content: center;
         font-weight: 700;
@@ -153,74 +208,97 @@ CSS = f"""
     .crm-user-name {{
         font-size: 0.85rem;
         font-weight: 600;
-        color: {INK};
+        color: #ffffff;
         line-height: 1.1;
     }}
     .crm-user-role {{
         font-size: 0.72rem;
-        color: {MUTED};
+        color: #8fa6c4;
+    }}
+
+    /* Botones dentro de la barra lateral (cerrar sesión) */
+    section[data-testid="stSidebar"] .stButton > button {{
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: #e2e8f0;
+    }}
+    section[data-testid="stSidebar"] .stButton > button:hover {{
+        border-color: {GREEN_ACCENT};
+        color: #ffffff;
+        background: rgba(255, 255, 255, 0.05);
     }}
 
     /* ------------------------------------------------ cabeceras */
     .crm-title {{
-        font-size: 1.85rem;
+        font-size: 1.55rem;
         font-weight: 800;
         color: {INK};
         letter-spacing: -0.02em;
-        margin-bottom: 0.15rem;
+        margin-bottom: 0.1rem;
     }}
     .crm-subtitle {{
-        font-size: 0.95rem;
+        font-size: 0.92rem;
         color: {MUTED};
-        margin-bottom: 0.4rem;
+        margin-bottom: 0.3rem;
     }}
     .crm-header-rule {{
         border: none;
         border-top: 1px solid {BORDER};
-        margin: 0.6rem 0 1.3rem 0;
+        margin: 0.6rem 0 1.2rem 0;
     }}
     h3 {{
         color: #1e293b;
         font-weight: 700;
-        font-size: 1.15rem !important;
+        font-size: 1.05rem !important;
         letter-spacing: -0.01em;
+    }}
+
+    .crm-panel-title {{
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: #475569;
+        padding-bottom: 0.55rem;
+        border-bottom: 1px solid {BORDER};
+        margin-bottom: 0.7rem;
     }}
 
     /* ------------------------------------------------ tarjetas KPI */
     .crm-stats {{
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 0.9rem;
-        margin: 0.4rem 0 1.4rem 0;
+        gap: 0.8rem;
+        margin: 0.3rem 0 1.2rem 0;
     }}
     .crm-stat {{
         background: #ffffff;
         border: 1px solid {BORDER};
-        border-radius: 14px;
-        padding: 1.05rem 1.15rem;
+        border-radius: 12px;
+        padding: 0.95rem 1.05rem;
         display: flex;
         align-items: center;
-        gap: 0.85rem;
-        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
+        gap: 0.8rem;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
     }}
     .crm-stat-icon {{
-        width: 42px; height: 42px;
-        border-radius: 11px;
+        width: 40px; height: 40px;
+        border-radius: 10px;
         display: flex; align-items: center; justify-content: center;
-        font-size: 1.25rem;
-        background: var(--tint, {BLUE_LIGHT});
+        background: #f1f5f9;
+        color: #334155;
         flex-shrink: 0;
     }}
     .crm-stat-label {{
-        font-size: 0.76rem;
+        font-size: 0.7rem;
         font-weight: 600;
         color: {MUTED};
         text-transform: uppercase;
         letter-spacing: 0.05em;
-        margin-bottom: 0.1rem;
+        margin-bottom: 0.15rem;
     }}
     .crm-stat-value {{
-        font-size: 1.45rem;
+        font-size: 1.35rem;
         font-weight: 800;
         color: {INK};
         letter-spacing: -0.02em;
@@ -231,32 +309,32 @@ CSS = f"""
     div[data-testid="stForm"] {{
         background: #ffffff;
         border: 1px solid {BORDER};
-        border-radius: 14px;
-        padding: 1.3rem 1.3rem 1.1rem 1.3rem;
-        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
+        border-radius: 12px;
+        padding: 1.2rem 1.2rem 1rem 1.2rem;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
     }}
     div[data-testid="stExpander"] {{
         background-color: #ffffff;
-        border-radius: 12px;
+        border-radius: 10px;
         border: 1px solid {BORDER};
-        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
     }}
     div[data-testid="stExpander"] summary {{
         font-weight: 600;
     }}
     div[data-testid="stVerticalBlockBorderWrapper"] {{
         background: #ffffff;
-        border-radius: 14px;
-        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
+        border-radius: 12px;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
     }}
 
     /* ------------------------------------------------ tablas */
     div[data-testid="stDataFrame"] {{
         background: #ffffff;
         border: 1px solid {BORDER};
-        border-radius: 12px;
-        padding: 0.35rem;
-        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+        border-radius: 10px;
+        padding: 0.25rem;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
     }}
 
     /* ------------------------------------------------ pestañas */
@@ -278,7 +356,7 @@ CSS = f"""
 
     /* ------------------------------------------------ botones */
     .stButton > button, .stFormSubmitButton > button, .stDownloadButton > button {{
-        border-radius: 9px;
+        border-radius: 8px;
         font-weight: 600;
         border: none;
         transition: all 0.15s;
@@ -293,35 +371,33 @@ CSS = f"""
         color: {BLUE_DARK};
     }}
     .stButton > button[kind="primary"], .stFormSubmitButton > button[kind="primary"] {{
-        background: linear-gradient(135deg, {BLUE} 0%, {BLUE_DARK} 100%);
+        background: {BLUE};
         color: white;
-        box-shadow: 0 3px 6px rgba(37, 99, 235, 0.25);
+        box-shadow: 0 1px 3px rgba(37, 99, 235, 0.3);
     }}
     .stButton > button[kind="primary"]:hover, .stFormSubmitButton > button[kind="primary"]:hover {{
-        transform: translateY(-1px);
-        box-shadow: 0 5px 10px rgba(37, 99, 235, 0.35);
+        background: {BLUE_DARK};
     }}
     .stDownloadButton > button {{
-        background: linear-gradient(135deg, {GREEN} 0%, {GREEN_DARK} 100%);
+        background: {GREEN};
         color: white;
-        box-shadow: 0 3px 6px rgba(5, 150, 105, 0.25);
+        box-shadow: 0 1px 3px rgba(5, 150, 105, 0.3);
     }}
     .stDownloadButton > button:hover {{
-        transform: translateY(-1px);
-        box-shadow: 0 5px 10px rgba(5, 150, 105, 0.35);
+        background: {GREEN_DARK};
     }}
 
     /* ------------------------------------------------ avisos */
     div[data-testid="stAlert"] {{
-        border-radius: 12px;
+        border-radius: 10px;
     }}
 
     /* ------------------------------------------------ varios */
     .crm-badge {{
         display: inline-block;
-        padding: 0.15rem 0.6rem;
+        padding: 0.12rem 0.55rem;
         border-radius: 999px;
-        font-size: 0.78rem;
+        font-size: 0.76rem;
         font-weight: 600;
     }}
     .crm-badge-green {{ background: {GREEN_LIGHT}; color: #065f46; }}
@@ -331,29 +407,29 @@ CSS = f"""
     .crm-step {{
         background: #ffffff;
         border: 1px solid {BORDER};
-        border-radius: 14px;
-        padding: 1.1rem 1.2rem;
+        border-radius: 12px;
+        padding: 1rem 1.1rem;
         height: 100%;
-        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
     }}
     .crm-step-num {{
-        width: 30px; height: 30px;
+        width: 28px; height: 28px;
         border-radius: 50%;
         background: {BLUE_LIGHT};
         color: {BLUE_DARK};
         font-weight: 800;
         display: flex; align-items: center; justify-content: center;
-        margin-bottom: 0.6rem;
-        font-size: 0.9rem;
+        margin-bottom: 0.55rem;
+        font-size: 0.85rem;
     }}
     .crm-step-title {{
         font-weight: 700;
         color: {INK};
         margin-bottom: 0.25rem;
-        font-size: 0.95rem;
+        font-size: 0.92rem;
     }}
     .crm-step-text {{
-        font-size: 0.85rem;
+        font-size: 0.83rem;
         color: {MUTED};
         line-height: 1.45;
     }}
@@ -374,7 +450,15 @@ def page_header(title, subtitle=""):
     st.markdown('<hr class="crm-header-rule">', unsafe_allow_html=True)
 
 
-# Nota: el HTML de estos componentes se genera SIN saltos de línea ni sangría —
+@contextmanager
+def panel(title):
+    """Panel blanco con cabecera, al estilo de los dashboards de CRM."""
+    with st.container(border=True):
+        st.markdown(f'<div class="crm-panel-title">{title}</div>', unsafe_allow_html=True)
+        yield
+
+
+# El HTML de estos componentes se genera SIN saltos de línea ni sangría —
 # el parser de Markdown convierte las líneas indentadas en bloques de código.
 
 def sidebar_brand(brand_name, role_label):
@@ -386,8 +470,8 @@ def sidebar_brand(brand_name, role_label):
         )
     else:
         brand_html = (
-            f'<div class="crm-brand"><div class="crm-brand-logo">🎟️</div>'
-            f'<div class="crm-brand-name">{brand_name}<br><span>CRM</span></div></div>'
+            f'<div class="crm-brand"><div class="crm-brand-name">{brand_name} '
+            f'<span>CRM</span></div></div>'
         )
     st.sidebar.markdown(
         brand_html + f'<div class="crm-tagline">{role_label}</div>',
@@ -406,12 +490,12 @@ def sidebar_user(username, role_label):
 
 
 def stat_row(items):
-    """Fila de tarjetas KPI. items: lista de (etiqueta, valor, emoji, tinte css)."""
+    """Fila de tarjetas KPI. items: lista de (etiqueta, valor, clave de icono)."""
     cards = "".join(
-        f'<div class="crm-stat"><div class="crm-stat-icon" style="--tint:{tint}">{icon}</div>'
+        f'<div class="crm-stat"><div class="crm-stat-icon">{icon_svg(icon)}</div>'
         f'<div><div class="crm-stat-label">{label}</div>'
         f'<div class="crm-stat-value">{value}</div></div></div>'
-        for label, value, icon, tint in items
+        for label, value, icon in items
     )
     st.markdown(f'<div class="crm-stats">{cards}</div>', unsafe_allow_html=True)
 
@@ -453,9 +537,9 @@ def show_flash():
 
 
 STATUS_LABELS = {
-    "pendiente": "🕓 Pendiente",
-    "validada": "✅ Validada",
-    "pagada": "💸 Pagada",
+    "pendiente": "Pendiente",
+    "validada": "Validada",
+    "pagada": "Pagada",
 }
 
 
@@ -494,6 +578,9 @@ TEXT_LABELS = {
     "notas": "Notas",
     "username": "Usuario",
     "created_at": "Alta",
+    "lote": "Lote",
+    "creado": "Creado",
+    "asignado": "Asignado",
 }
 
 

@@ -33,15 +33,20 @@ WEB_SNIPPET = """<script>
 })();
 </script>"""
 
+NAV = {
+    ":material/space_dashboard: Panel": "_dashboard",
+    ":material/storefront: Establecimientos": "_establishments",
+    ":material/qr_code_2: Códigos QR": "_qr_pool",
+    ":material/receipt_long: Ventas": "_sales",
+    ":material/account_balance_wallet: Liquidaciones": "_payouts",
+    ":material/language: Integración web": "_web_integration",
+    ":material/settings: Ajustes": "_settings",
+}
+
 
 def render(user):
     ui.sidebar_brand(db.get_setting("brand_name"), "Panel de administración")
-    page = st.sidebar.radio(
-        "Navegación",
-        ["📊 Panel", "🏪 Establecimientos", "🧾 Códigos QR", "💶 Ventas",
-         "💸 Liquidaciones", "🌐 Integración web", "⚙️ Ajustes"],
-        label_visibility="collapsed",
-    )
+    page = st.sidebar.radio("Navegación", list(NAV), label_visibility="collapsed")
     st.sidebar.divider()
     ui.sidebar_user(user["username"], "Administrador")
     if st.sidebar.button("Cerrar sesión", use_container_width=True):
@@ -50,20 +55,11 @@ def render(user):
 
     ui.show_flash()
 
-    if page == "📊 Panel":
-        _dashboard()
-    elif page == "🏪 Establecimientos":
-        _establishments()
-    elif page == "🧾 Códigos QR":
-        _qr_pool()
-    elif page == "💶 Ventas":
-        _sales()
-    elif page == "💸 Liquidaciones":
-        _payouts()
-    elif page == "🌐 Integración web":
-        _web_integration()
-    elif page == "⚙️ Ajustes":
+    handler = NAV[page]
+    if handler == "_settings":
         _settings(user)
+    else:
+        globals()[handler]()
 
 
 # ---------------------------------------------------------------- panel
@@ -73,52 +69,70 @@ def _dashboard():
 
     establishments = db.list_establishments()
     if establishments.empty:
-        st.markdown("### 👋 Bienvenido — primeros pasos")
+        st.markdown("### Bienvenido — primeros pasos")
         ui.steps_row([
             ("Configura tu marca",
-             "En <b>⚙️ Ajustes</b>, revisa el nombre de la marca y la URL de la web "
+             "En <b>Ajustes</b>, revisa el nombre de la marca y la URL de la web "
              "a la que apuntarán los códigos QR."),
             ("Da de alta un establecimiento",
-             "En <b>🏪 Establecimientos</b>, crea el primer local: obtendrá un código "
+             "En <b>Establecimientos</b>, crea el primer local: obtendrá un código "
              "único y su QR listo para imprimir."),
             ("Registra las ventas",
-             "En <b>💶 Ventas</b>, apunta o importa las ventas que lleguen por cada "
+             "En <b>Ventas</b>, apunta o importa las ventas que lleguen por cada "
              "QR y valídalas cuando GYG las abone."),
         ])
         st.markdown("")
 
     summary = db.sales_summary()
     ui.stat_row([
-        ("Ventas confirmadas", f"{summary['n_ventas']}", "🧾", ui.BLUE_LIGHT),
-        ("Comisión GYG recibida", ui.euros(summary["comision_gyg"]), "💶", ui.BLUE_LIGHT),
-        ("Comisión establecimientos", ui.euros(summary["comision_partner"]), "🤝", ui.GREEN_LIGHT),
-        ("Pendiente de liquidar", ui.euros(summary["pendiente_pago"]), "⏳", "#fef3c7"),
+        ("Ventas confirmadas", f"{summary['n_ventas']}", "doc"),
+        ("Comisión GYG recibida", ui.euros(summary["comision_gyg"]), "euro"),
+        ("Comisión establecimientos", ui.euros(summary["comision_partner"]), "users"),
+        ("Pendiente de liquidar", ui.euros(summary["pendiente_pago"]), "clock"),
     ])
 
     col_chart, col_top = st.columns([1.15, 1])
     with col_chart:
-        st.markdown("### Comisión mensual")
-        monthly = db.monthly_commissions()
-        if monthly.empty:
-            st.info("Aún no hay ventas validadas. Registra ventas en la sección **💶 Ventas**.")
-        else:
-            with st.container(border=True):
+        with ui.panel("Comisión mensual"):
+            monthly = db.monthly_commissions()
+            if monthly.empty:
+                st.info("Aún no hay ventas validadas. Regístralas en la sección **Ventas**.")
+            else:
                 chart_df = monthly.rename(
                     columns={"nuestra_parte": "Nuestra parte",
                              "comision_establecimientos": "Establecimientos"}
                 ).set_index("mes")
-                st.bar_chart(chart_df, color=[ui.BLUE, ui.GREEN], height=290)
-            st.caption(
-                "Reparto de la comisión de GYG cada mes: en azul lo que retenemos, "
-                "en verde lo que corresponde a los establecimientos."
-            )
+                st.bar_chart(chart_df, color=[ui.BLUE, ui.GREEN], height=280)
+                st.caption(
+                    "Reparto mensual de la comisión de GYG: en azul lo que retenemos, "
+                    "en verde lo que corresponde a los establecimientos."
+                )
     with col_top:
-        st.markdown("### Mejores establecimientos")
-        top = db.top_establishments()
-        if top.empty:
-            st.info("Todavía no hay establecimientos dados de alta.")
-        else:
-            ui.show_table(top, drop=("entradas", "comision_establecimiento"))
+        with ui.panel("Mejores establecimientos"):
+            top = db.top_establishments()
+            if top.empty:
+                st.info("Todavía no hay establecimientos dados de alta.")
+            else:
+                ui.show_table(top, drop=("entradas", "comision_establecimiento"))
+
+    col_last, col_pend = st.columns([1.15, 1])
+    with col_last:
+        with ui.panel("Últimas ventas"):
+            recent = db.list_sales().head(8)
+            if recent.empty:
+                st.caption("Sin ventas registradas todavía.")
+            else:
+                ui.show_table(
+                    ui.style_sales_df(recent),
+                    drop=("codigo", "reserva", "importe_total", "liquidacion"),
+                )
+    with col_pend:
+        with ui.panel("Pendiente de liquidar por establecimiento"):
+            pending = db.pending_by_establishment()
+            if pending.empty:
+                st.caption("No hay comisiones validadas pendientes de pago.")
+            else:
+                ui.show_table(pending, drop=("id", "codigo"))
 
 
 # ---------------------------------------------------------------- establecimientos
@@ -126,7 +140,7 @@ def _dashboard():
 def _establishments():
     ui.page_header("Establecimientos", "Alta de locales, códigos QR únicos y accesos al portal.")
 
-    tab_list, tab_new = st.tabs(["📋 Listado y QR", "➕ Nuevo establecimiento"])
+    tab_list, tab_new = st.tabs(["Listado y QR", "Nuevo establecimiento"])
 
     with tab_new:
         default_pct = float(db.get_setting("default_commission_pct", "30"))
@@ -172,7 +186,7 @@ def _establishments():
     with tab_list:
         establishments = db.list_establishments()
         if establishments.empty:
-            st.info("Crea tu primer establecimiento en la pestaña **➕ Nuevo establecimiento**.")
+            st.info("Crea tu primer establecimiento en la pestaña **Nuevo establecimiento**.")
             return
 
         base_url = db.get_setting("base_url")
@@ -180,19 +194,22 @@ def _establishments():
         st.caption(
             f"{ui.plural(len(establishments), 'establecimiento', 'establecimientos')} "
             f"({ui.plural(len(active), 'activo', 'activos')}). "
-            f"Los QR apuntan a `{base_url}` — puedes cambiarlo en **⚙️ Ajustes**."
+            f"Los QR apuntan a `{base_url}` — puedes cambiarlo en **Ajustes**."
         )
 
         for _, est in establishments.iterrows():
-            badge = "🟢" if est["status"] == "activo" else "⚪"
-            with st.expander(f"{badge} **{est['name']}** — {est['code']} · {est['city'] or 'sin ciudad'}"):
+            suffix = "" if est["status"] == "activo" else " · INACTIVO"
+            with st.expander(
+                f":material/storefront: **{est['name']}** — {est['code']} · "
+                f"{est['city'] or 'sin ciudad'}{suffix}"
+            ):
                 url = qr_utils.build_tracking_url(base_url, est["code"])
                 col_qr, col_info = st.columns([1, 2])
                 with col_qr:
                     png = qr_utils.make_qr_png(url)
                     st.image(png, width=180)
                     st.download_button(
-                        "⬇️ Descargar QR",
+                        "Descargar QR",
                         data=png,
                         file_name=f"QR_{est['code']}_{est['name'].replace(' ', '_')}.png",
                         mime="image/png",
@@ -200,7 +217,7 @@ def _establishments():
                         use_container_width=True,
                     )
                 with col_info:
-                    st.markdown(f"**Enlace de seguimiento:**")
+                    st.markdown("**Enlace de seguimiento:**")
                     st.code(url, language=None)
                     st.markdown(
                         f"**Contacto:** {est['contact_name'] or '—'} · {est['email'] or '—'} · "
@@ -224,7 +241,7 @@ def _establishments():
                             unsafe_allow_html=True,
                         )
                     if est["notes"]:
-                        st.caption(f"📝 {est['notes']}")
+                        st.caption(f"Notas: {est['notes']}")
 
                 st.divider()
                 _edit_establishment_form(est)
@@ -233,7 +250,7 @@ def _establishments():
 
 
 def _edit_establishment_form(est):
-    st.markdown("**✏️ Editar**")
+    st.markdown("**Editar ficha**")
     with st.form(f"edit_{est['id']}"):
         col1, col2 = st.columns(2)
         name = col1.text_input("Nombre", value=est["name"])
@@ -268,7 +285,7 @@ def _edit_establishment_form(est):
 
 
 def _partner_access_form(est):
-    st.markdown("**🔑 Acceso del establecimiento al portal**")
+    st.markdown("**Acceso del establecimiento al portal**")
     users = db.list_partner_users()
     est_users = users[users["establishment_id"] == est["id"]] if not users.empty else users
     if est_users is not None and not est_users.empty:
@@ -312,13 +329,13 @@ def _qr_pool():
     free = db.free_qr_codes()
 
     ui.stat_row([
-        ("Códigos en el pool", f"{len(codes_df)}", "🧾", ui.BLUE_LIGHT),
-        ("Libres (sin asignar)", f"{len(free)}", "🆓", ui.GREEN_LIGHT),
-        ("Asignados", f"{len(codes_df) - len(free)}", "🏪", "#fef3c7"),
+        ("Códigos en el pool", f"{len(codes_df)}", "qr"),
+        ("Libres (sin asignar)", f"{len(free)}", "tag"),
+        ("Asignados", f"{len(codes_df) - len(free)}", "store"),
     ])
 
     tab_pool, tab_print, tab_assign = st.tabs(
-        ["📋 Pool de códigos", "🖨️ Imprimir carteles", "🔗 Asignar / liberar"]
+        ["Pool de códigos", "Imprimir carteles", "Asignar / liberar"]
     )
 
     with tab_pool:
@@ -332,7 +349,7 @@ def _qr_pool():
                 ui.flash(
                     f"{ui.plural(len(codes), 'código generado', 'códigos generados')} "
                     f"({codes[0]} … {codes[-1]}). Ya puedes imprimirlos en la pestaña "
-                    "**🖨️ Imprimir carteles**."
+                    "**Imprimir carteles**."
                 )
                 st.rerun()
         if codes_df.empty:
@@ -340,7 +357,7 @@ def _qr_pool():
         else:
             shown = codes_df.copy()
             shown["estado"] = shown["establecimiento"].map(
-                lambda v: "🆓 Libre" if pd.isna(v) or v is None else f"🏪 {v}"
+                lambda v: "Libre" if pd.isna(v) or v is None else f"Asignado · {v}"
             )
             ui.show_table(shown[["codigo", "estado", "lote", "creado"]])
 
@@ -348,7 +365,7 @@ def _qr_pool():
         if not free:
             st.info(
                 "No hay códigos libres que imprimir. Genera un lote en la pestaña "
-                "**📋 Pool de códigos**."
+                "**Pool de códigos**."
             )
         else:
             batches = sorted({b for b in codes_df["lote"].fillna("") if b})
@@ -377,14 +394,14 @@ def _qr_pool():
                     zip_bytes = flyer.qr_zip(pairs)
                 col1, col2 = st.columns(2)
                 col1.download_button(
-                    "⬇️ Carteles A6 en PDF (para imprenta)",
+                    "Carteles A6 en PDF (para imprenta)",
                     data=pdf_bytes,
                     file_name=f"carteles_NTL_{len(pairs)}.pdf",
                     mime="application/pdf",
                     use_container_width=True,
                 )
                 col2.download_button(
-                    "⬇️ Solo los QR en PNG (ZIP)",
+                    "Solo los QR en PNG (ZIP)",
                     data=zip_bytes,
                     file_name=f"qrs_NTL_{len(pairs)}.zip",
                     mime="application/zip",
@@ -401,7 +418,7 @@ def _qr_pool():
         if not free:
             st.info("No hay códigos libres para asignar.")
         elif establishments.empty:
-            st.warning("No hay establecimientos activos. Créalos en **🏪 Establecimientos**.")
+            st.warning("No hay establecimientos activos. Créalos en **Establecimientos**.")
         else:
             st.markdown(
                 "Al entregar un cartel, teclea aquí el código que aparece impreso "
@@ -447,11 +464,11 @@ def _sales():
 
     establishments = db.list_establishments()
     if establishments.empty:
-        st.warning("Primero crea un establecimiento en **🏪 Establecimientos**.")
+        st.warning("Primero crea un establecimiento en **Establecimientos**.")
         return
 
     tab_list, tab_new, tab_import = st.tabs(
-        ["📋 Listado y validación", "➕ Registrar venta", "📥 Importar CSV"]
+        ["Listado y validación", "Registrar venta", "Importar CSV"]
     )
 
     with tab_new:
@@ -465,7 +482,8 @@ def _sales():
                 est_label = col1.selectbox("Establecimiento (QR de origen)", list(options))
                 sale_date = col2.date_input("Fecha de la venta", value=date.today())
                 col3, col4 = st.columns(2)
-                activity = col3.text_input("Actividad / entrada vendida", placeholder="Sagrada Família — entrada general")
+                activity = col3.text_input("Actividad / entrada vendida",
+                                           placeholder="Sagrada Família — entrada general")
                 booking_ref = col4.text_input("Referencia de reserva GYG", placeholder="GYG-ABC123")
                 col5, col6, col7 = st.columns(3)
                 tickets = col5.number_input("Nº de entradas", min_value=1, value=1, step=1)
@@ -503,7 +521,7 @@ def _sales():
             ]
         )
         st.download_button(
-            "⬇️ Descargar plantilla CSV",
+            "Descargar plantilla CSV",
             data=template.to_csv(index=False).encode("utf-8-sig"),
             file_name="plantilla_ventas.csv",
             mime="text/csv",
@@ -627,7 +645,7 @@ def _sales_list(establishments):
 
     pending = sales[sales["estado"] == "pendiente"]
     if not pending.empty:
-        st.markdown("#### ✅ Validar ventas pendientes")
+        st.markdown("#### Validar ventas pendientes")
         st.caption(
             "Validar una venta confirma que GYG nos la ha abonado y la deja lista para liquidar."
         )
@@ -648,7 +666,7 @@ def _sales_list(establishments):
 
     deletable = sales[sales["liquidacion"].isna()]
     if not deletable.empty:
-        with st.expander("🗑️ Eliminar ventas (solo si no están liquidadas)"):
+        with st.expander("Eliminar ventas (solo si no están liquidadas)"):
             labels_del = {
                 f"#{r['id']} · {r['fecha']} · {r['establecimiento']} · {r['estado']}": r["id"]
                 for _, r in deletable.iterrows()
@@ -669,47 +687,59 @@ def _payouts():
     )
 
     pending = db.pending_by_establishment()
-    st.markdown("### Pendiente de liquidar")
-    if pending.empty:
-        st.info("No hay comisiones pendientes. Valida ventas en **💶 Ventas** para poder liquidarlas.")
-    else:
-        ui.show_table(pending, drop=("id",))
-        options = {
-            f"{r['establecimiento']} — {ui.euros(r['pendiente'])} ({r['ventas']} ventas)": r["id"]
-            for _, r in pending.iterrows()
-        }
-        with st.form("new_payout"):
-            est_label = st.selectbox("Establecimiento a liquidar", list(options))
-            col1, col2 = st.columns(2)
-            payment_date = col1.date_input("Fecha de pago", value=date.today())
-            method = col2.selectbox("Método", ["transferencia", "efectivo", "bizum", "otro"])
-            reference = st.text_input("Referencia del pago", placeholder="Nº de transferencia, concepto…")
-            notes = st.text_input("Notas", placeholder="Opcional")
-            if st.form_submit_button("💸 Generar liquidación", type="primary"):
-                result = db.create_payout(
-                    options[est_label], payment_date, method, reference, notes
+    col_pend, col_form = st.columns([1.1, 1])
+    with col_pend:
+        with ui.panel("Pendiente de liquidar"):
+            if pending.empty:
+                st.info(
+                    "No hay comisiones pendientes. Valida ventas en **Ventas** para "
+                    "poder liquidarlas."
                 )
-                if result:
-                    ui.flash(
-                        f"Liquidación #{result['id']} creada: **{ui.euros(result['amount'])}** "
-                        f"({ui.plural(result['n_sales'], 'venta marcada', 'ventas marcadas')} "
-                        "como pagadas)."
-                    )
-                    st.rerun()
-                else:
-                    st.warning("Ese establecimiento ya no tiene ventas validadas sin liquidar.")
+            else:
+                ui.show_table(pending, drop=("id",))
+    with col_form:
+        with ui.panel("Generar liquidación"):
+            if pending.empty:
+                st.caption("Cuando haya comisiones validadas, podrás liquidarlas aquí.")
+            else:
+                options = {
+                    f"{r['establecimiento']} — {ui.euros(r['pendiente'])} ({r['ventas']} ventas)": r["id"]
+                    for _, r in pending.iterrows()
+                }
+                with st.form("new_payout"):
+                    est_label = st.selectbox("Establecimiento a liquidar", list(options))
+                    col1, col2 = st.columns(2)
+                    payment_date = col1.date_input("Fecha de pago", value=date.today())
+                    method = col2.selectbox("Método", ["transferencia", "efectivo", "bizum", "otro"])
+                    reference = st.text_input("Referencia del pago",
+                                              placeholder="Nº de transferencia, concepto…")
+                    notes = st.text_input("Notas", placeholder="Opcional")
+                    if st.form_submit_button("Generar liquidación", type="primary"):
+                        result = db.create_payout(
+                            options[est_label], payment_date, method, reference, notes
+                        )
+                        if result:
+                            ui.flash(
+                                f"Liquidación #{result['id']} creada: "
+                                f"**{ui.euros(result['amount'])}** "
+                                f"({ui.plural(result['n_sales'], 'venta marcada', 'ventas marcadas')} "
+                                "como pagadas)."
+                            )
+                            st.rerun()
+                        else:
+                            st.warning("Ese establecimiento ya no tiene ventas validadas sin liquidar.")
 
-    st.markdown("### Histórico de liquidaciones")
-    payouts = db.list_payouts()
-    if payouts.empty:
-        st.caption("Aún no se ha generado ninguna liquidación.")
-    else:
-        ui.show_table(payouts)
-        csv = payouts.to_csv(index=False).encode("utf-8-sig")
-        st.download_button(
-            "⬇️ Exportar histórico (CSV)", data=csv,
-            file_name="liquidaciones.csv", mime="text/csv",
-        )
+    with ui.panel("Histórico de liquidaciones"):
+        payouts = db.list_payouts()
+        if payouts.empty:
+            st.caption("Aún no se ha generado ninguna liquidación.")
+        else:
+            ui.show_table(payouts)
+            csv = payouts.to_csv(index=False).encode("utf-8-sig")
+            st.download_button(
+                "Exportar histórico (CSV)", data=csv,
+                file_name="liquidaciones.csv", mime="text/csv",
+            )
 
 
 # ---------------------------------------------------------------- integración web
@@ -731,7 +761,7 @@ def _web_integration():
         3. GYG registra la reserva con vuestra cuenta de partner **y** con esa campaña.
         4. El informe de transacciones del Partner Portal trae la columna de campaña:
            es el código del establecimiento.
-        5. Ese informe se importa en **💶 Ventas → 📥 Importar CSV** usando la campaña
+        5. Ese informe se importa en **Ventas → Importar CSV** usando la campaña
            como `codigo_establecimiento`.
 
         ### Fragmento para pegar en la web
@@ -752,7 +782,7 @@ def _web_integration():
         """
     )
     st.info(
-        "ℹ️ Si el cliente escanea con un móvil pero compra desde otro dispositivo, la "
+        "Si el cliente escanea con un móvil pero compra desde otro dispositivo, la "
         "campaña se pierde (límite del modelo de afiliación). Si los enlaces de GYG se "
         "generan con JavaScript o usáis widgets incrustados, el fragmento necesita "
         "adaptarse — está documentado en `docs/integracion-web.md`."

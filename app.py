@@ -103,7 +103,7 @@ def login_page():
                         st.error("Usuario o contraseña incorrectos.")
         if db.get_setting("default_admin_password") == "1":
             st.info(
-                "🔐 **Primer acceso** — usuario `admin`, contraseña `admin1234`. "
+                "**Primer acceso** — usuario `admin`, contraseña `admin1234`. "
                 "La aplicación te pedirá cambiarla al entrar."
             )
 
@@ -114,7 +114,7 @@ def force_password_change(user):
     with col2:
         st.markdown("<br><br>", unsafe_allow_html=True)
         ui.page_header(
-            "🔐 Crea tu contraseña",
+            "Crea tu contraseña",
             "Estás usando la contraseña por defecto. Elige una nueva para proteger el CRM.",
         )
         with st.form("first_password"):

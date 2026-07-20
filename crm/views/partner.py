@@ -3,6 +3,13 @@ import streamlit as st
 
 from crm import db, qr_utils, ui
 
+NAV = [
+    ":material/space_dashboard: Mi panel",
+    ":material/receipt_long: Mis ventas",
+    ":material/account_balance_wallet: Mis liquidaciones",
+    ":material/qr_code_2: Mi código QR",
+]
+
 
 def render(user):
     est = db.get_establishment(user.get("establishment_id"))
@@ -16,64 +23,62 @@ def render(user):
             st.rerun()
         return
 
-    ui.sidebar_brand(db.get_setting("brand_name"), f"Portal de {est['name']}")
-    page = st.sidebar.radio(
-        "Navegación",
-        ["📊 Mi panel", "🎟️ Mis ventas", "💸 Mis liquidaciones", "📱 Mi código QR"],
-        label_visibility="collapsed",
-    )
+    ui.sidebar_brand(db.get_setting("brand_name"), "Portal del establecimiento")
+    page = st.sidebar.radio("Navegación", NAV, label_visibility="collapsed")
     st.sidebar.divider()
     ui.sidebar_user(user["username"], est["name"])
     if st.sidebar.button("Cerrar sesión", use_container_width=True):
         st.session_state.pop("user", None)
         st.rerun()
 
-    if page == "📊 Mi panel":
+    if page == NAV[0]:
         _dashboard(est)
-    elif page == "🎟️ Mis ventas":
+    elif page == NAV[1]:
         _sales(est)
-    elif page == "💸 Mis liquidaciones":
+    elif page == NAV[2]:
         _payouts(est)
-    elif page == "📱 Mi código QR":
+    elif page == NAV[3]:
         _qr(est)
 
 
 def _dashboard(est):
-    ui.page_header(f"Hola, {est['name']} 👋", "Resumen de las ventas generadas con tu código QR.")
+    ui.page_header(f"Hola, {est['name']}", "Resumen de las ventas generadas con tu código QR.")
 
     summary = db.sales_summary(est["id"])
     ui.stat_row([
-        ("Ventas confirmadas", f"{summary['n_ventas']}", "🧾", ui.BLUE_LIGHT),
-        ("Entradas vendidas", f"{summary['entradas']}", "🎟️", ui.BLUE_LIGHT),
-        ("Comisión acumulada", ui.euros(summary["comision_partner"]), "💶", ui.GREEN_LIGHT),
-        ("Pendiente de cobro", ui.euros(summary["pendiente_pago"]), "⏳", "#fef3c7"),
+        ("Ventas confirmadas", f"{summary['n_ventas']}", "doc"),
+        ("Entradas vendidas", f"{summary['entradas']}", "ticket"),
+        ("Comisión acumulada", ui.euros(summary["comision_partner"]), "euro"),
+        ("Pendiente de cobro", ui.euros(summary["pendiente_pago"]), "clock"),
     ])
 
-    st.markdown("### Tu comisión mes a mes")
-    monthly = db.monthly_commissions(est["id"])
-    if monthly.empty:
-        st.info(
-            "Aún no hay ventas confirmadas con tu QR. En cuanto registremos y "
-            "confirmemos las primeras compras hechas con tu código, las verás aquí."
-        )
-    else:
-        with st.container(border=True):
-            chart_df = (
-                monthly.rename(columns={"comision_establecimientos": "Tu comisión"})
-                .set_index("mes")[["Tu comisión"]]
+    col_chart, col_info = st.columns([1.3, 1])
+    with col_chart:
+        with ui.panel("Tu comisión mes a mes"):
+            monthly = db.monthly_commissions(est["id"])
+            if monthly.empty:
+                st.info(
+                    "Aún no hay ventas confirmadas con tu QR. En cuanto registremos y "
+                    "confirmemos las primeras compras hechas con tu código, las verás aquí."
+                )
+            else:
+                chart_df = (
+                    monthly.rename(columns={"comision_establecimientos": "Tu comisión"})
+                    .set_index("mes")[["Tu comisión"]]
+                )
+                st.bar_chart(chart_df, color=ui.GREEN, height=280)
+    with col_info:
+        with ui.panel("Cómo funciona"):
+            st.markdown(
+                f"""
+                1. Coloca tu **código QR** en un lugar visible de tu local.
+                2. Tus clientes lo escanean y compran entradas en nuestra web.
+                3. Cada compra queda **atribuida a tu código** (`{est['code']}`).
+                4. Te devolvemos el **{ui.pct(est['commission_pct'])}** de la comisión
+                   que nos paga GetYourGuide.
+                5. Cobras por liquidaciones periódicas — las ves en **Mis liquidaciones**.
+                """
             )
-            st.bar_chart(chart_df, color=ui.GREEN, height=290)
-
-    st.markdown("### ¿Cómo funciona?")
-    st.markdown(
-        f"""
-        1. Coloca tu **código QR** en un lugar visible de tu local.
-        2. Tus clientes lo escanean y compran entradas en nuestra web.
-        3. Cada compra queda **atribuida a tu código** (`{est['code']}`).
-        4. Te devolvemos el **{ui.pct(est['commission_pct'])}** de la comisión que nos paga GetYourGuide.
-        5. Cobras por liquidaciones periódicas — las ves en **💸 Mis liquidaciones**.
-        """
-    )
 
 
 def _sales(est):
@@ -84,8 +89,8 @@ def _sales(est):
         return
     ui.show_table(ui.style_sales_df(sales), drop=("establecimiento", "codigo"))
     st.caption(
-        "🕓 *Pendiente*: en revisión · ✅ *Validada*: confirmada, entrará en la próxima "
-        "liquidación · 💸 *Pagada*: ya liquidada."
+        "*Pendiente*: en revisión · *Validada*: confirmada, entrará en la próxima "
+        "liquidación · *Pagada*: ya liquidada."
     )
 
 
@@ -96,10 +101,11 @@ def _payouts(est):
         st.info("Aún no hay liquidaciones. Cuando acumules comisión validada, te la pagaremos aquí.")
         return
     ui.stat_row([
-        ("Total cobrado", ui.euros(payouts["importe"].sum()), "💸", ui.GREEN_LIGHT),
-        ("Liquidaciones", f"{len(payouts)}", "📄", ui.BLUE_LIGHT),
+        ("Total cobrado", ui.euros(payouts["importe"].sum()), "wallet"),
+        ("Liquidaciones", f"{len(payouts)}", "doc"),
     ])
-    ui.show_table(payouts, drop=("establecimiento",))
+    with ui.panel("Historial de pagos"):
+        ui.show_table(payouts, drop=("establecimiento",))
 
 
 def _qr(est):
@@ -111,7 +117,7 @@ def _qr(est):
         png = qr_utils.make_qr_png(url)
         st.image(png, width=260)
         st.download_button(
-            "⬇️ Descargar QR en PNG",
+            "Descargar QR en PNG",
             data=png,
             file_name=f"QR_{est['code']}.png",
             mime="image/png",
@@ -129,6 +135,6 @@ def _qr(est):
             """
         )
         st.info(
-            "💡 Consejo: colócalo cerca de la caja o en las mesas, con un mensaje tipo "
+            "Consejo: colócalo cerca de la caja o en las mesas, con un mensaje tipo "
             "«Compra aquí tus entradas y apoya a este local»."
         )
