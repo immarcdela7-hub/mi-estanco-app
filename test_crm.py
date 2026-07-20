@@ -92,6 +92,55 @@ def main():
     fresh = db.get_user_by_username("admin")
     assert auth.verify_password("nueva-clave-123", fresh["salt"], fresh["password_hash"])
 
+    # --- Pool de códigos QR preimpresos ---
+    batch = db.generate_qr_batch(3, "lote-test")
+    assert len(batch) == 3 and all(c.startswith("NTL-") for c in batch)
+    assert set(batch) <= set(db.free_qr_codes())
+
+    # Alta con código preimpreso: el código del pool pasa a ser el del local
+    est2_id, est2_code = db.create_establishment("Café Central", existing_code=batch[0])
+    assert est2_code == batch[0]
+    assert db.get_establishment_by_code(batch[0])["id"] == est2_id
+    assert batch[0] not in db.free_qr_codes()
+    try:
+        db.create_establishment("Otro", existing_code=batch[0])
+        raise AssertionError("debería rechazar un código ya asignado")
+    except ValueError:
+        pass
+
+    # Código extra vinculado al mismo local: atribuye igual y se puede liberar
+    assert db.assign_qr_code(batch[1], est2_id)
+    assert db.get_establishment_by_code(batch[1])["id"] == est2_id
+    assert set(db.establishment_codes(est2_id)) == {batch[0], batch[1]}
+    assert not db.unassign_qr_code(batch[0])   # el primario no se libera
+    assert db.unassign_qr_code(batch[1])       # el extra sí
+    assert batch[1] in db.free_qr_codes()
+
+    # El código primario del primer establecimiento quedó migrado al pool
+    assert db.get_establishment_by_code(code)["id"] == est_id
+
+    # --- Carteles A6 con QR incrustado ---
+    import io
+    import zipfile
+    from pypdf import PdfReader
+    from crm import flyer
+
+    pairs = [(c, qr_utils.build_tracking_url("https://notaxlost.com/tickets", c))
+             for c in [batch[1], batch[2]]]
+    pdf = flyer.stamp_flyers(flyer.default_template_bytes(), pairs, **{
+        "qr_x_mm": 31.6, "qr_y_mm": 36.9, "qr_size_mm": 41.6, "code_y_mm": 23.4,
+    })
+    reader = PdfReader(io.BytesIO(pdf))
+    assert len(reader.pages) == 2
+    box = reader.pages[0].mediabox
+    assert round(float(box.width) * 25.4 / 72) == 105   # A6
+    assert round(float(box.height) * 25.4 / 72) == 148
+
+    zip_bytes = flyer.qr_zip(pairs)
+    with zipfile.ZipFile(io.BytesIO(zip_bytes)) as zf:
+        assert sorted(zf.namelist()) == sorted(f"{c}.png" for c, _ in pairs)
+        assert zf.read(pairs[0][0] + ".png")[:8] == b"\x89PNG\r\n\x1a\n"
+
     print("✅ Todos los tests del CRM pasan.")
 
 

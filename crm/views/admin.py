@@ -38,8 +38,8 @@ def render(user):
     ui.sidebar_brand(db.get_setting("brand_name"), "Panel de administración")
     page = st.sidebar.radio(
         "Navegación",
-        ["📊 Panel", "🏪 Establecimientos", "💶 Ventas", "💸 Liquidaciones",
-         "🌐 Integración web", "⚙️ Ajustes"],
+        ["📊 Panel", "🏪 Establecimientos", "🧾 Códigos QR", "💶 Ventas",
+         "💸 Liquidaciones", "🌐 Integración web", "⚙️ Ajustes"],
         label_visibility="collapsed",
     )
     st.sidebar.divider()
@@ -54,6 +54,8 @@ def render(user):
         _dashboard()
     elif page == "🏪 Establecimientos":
         _establishments()
+    elif page == "🧾 Códigos QR":
+        _qr_pool()
     elif page == "💶 Ventas":
         _sales()
     elif page == "💸 Liquidaciones":
@@ -128,6 +130,8 @@ def _establishments():
 
     with tab_new:
         default_pct = float(db.get_setting("default_commission_pct", "30"))
+        free_codes = db.free_qr_codes()
+        NEW_CODE = "Generar un código nuevo"
         with st.form("new_establishment"):
             col1, col2 = st.columns(2)
             name = col1.text_input("Nombre del establecimiento *", placeholder="Bar La Plaza")
@@ -138,11 +142,18 @@ def _establishments():
             col5, col6 = st.columns(2)
             city = col5.text_input("Ciudad", placeholder="Barcelona")
             address = col6.text_input("Dirección", placeholder="C/ Mayor 1")
-            pct = st.number_input(
+            col7, col8 = st.columns(2)
+            pct = col7.number_input(
                 "% de nuestra comisión GYG que le devolvemos",
                 min_value=0.0, max_value=100.0, value=default_pct, step=1.0,
                 help="Ejemplo: si GYG nos paga 10 € por una venta y aquí pones 30, "
                      "el establecimiento recibe 3 €.",
+            )
+            code_choice = col8.selectbox(
+                "Código QR",
+                [NEW_CODE] + free_codes,
+                help="Si le has entregado un cartel preimpreso, elige el código que "
+                     "aparece impreso debajo de su QR.",
             )
             notes = st.text_area("Notas internas", placeholder="Acuerdo, condiciones, etc.")
             submitted = st.form_submit_button("Crear establecimiento", type="primary")
@@ -150,8 +161,10 @@ def _establishments():
             if not name.strip():
                 st.error("El nombre es obligatorio.")
             else:
+                existing = None if code_choice == NEW_CODE else code_choice
                 _, code = db.create_establishment(
-                    name, contact, email, phone, city, address, pct, notes
+                    name, contact, email, phone, city, address, pct, notes,
+                    existing_code=existing,
                 )
                 st.success(f"Establecimiento **{name}** creado con el código **{code}**. "
                            "Su QR ya está disponible en el listado.")
@@ -199,6 +212,17 @@ def _establishments():
                         f"de nuestra comisión GYG</span>",
                         unsafe_allow_html=True,
                     )
+                    extra_codes = [c for c in db.establishment_codes(est["id"])
+                                   if c != est["code"]]
+                    if extra_codes:
+                        badges = " ".join(
+                            f"<span class='crm-badge crm-badge-blue'>{c}</span>"
+                            for c in extra_codes
+                        )
+                        st.markdown(
+                            f"**Carteles adicionales vinculados:** {badges}",
+                            unsafe_allow_html=True,
+                        )
                     if est["notes"]:
                         st.caption(f"📝 {est['notes']}")
 
@@ -270,6 +294,159 @@ def _partner_access_form(est):
                 db.create_user(username, password, "partner", est["id"])
                 st.success(f"Acceso creado. El establecimiento puede entrar con el usuario "
                            f"**{username}** en esta misma página de login.")
+
+
+# ---------------------------------------------------------------- códigos QR
+
+def _flyer_settings():
+    return {
+        "qr_x_mm": float(db.get_setting("flyer_qr_x_mm", "31.6")),
+        "qr_y_mm": float(db.get_setting("flyer_qr_y_mm", "36.9")),
+        "qr_size_mm": float(db.get_setting("flyer_qr_size_mm", "41.6")),
+        "code_y_mm": float(db.get_setting("flyer_code_y_mm", "23.4")),
+    }
+
+
+def _qr_pool():
+    from crm import flyer
+
+    ui.page_header(
+        "Códigos QR preimpresos",
+        "Genera lotes de QR sin asignar, imprime los carteles y vincúlalos a un "
+        "establecimiento cuando los repartas.",
+    )
+
+    base_url = db.get_setting("base_url")
+    codes_df = db.list_qr_codes()
+    free = db.free_qr_codes()
+
+    ui.stat_row([
+        ("Códigos en el pool", f"{len(codes_df)}", "🧾", ui.BLUE_LIGHT),
+        ("Libres (sin asignar)", f"{len(free)}", "🆓", ui.GREEN_LIGHT),
+        ("Asignados", f"{len(codes_df) - len(free)}", "🏪", "#fef3c7"),
+    ])
+
+    tab_pool, tab_print, tab_assign = st.tabs(
+        ["📋 Pool de códigos", "🖨️ Imprimir carteles", "🔗 Asignar / liberar"]
+    )
+
+    with tab_pool:
+        with st.form("new_batch"):
+            col1, col2 = st.columns(2)
+            n = col1.number_input("¿Cuántos códigos generar?", min_value=1, max_value=500,
+                                  value=25, step=5)
+            batch = col2.text_input("Etiqueta del lote (opcional)", placeholder="imprenta-agosto")
+            if st.form_submit_button("Generar lote", type="primary"):
+                codes = db.generate_qr_batch(n, batch)
+                ui.flash(
+                    f"{ui.plural(len(codes), 'código generado', 'códigos generados')} "
+                    f"({codes[0]} … {codes[-1]}). Ya puedes imprimirlos en la pestaña "
+                    "**🖨️ Imprimir carteles**."
+                )
+                st.rerun()
+        if codes_df.empty:
+            st.info("Aún no hay códigos en el pool. Genera el primer lote arriba.")
+        else:
+            shown = codes_df.copy()
+            shown["estado"] = shown["establecimiento"].map(
+                lambda v: "🆓 Libre" if pd.isna(v) or v is None else f"🏪 {v}"
+            )
+            ui.show_table(shown[["codigo", "estado", "lote", "creado"]])
+
+    with tab_print:
+        if not free:
+            st.info(
+                "No hay códigos libres que imprimir. Genera un lote en la pestaña "
+                "**📋 Pool de códigos**."
+            )
+        else:
+            batches = sorted({b for b in codes_df["lote"].fillna("") if b})
+            batch_filter = st.selectbox(
+                "Lote a imprimir", ["Todos los libres"] + batches, key="print_batch"
+            )
+            if batch_filter == "Todos los libres":
+                to_print = free
+            else:
+                in_batch = set(
+                    codes_df[codes_df["lote"] == batch_filter]["codigo"].tolist()
+                )
+                to_print = [c for c in free if c in in_batch]
+            st.caption(
+                f"{ui.plural(len(to_print), 'cartel', 'carteles')} — cada uno con su QR "
+                f"único apuntando a `{base_url}` y el código impreso en pequeño."
+            )
+            if to_print and st.button("Preparar descargas", type="primary"):
+                pairs = [
+                    (c, qr_utils.build_tracking_url(base_url, c)) for c in to_print
+                ]
+                with st.spinner("Generando PDF y ZIP…"):
+                    pdf_bytes = flyer.stamp_flyers(
+                        flyer.default_template_bytes(), pairs, **_flyer_settings()
+                    )
+                    zip_bytes = flyer.qr_zip(pairs)
+                col1, col2 = st.columns(2)
+                col1.download_button(
+                    "⬇️ Carteles A6 en PDF (para imprenta)",
+                    data=pdf_bytes,
+                    file_name=f"carteles_NTL_{len(pairs)}.pdf",
+                    mime="application/pdf",
+                    use_container_width=True,
+                )
+                col2.download_button(
+                    "⬇️ Solo los QR en PNG (ZIP)",
+                    data=zip_bytes,
+                    file_name=f"qrs_NTL_{len(pairs)}.zip",
+                    mime="application/zip",
+                    use_container_width=True,
+                )
+            st.divider()
+            st.caption(
+                "El PDF replica vuestro cartel A6 sustituyendo el QR de muestra por el "
+                "real de cada código. Si la imprenta prefiere maquetarlo ella, usa el ZIP."
+            )
+
+    with tab_assign:
+        establishments = db.list_establishments(only_active=True)
+        if not free:
+            st.info("No hay códigos libres para asignar.")
+        elif establishments.empty:
+            st.warning("No hay establecimientos activos. Créalos en **🏪 Establecimientos**.")
+        else:
+            st.markdown(
+                "Al entregar un cartel, teclea aquí el código que aparece impreso "
+                "debajo del QR y elige el establecimiento."
+            )
+            with st.form("assign_code"):
+                col1, col2 = st.columns(2)
+                code_sel = col1.selectbox("Código libre", free)
+                est_options = {
+                    f"{r['name']} ({r['code']})": r["id"] for _, r in establishments.iterrows()
+                }
+                est_sel = col2.selectbox("Establecimiento", list(est_options))
+                if st.form_submit_button("Vincular", type="primary"):
+                    if db.assign_qr_code(code_sel, est_options[est_sel]):
+                        ui.flash(
+                            f"Código **{code_sel}** vinculado a **{est_sel}**. Todas las "
+                            "compras de ese QR ya cuentan para ese local."
+                        )
+                        st.rerun()
+                    else:
+                        st.error("Ese código ya no está libre.")
+
+        assigned_extra = codes_df[
+            codes_df["establecimiento"].notna() & (codes_df["lote"] != "auto")
+        ]
+        if not assigned_extra.empty:
+            st.markdown("**Liberar un código** (solo códigos de cartel, no el principal del local):")
+            code_free = st.selectbox(
+                "Código asignado", assigned_extra["codigo"].tolist(), key="unassign_sel"
+            )
+            if st.button("Liberar código"):
+                if db.unassign_qr_code(code_free):
+                    ui.flash(f"Código **{code_free}** liberado: vuelve al pool.")
+                    st.rerun()
+                else:
+                    st.error("Ese código es el principal de un establecimiento y no se puede liberar.")
 
 
 # ---------------------------------------------------------------- ventas

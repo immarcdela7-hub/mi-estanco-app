@@ -64,6 +64,15 @@ CREATE TABLE IF NOT EXISTS sales (
     FOREIGN KEY (payout_id) REFERENCES payouts (id)
 );
 
+CREATE TABLE IF NOT EXISTS qr_codes (
+    code             TEXT PRIMARY KEY,
+    establishment_id INTEGER,
+    batch            TEXT DEFAULT '',
+    created_at       TEXT NOT NULL,
+    assigned_at      TEXT,
+    FOREIGN KEY (establishment_id) REFERENCES establishments (id)
+);
+
 CREATE TABLE IF NOT EXISTS payouts (
     id               INTEGER PRIMARY KEY AUTOINCREMENT,
     establishment_id INTEGER NOT NULL,
@@ -83,6 +92,11 @@ DEFAULT_SETTINGS = {
     "base_url": "https://notaxlost.com/tickets",
     "default_commission_pct": "30",
     "default_admin_password": "1",
+    # Posición del QR en el cartel A6 (mm, origen abajo-izquierda)
+    "flyer_qr_x_mm": "31.6",
+    "flyer_qr_y_mm": "36.9",
+    "flyer_qr_size_mm": "41.6",
+    "flyer_code_y_mm": "23.4",
 }
 
 
@@ -107,6 +121,11 @@ def init_db():
         conn.executescript(SCHEMA)
         for key, value in DEFAULT_SETTINGS.items():
             conn.execute("INSERT OR IGNORE INTO settings (key, value) VALUES (?, ?)", (key, value))
+        # Migración: los códigos primarios de establecimientos existentes entran al pool
+        conn.execute(
+            "INSERT OR IGNORE INTO qr_codes (code, establishment_id, batch, created_at, assigned_at) "
+            "SELECT code, id, 'auto', created_at, created_at FROM establishments"
+        )
         has_admin = conn.execute("SELECT 1 FROM users WHERE role = 'admin' LIMIT 1").fetchone()
         if not has_admin:
             salt, pw_hash = auth.hash_password("admin1234")
@@ -184,18 +203,35 @@ def delete_user(user_id):
 
 # ---------------------------------------------------------------- establishments
 
-def _generate_code(conn):
+def _generate_code(conn, prefix="EST"):
     alphabet = string.ascii_uppercase + string.digits
     while True:
-        code = "EST-" + "".join(secrets.choice(alphabet) for _ in range(5))
-        if not conn.execute("SELECT 1 FROM establishments WHERE code = ?", (code,)).fetchone():
+        code = f"{prefix}-" + "".join(secrets.choice(alphabet) for _ in range(5))
+        exists = conn.execute(
+            "SELECT 1 FROM establishments WHERE code = ? "
+            "UNION SELECT 1 FROM qr_codes WHERE code = ?",
+            (code, code),
+        ).fetchone()
+        if not exists:
             return code
 
 
 def create_establishment(name, contact_name="", email="", phone="", city="", address="",
-                         commission_pct=30.0, notes=""):
+                         commission_pct=30.0, notes="", existing_code=None):
+    """Alta de establecimiento. Con existing_code se le vincula un QR preimpreso
+    libre del pool en lugar de generar un código nuevo."""
     with get_conn() as conn:
-        code = _generate_code(conn)
+        if existing_code:
+            row = conn.execute(
+                "SELECT establishment_id FROM qr_codes WHERE code = ?", (existing_code,)
+            ).fetchone()
+            if row is None:
+                raise ValueError(f"El código {existing_code} no existe en el pool")
+            if row["establishment_id"] is not None:
+                raise ValueError(f"El código {existing_code} ya está asignado")
+            code = existing_code
+        else:
+            code = _generate_code(conn)
         cur = conn.execute(
             "INSERT INTO establishments "
             "(name, code, contact_name, email, phone, city, address, commission_pct, status, notes, created_at) "
@@ -203,7 +239,15 @@ def create_establishment(name, contact_name="", email="", phone="", city="", add
             (name.strip(), code, contact_name, email, phone, city, address,
              float(commission_pct), notes, now_iso()),
         )
-        return cur.lastrowid, code
+        est_id = cur.lastrowid
+        conn.execute(
+            "INSERT INTO qr_codes (code, establishment_id, batch, created_at, assigned_at) "
+            "VALUES (?, ?, 'auto', ?, ?) "
+            "ON CONFLICT(code) DO UPDATE SET establishment_id = excluded.establishment_id, "
+            "assigned_at = excluded.assigned_at",
+            (code, est_id, now_iso(), now_iso()),
+        )
+        return est_id, code
 
 
 def update_establishment(est_id, **fields):
@@ -227,11 +271,91 @@ def get_establishment(est_id):
 
 
 def get_establishment_by_code(code):
+    """Resuelve un código a su establecimiento, incluyendo códigos extra del pool."""
     with get_conn() as conn:
         row = conn.execute(
-            "SELECT * FROM establishments WHERE UPPER(code) = UPPER(?)", (code.strip(),)
+            "SELECT e.* FROM qr_codes q JOIN establishments e ON e.id = q.establishment_id "
+            "WHERE UPPER(q.code) = UPPER(?)",
+            (code.strip(),),
         ).fetchone()
+        if row is None:
+            row = conn.execute(
+                "SELECT * FROM establishments WHERE UPPER(code) = UPPER(?)", (code.strip(),)
+            ).fetchone()
     return dict(row) if row else None
+
+
+# ---------------------------------------------------------------- pool de códigos QR
+
+def generate_qr_batch(n, batch_label=""):
+    """Genera n códigos NTL-XXXXX sin asignar, para carteles preimpresos."""
+    codes = []
+    with get_conn() as conn:
+        for _ in range(int(n)):
+            code = _generate_code(conn, prefix="NTL")
+            conn.execute(
+                "INSERT INTO qr_codes (code, establishment_id, batch, created_at) "
+                "VALUES (?, NULL, ?, ?)",
+                (code, batch_label.strip(), now_iso()),
+            )
+            codes.append(code)
+    return codes
+
+
+def list_qr_codes(only_free=False):
+    query = (
+        "SELECT q.code AS codigo, q.batch AS lote, e.name AS establecimiento, "
+        "q.created_at AS creado, q.assigned_at AS asignado "
+        "FROM qr_codes q LEFT JOIN establishments e ON e.id = q.establishment_id"
+    )
+    if only_free:
+        query += " WHERE q.establishment_id IS NULL"
+    query += " ORDER BY q.created_at DESC, q.code"
+    with get_conn() as conn:
+        return pd.read_sql_query(query, conn)
+
+
+def free_qr_codes():
+    with get_conn() as conn:
+        rows = conn.execute(
+            "SELECT code FROM qr_codes WHERE establishment_id IS NULL ORDER BY code"
+        ).fetchall()
+    return [r["code"] for r in rows]
+
+
+def assign_qr_code(code, establishment_id):
+    with get_conn() as conn:
+        cur = conn.execute(
+            "UPDATE qr_codes SET establishment_id = ?, assigned_at = ? "
+            "WHERE code = ? AND establishment_id IS NULL",
+            (establishment_id, now_iso(), code),
+        )
+        return cur.rowcount == 1
+
+
+def unassign_qr_code(code):
+    """Libera un código extra. El código primario de un establecimiento no se libera."""
+    with get_conn() as conn:
+        is_primary = conn.execute(
+            "SELECT 1 FROM establishments WHERE code = ?", (code,)
+        ).fetchone()
+        if is_primary:
+            return False
+        cur = conn.execute(
+            "UPDATE qr_codes SET establishment_id = NULL, assigned_at = NULL WHERE code = ?",
+            (code,),
+        )
+        return cur.rowcount == 1
+
+
+def establishment_codes(establishment_id):
+    """Todos los códigos QR vinculados a un establecimiento."""
+    with get_conn() as conn:
+        rows = conn.execute(
+            "SELECT code FROM qr_codes WHERE establishment_id = ? ORDER BY assigned_at",
+            (establishment_id,),
+        ).fetchall()
+    return [r["code"] for r in rows]
 
 
 def list_establishments(only_active=False):
