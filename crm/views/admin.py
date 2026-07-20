@@ -43,7 +43,7 @@ def render(user):
         label_visibility="collapsed",
     )
     st.sidebar.divider()
-    st.sidebar.caption(f"Conectado como **{user['username']}**")
+    ui.sidebar_user(user["username"], "Administrador")
     if st.sidebar.button("Cerrar sesión", use_container_width=True):
         st.session_state.pop("user", None)
         st.rerun()
@@ -69,33 +69,54 @@ def render(user):
 def _dashboard():
     ui.page_header("Panel general", "Resumen de ventas por QR y comisiones de GetYourGuide.")
 
+    establishments = db.list_establishments()
+    if establishments.empty:
+        st.markdown("### 👋 Bienvenido — primeros pasos")
+        ui.steps_row([
+            ("Configura tu marca",
+             "En <b>⚙️ Ajustes</b>, revisa el nombre de la marca y la URL de la web "
+             "a la que apuntarán los códigos QR."),
+            ("Da de alta un establecimiento",
+             "En <b>🏪 Establecimientos</b>, crea el primer local: obtendrá un código "
+             "único y su QR listo para imprimir."),
+            ("Registra las ventas",
+             "En <b>💶 Ventas</b>, apunta o importa las ventas que lleguen por cada "
+             "QR y valídalas cuando GYG las abone."),
+        ])
+        st.markdown("")
+
     summary = db.sales_summary()
-    col1, col2, col3, col4 = st.columns(4)
-    col1.metric("Ventas confirmadas", f"{summary['n_ventas']}")
-    col2.metric("Comisión GYG recibida", ui.euros(summary["comision_gyg"]))
-    col3.metric("Comisión establecimientos", ui.euros(summary["comision_partner"]))
-    col4.metric("Pendiente de liquidar", ui.euros(summary["pendiente_pago"]))
+    ui.stat_row([
+        ("Ventas confirmadas", f"{summary['n_ventas']}", "🧾", ui.BLUE_LIGHT),
+        ("Comisión GYG recibida", ui.euros(summary["comision_gyg"]), "💶", ui.BLUE_LIGHT),
+        ("Comisión establecimientos", ui.euros(summary["comision_partner"]), "🤝", ui.GREEN_LIGHT),
+        ("Pendiente de liquidar", ui.euros(summary["pendiente_pago"]), "⏳", "#fef3c7"),
+    ])
 
-    st.markdown("### Comisión mensual")
-    monthly = db.monthly_commissions()
-    if monthly.empty:
-        st.info("Aún no hay ventas validadas. Registra ventas en la sección **💶 Ventas**.")
-    else:
-        chart_df = monthly.rename(
-            columns={"nuestra_parte": "Nuestra parte", "comision_establecimientos": "Establecimientos"}
-        ).set_index("mes")
-        st.bar_chart(chart_df, color=[ui.BLUE, ui.GREEN])
-        st.caption(
-            "Reparto de la comisión de GYG cada mes: en azul lo que retenemos, "
-            "en verde lo que corresponde a los establecimientos."
-        )
-
-    st.markdown("### Mejores establecimientos")
-    top = db.top_establishments()
-    if top.empty:
-        st.info("Todavía no hay establecimientos dados de alta.")
-    else:
-        ui.show_table(top)
+    col_chart, col_top = st.columns([1.15, 1])
+    with col_chart:
+        st.markdown("### Comisión mensual")
+        monthly = db.monthly_commissions()
+        if monthly.empty:
+            st.info("Aún no hay ventas validadas. Registra ventas en la sección **💶 Ventas**.")
+        else:
+            with st.container(border=True):
+                chart_df = monthly.rename(
+                    columns={"nuestra_parte": "Nuestra parte",
+                             "comision_establecimientos": "Establecimientos"}
+                ).set_index("mes")
+                st.bar_chart(chart_df, color=[ui.BLUE, ui.GREEN], height=290)
+            st.caption(
+                "Reparto de la comisión de GYG cada mes: en azul lo que retenemos, "
+                "en verde lo que corresponde a los establecimientos."
+            )
+    with col_top:
+        st.markdown("### Mejores establecimientos")
+        top = db.top_establishments()
+        if top.empty:
+            st.info("Todavía no hay establecimientos dados de alta.")
+        else:
+            ui.show_table(top, drop=("entradas", "comision_establecimiento"))
 
 
 # ---------------------------------------------------------------- establecimientos

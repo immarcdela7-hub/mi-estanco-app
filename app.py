@@ -31,12 +31,16 @@ def login_page():
         st.markdown("<br><br>", unsafe_allow_html=True)
         st.markdown(
             f"""
-            <div style="text-align:center; margin-bottom: 1.5rem;">
-                <div style="font-size:3rem;">🎟️</div>
-                <div style="font-size:1.8rem; font-weight:800; color:#0f172a;">
+            <div style="text-align:center; margin-bottom: 1.4rem;">
+                <div style="width:64px; height:64px; border-radius:16px; margin:0 auto;
+                            background:linear-gradient(135deg, {ui.BLUE} 0%, {ui.GREEN} 100%);
+                            display:flex; align-items:center; justify-content:center;
+                            font-size:2rem; box-shadow:0 6px 16px rgba(37,99,235,0.35);">🎟️</div>
+                <div style="font-size:1.7rem; font-weight:800; color:#0f172a; margin-top:0.8rem;
+                            letter-spacing:-0.02em;">
                     {brand} <span style="color:{ui.BLUE};">CRM</span>
                 </div>
-                <div style="color:#64748b;">
+                <div style="color:#64748b; font-size:0.95rem;">
                     Ventas con QR en establecimientos ·
                     <span style="color:{ui.GREEN}; font-weight:600;">partner de GetYourGuide</span>
                 </div>

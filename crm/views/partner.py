@@ -23,7 +23,7 @@ def render(user):
         label_visibility="collapsed",
     )
     st.sidebar.divider()
-    st.sidebar.caption(f"Conectado como **{user['username']}**")
+    ui.sidebar_user(user["username"], est["name"])
     if st.sidebar.button("Cerrar sesión", use_container_width=True):
         st.session_state.pop("user", None)
         st.rerun()
@@ -42,11 +42,12 @@ def _dashboard(est):
     ui.page_header(f"Hola, {est['name']} 👋", "Resumen de las ventas generadas con tu código QR.")
 
     summary = db.sales_summary(est["id"])
-    col1, col2, col3, col4 = st.columns(4)
-    col1.metric("Ventas confirmadas", f"{summary['n_ventas']}")
-    col2.metric("Entradas vendidas", f"{summary['entradas']}")
-    col3.metric("Comisión acumulada", ui.euros(summary["comision_partner"]))
-    col4.metric("Pendiente de cobro", ui.euros(summary["pendiente_pago"]))
+    ui.stat_row([
+        ("Ventas confirmadas", f"{summary['n_ventas']}", "🧾", ui.BLUE_LIGHT),
+        ("Entradas vendidas", f"{summary['entradas']}", "🎟️", ui.BLUE_LIGHT),
+        ("Comisión acumulada", ui.euros(summary["comision_partner"]), "💶", ui.GREEN_LIGHT),
+        ("Pendiente de cobro", ui.euros(summary["pendiente_pago"]), "⏳", "#fef3c7"),
+    ])
 
     st.markdown("### Tu comisión mes a mes")
     monthly = db.monthly_commissions(est["id"])
@@ -56,11 +57,12 @@ def _dashboard(est):
             "confirmemos las primeras compras hechas con tu código, las verás aquí."
         )
     else:
-        chart_df = (
-            monthly.rename(columns={"comision_establecimientos": "Tu comisión"})
-            .set_index("mes")[["Tu comisión"]]
-        )
-        st.bar_chart(chart_df, color=ui.GREEN)
+        with st.container(border=True):
+            chart_df = (
+                monthly.rename(columns={"comision_establecimientos": "Tu comisión"})
+                .set_index("mes")[["Tu comisión"]]
+            )
+            st.bar_chart(chart_df, color=ui.GREEN, height=290)
 
     st.markdown("### ¿Cómo funciona?")
     st.markdown(
@@ -93,9 +95,11 @@ def _payouts(est):
     if payouts.empty:
         st.info("Aún no hay liquidaciones. Cuando acumules comisión validada, te la pagaremos aquí.")
         return
+    ui.stat_row([
+        ("Total cobrado", ui.euros(payouts["importe"].sum()), "💸", ui.GREEN_LIGHT),
+        ("Liquidaciones", f"{len(payouts)}", "📄", ui.BLUE_LIGHT),
+    ])
     ui.show_table(payouts, drop=("establecimiento",))
-    total = payouts["importe"].sum()
-    st.metric("Total cobrado", ui.euros(total))
 
 
 def _qr(est):
