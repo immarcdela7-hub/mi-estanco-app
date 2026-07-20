@@ -1,5 +1,6 @@
 "use server";
 
+import { ok } from "@/lib/flash";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { attemptLogin, currentUser, hashPassword, checkPassword } from "@/lib/auth";
@@ -72,7 +73,7 @@ export async function changePasswordAction(
     where: { id: user.id },
     data: { passwordHash: hashPassword(new1) },
   });
-  return { success: "Contraseña actualizada." };
+  return ok("Contraseña actualizada.");
 }
 
 export async function logoutAction() {

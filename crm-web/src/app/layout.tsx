@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { Toaster } from "@/components/Toaster";
+import { readFlash } from "@/lib/flash";
 import "./globals.css";
 
 const jakarta = localFont({
@@ -14,14 +16,16 @@ export const metadata: Metadata = {
   description: "CRM de venta de entradas con QR por establecimiento",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const flash = await readFlash();
   return (
     <html lang="es" className={`${jakarta.variable} h-full antialiased`}>
       <body className="min-h-full font-sans">
         <div className="fixed inset-x-0 top-0 z-[999] h-[3px] bg-gradient-to-r from-brand-blue to-brand-green" />
         {children}
+        <Toaster flash={flash} />
       </body>
     </html>
   );
