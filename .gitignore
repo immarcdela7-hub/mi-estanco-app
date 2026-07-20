@@ -1,0 +1,4 @@
+__pycache__/
+*.pyc
+crm_data.db
+.streamlit/secrets.toml

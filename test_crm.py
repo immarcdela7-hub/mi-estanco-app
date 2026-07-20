@@ -1,0 +1,85 @@
+"""Test de humo de la capa de datos del CRM. Ejecutar: python test_crm.py"""
+import os
+import tempfile
+
+os.environ["CRM_DB_PATH"] = os.path.join(tempfile.mkdtemp(), "test_crm.db")
+
+from crm import auth, db, qr_utils  # noqa: E402
+
+
+def main():
+    db.init_db()
+
+    # Admin sembrado con contraseña por defecto
+    admin = db.get_user_by_username("admin")
+    assert admin and admin["role"] == "admin"
+    assert auth.verify_password("admin1234", admin["salt"], admin["password_hash"])
+    assert not auth.verify_password("mala", admin["salt"], admin["password_hash"])
+
+    # Alta de establecimiento con código único y QR
+    est_id, code = db.create_establishment("Bar La Plaza", city="Barcelona", commission_pct=30)
+    assert code.startswith("EST-") and len(code) == 9
+    est = db.get_establishment(est_id)
+    assert est["commission_pct"] == 30
+    assert db.get_establishment_by_code(code.lower())["id"] == est_id
+    url = qr_utils.build_tracking_url("https://mi-web.com/", code)
+    assert url == f"https://mi-web.com?ref={code}&utm_source=qr&utm_medium=offline&utm_campaign={code}"
+    png = qr_utils.make_qr_png(url)
+    assert png[:8] == b"\x89PNG\r\n\x1a\n"
+
+    # Usuario partner vinculado
+    db.create_user("barlaplaza", "secreto123", "partner", est_id)
+    partner = db.get_user_by_username("barlaplaza")
+    assert partner["establishment_id"] == est_id
+
+    # Venta: 30% de 10 € de comisión GYG → 3 €
+    share = db.add_sale(est_id, "2026-07-01", "Sagrada Família", "GYG-1", 2, 52.0, 10.0)
+    assert share == 3.0
+    db.add_sale(est_id, "2026-07-15", "Park Güell", "GYG-2", 1, 26.0, 4.0)
+    sales = db.list_sales(establishment_id=est_id)
+    assert len(sales) == 2
+    assert set(sales["estado"]) == {"pendiente"}
+
+    # Las pendientes no cuentan en resúmenes ni liquidaciones
+    assert db.sales_summary(est_id)["n_ventas"] == 0
+    assert db.pending_by_establishment().empty
+
+    # Validación → aparecen en resumen y pendiente de pago
+    db.set_sales_status(sales["id"].tolist(), "validada")
+    summary = db.sales_summary(est_id)
+    assert summary["n_ventas"] == 2
+    assert summary["comision_gyg"] == 14.0
+    assert summary["comision_partner"] == 4.2
+    assert summary["pendiente_pago"] == 4.2
+    pending = db.pending_by_establishment()
+    assert len(pending) == 1 and pending.iloc[0]["pendiente"] == 4.2
+
+    # Liquidación: agrupa, marca como pagada y no se puede repetir
+    payout = db.create_payout(est_id, "2026-07-31", "transferencia", "TRF-001")
+    assert payout["amount"] == 4.2 and payout["n_sales"] == 2
+    assert db.create_payout(est_id, "2026-07-31") is None
+    sales_after = db.list_sales(establishment_id=est_id)
+    assert set(sales_after["estado"]) == {"pagada"}
+    summary_after = db.sales_summary(est_id)
+    assert summary_after["pendiente_pago"] == 0
+    assert summary_after["pagado"] == 4.2
+
+    # Ventas liquidadas no se pueden borrar
+    db.delete_sales(sales_after["id"].tolist())
+    assert len(db.list_sales(establishment_id=est_id)) == 2
+
+    # Desglose mensual: nuestra parte + establecimiento = comisión GYG
+    monthly = db.monthly_commissions(est_id)
+    assert monthly.iloc[0]["mes"] == "2026-07"
+    assert monthly.iloc[0]["nuestra_parte"] + monthly.iloc[0]["comision_establecimientos"] == 14.0
+
+    # Cambio de contraseña
+    db.update_password(admin["id"], "nueva-clave-123")
+    fresh = db.get_user_by_username("admin")
+    assert auth.verify_password("nueva-clave-123", fresh["salt"], fresh["password_hash"])
+
+    print("✅ Todos los tests del CRM pasan.")
+
+
+if __name__ == "__main__":
+    main()

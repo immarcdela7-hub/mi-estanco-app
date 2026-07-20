@@ -1,0 +1,543 @@
+"""Portal de administración (nuestro equipo)."""
+import io
+from datetime import date
+
+import pandas as pd
+import streamlit as st
+
+from crm import db, qr_utils, ui
+
+CSV_TEMPLATE_COLUMNS = [
+    "fecha", "codigo_establecimiento", "referencia_reserva", "actividad",
+    "entradas", "importe_total", "comision_gyg",
+]
+
+
+def render(user):
+    ui.sidebar_brand(db.get_setting("brand_name"), "Panel de administración")
+    page = st.sidebar.radio(
+        "Navegación",
+        ["📊 Panel", "🏪 Establecimientos", "💶 Ventas", "💸 Liquidaciones", "⚙️ Ajustes"],
+        label_visibility="collapsed",
+    )
+    st.sidebar.divider()
+    st.sidebar.caption(f"Conectado como **{user['username']}**")
+    if st.sidebar.button("Cerrar sesión", use_container_width=True):
+        st.session_state.pop("user", None)
+        st.rerun()
+
+    if page == "📊 Panel":
+        _dashboard()
+    elif page == "🏪 Establecimientos":
+        _establishments()
+    elif page == "💶 Ventas":
+        _sales()
+    elif page == "💸 Liquidaciones":
+        _payouts()
+    elif page == "⚙️ Ajustes":
+        _settings(user)
+
+
+# ---------------------------------------------------------------- panel
+
+def _dashboard():
+    ui.page_header("Panel general", "Resumen de ventas por QR y comisiones de GetYourGuide.")
+
+    summary = db.sales_summary()
+    col1, col2, col3, col4 = st.columns(4)
+    col1.metric("Ventas confirmadas", f"{summary['n_ventas']}")
+    col2.metric("Comisión GYG recibida", ui.euros(summary["comision_gyg"]))
+    col3.metric("Comisión establecimientos", ui.euros(summary["comision_partner"]))
+    col4.metric("Pendiente de liquidar", ui.euros(summary["pendiente_pago"]))
+
+    st.markdown("### Comisión mensual")
+    monthly = db.monthly_commissions()
+    if monthly.empty:
+        st.info("Aún no hay ventas validadas. Registra ventas en la sección **💶 Ventas**.")
+    else:
+        chart_df = monthly.rename(
+            columns={"nuestra_parte": "Nuestra parte", "comision_establecimientos": "Establecimientos"}
+        ).set_index("mes")
+        st.bar_chart(chart_df, color=[ui.BLUE, ui.GREEN])
+        st.caption(
+            "Reparto de la comisión de GYG cada mes: en azul lo que retenemos, "
+            "en verde lo que corresponde a los establecimientos."
+        )
+
+    st.markdown("### Mejores establecimientos")
+    top = db.top_establishments()
+    if top.empty:
+        st.info("Todavía no hay establecimientos dados de alta.")
+    else:
+        st.dataframe(
+            top,
+            use_container_width=True,
+            hide_index=True,
+            column_config=ui.column_config(top),
+        )
+
+
+# ---------------------------------------------------------------- establecimientos
+
+def _establishments():
+    ui.page_header("Establecimientos", "Alta de locales, códigos QR únicos y accesos al portal.")
+
+    tab_list, tab_new = st.tabs(["📋 Listado y QR", "➕ Nuevo establecimiento"])
+
+    with tab_new:
+        default_pct = float(db.get_setting("default_commission_pct", "30"))
+        with st.form("new_establishment", clear_on_submit=True):
+            col1, col2 = st.columns(2)
+            name = col1.text_input("Nombre del establecimiento *", placeholder="Bar La Plaza")
+            contact = col2.text_input("Persona de contacto", placeholder="María García")
+            col3, col4 = st.columns(2)
+            email = col3.text_input("Email", placeholder="contacto@barlaplaza.com")
+            phone = col4.text_input("Teléfono", placeholder="600 000 000")
+            col5, col6 = st.columns(2)
+            city = col5.text_input("Ciudad", placeholder="Barcelona")
+            address = col6.text_input("Dirección", placeholder="C/ Mayor 1")
+            pct = st.number_input(
+                "% de nuestra comisión GYG que le devolvemos",
+                min_value=0.0, max_value=100.0, value=default_pct, step=1.0,
+                help="Ejemplo: si GYG nos paga 10 € por una venta y aquí pones 30, "
+                     "el establecimiento recibe 3 €.",
+            )
+            notes = st.text_area("Notas internas", placeholder="Acuerdo, condiciones, etc.")
+            submitted = st.form_submit_button("Crear establecimiento", type="primary")
+        if submitted:
+            if not name.strip():
+                st.error("El nombre es obligatorio.")
+            else:
+                _, code = db.create_establishment(
+                    name, contact, email, phone, city, address, pct, notes
+                )
+                st.success(f"Establecimiento **{name}** creado con el código **{code}**. "
+                           "Su QR ya está disponible en el listado.")
+
+    with tab_list:
+        establishments = db.list_establishments()
+        if establishments.empty:
+            st.info("Crea tu primer establecimiento en la pestaña **➕ Nuevo establecimiento**.")
+            return
+
+        base_url = db.get_setting("base_url")
+        active = establishments[establishments["status"] == "activo"]
+        st.caption(
+            f"{len(establishments)} establecimientos ({len(active)} activos). "
+            f"Los QR apuntan a `{base_url}` — puedes cambiarlo en **⚙️ Ajustes**."
+        )
+
+        for _, est in establishments.iterrows():
+            badge = "🟢" if est["status"] == "activo" else "⚪"
+            with st.expander(f"{badge} **{est['name']}** — {est['code']} · {est['city'] or 'sin ciudad'}"):
+                url = qr_utils.build_tracking_url(base_url, est["code"])
+                col_qr, col_info = st.columns([1, 2])
+                with col_qr:
+                    png = qr_utils.make_qr_png(url)
+                    st.image(png, width=180)
+                    st.download_button(
+                        "⬇️ Descargar QR",
+                        data=png,
+                        file_name=f"QR_{est['code']}_{est['name'].replace(' ', '_')}.png",
+                        mime="image/png",
+                        key=f"qr_{est['id']}",
+                        use_container_width=True,
+                    )
+                with col_info:
+                    st.markdown(f"**Enlace de seguimiento:**")
+                    st.code(url, language=None)
+                    st.markdown(
+                        f"**Contacto:** {est['contact_name'] or '—'} · {est['email'] or '—'} · "
+                        f"{est['phone'] or '—'}"
+                    )
+                    st.markdown(
+                        f"**Comisión que le devolvemos:** "
+                        f"<span class='crm-badge crm-badge-green'>{est['commission_pct']:.0f}% "
+                        f"de nuestra comisión GYG</span>",
+                        unsafe_allow_html=True,
+                    )
+                    if est["notes"]:
+                        st.caption(f"📝 {est['notes']}")
+
+                st.divider()
+                _edit_establishment_form(est)
+                st.divider()
+                _partner_access_form(est)
+
+
+def _edit_establishment_form(est):
+    st.markdown("**✏️ Editar**")
+    with st.form(f"edit_{est['id']}"):
+        col1, col2 = st.columns(2)
+        name = col1.text_input("Nombre", value=est["name"])
+        contact = col2.text_input("Contacto", value=est["contact_name"] or "")
+        col3, col4 = st.columns(2)
+        email = col3.text_input("Email", value=est["email"] or "")
+        phone = col4.text_input("Teléfono", value=est["phone"] or "")
+        col5, col6 = st.columns(2)
+        city = col5.text_input("Ciudad", value=est["city"] or "")
+        address = col6.text_input("Dirección", value=est["address"] or "")
+        col7, col8 = st.columns(2)
+        pct = col7.number_input(
+            "% comisión devuelta", min_value=0.0, max_value=100.0,
+            value=float(est["commission_pct"]), step=1.0,
+        )
+        status = col8.selectbox(
+            "Estado", ["activo", "inactivo"],
+            index=0 if est["status"] == "activo" else 1,
+        )
+        notes = st.text_area("Notas", value=est["notes"] or "")
+        if st.form_submit_button("Guardar cambios", type="primary"):
+            db.update_establishment(
+                est["id"], name=name, contact_name=contact, email=email, phone=phone,
+                city=city, address=address, commission_pct=pct, status=status, notes=notes,
+            )
+            st.success("Cambios guardados.")
+            st.rerun()
+    st.caption(
+        "El % se aplica a las **nuevas** ventas que se registren; las ya guardadas mantienen "
+        "el importe calculado en su momento."
+    )
+
+
+def _partner_access_form(est):
+    st.markdown("**🔑 Acceso del establecimiento al portal**")
+    users = db.list_partner_users()
+    est_users = users[users["establecimiento"] == est["name"]] if not users.empty else users
+    if est_users is not None and not est_users.empty:
+        for _, u in est_users.iterrows():
+            col_u, col_b = st.columns([3, 1])
+            col_u.markdown(f"Usuario: `{u['username']}` (alta {u['created_at'][:10]})")
+            if col_b.button("Eliminar acceso", key=f"del_user_{u['id']}"):
+                db.delete_user(u["id"])
+                st.rerun()
+    with st.form(f"access_{est['id']}", clear_on_submit=True):
+        col1, col2 = st.columns(2)
+        username = col1.text_input("Nuevo usuario", placeholder="barlaplaza")
+        password = col2.text_input("Contraseña", type="password")
+        if st.form_submit_button("Crear acceso"):
+            if not username.strip() or not password:
+                st.error("Usuario y contraseña son obligatorios.")
+            elif len(password) < 6:
+                st.error("La contraseña debe tener al menos 6 caracteres.")
+            elif db.get_user_by_username(username.strip()):
+                st.error("Ese nombre de usuario ya existe.")
+            else:
+                db.create_user(username, password, "partner", est["id"])
+                st.success(f"Acceso creado. El establecimiento puede entrar con el usuario "
+                           f"**{username}** en esta misma página de login.")
+
+
+# ---------------------------------------------------------------- ventas
+
+def _sales():
+    ui.page_header("Ventas", "Registra las ventas atribuidas a cada QR y valídalas para liquidarlas.")
+
+    establishments = db.list_establishments()
+    if establishments.empty:
+        st.warning("Primero crea un establecimiento en **🏪 Establecimientos**.")
+        return
+
+    tab_list, tab_new, tab_import = st.tabs(
+        ["📋 Listado y validación", "➕ Registrar venta", "📥 Importar CSV"]
+    )
+
+    with tab_new:
+        active = db.list_establishments(only_active=True)
+        options = {f"{r['name']} ({r['code']})": r["id"] for _, r in active.iterrows()}
+        if not options:
+            st.warning("No hay establecimientos activos.")
+        else:
+            with st.form("new_sale", clear_on_submit=True):
+                col1, col2 = st.columns(2)
+                est_label = col1.selectbox("Establecimiento (QR de origen)", list(options))
+                sale_date = col2.date_input("Fecha de la venta", value=date.today())
+                col3, col4 = st.columns(2)
+                activity = col3.text_input("Actividad / entrada vendida", placeholder="Sagrada Família — entrada general")
+                booking_ref = col4.text_input("Referencia de reserva GYG", placeholder="GYG-ABC123")
+                col5, col6, col7 = st.columns(3)
+                tickets = col5.number_input("Nº de entradas", min_value=1, value=1, step=1)
+                amount = col6.number_input("Importe de la venta (€)", min_value=0.0, value=0.0, step=1.0)
+                commission = col7.number_input(
+                    "Comisión que nos paga GYG (€)", min_value=0.0, value=0.0, step=0.5
+                )
+                submitted = st.form_submit_button("Registrar venta", type="primary")
+            if submitted:
+                est_id = options[est_label]
+                share = db.add_sale(
+                    est_id, sale_date, activity, booking_ref, tickets, amount, commission
+                )
+                st.success(
+                    f"Venta registrada como **pendiente**. Al establecimiento le corresponden "
+                    f"**{ui.euros(share)}**. Valídala en la pestaña de listado para poder liquidarla."
+                )
+
+    with tab_import:
+        st.markdown(
+            "Sube un CSV con una fila por venta. Columnas: "
+            + ", ".join(f"`{c}`" for c in CSV_TEMPLATE_COLUMNS)
+        )
+        template = pd.DataFrame(
+            [
+                {
+                    "fecha": "2026-07-15",
+                    "codigo_establecimiento": "EST-XXXXX",
+                    "referencia_reserva": "GYG-ABC123",
+                    "actividad": "Sagrada Família — entrada general",
+                    "entradas": 2,
+                    "importe_total": 52.0,
+                    "comision_gyg": 6.24,
+                }
+            ]
+        )
+        st.download_button(
+            "⬇️ Descargar plantilla CSV",
+            data=template.to_csv(index=False).encode("utf-8-sig"),
+            file_name="plantilla_ventas.csv",
+            mime="text/csv",
+        )
+        uploaded = st.file_uploader("CSV de ventas", type=["csv"])
+        if uploaded is not None and st.button("Importar ventas", type="primary"):
+            _import_csv(uploaded)
+
+    with tab_list:
+        _sales_list(establishments)
+
+
+def _import_csv(uploaded):
+    try:
+        raw = uploaded.getvalue().decode("utf-8-sig")
+        sep = ";" if raw.splitlines()[0].count(";") > raw.splitlines()[0].count(",") else ","
+        df = pd.read_csv(io.StringIO(raw), sep=sep, dtype=str).fillna("")
+    except Exception as exc:
+        st.error(f"No se pudo leer el CSV: {exc}")
+        return
+
+    df.columns = [c.strip().lower() for c in df.columns]
+    missing = [c for c in CSV_TEMPLATE_COLUMNS if c not in df.columns]
+    if missing:
+        st.error("Faltan columnas en el CSV: " + ", ".join(f"`{c}`" for c in missing))
+        return
+
+    def to_number(value):
+        s = str(value).strip().replace("€", "").replace(" ", "")
+        if not s:
+            return 0.0
+        if "," in s and "." in s:
+            s = s.replace(".", "").replace(",", ".")
+        elif "," in s:
+            s = s.replace(",", ".")
+        return float(s)
+
+    imported, errors = 0, []
+    for idx, row in df.iterrows():
+        line = idx + 2
+        code = str(row["codigo_establecimiento"]).strip()
+        est = db.get_establishment_by_code(code)
+        if est is None:
+            errors.append(f"Línea {line}: código `{code}` no existe.")
+            continue
+        try:
+            db.add_sale(
+                est["id"],
+                str(row["fecha"]).strip()[:10],
+                str(row["actividad"]).strip(),
+                str(row["referencia_reserva"]).strip(),
+                int(to_number(row["entradas"]) or 1),
+                to_number(row["importe_total"]),
+                to_number(row["comision_gyg"]),
+                source="csv",
+            )
+            imported += 1
+        except Exception as exc:
+            errors.append(f"Línea {line}: {exc}")
+
+    if imported:
+        st.success(f"{imported} ventas importadas como **pendientes**. Valídalas en el listado.")
+    if errors:
+        st.warning("Incidencias:\n\n" + "\n".join(f"- {e}" for e in errors))
+    if not imported and not errors:
+        st.info("El CSV no contenía filas.")
+
+
+def _sales_list(establishments):
+    col1, col2, col3, col4 = st.columns([2, 1.3, 1.2, 1.2])
+    est_options = {"Todos": None}
+    est_options.update({f"{r['name']} ({r['code']})": r["id"] for _, r in establishments.iterrows()})
+    est_label = col1.selectbox("Establecimiento", list(est_options), key="sales_filter_est")
+    status = col2.selectbox("Estado", ["Todos", "pendiente", "validada", "pagada"], key="sales_filter_status")
+    date_from = col3.date_input("Desde", value=None, key="sales_filter_from")
+    date_to = col4.date_input("Hasta", value=None, key="sales_filter_to")
+
+    sales = db.list_sales(
+        establishment_id=est_options[est_label],
+        status=None if status == "Todos" else status,
+        date_from=date_from,
+        date_to=date_to,
+    )
+    if sales.empty:
+        st.info("No hay ventas con estos filtros.")
+        return
+
+    shown = ui.style_sales_df(sales)
+    st.dataframe(
+        shown,
+        use_container_width=True,
+        hide_index=True,
+        column_config=ui.column_config(shown),
+    )
+    total_gyg = sales["comision_gyg"].sum()
+    total_partner = sales["comision_establecimiento"].sum()
+    st.caption(
+        f"{len(sales)} ventas · Comisión GYG {ui.euros(total_gyg)} · "
+        f"Para establecimientos {ui.euros(total_partner)}"
+    )
+
+    pending = sales[sales["estado"] == "pendiente"]
+    if not pending.empty:
+        st.markdown("#### ✅ Validar ventas pendientes")
+        st.caption(
+            "Validar una venta confirma que GYG nos la ha abonado y la deja lista para liquidar."
+        )
+        labels = {
+            f"#{r['id']} · {r['fecha']} · {r['establecimiento']} · {ui.euros(r['comision_gyg'])}": r["id"]
+            for _, r in pending.iterrows()
+        }
+        selected = st.multiselect("Ventas a validar", list(labels), key="validate_select")
+        col_a, col_b = st.columns(2)
+        if col_a.button("Validar seleccionadas", type="primary", disabled=not selected):
+            db.set_sales_status([labels[s] for s in selected], "validada")
+            st.success(f"{len(selected)} ventas validadas.")
+            st.rerun()
+        if col_b.button(f"Validar todas las pendientes del filtro ({len(pending)})"):
+            db.set_sales_status(pending["id"].tolist(), "validada")
+            st.success(f"{len(pending)} ventas validadas.")
+            st.rerun()
+
+    deletable = sales[sales["liquidacion"].isna()]
+    if not deletable.empty:
+        with st.expander("🗑️ Eliminar ventas (solo si no están liquidadas)"):
+            labels_del = {
+                f"#{r['id']} · {r['fecha']} · {r['establecimiento']} · {r['estado']}": r["id"]
+                for _, r in deletable.iterrows()
+            }
+            selected_del = st.multiselect("Ventas a eliminar", list(labels_del), key="delete_select")
+            if st.button("Eliminar seleccionadas", disabled=not selected_del):
+                db.delete_sales([labels_del[s] for s in selected_del])
+                st.success(f"{len(selected_del)} ventas eliminadas.")
+                st.rerun()
+
+
+# ---------------------------------------------------------------- liquidaciones
+
+def _payouts():
+    ui.page_header(
+        "Liquidaciones",
+        "Paga a cada establecimiento su parte de las ventas validadas y guarda el histórico.",
+    )
+
+    pending = db.pending_by_establishment()
+    st.markdown("### Pendiente de liquidar")
+    if pending.empty:
+        st.info("No hay comisiones pendientes. Valida ventas en **💶 Ventas** para poder liquidarlas.")
+    else:
+        st.dataframe(
+            pending.drop(columns=["id"]),
+            use_container_width=True,
+            hide_index=True,
+            column_config=ui.column_config(pending),
+        )
+        options = {
+            f"{r['establecimiento']} — {ui.euros(r['pendiente'])} ({r['ventas']} ventas)": r["id"]
+            for _, r in pending.iterrows()
+        }
+        with st.form("new_payout"):
+            est_label = st.selectbox("Establecimiento a liquidar", list(options))
+            col1, col2 = st.columns(2)
+            payment_date = col1.date_input("Fecha de pago", value=date.today())
+            method = col2.selectbox("Método", ["transferencia", "efectivo", "bizum", "otro"])
+            reference = st.text_input("Referencia del pago", placeholder="Nº de transferencia, concepto…")
+            notes = st.text_input("Notas", placeholder="Opcional")
+            if st.form_submit_button("💸 Generar liquidación", type="primary"):
+                result = db.create_payout(
+                    options[est_label], payment_date, method, reference, notes
+                )
+                if result:
+                    st.success(
+                        f"Liquidación #{result['id']} creada: **{ui.euros(result['amount'])}** "
+                        f"({result['n_sales']} ventas marcadas como pagadas)."
+                    )
+                    st.rerun()
+                else:
+                    st.warning("Ese establecimiento ya no tiene ventas pendientes.")
+
+    st.markdown("### Histórico de liquidaciones")
+    payouts = db.list_payouts()
+    if payouts.empty:
+        st.caption("Aún no se ha generado ninguna liquidación.")
+    else:
+        st.dataframe(
+            payouts,
+            use_container_width=True,
+            hide_index=True,
+            column_config=ui.column_config(payouts),
+        )
+        csv = payouts.to_csv(index=False).encode("utf-8-sig")
+        st.download_button(
+            "⬇️ Exportar histórico (CSV)", data=csv,
+            file_name="liquidaciones.csv", mime="text/csv",
+        )
+
+
+# ---------------------------------------------------------------- ajustes
+
+def _settings(user):
+    ui.page_header("Ajustes", "Configuración general del CRM.")
+
+    st.markdown("### Marca y enlace de los QR")
+    with st.form("settings_general"):
+        brand = st.text_input("Nombre de la marca", value=db.get_setting("brand_name"))
+        base_url = st.text_input(
+            "URL de tu web de venta de entradas",
+            value=db.get_setting("base_url"),
+            help="Los QR de los establecimientos apuntan a esta web añadiendo ?ref=CÓDIGO "
+                 "para poder atribuir cada compra.",
+        )
+        default_pct = st.number_input(
+            "% de comisión devuelta por defecto (para nuevos establecimientos)",
+            min_value=0.0, max_value=100.0,
+            value=float(db.get_setting("default_commission_pct", "30")), step=1.0,
+        )
+        if st.form_submit_button("Guardar ajustes", type="primary"):
+            db.set_setting("brand_name", brand.strip() or "Mi Web de Entradas")
+            db.set_setting("base_url", base_url.strip() or "https://www.mi-web-de-entradas.com")
+            db.set_setting("default_commission_pct", default_pct)
+            st.success("Ajustes guardados.")
+            st.rerun()
+
+    st.markdown("### Cambiar mi contraseña")
+    with st.form("change_password", clear_on_submit=True):
+        current = st.text_input("Contraseña actual", type="password")
+        new1 = st.text_input("Nueva contraseña", type="password")
+        new2 = st.text_input("Repite la nueva contraseña", type="password")
+        if st.form_submit_button("Cambiar contraseña", type="primary"):
+            from crm import auth
+
+            fresh = db.get_user_by_username(user["username"])
+            if not auth.verify_password(current, fresh["salt"], fresh["password_hash"]):
+                st.error("La contraseña actual no es correcta.")
+            elif len(new1) < 8:
+                st.error("La nueva contraseña debe tener al menos 8 caracteres.")
+            elif new1 != new2:
+                st.error("Las contraseñas no coinciden.")
+            else:
+                db.update_password(fresh["id"], new1)
+                db.set_setting("default_admin_password", "0")
+                st.success("Contraseña actualizada.")
+
+    st.markdown("### Accesos de establecimientos")
+    users = db.list_partner_users()
+    if users.empty:
+        st.caption("Aún no hay accesos creados. Se crean desde la ficha de cada establecimiento.")
+    else:
+        st.dataframe(users, use_container_width=True, hide_index=True)
