@@ -19,13 +19,14 @@ from crm import qr_utils
 
 DEFAULT_TEMPLATE = Path(__file__).resolve().parent.parent / "assets" / "cartel_A6.pdf"
 
-# Posición del QR en el cartel A6 de NoTaxLost, medida sobre el PDF original
-# (origen abajo-izquierda, en milímetros).
+# Posición del QR en el cartel A6 v2 de NoTaxLost, medida sobre el PDF original
+# (origen abajo-izquierda, en milímetros). Si se cambia la plantilla de
+# assets/cartel_A6.pdf, hay que volver a medir estos valores.
 DEFAULTS = {
-    "flyer_qr_x_mm": 31.6,
-    "flyer_qr_y_mm": 36.9,
-    "flyer_qr_size_mm": 41.6,
-    "flyer_code_y_mm": 23.4,
+    "qr_x_mm": 33.0,
+    "qr_y_mm": 35.7,
+    "qr_size_mm": 38.8,
+    "code_y_mm": 22.5,
 }
 
 QR_NAVY = "#092B57"  # azul del QR original del cartel

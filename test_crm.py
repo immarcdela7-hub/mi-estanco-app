@@ -127,9 +127,7 @@ def main():
 
     pairs = [(c, qr_utils.build_tracking_url("https://notaxlost.com/tickets", c))
              for c in [batch[1], batch[2]]]
-    pdf = flyer.stamp_flyers(flyer.default_template_bytes(), pairs, **{
-        "qr_x_mm": 31.6, "qr_y_mm": 36.9, "qr_size_mm": 41.6, "code_y_mm": 23.4,
-    })
+    pdf = flyer.stamp_flyers(flyer.default_template_bytes(), pairs, **flyer.DEFAULTS)
     reader = PdfReader(io.BytesIO(pdf))
     assert len(reader.pages) == 2
     box = reader.pages[0].mediabox

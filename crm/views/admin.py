@@ -298,15 +298,6 @@ def _partner_access_form(est):
 
 # ---------------------------------------------------------------- códigos QR
 
-def _flyer_settings():
-    return {
-        "qr_x_mm": float(db.get_setting("flyer_qr_x_mm", "31.6")),
-        "qr_y_mm": float(db.get_setting("flyer_qr_y_mm", "36.9")),
-        "qr_size_mm": float(db.get_setting("flyer_qr_size_mm", "41.6")),
-        "code_y_mm": float(db.get_setting("flyer_code_y_mm", "23.4")),
-    }
-
-
 def _qr_pool():
     from crm import flyer
 
@@ -381,7 +372,7 @@ def _qr_pool():
                 ]
                 with st.spinner("Generando PDF y ZIP…"):
                     pdf_bytes = flyer.stamp_flyers(
-                        flyer.default_template_bytes(), pairs, **_flyer_settings()
+                        flyer.default_template_bytes(), pairs, **flyer.DEFAULTS
                     )
                     zip_bytes = flyer.qr_zip(pairs)
                 col1, col2 = st.columns(2)

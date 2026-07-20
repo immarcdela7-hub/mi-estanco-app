@@ -92,11 +92,6 @@ DEFAULT_SETTINGS = {
     "base_url": "https://notaxlost.com/tickets",
     "default_commission_pct": "30",
     "default_admin_password": "1",
-    # Posición del QR en el cartel A6 (mm, origen abajo-izquierda)
-    "flyer_qr_x_mm": "31.6",
-    "flyer_qr_y_mm": "36.9",
-    "flyer_qr_size_mm": "41.6",
-    "flyer_code_y_mm": "23.4",
 }
 
 
