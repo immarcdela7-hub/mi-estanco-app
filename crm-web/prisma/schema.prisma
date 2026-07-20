@@ -1,0 +1,107 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  PARTNER
+}
+
+enum EstStatus {
+  ACTIVO
+  INACTIVO
+}
+
+enum SaleStatus {
+  PENDIENTE
+  VALIDADA
+  PAGADA
+}
+
+model User {
+  id                 Int            @id @default(autoincrement())
+  username           String         @unique
+  passwordHash       String
+  role               Role
+  establishment      Establishment? @relation(fields: [establishmentId], references: [id])
+  establishmentId    Int?
+  mustChangePassword Boolean        @default(false)
+  failedAttempts     Int            @default(0)
+  lockedUntil        DateTime?
+  createdAt          DateTime       @default(now())
+}
+
+model Establishment {
+  id            Int       @id @default(autoincrement())
+  name          String
+  code          String    @unique
+  contactName   String    @default("")
+  email         String    @default("")
+  phone         String    @default("")
+  city          String    @default("")
+  address       String    @default("")
+  commissionPct Decimal   @default(30) @db.Decimal(5, 2)
+  status        EstStatus @default(ACTIVO)
+  notes         String    @default("")
+  createdAt     DateTime  @default(now())
+  users         User[]
+  sales         Sale[]
+  payouts       Payout[]
+  qrCodes       QrCode[]
+}
+
+model QrCode {
+  code            String         @id
+  establishment   Establishment? @relation(fields: [establishmentId], references: [id])
+  establishmentId Int?
+  batch           String         @default("")
+  createdAt       DateTime       @default(now())
+  assignedAt      DateTime?
+
+  @@index([establishmentId])
+}
+
+model Sale {
+  id              Int           @id @default(autoincrement())
+  establishment   Establishment @relation(fields: [establishmentId], references: [id])
+  establishmentId Int
+  saleDate        DateTime      @db.Date
+  activity        String        @default("")
+  bookingRef      String        @default("")
+  tickets         Int           @default(1)
+  amountTotal     Decimal       @default(0) @db.Decimal(10, 2)
+  gygCommission   Decimal       @default(0) @db.Decimal(10, 2)
+  partnerShare    Decimal       @default(0) @db.Decimal(10, 2)
+  status          SaleStatus    @default(PENDIENTE)
+  payout          Payout?       @relation(fields: [payoutId], references: [id])
+  payoutId        Int?
+  source          String        @default("manual")
+  createdAt       DateTime      @default(now())
+
+  @@index([establishmentId, status])
+  @@index([saleDate])
+}
+
+model Payout {
+  id              Int           @id @default(autoincrement())
+  establishment   Establishment @relation(fields: [establishmentId], references: [id])
+  establishmentId Int
+  amount          Decimal       @db.Decimal(10, 2)
+  nSales          Int
+  paymentDate     DateTime      @db.Date
+  method          String        @default("transferencia")
+  reference       String        @default("")
+  notes           String        @default("")
+  createdAt       DateTime      @default(now())
+  sales           Sale[]
+}
+
+model Setting {
+  key   String @id
+  value String
+}
