@@ -142,47 +142,64 @@ CSS = f"""
         margin: 0.7rem 0 0.9rem 0.2rem;
     }}
 
-    /* Navegación: radio con aspecto de menú de aplicación */
-    section[data-testid="stSidebar"] label[data-testid="stRadioOption"] {{
+    /* Navegación: radio con aspecto de menú de aplicación.
+       Los colores llevan !important y selectores amplios para imponerse al tema
+       claro de Streamlit (texto oscuro) en cualquier versión del DOM. */
+    section[data-testid="stSidebar"] div[role="radiogroup"] label {{
         display: flex;
         align-items: center;
         padding: 0.48rem 0.75rem;
         margin: 1px 0;
         border-radius: 8px;
         cursor: pointer;
-        color: #c7d3e3;
         font-weight: 500;
         transition: background 0.12s ease;
         width: 100%;
     }}
-    section[data-testid="stSidebar"] label[data-testid="stRadioOption"]:hover {{
+    section[data-testid="stSidebar"] div[role="radiogroup"] label,
+    section[data-testid="stSidebar"] div[role="radiogroup"] label p,
+    section[data-testid="stSidebar"] div[role="radiogroup"] label div {{
+        color: #c7d3e3 !important;
+    }}
+    section[data-testid="stSidebar"] div[role="radiogroup"] label:hover {{
         background: rgba(255, 255, 255, 0.08);
     }}
-    section[data-testid="stSidebar"] label[data-testid="stRadioOption"]
+    section[data-testid="stSidebar"] div[role="radiogroup"] label
         div:has(+ div[data-testid="stMarkdownContainer"]) {{
         display: none;
     }}
-    section[data-testid="stSidebar"] label[data-testid="stRadioOption"][data-selected="true"] {{
+    section[data-testid="stSidebar"] div[role="radiogroup"] label[data-selected="true"],
+    section[data-testid="stSidebar"] div[role="radiogroup"] label:has(input:checked) {{
         background: rgba(255, 255, 255, 0.11);
-        color: #ffffff;
         font-weight: 600;
         box-shadow: inset 3px 0 0 {GREEN_ACCENT};
     }}
-    section[data-testid="stSidebar"] label[data-testid="stRadioOption"] p {{
+    section[data-testid="stSidebar"] div[role="radiogroup"] label[data-selected="true"] p,
+    section[data-testid="stSidebar"] div[role="radiogroup"] label:has(input:checked) p {{
+        color: #ffffff !important;
+    }}
+    section[data-testid="stSidebar"] div[role="radiogroup"] label p {{
         font-size: 0.9rem;
-        color: inherit;
         display: flex;
         align-items: center;
         gap: 0.6rem;
     }}
-    section[data-testid="stSidebar"] label[data-testid="stRadioOption"]
+    section[data-testid="stSidebar"] div[role="radiogroup"] label
         span[data-testid="stIconMaterial"] {{
         font-size: 1.15rem;
-        color: #8fa6c4;
+        color: #8fa6c4 !important;
     }}
-    section[data-testid="stSidebar"] label[data-testid="stRadioOption"][data-selected="true"]
+    section[data-testid="stSidebar"] div[role="radiogroup"] label[data-selected="true"]
+        span[data-testid="stIconMaterial"],
+    section[data-testid="stSidebar"] div[role="radiogroup"] label:has(input:checked)
         span[data-testid="stIconMaterial"] {{
-        color: {GREEN_ACCENT};
+        color: {GREEN_ACCENT} !important;
+    }}
+
+    /* Cualquier otro texto suelto de la barra lateral, siempre claro */
+    section[data-testid="stSidebar"] div[data-testid="stMarkdownContainer"] p,
+    section[data-testid="stSidebar"] div[data-testid="stCaptionContainer"] p {{
+        color: #c7d3e3;
     }}
 
     .crm-user-chip {{
@@ -220,11 +237,11 @@ CSS = f"""
     section[data-testid="stSidebar"] .stButton > button {{
         background: transparent;
         border: 1px solid rgba(255, 255, 255, 0.3);
-        color: #e2e8f0;
+        color: #e2e8f0 !important;
     }}
     section[data-testid="stSidebar"] .stButton > button:hover {{
         border-color: {GREEN_ACCENT};
-        color: #ffffff;
+        color: #ffffff !important;
         background: rgba(255, 255, 255, 0.05);
     }}
 
