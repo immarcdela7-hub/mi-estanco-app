@@ -52,8 +52,8 @@ def _dashboard(est):
     monthly = db.monthly_commissions(est["id"])
     if monthly.empty:
         st.info(
-            "Aún no hay ventas confirmadas con tu QR. Cuando alguien compre entradas "
-            "escaneando tu código, las verás aquí."
+            "Aún no hay ventas confirmadas con tu QR. En cuanto registremos y "
+            "confirmemos las primeras compras hechas con tu código, las verás aquí."
         )
     else:
         chart_df = (
@@ -68,7 +68,7 @@ def _dashboard(est):
         1. Coloca tu **código QR** en un lugar visible de tu local.
         2. Tus clientes lo escanean y compran entradas en nuestra web.
         3. Cada compra queda **atribuida a tu código** (`{est['code']}`).
-        4. Te devolvemos el **{est['commission_pct']:.0f}%** de la comisión que nos paga GetYourGuide.
+        4. Te devolvemos el **{ui.pct(est['commission_pct'])}** de la comisión que nos paga GetYourGuide.
         5. Cobras por liquidaciones periódicas — las ves en **💸 Mis liquidaciones**.
         """
     )
@@ -80,13 +80,7 @@ def _sales(est):
     if sales.empty:
         st.info("Todavía no hay ventas registradas con tu QR.")
         return
-    shown = ui.style_sales_df(sales).drop(columns=["establecimiento", "codigo"], errors="ignore")
-    st.dataframe(
-        shown,
-        use_container_width=True,
-        hide_index=True,
-        column_config=ui.column_config(shown),
-    )
+    ui.show_table(ui.style_sales_df(sales), drop=("establecimiento", "codigo"))
     st.caption(
         "🕓 *Pendiente*: en revisión · ✅ *Validada*: confirmada, entrará en la próxima "
         "liquidación · 💸 *Pagada*: ya liquidada."
@@ -99,13 +93,7 @@ def _payouts(est):
     if payouts.empty:
         st.info("Aún no hay liquidaciones. Cuando acumules comisión validada, te la pagaremos aquí.")
         return
-    shown = payouts.drop(columns=["establecimiento"], errors="ignore")
-    st.dataframe(
-        shown,
-        use_container_width=True,
-        hide_index=True,
-        column_config=ui.column_config(shown),
-    )
+    ui.show_table(payouts, drop=("establecimiento",))
     total = payouts["importe"].sum()
     st.metric("Total cobrado", ui.euros(total))
 
@@ -132,11 +120,11 @@ def _qr(est):
         st.markdown(
             f"""
             - Cada compra hecha desde este enlace queda **atribuida a tu local**.
-            - Recibes el **{est['commission_pct']:.0f}%** de nuestra comisión de GetYourGuide.
+            - Recibes el **{ui.pct(est['commission_pct'])}** de nuestra comisión de GetYourGuide.
             - Puedes imprimirlo en cartelería, pegatinas, expositores o la carta.
             """
         )
         st.info(
             "💡 Consejo: colócalo cerca de la caja o en las mesas, con un mensaje tipo "
-            "«Compra aquí tus entradas con descuento y apoya a este local»."
+            "«Compra aquí tus entradas y apoya a este local»."
         )

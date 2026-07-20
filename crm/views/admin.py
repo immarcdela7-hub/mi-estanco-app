@@ -1,6 +1,6 @@
 """Portal de administración (nuestro equipo)."""
 import io
-from datetime import date
+from datetime import date, datetime
 
 import pandas as pd
 import streamlit as st
@@ -25,6 +25,8 @@ def render(user):
     if st.sidebar.button("Cerrar sesión", use_container_width=True):
         st.session_state.pop("user", None)
         st.rerun()
+
+    ui.show_flash()
 
     if page == "📊 Panel":
         _dashboard()
@@ -69,12 +71,7 @@ def _dashboard():
     if top.empty:
         st.info("Todavía no hay establecimientos dados de alta.")
     else:
-        st.dataframe(
-            top,
-            use_container_width=True,
-            hide_index=True,
-            column_config=ui.column_config(top),
-        )
+        ui.show_table(top)
 
 
 # ---------------------------------------------------------------- establecimientos
@@ -86,7 +83,7 @@ def _establishments():
 
     with tab_new:
         default_pct = float(db.get_setting("default_commission_pct", "30"))
-        with st.form("new_establishment", clear_on_submit=True):
+        with st.form("new_establishment"):
             col1, col2 = st.columns(2)
             name = col1.text_input("Nombre del establecimiento *", placeholder="Bar La Plaza")
             contact = col2.text_input("Persona de contacto", placeholder="María García")
@@ -123,7 +120,8 @@ def _establishments():
         base_url = db.get_setting("base_url")
         active = establishments[establishments["status"] == "activo"]
         st.caption(
-            f"{len(establishments)} establecimientos ({len(active)} activos). "
+            f"{ui.plural(len(establishments), 'establecimiento', 'establecimientos')} "
+            f"({ui.plural(len(active), 'activo', 'activos')}). "
             f"Los QR apuntan a `{base_url}` — puedes cambiarlo en **⚙️ Ajustes**."
         )
 
@@ -152,7 +150,7 @@ def _establishments():
                     )
                     st.markdown(
                         f"**Comisión que le devolvemos:** "
-                        f"<span class='crm-badge crm-badge-green'>{est['commission_pct']:.0f}% "
+                        f"<span class='crm-badge crm-badge-green'>{ui.pct(est['commission_pct'])} "
                         f"de nuestra comisión GYG</span>",
                         unsafe_allow_html=True,
                     )
@@ -192,7 +190,7 @@ def _edit_establishment_form(est):
                 est["id"], name=name, contact_name=contact, email=email, phone=phone,
                 city=city, address=address, commission_pct=pct, status=status, notes=notes,
             )
-            st.success("Cambios guardados.")
+            ui.flash(f"Cambios de **{name}** guardados.")
             st.rerun()
     st.caption(
         "El % se aplica a las **nuevas** ventas que se registren; las ya guardadas mantienen "
@@ -203,23 +201,24 @@ def _edit_establishment_form(est):
 def _partner_access_form(est):
     st.markdown("**🔑 Acceso del establecimiento al portal**")
     users = db.list_partner_users()
-    est_users = users[users["establecimiento"] == est["name"]] if not users.empty else users
+    est_users = users[users["establishment_id"] == est["id"]] if not users.empty else users
     if est_users is not None and not est_users.empty:
         for _, u in est_users.iterrows():
             col_u, col_b = st.columns([3, 1])
             col_u.markdown(f"Usuario: `{u['username']}` (alta {u['created_at'][:10]})")
-            if col_b.button("Eliminar acceso", key=f"del_user_{u['id']}"):
+            if col_b.button("Eliminar acceso", key=f"del_user_{est['id']}_{u['id']}"):
                 db.delete_user(u["id"])
+                ui.flash(f"Acceso `{u['username']}` eliminado.")
                 st.rerun()
-    with st.form(f"access_{est['id']}", clear_on_submit=True):
+    with st.form(f"access_{est['id']}"):
         col1, col2 = st.columns(2)
         username = col1.text_input("Nuevo usuario", placeholder="barlaplaza")
         password = col2.text_input("Contraseña", type="password")
         if st.form_submit_button("Crear acceso"):
             if not username.strip() or not password:
                 st.error("Usuario y contraseña son obligatorios.")
-            elif len(password) < 6:
-                st.error("La contraseña debe tener al menos 6 caracteres.")
+            elif len(password) < 8:
+                st.error("La contraseña debe tener al menos 8 caracteres.")
             elif db.get_user_by_username(username.strip()):
                 st.error("Ese nombre de usuario ya existe.")
             else:
@@ -329,6 +328,15 @@ def _import_csv(uploaded):
             s = s.replace(",", ".")
         return float(s)
 
+    def to_iso_date(value):
+        s = str(value).strip()[:10]
+        for fmt in ("%Y-%m-%d", "%d/%m/%Y", "%d-%m-%Y", "%Y/%m/%d"):
+            try:
+                return datetime.strptime(s, fmt).strftime("%Y-%m-%d")
+            except ValueError:
+                continue
+        return None
+
     imported, errors = 0, []
     for idx, row in df.iterrows():
         line = idx + 2
@@ -337,12 +345,26 @@ def _import_csv(uploaded):
         if est is None:
             errors.append(f"Línea {line}: código `{code}` no existe.")
             continue
+        iso_date = to_iso_date(row["fecha"])
+        if iso_date is None:
+            errors.append(
+                f"Línea {line}: fecha `{row['fecha']}` no reconocida "
+                "(usa AAAA-MM-DD o DD/MM/AAAA)."
+            )
+            continue
+        booking_ref = str(row["referencia_reserva"]).strip()
+        if db.booking_ref_exists(est["id"], booking_ref):
+            errors.append(
+                f"Línea {line}: la reserva `{booking_ref}` ya estaba registrada "
+                f"para {est['name']} — no se ha duplicado."
+            )
+            continue
         try:
             db.add_sale(
                 est["id"],
-                str(row["fecha"]).strip()[:10],
+                iso_date,
                 str(row["actividad"]).strip(),
-                str(row["referencia_reserva"]).strip(),
+                booking_ref,
                 int(to_number(row["entradas"]) or 1),
                 to_number(row["importe_total"]),
                 to_number(row["comision_gyg"]),
@@ -353,7 +375,10 @@ def _import_csv(uploaded):
             errors.append(f"Línea {line}: {exc}")
 
     if imported:
-        st.success(f"{imported} ventas importadas como **pendientes**. Valídalas en el listado.")
+        st.success(
+            f"{ui.plural(imported, 'venta importada', 'ventas importadas')} como "
+            "**pendientes**. Valídalas en el listado."
+        )
     if errors:
         st.warning("Incidencias:\n\n" + "\n".join(f"- {e}" for e in errors))
     if not imported and not errors:
@@ -379,17 +404,11 @@ def _sales_list(establishments):
         st.info("No hay ventas con estos filtros.")
         return
 
-    shown = ui.style_sales_df(sales)
-    st.dataframe(
-        shown,
-        use_container_width=True,
-        hide_index=True,
-        column_config=ui.column_config(shown),
-    )
+    ui.show_table(ui.style_sales_df(sales))
     total_gyg = sales["comision_gyg"].sum()
     total_partner = sales["comision_establecimiento"].sum()
     st.caption(
-        f"{len(sales)} ventas · Comisión GYG {ui.euros(total_gyg)} · "
+        f"{ui.plural(len(sales), 'venta', 'ventas')} · Comisión GYG {ui.euros(total_gyg)} · "
         f"Para establecimientos {ui.euros(total_partner)}"
     )
 
@@ -406,12 +425,12 @@ def _sales_list(establishments):
         selected = st.multiselect("Ventas a validar", list(labels), key="validate_select")
         col_a, col_b = st.columns(2)
         if col_a.button("Validar seleccionadas", type="primary", disabled=not selected):
-            db.set_sales_status([labels[s] for s in selected], "validada")
-            st.success(f"{len(selected)} ventas validadas.")
+            n = db.set_sales_status([labels[s] for s in selected], "validada")
+            ui.flash(f"{ui.plural(n, 'venta validada', 'ventas validadas')}.")
             st.rerun()
         if col_b.button(f"Validar todas las pendientes del filtro ({len(pending)})"):
-            db.set_sales_status(pending["id"].tolist(), "validada")
-            st.success(f"{len(pending)} ventas validadas.")
+            n = db.set_sales_status(pending["id"].tolist(), "validada")
+            ui.flash(f"{ui.plural(n, 'venta validada', 'ventas validadas')}.")
             st.rerun()
 
     deletable = sales[sales["liquidacion"].isna()]
@@ -424,7 +443,7 @@ def _sales_list(establishments):
             selected_del = st.multiselect("Ventas a eliminar", list(labels_del), key="delete_select")
             if st.button("Eliminar seleccionadas", disabled=not selected_del):
                 db.delete_sales([labels_del[s] for s in selected_del])
-                st.success(f"{len(selected_del)} ventas eliminadas.")
+                ui.flash(f"{ui.plural(len(selected_del), 'venta eliminada', 'ventas eliminadas')}.")
                 st.rerun()
 
 
@@ -441,12 +460,7 @@ def _payouts():
     if pending.empty:
         st.info("No hay comisiones pendientes. Valida ventas en **💶 Ventas** para poder liquidarlas.")
     else:
-        st.dataframe(
-            pending.drop(columns=["id"]),
-            use_container_width=True,
-            hide_index=True,
-            column_config=ui.column_config(pending),
-        )
+        ui.show_table(pending, drop=("id",))
         options = {
             f"{r['establecimiento']} — {ui.euros(r['pendiente'])} ({r['ventas']} ventas)": r["id"]
             for _, r in pending.iterrows()
@@ -463,25 +477,21 @@ def _payouts():
                     options[est_label], payment_date, method, reference, notes
                 )
                 if result:
-                    st.success(
+                    ui.flash(
                         f"Liquidación #{result['id']} creada: **{ui.euros(result['amount'])}** "
-                        f"({result['n_sales']} ventas marcadas como pagadas)."
+                        f"({ui.plural(result['n_sales'], 'venta marcada', 'ventas marcadas')} "
+                        "como pagadas)."
                     )
                     st.rerun()
                 else:
-                    st.warning("Ese establecimiento ya no tiene ventas pendientes.")
+                    st.warning("Ese establecimiento ya no tiene ventas validadas sin liquidar.")
 
     st.markdown("### Histórico de liquidaciones")
     payouts = db.list_payouts()
     if payouts.empty:
         st.caption("Aún no se ha generado ninguna liquidación.")
     else:
-        st.dataframe(
-            payouts,
-            use_container_width=True,
-            hide_index=True,
-            column_config=ui.column_config(payouts),
-        )
+        ui.show_table(payouts)
         csv = payouts.to_csv(index=False).encode("utf-8-sig")
         st.download_button(
             "⬇️ Exportar histórico (CSV)", data=csv,
@@ -512,7 +522,7 @@ def _settings(user):
             db.set_setting("brand_name", brand.strip() or "Mi Web de Entradas")
             db.set_setting("base_url", base_url.strip() or "https://www.mi-web-de-entradas.com")
             db.set_setting("default_commission_pct", default_pct)
-            st.success("Ajustes guardados.")
+            ui.flash("Ajustes guardados.")
             st.rerun()
 
     st.markdown("### Cambiar mi contraseña")
@@ -540,4 +550,4 @@ def _settings(user):
     if users.empty:
         st.caption("Aún no hay accesos creados. Se crean desde la ficha de cada establecimiento.")
     else:
-        st.dataframe(users, use_container_width=True, hide_index=True)
+        ui.show_table(users, drop=("id", "establishment_id"))

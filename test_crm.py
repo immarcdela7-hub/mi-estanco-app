@@ -24,6 +24,9 @@ def main():
     assert db.get_establishment_by_code(code.lower())["id"] == est_id
     url = qr_utils.build_tracking_url("https://mi-web.com/", code)
     assert url == f"https://mi-web.com?ref={code}&utm_source=qr&utm_medium=offline&utm_campaign={code}"
+    # Una URL base con parámetros propios conserva ambos (atribución intacta)
+    url2 = qr_utils.build_tracking_url("https://mi-web.com/entradas?lang=es", code)
+    assert "lang=es" in url2 and f"ref={code}" in url2 and url2.count("?") == 1
     png = qr_utils.make_qr_png(url)
     assert png[:8] == b"\x89PNG\r\n\x1a\n"
 
@@ -31,6 +34,8 @@ def main():
     db.create_user("barlaplaza", "secreto123", "partner", est_id)
     partner = db.get_user_by_username("barlaplaza")
     assert partner["establishment_id"] == est_id
+    assert db.get_user_by_id(partner["id"])["username"] == "barlaplaza"
+    assert db.get_user_by_id(99999) is None
 
     # Venta: 30% de 10 € de comisión GYG → 3 €
     share = db.add_sale(est_id, "2026-07-01", "Sagrada Família", "GYG-1", 2, 52.0, 10.0)
@@ -39,6 +44,11 @@ def main():
     sales = db.list_sales(establishment_id=est_id)
     assert len(sales) == 2
     assert set(sales["estado"]) == {"pendiente"}
+
+    # Deduplicación de reservas para la importación
+    assert db.booking_ref_exists(est_id, "GYG-1")
+    assert not db.booking_ref_exists(est_id, "GYG-999")
+    assert not db.booking_ref_exists(est_id, "")
 
     # Las pendientes no cuentan en resúmenes ni liquidaciones
     assert db.sales_summary(est_id)["n_ventas"] == 0
@@ -60,6 +70,10 @@ def main():
     assert db.create_payout(est_id, "2026-07-31") is None
     sales_after = db.list_sales(establishment_id=est_id)
     assert set(sales_after["estado"]) == {"pagada"}
+
+    # La máquina de estados protege las ventas liquidadas: no vuelven a validarse
+    assert db.set_sales_status(sales_after["id"].tolist(), "validada") == 0
+    assert set(db.list_sales(establishment_id=est_id)["estado"]) == {"pagada"}
     summary_after = db.sales_summary(est_id)
     assert summary_after["pendiente_pago"] == 0
     assert summary_after["pagado"] == 4.2

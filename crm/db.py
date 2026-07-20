@@ -142,6 +142,12 @@ def get_user_by_username(username):
     return dict(row) if row else None
 
 
+def get_user_by_id(user_id):
+    with get_conn() as conn:
+        row = conn.execute("SELECT * FROM users WHERE id = ?", (user_id,)).fetchone()
+    return dict(row) if row else None
+
+
 def create_user(username, password, role, establishment_id=None):
     salt, pw_hash = auth.hash_password(password)
     with get_conn() as conn:
@@ -163,7 +169,8 @@ def update_password(user_id, new_password):
 def list_partner_users():
     with get_conn() as conn:
         return pd.read_sql_query(
-            "SELECT u.id, u.username, u.created_at, e.name AS establecimiento "
+            "SELECT u.id, u.username, u.created_at, u.establishment_id, "
+            "e.name AS establecimiento "
             "FROM users u LEFT JOIN establishments e ON e.id = u.establishment_id "
             "WHERE u.role = 'partner' ORDER BY u.username",
             conn,
@@ -238,6 +245,17 @@ def list_establishments(only_active=False):
 
 # ---------------------------------------------------------------- sales
 
+def booking_ref_exists(establishment_id, booking_ref):
+    if not str(booking_ref).strip():
+        return False
+    with get_conn() as conn:
+        row = conn.execute(
+            "SELECT 1 FROM sales WHERE establishment_id = ? AND booking_ref = ? LIMIT 1",
+            (establishment_id, str(booking_ref).strip()),
+        ).fetchone()
+    return row is not None
+
+
 def add_sale(establishment_id, sale_date, activity, booking_ref, tickets,
              amount_total, gyg_commission, status="pendiente", source="manual"):
     est = get_establishment(establishment_id)
@@ -283,14 +301,23 @@ def list_sales(establishment_id=None, status=None, date_from=None, date_to=None)
 
 
 def set_sales_status(sale_ids, status):
+    """Cambia el estado respetando la máquina de estados.
+
+    Solo se valida lo pendiente y solo se marca pagado lo validado; una venta
+    ya liquidada (payout_id relleno) nunca cambia por esta vía.
+    """
     if not sale_ids:
-        return
+        return 0
+    guards = {"validada": "AND status = 'pendiente'", "pagada": "AND status = 'validada'"}
+    guard = guards.get(status, "")
     placeholders = ",".join("?" for _ in sale_ids)
     with get_conn() as conn:
-        conn.execute(
-            f"UPDATE sales SET status = ? WHERE id IN ({placeholders})",
+        cur = conn.execute(
+            f"UPDATE sales SET status = ? WHERE id IN ({placeholders}) "
+            f"AND payout_id IS NULL {guard}",
             (status, *sale_ids),
         )
+        return cur.rowcount
 
 
 def delete_sales(sale_ids):
@@ -320,8 +347,14 @@ def pending_by_establishment():
 
 
 def create_payout(establishment_id, payment_date, method="transferencia", reference="", notes=""):
-    """Agrupa todas las ventas validadas sin liquidar del establecimiento en una liquidación."""
+    """Agrupa todas las ventas validadas sin liquidar del establecimiento en una liquidación.
+
+    BEGIN IMMEDIATE toma el bloqueo de escritura antes de leer, de modo que dos
+    liquidaciones simultáneas del mismo establecimiento no puedan reclamar las
+    mismas ventas ni duplicar el pago.
+    """
     with get_conn() as conn:
+        conn.execute("BEGIN IMMEDIATE")
         rows = conn.execute(
             "SELECT id, partner_share FROM sales "
             "WHERE establishment_id = ? AND status = 'validada' AND payout_id IS NULL",
@@ -338,10 +371,15 @@ def create_payout(establishment_id, payment_date, method="transferencia", refere
         )
         payout_id = cur.lastrowid
         placeholders = ",".join("?" for _ in rows)
-        conn.execute(
-            f"UPDATE sales SET status = 'pagada', payout_id = ? WHERE id IN ({placeholders})",
+        claimed = conn.execute(
+            f"UPDATE sales SET status = 'pagada', payout_id = ? "
+            f"WHERE id IN ({placeholders}) AND status = 'validada' AND payout_id IS NULL",
             (payout_id, *[r["id"] for r in rows]),
-        )
+        ).rowcount
+        if claimed != len(rows):
+            raise RuntimeError(
+                "Liquidación abortada: las ventas cambiaron mientras se generaba."
+            )
         return {"id": payout_id, "amount": amount, "n_sales": len(rows)}
 
 

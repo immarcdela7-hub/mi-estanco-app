@@ -12,7 +12,8 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
-Primer acceso: usuario `admin`, contraseña `admin1234` (cámbiala en **⚙️ Ajustes**).
+Primer acceso: usuario `admin`, contraseña `admin1234` — la aplicación obliga a
+sustituirla por una propia antes de entrar al panel.
 
 ## Los dos portales
 
@@ -23,7 +24,7 @@ Primer acceso: usuario `admin`, contraseña `admin1234` (cámbiala en **⚙️ A
 | 📊 Panel | Métricas globales, comisión mensual (nuestra parte vs. establecimientos) y ranking de locales |
 | 🏪 Establecimientos | Alta/edición de locales, **QR único descargable**, % de comisión devuelta y creación de accesos al portal |
 | 💶 Ventas | Registro manual, **importación CSV** y validación de ventas (validar = GYG nos la ha abonado) |
-| 💸 Liquidaciones | Cálculo de lo pendiente por local, generación de pagos y histórico exportable |
+| 💸 Liquidaciones | Cálculo de lo pendiente por local, generación de pagos e histórico exportable |
 | ⚙️ Ajustes | Nombre de marca, URL base de los QR, % por defecto y contraseña |
 
 ### 🏪 Portal del establecimiento
@@ -46,6 +47,10 @@ comisión, listado de sus ventas, historial de liquidaciones y su QR descargable
 - La base de datos local es suficiente para empezar; si se despliega en Streamlit
   Cloud, los datos se pierden al redesplegar → cuando el volumen crezca, migraremos
   a una base de datos gestionada (Supabase/Postgres).
-- Contraseñas con hash PBKDF2 (200k iteraciones). Los roles son `admin` y `partner`.
+- Contraseñas con hash PBKDF2 (200k iteraciones, mínimo 8 caracteres). Los roles
+  son `admin` y `partner`. El login se bloquea 60 s tras 5 intentos fallidos y
+  las sesiones se revalidan contra la base de datos en cada recarga.
+- La importación CSV normaliza fechas (`AAAA-MM-DD` o `DD/MM/AAAA`) y descarta
+  reservas ya registradas para evitar duplicados al reimportar un fichero.
 - El QR se genera con la librería `qrcode` y añade parámetros UTM
   (`utm_source=qr`, `utm_campaign=CÓDIGO`) para poder medirlo también en analítica web.

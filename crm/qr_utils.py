@@ -1,5 +1,6 @@
 """Generación de códigos QR de seguimiento por establecimiento."""
 import io
+from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 import qrcode
 
@@ -7,8 +8,20 @@ QR_COLOR = "#1e40af"
 
 
 def build_tracking_url(base_url, code):
-    base = base_url.strip().rstrip("/")
-    return f"{base}?ref={code}&utm_source=qr&utm_medium=offline&utm_campaign={code}"
+    """Añade ?ref=CODIGO y los UTM respetando los parámetros que ya tenga la URL."""
+    parts = urlsplit(base_url.strip())
+    query = dict(parse_qsl(parts.query, keep_blank_values=True))
+    query.update(
+        {
+            "ref": code,
+            "utm_source": "qr",
+            "utm_medium": "offline",
+            "utm_campaign": code,
+        }
+    )
+    return urlunsplit(
+        (parts.scheme, parts.netloc, parts.path.rstrip("/"), urlencode(query), parts.fragment)
+    )
 
 
 def make_qr_png(url, fill_color=QR_COLOR):

@@ -1,4 +1,5 @@
 """Tema visual y componentes compartidos."""
+import pandas as pd
 import streamlit as st
 
 BLUE = "#2563eb"
@@ -124,6 +125,26 @@ def euros(value):
     return f"{value:,.2f} €".replace(",", "X").replace(".", ",").replace("X", ".")
 
 
+def pct(value):
+    """Porcentaje sin decimales de relleno: 30 -> '30%', 12.5 -> '12,5%'."""
+    return f"{value:g}%".replace(".", ",")
+
+
+def plural(n, singular, plural_form):
+    return f"{n} {singular if n == 1 else plural_form}"
+
+
+def flash(message):
+    """Guarda un mensaje de éxito para mostrarlo tras el próximo st.rerun()."""
+    st.session_state["_flash"] = message
+
+
+def show_flash():
+    message = st.session_state.pop("_flash", None)
+    if message:
+        st.success(message)
+
+
 STATUS_LABELS = {
     "pendiente": "🕓 Pendiente",
     "validada": "✅ Validada",
@@ -173,12 +194,22 @@ def column_config(df):
     config = {}
     for col, label in MONEY_COLUMNS.items():
         if col in df.columns:
-            config[col] = st.column_config.NumberColumn(label, format="%.2f €")
+            config[col] = st.column_config.Column(label)
     for col, label in TEXT_LABELS.items():
         if col in df.columns:
             config[col] = st.column_config.Column(label)
     return config
 
 
-# Alias retrocompatible
-money_column_config = column_config
+def show_table(df, drop=()):
+    """Tabla con importes en formato español y cabeceras legibles."""
+    shown = df.drop(columns=list(drop), errors="ignore").copy()
+    for col in MONEY_COLUMNS:
+        if col in shown.columns:
+            shown[col] = shown[col].map(lambda v: euros(v) if pd.notna(v) else "")
+    st.dataframe(
+        shown,
+        use_container_width=True,
+        hide_index=True,
+        column_config=column_config(shown),
+    )
