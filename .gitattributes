@@ -1,0 +1,4 @@
+# Los scripts de shell deben conservar finales de línea LF en todas las
+# plataformas (si no, fallan al ejecutarse dentro de contenedores Linux).
+*.sh text eol=lf
+docker-entrypoint.sh text eol=lf
