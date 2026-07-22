@@ -32,7 +32,7 @@ export default async function PayoutsPage() {
         subtitle="Paga a cada establecimiento su parte de las ventas validadas y guarda el histórico."
       />
 
-      <div className="mb-4 grid gap-4 xl:grid-cols-[1.1fr_1fr]">
+      <div className="mb-4 grid grid-cols-1 gap-4 xl:grid-cols-[1.1fr_1fr]">
         <Panel title="Pendiente de liquidar">
           {pending.length === 0 ? (
             <EmptyState>

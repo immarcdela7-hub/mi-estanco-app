@@ -19,7 +19,7 @@ export default async function PartnerQrPage() {
         subtitle="Imprímelo y colócalo donde tus clientes puedan escanearlo."
       />
 
-      <div className="grid gap-4 xl:grid-cols-[1fr_1.4fr]">
+      <div className="grid grid-cols-1 gap-4 xl:grid-cols-[1fr_1.4fr]">
         <Panel title="Tu QR">
           <div className="flex flex-col items-center gap-3">
             <img

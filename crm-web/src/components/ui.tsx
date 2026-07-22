@@ -11,7 +11,7 @@ export function Panel({
 }) {
   return (
     <section
-      className={`rounded-xl border border-line bg-white p-5 shadow-[0_1px_2px_rgba(15,23,42,0.04)] ${className}`}
+      className={`min-w-0 rounded-xl border border-line bg-white p-5 shadow-[0_1px_2px_rgba(15,23,42,0.04)] ${className}`}
     >
       {title && (
         <h2 className="mb-4 border-b border-line pb-3 text-[13px] font-bold uppercase tracking-[0.06em] text-slate-600">

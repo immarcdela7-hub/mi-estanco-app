@@ -59,7 +59,7 @@ export default async function EstablishmentDetail({
         }
       />
 
-      <div className="grid gap-4 xl:grid-cols-[1fr_1.4fr]">
+      <div className="grid grid-cols-1 gap-4 xl:grid-cols-[1fr_1.4fr]">
         <div className="flex flex-col gap-4">
           <Panel title="Código QR">
             <div className="flex flex-col items-center gap-3">

@@ -28,7 +28,7 @@ export default async function PortalDashboard() {
         <StatCard label="Pendiente de cobro" value={euros(summary.pendientePago)} icon={<IconClock />} />
       </div>
 
-      <div className="grid gap-4 xl:grid-cols-[1.3fr_1fr]">
+      <div className="grid grid-cols-1 gap-4 xl:grid-cols-[1.3fr_1fr]">
         <Panel title="Tu comisión mes a mes">
           {monthly.length === 0 ? (
             <EmptyState>

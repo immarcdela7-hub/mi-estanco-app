@@ -67,7 +67,7 @@ export default async function SalesPage({
         subtitle="Registra las ventas atribuidas a cada QR y valídalas para liquidarlas."
       />
 
-      <div className="mb-4 grid gap-4 xl:grid-cols-2">
+      <div className="mb-4 grid grid-cols-1 gap-4 xl:grid-cols-2">
         <Panel title="Registrar venta">
           {active.length === 0 ? (
             <EmptyState>Primero crea un establecimiento activo.</EmptyState>

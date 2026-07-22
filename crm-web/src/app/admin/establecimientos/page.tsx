@@ -29,7 +29,7 @@ export default async function EstablishmentsPage() {
         subtitle={`Alta de locales, códigos QR únicos y accesos al portal. Los QR apuntan a ${baseUrl}.`}
       />
 
-      <div className="grid gap-4 xl:grid-cols-[1.4fr_1fr]">
+      <div className="grid grid-cols-1 gap-4 xl:grid-cols-[1.4fr_1fr]">
         <Panel title={`Listado (${establishments.length})`}>
           {establishments.length === 0 ? (
             <EmptyState>Crea tu primer establecimiento con el formulario de al lado.</EmptyState>

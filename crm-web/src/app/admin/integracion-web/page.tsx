@@ -34,7 +34,7 @@ export default async function WebIntegrationPage() {
         subtitle="Cómo conectar los QR con los enlaces de GetYourGuide para no perder la atribución."
       />
 
-      <div className="grid gap-4 xl:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
         <div className="flex flex-col gap-4">
           <Panel title="La cadena de atribución">
             <ol className="list-decimal space-y-2 pl-5 text-sm leading-relaxed text-slate-700">

@@ -59,7 +59,7 @@ export default async function QrPoolPage({
         <StatCard label="Asignados" value={String(codes.length - free.length)} icon={<IconStore />} />
       </div>
 
-      <div className="mb-4 grid gap-4 xl:grid-cols-2">
+      <div className="mb-4 grid grid-cols-1 gap-4 xl:grid-cols-2">
         <Panel title="Generar lote">
           <ActionForm action={generateBatchAction} submitLabel="Generar lote" resetOnSuccess>
             <div className="grid gap-3 sm:grid-cols-2">
@@ -119,7 +119,7 @@ export default async function QrPoolPage({
         </Panel>
       </div>
 
-      <div className="mb-4 grid gap-4 xl:grid-cols-2">
+      <div className="mb-4 grid grid-cols-1 gap-4 xl:grid-cols-2">
         <Panel title="Vincular un cartel entregado">
           {free.length === 0 ? (
             <p className="text-sm text-muted">No hay códigos libres para asignar.</p>

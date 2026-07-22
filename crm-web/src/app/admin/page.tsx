@@ -98,7 +98,7 @@ export default async function AdminDashboard() {
         <StatCard label="Pendiente de liquidar" value={euros(summary.pendientePago)} icon={<IconClock />} />
       </div>
 
-      <div className="mb-6 grid gap-4 xl:grid-cols-[1.15fr_1fr]">
+      <div className="mb-6 grid grid-cols-1 gap-4 xl:grid-cols-[1.15fr_1fr]">
         <Panel title="Comisión mensual">
           {monthly.length === 0 ? (
             <EmptyState>
@@ -143,7 +143,7 @@ export default async function AdminDashboard() {
         </Panel>
       </div>
 
-      <div className="grid gap-4 xl:grid-cols-[1.15fr_1fr]">
+      <div className="grid grid-cols-1 gap-4 xl:grid-cols-[1.15fr_1fr]">
         <Panel title="Últimas ventas">
           {recent.length === 0 ? (
             <p className="text-sm text-muted">Sin ventas registradas todavía.</p>
