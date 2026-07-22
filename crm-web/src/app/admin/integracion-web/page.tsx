@@ -81,9 +81,10 @@ export default async function WebIntegrationPage() {
 
         <Panel title="Fragmento para pegar en la web">
           <p className="mb-3 text-sm text-muted">
-            Copiar y pegar justo antes de cerrar <code className="text-xs">&lt;/body&gt;</code>{" "}
-            en la página de tickets (en WordPress: <code className="text-xs">footer.php</code>{" "}
-            del tema).
+            Va justo antes de cerrar <code className="text-xs">&lt;/body&gt;</code> en la
+            página de tickets. En nuestra web (HTML estático) ya está instalado: se carga
+            desde <code className="text-xs">/ntl-attrib.js</code>. Guarda este fragmento como
+            referencia por si hay que reinstalarlo o añadirlo a otra página.
           </p>
           <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-xs leading-relaxed text-slate-100">
             {SNIPPET}

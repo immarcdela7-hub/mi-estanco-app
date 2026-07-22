@@ -140,12 +140,16 @@ en **Ajustes**, confirma que la URL de la web es `https://notaxlost.com/tickets`
 
 ---
 
-## 8. Activar la atribución en el WordPress
+## 8. Activar la atribución en la web
 
-Pega el contenido de `deploy/wordpress-snippet.html` justo antes de `</body>` en
-el `footer.php` del tema activo (o con un plugin de "insertar en el footer").
-Verifícalo abriendo `https://notaxlost.com/tickets?ref=PRUEBA1` en incógnito y
-comprobando que los enlaces de GetYourGuide llevan `cmp=PRUEBA1`.
+La web `notaxlost.com` es HTML estático (servido por nginx desde `/var/www/ntl`),
+no WordPress. La atribución se instala con el archivo `ntl-attrib.js` incluido
+antes de `</body>` en `tickets.html`. El procedimiento completo, la reinstalación
+y la verificación están en **`deploy/atribucion-web.md`**.
+
+Verificación rápida: abre `https://notaxlost.com/tickets?ref=PRUEBA1` en incógnito
+y comprueba que los enlaces de GetYourGuide conservan `partner_id=...` y llevan
+`cmp=PRUEBA1`.
 
 ---
 
