@@ -13,11 +13,23 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y --no-install-recommends openssl ca-certificates && rm -rf /var/lib/apt/lists/*
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-# El cliente de Prisma se genera contra el schema; DATABASE_URL no se usa en build.
 ENV NEXT_TELEMETRY_DISABLED=1
 RUN npx prisma generate && npm run build
 
+# ---------- Migrador ----------
+# node_modules COMPLETO (incluye la CLI de Prisma y todas sus dependencias).
+# Aplica las migraciones y termina; lo usa el servicio "migrate" de compose.
+FROM node:22-bookworm-slim AS migrator
+WORKDIR /app
+RUN apt-get update && apt-get install -y --no-install-recommends openssl ca-certificates && rm -rf /var/lib/apt/lists/*
+ENV NODE_ENV=production
+COPY --from=deps /app/node_modules ./node_modules
+COPY package.json ./
+COPY prisma ./prisma
+CMD ["node", "node_modules/prisma/build/index.js", "migrate", "deploy"]
+
 # ---------- Runtime ----------
+# Solo la salida standalone de Next: incluye @prisma/client y su motor.
 FROM node:22-bookworm-slim AS runner
 WORKDIR /app
 RUN apt-get update && apt-get install -y --no-install-recommends openssl ca-certificates && rm -rf /var/lib/apt/lists/*
@@ -28,22 +40,10 @@ ENV HOSTNAME=0.0.0.0
 
 RUN groupadd --system --gid 1001 nodejs && useradd --system --uid 1001 --gid nodejs nextjs
 
-# Salida standalone: server.js + node_modules mínimos
 COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-# Prisma CLI + engine + schema para ejecutar migraciones al arrancar
-COPY --from=builder /app/node_modules/prisma ./node_modules/prisma
-COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
-COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
-COPY --from=builder /app/prisma ./prisma
-COPY docker-entrypoint.sh ./docker-entrypoint.sh
-# Normaliza finales de línea (CRLF→LF) por si el checkout viene de Windows,
-# y hazlo ejecutable. Sin esto el shebang falla con "no such file or directory".
-RUN sed -i 's/\r$//' ./docker-entrypoint.sh && chmod +x ./docker-entrypoint.sh
-
 USER nextjs
 EXPOSE 3000
-ENTRYPOINT ["./docker-entrypoint.sh"]
 CMD ["node", "server.js"]

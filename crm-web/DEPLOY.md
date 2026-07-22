@@ -76,7 +76,9 @@ La primera vez tarda unos minutos (construye la imagen). Comprueba que arranca y
 que aplica las migraciones solo:
 
 ```bash
-docker compose logs -f app     # espera "Migraciones aplicadas. Arrancando el servidor."  (Ctrl+C para salir)
+# El servicio "migrate" aplica las migraciones y termina; luego arranca "app".
+docker compose logs migrate    # debe mostrar "All migrations have been successfully applied."
+docker compose logs -f app     # espera "Ready" de Next.js  (Ctrl+C para salir)
 curl -s -o /dev/null -w "%{http_code}\n" http://127.0.0.1:8090/login   # debe dar 200
 ```
 
