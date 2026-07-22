@@ -1,0 +1,11 @@
+node_modules
+.next
+.git
+.env
+.env.*
+!.env.production.example
+npm-debug.log
+README.md
+DEPLOY.md
+.DS_Store
+backups

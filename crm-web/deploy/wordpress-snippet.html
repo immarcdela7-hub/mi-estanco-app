@@ -1,0 +1,31 @@
+<!--
+  Atribución de QR de NoTaxLost.
+  Pegar este bloque completo justo ANTES de </body> en el footer.php del tema
+  activo de WordPress (Apariencia → Editor de temas → footer.php), o mediante
+  un plugin de "insertar código en el footer".
+
+  Qué hace: cuando alguien llega desde un QR (…?ref=EST-XXXXX) guarda ese código
+  en una cookie de 30 días y lo añade como cmp=EST-XXXXX a todos los enlaces
+  hacia GetYourGuide, para que cada reserva quede atribuida a su establecimiento
+  en el Partner Portal de GYG.
+-->
+<script>
+(function () {
+  var ref = new URLSearchParams(location.search).get("ref");
+  if (ref) {
+    document.cookie = "ntl_ref=" + encodeURIComponent(ref) +
+      "; max-age=" + 30 * 24 * 3600 + "; path=/";
+  } else {
+    var m = document.cookie.match(/(?:^|; )ntl_ref=([^;]*)/);
+    if (m) ref = decodeURIComponent(m[1]);
+  }
+  if (!ref) return;
+  document.querySelectorAll('a[href*="getyourguide."]').forEach(function (a) {
+    try {
+      var u = new URL(a.href);
+      u.searchParams.set("cmp", ref);
+      a.href = u.toString();
+    } catch (e) {}
+  });
+})();
+</script>
