@@ -45,6 +45,7 @@ services:
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER:-crm}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-crm}
       AUTH_SECRET: ${AUTH_SECRET:?define AUTH_SECRET en .env}
+      INITIAL_ADMIN_PASSWORD: ${INITIAL_ADMIN_PASSWORD:-}
       NODE_ENV: production
     # Solo accesible desde el propio servidor; el proxy inverso (nginx/apache) lo publica.
     ports:
@@ -69,6 +70,7 @@ services:
     entrypoint: ["/bin/sh", "-c"]
     command:
       - |
+        umask 077
         echo "Servicio de copias de seguridad activo (diarias, retención $${RETENTION_DAYS} días)."
         while true; do
           ts=$$(date +%Y%m%d_%H%M%S)

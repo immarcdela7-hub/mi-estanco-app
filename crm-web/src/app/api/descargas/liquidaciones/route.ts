@@ -14,7 +14,13 @@ export async function GET() {
     include: { establishment: { select: { name: true, code: true } } },
   });
 
-  const esc = (v: string) => `"${v.replace(/"/g, '""')}"`;
+  // Escapa comillas y neutraliza inyección de fórmulas: si el valor empieza por
+  // = + - @ (o tab/retorno), se antepone un apóstrofo para que Excel/LibreOffice
+  // no lo interpreten como fórmula.
+  const esc = (v: string) => {
+    const safe = /^[=+\-@\t\r]/.test(v) ? `'${v}` : v;
+    return `"${safe.replace(/"/g, '""')}"`;
+  };
   const lines = [
     "id,fecha_pago,establecimiento,codigo,importe,ventas,metodo,referencia,notas",
     ...payouts.map((p) =>

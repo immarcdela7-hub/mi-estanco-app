@@ -99,6 +99,9 @@ export async function importCsvAction(_prev: FormState, formData: FormData): Pro
   });
   const rows = parsed.data;
   if (rows.length === 0) return { error: "El CSV no contenía filas." };
+  if (rows.length > 5000) {
+    return { error: "El CSV supera el máximo de 5000 filas. Divídelo en varios archivos." };
+  }
 
   const headers = Object.keys(rows[0]);
   const missing = CSV_COLUMNS.filter((c) => !headers.includes(c));

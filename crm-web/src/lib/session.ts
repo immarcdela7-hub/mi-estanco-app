@@ -1,5 +1,6 @@
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
+import { authSecretKey } from "./secret";
 
 const COOKIE = "ntl_session";
 const MAX_AGE_SECONDS = 60 * 60 * 12; // 12 horas
@@ -13,7 +14,7 @@ export type SessionData = {
 };
 
 function secret() {
-  return new TextEncoder().encode(process.env.AUTH_SECRET ?? "");
+  return authSecretKey();
 }
 
 export async function createSession(data: SessionData) {

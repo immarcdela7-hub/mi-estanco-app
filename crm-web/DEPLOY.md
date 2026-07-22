@@ -62,7 +62,12 @@ echo "AUTH_SECRET=$(openssl rand -base64 48 | tr -d '/+=')"
 ```
 
 Abre `.env` con `nano .env` y pega esos dos valores en las líneas
-correspondientes. Deja `APP_PORT=8090`. Guarda con `Ctrl+O`, `Enter`, `Ctrl+X`.
+correspondientes. Deja `APP_PORT=8090`. Opcional: pon una `INITIAL_ADMIN_PASSWORD`
+(mínimo 8 caracteres); si la dejas vacía, la app generará una aleatoria y la
+mostrará en los logs al arrancar. Guarda con `Ctrl+O`, `Enter`, `Ctrl+X`.
+
+> `AUTH_SECRET` es obligatorio y debe tener 32+ caracteres: la app no arranca si
+> falta o es corto.
 
 ---
 
@@ -122,9 +127,16 @@ Certbot renueva el certificado automáticamente. Al terminar, abre
 
 ## 7. Primer acceso
 
-Entra con `admin` / `admin1234`. La aplicación te obligará a crear tu contraseña
-definitiva. Después, en **Ajustes**, confirma que la URL de la web es
-`https://notaxlost.com/tickets`.
+El usuario es `admin`. La contraseña inicial es la que pusiste en
+`INITIAL_ADMIN_PASSWORD`; si la dejaste vacía, obtenla de los logs:
+
+```bash
+docker compose logs app | grep -A2 "Contraseña inicial"
+```
+
+Entra con esas credenciales: la aplicación te obligará a crear tu contraseña
+definitiva. Hazlo **cuanto antes**, idealmente antes de difundir la URL. Después,
+en **Ajustes**, confirma que la URL de la web es `https://notaxlost.com/tickets`.
 
 ---
 

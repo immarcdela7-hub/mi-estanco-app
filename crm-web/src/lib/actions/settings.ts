@@ -15,7 +15,10 @@ export async function updateSettingsAction(
   const brand = String(formData.get("brand_name") ?? "").trim() || "NoTaxLost";
   const baseUrl = String(formData.get("base_url") ?? "").trim() || "https://notaxlost.com/tickets";
   try {
-    new URL(baseUrl);
+    const parsed = new URL(baseUrl);
+    if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
+      return { error: "La URL debe empezar por http:// o https://" };
+    }
   } catch {
     return { error: "La URL de la web no es válida." };
   }

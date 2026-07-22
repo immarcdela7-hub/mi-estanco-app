@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { jwtVerify } from "jose";
+import { authSecretKey } from "@/lib/secret";
 
 const COOKIE = "ntl_session";
 
@@ -12,10 +13,7 @@ async function readClaims(req: NextRequest): Promise<Claims | null> {
   const token = req.cookies.get(COOKIE)?.value;
   if (!token) return null;
   try {
-    const { payload } = await jwtVerify(
-      token,
-      new TextEncoder().encode(process.env.AUTH_SECRET ?? "")
-    );
+    const { payload } = await jwtVerify(token, authSecretKey());
     return payload as unknown as Claims;
   } catch {
     return null;
