@@ -1,57 +1,26 @@
-# 🎟️ CRM · Venta de entradas con QR por establecimiento
+# NoTaxLost CRM
 
-CRM para gestionar la red de establecimientos donde nos anunciamos con códigos QR.
-Cada establecimiento tiene un **QR único** que lleva a nuestra web de venta de
-entradas (partner de **GetYourGuide**). Cuando alguien compra a través de ese QR,
-le devolvemos al establecimiento un porcentaje de la comisión que GYG nos paga.
+CRM para gestionar la red de establecimientos donde NoTaxLost se anuncia con
+códigos QR. Cada establecimiento tiene un QR único que lleva a la web de venta
+de entradas (partner de GetYourGuide); cuando alguien compra a través de ese QR,
+se le devuelve al establecimiento un porcentaje de la comisión que GYG paga.
 
-## Cómo ejecutarlo
+La aplicación está en **[`crm-web/`](crm-web/)** (Next.js + Postgres). Incluye:
 
-```bash
-pip install -r requirements.txt
-streamlit run app.py
-```
+- **Portal de administración**: panel con métricas, alta de establecimientos con
+  QR descargable, registro/importación y validación de ventas, liquidaciones,
+  pool de códigos QR con generación de carteles A6 e integración web.
+- **Portal del establecimiento**: sus ventas, comisiones, liquidaciones y su QR.
 
-Primer acceso: usuario `admin`, contraseña `admin1234` — la aplicación obliga a
-sustituirla por una propia antes de entrar al panel.
+## Puesta en marcha
 
-## Los dos portales
+- **Desarrollo local**: ver [`crm-web/`](crm-web/) (`npm install`, Postgres,
+  `npm run dev`).
+- **Despliegue en producción** (Docker + Postgres + copias de seguridad):
+  seguir la guía [`crm-web/DEPLOY.md`](crm-web/DEPLOY.md).
 
-### 🧑‍💼 Portal de administración (nosotros)
+## Historial
 
-| Sección | Qué hace |
-|---|---|
-| 📊 Panel | Métricas globales, comisión mensual (nuestra parte vs. establecimientos) y ranking de locales |
-| 🏪 Establecimientos | Alta/edición de locales, **QR único descargable**, % de comisión devuelta y creación de accesos al portal |
-| 💶 Ventas | Registro manual, **importación CSV** y validación de ventas (validar = GYG nos la ha abonado) |
-| 💸 Liquidaciones | Cálculo de lo pendiente por local, generación de pagos e histórico exportable |
-| 🌐 Integración web | Fragmento listo para copiar que conecta los QR con los enlaces de GYG (ver `docs/integracion-web.md`) |
-| ⚙️ Ajustes | Nombre de marca, URL base de los QR, % por defecto y contraseña |
-
-### 🏪 Portal del establecimiento
-
-Cada local entra con su propio usuario y ve **solo sus datos**: panel con su
-comisión, listado de sus ventas, historial de liquidaciones y su QR descargable.
-
-## Flujo de una venta
-
-1. El establecimiento coloca su QR → el cliente escanea y compra en nuestra web
-   (el enlace lleva `?ref=CÓDIGO` para atribuir la venta).
-2. Registramos la venta en el CRM (manual o CSV) → estado **pendiente**.
-3. Cuando GYG nos abona la comisión, la **validamos**.
-4. Generamos la **liquidación**: agrupa todo lo validado del local, lo marca como
-   **pagada** y queda en el histórico de ambos portales.
-
-## Notas técnicas
-
-- **Stack**: Streamlit + SQLite (`crm_data.db`, se crea sola en el primer arranque).
-- La base de datos local es suficiente para empezar; si se despliega en Streamlit
-  Cloud, los datos se pierden al redesplegar → cuando el volumen crezca, migraremos
-  a una base de datos gestionada (Supabase/Postgres).
-- Contraseñas con hash PBKDF2 (200k iteraciones, mínimo 8 caracteres). Los roles
-  son `admin` y `partner`. El login se bloquea 60 s tras 5 intentos fallidos y
-  las sesiones se revalidan contra la base de datos en cada recarga.
-- La importación CSV normaliza fechas (`AAAA-MM-DD` o `DD/MM/AAAA`) y descarta
-  reservas ya registradas para evitar duplicados al reimportar un fichero.
-- El QR se genera con la librería `qrcode` y añade parámetros UTM
-  (`utm_source=qr`, `utm_campaign=CÓDIGO`) para poder medirlo también en analítica web.
+La primera versión fue un prototipo en Streamlit; se sustituyó por la aplicación
+Next.js de `crm-web/`, que es la que se despliega. El prototipo permanece en el
+historial de Git.
