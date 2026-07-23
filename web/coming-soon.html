@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <meta name="theme-color" content="#002B5B">
+    <title>Get the App | No Tax Lost (NTL)</title>
+    <link rel="stylesheet" href="/css/app.css">
+</head>
+<body class="bg-ntl-light-bg text-gray-900 font-sans antialiased overflow-x-hidden min-h-screen flex flex-col">
+
+    <nav class="bg-white w-full flex justify-between items-center py-5 px-6 md:px-12 lg:px-16 border-b border-gray-100 sticky top-0 z-50">
+        <div class="flex items-center gap-2">
+            <a href="/" class="text-3xl font-extrabold italic tracking-tighter">
+                <span class="text-ntl-navy">N</span><span class="text-ntl-accent">T</span><span class="text-ntl-green">L</span>
+            </a>
+        </div>
+        <div class="hidden md:flex gap-8 font-medium text-ntl-gray">
+            <a href="/how-it-works" class="hover:text-ntl-navy transition">How it Works</a>
+            <a href="/ecosystem" class="hover:text-ntl-navy transition">The Ecosystem</a>
+            <a href="/merchants" class="hover:text-ntl-navy transition">For Merchants</a>
+            <a href="/tickets" class="hover:text-ntl-navy transition text-ntl-accent font-bold">Book Experiences</a>
+            <a href="home.html#faq" class="hover:text-ntl-navy transition">FAQ</a>
+        </div>
+        <a href="/" class="bg-ntl-navy hover:bg-ntl-accent text-white font-semibold py-2 px-6 rounded-full transition shadow-md">
+            Back to Home
+        </a>
+    </nav>
+
+    <main class="flex-1 flex items-center justify-center px-6 py-20 relative overflow-hidden">
+        <div class="absolute -top-40 -right-40 w-96 h-96 bg-gradient-to-b from-green-50 to-transparent opacity-60 rounded-full blur-3xl z-0"></div>
+        <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-gradient-to-t from-blue-50 to-transparent opacity-60 rounded-full blur-3xl z-0"></div>
+
+        <div class="max-w-xl mx-auto text-center relative z-10">
+            <div class="inline-flex items-center justify-center w-20 h-20 bg-white rounded-3xl shadow-lg border border-gray-100 mb-8 text-ntl-green">
+                <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 18h.01M8 21h8a1 1 0 001-1V4a1 1 0 00-1-1H8a1 1 0 00-1 1v16a1 1 0 001 1z"></path>
+                </svg>
+            </div>
+
+            <h1 class="text-5xl md:text-6xl font-extrabold leading-tight text-ntl-navy tracking-tight mb-5">
+                Get the <span class="text-ntl-green">NTL app</span>
+            </h1>
+            <p class="text-lg text-ntl-gray leading-relaxed mb-10 max-w-md mx-auto">
+                Scan, shop and get your VAT back — automatically. The app isn't out yet: join the waitlist and we'll let you know the moment it launches.
+            </p>
+
+            <!-- DOWNLOAD (se muestra si hay enlaces configurados) -->
+            <div id="download-section" class="hidden">
+                <p id="platform-hint" class="text-sm font-semibold text-ntl-accent mb-4"></p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a id="btn-appstore" href="#" class="hidden items-center justify-center gap-3 bg-ntl-navy hover:bg-black text-white font-bold py-3.5 px-7 rounded-2xl text-lg shadow-lg transition">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M16.365 1.43c0 1.14-.493 2.27-1.177 3.08-.744.9-1.99 1.57-2.987 1.57-.12 0-.23-.02-.3-.03-.01-.06-.04-.22-.04-.39 0-1.15.572-2.27 1.206-2.98.804-.94 2.142-1.64 3.248-1.68.03.13.05.28.05.43zm4.565 15.71c-.03.07-.463 1.58-1.518 3.12-.945 1.34-1.94 2.71-3.43 2.71-1.517 0-1.9-.88-3.63-.88-1.698 0-2.302.91-3.67.91-1.377 0-2.332-1.26-3.428-2.8-1.287-1.82-2.323-4.63-2.323-7.28 0-4.28 2.797-6.55 5.552-6.55 1.448 0 2.675.95 3.6.95.865 0 2.222-1.01 3.902-1.01.613 0 2.886.06 4.374 2.19-.13.09-2.383 1.37-2.383 4.19 0 3.26 2.854 4.42 2.955 4.45z"/></svg>
+                        <span>App Store</span>
+                    </a>
+                    <a id="btn-playstore" href="#" class="hidden items-center justify-center gap-3 bg-ntl-navy hover:bg-black text-white font-bold py-3.5 px-7 rounded-2xl text-lg shadow-lg transition">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M3.6 1.8c-.3.3-.5.8-.5 1.4v17.6c0 .6.2 1.1.5 1.4l.1.1L13.5 12 3.7 1.7l-.1.1zM17.2 8.3l-2.9-1.7-2.5 2.4 2.5 2.5 3-1.7c.8-.5.8-1.2-.1-1.5zM4.5 22.3c.3.1.7 0 1.1-.2l9-5.2-2.5-2.5-7.6 7.9zM13.6 7.6l-9-5.2c-.4-.2-.8-.3-1.1-.2l7.6 7.9 2.5-2.5z"/></svg>
+                        <span>Google Play</span>
+                    </a>
+                    <a id="btn-apk" href="#" class="hidden items-center justify-center gap-3 bg-white border-2 border-ntl-navy text-ntl-navy hover:bg-gray-50 font-bold py-3.5 px-7 rounded-2xl text-lg shadow transition">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3"/></svg>
+                        <span>Download APK</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- WAITLIST (fallback mientras no haya enlaces) -->
+            <div id="waitlist-section" class="hidden">
+                <div class="inline-flex items-center gap-2 bg-green-50 text-ntl-green border border-green-100 font-semibold px-4 py-1.5 rounded-full text-sm mb-6">
+                    <span class="w-2 h-2 bg-ntl-vibrant rounded-full animate-pulse"></span>
+                    Coming soon to App Store &amp; Google Play
+                </div>
+                <form id="waitlist-form" class="flex flex-col sm:flex-row gap-3 justify-center max-w-md mx-auto">
+                    <input id="waitlist-email" type="email" required placeholder="your@email.com"
+                        class="flex-1 px-5 py-3.5 rounded-full border border-gray-200 focus:border-ntl-accent focus:outline-none text-base">
+                    <button type="submit" class="bg-ntl-vibrant hover:bg-green-500 text-white font-bold py-3.5 px-8 rounded-full text-lg shadow-lg transition whitespace-nowrap">
+                        Notify me
+                    </button>
+                </form>
+                <p id="waitlist-msg" class="text-sm mt-4 h-5"></p>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-center mt-10">
+                <a href="/" class="text-ntl-gray hover:text-ntl-navy font-semibold py-2 px-6 transition">← Back to Home</a>
+                <a href="/tickets" class="text-ntl-accent hover:text-ntl-navy font-bold py-2 px-6 transition">Browse Experiences →</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-white py-8 border-t border-gray-200 text-center">
+        <div class="text-xs text-gray-400 font-mono">
+            © 2026 No Tax Lost (NTL). All rights reserved. Made in BCN.
+        </div>
+    </footer>
+
+    <script>
+    // ╔══════════════════════════════════════════════════════════════════╗
+    // ║  CONFIG — pega aquí los enlaces de tu app cuando los tengas.      ║
+    // ║  Mientras estén vacíos, se muestra la lista de espera.            ║
+    // ╚══════════════════════════════════════════════════════════════════╝
+    const APP_LINKS = {
+        appStore:   "",   // iOS  → p.ej. "https://apps.apple.com/app/idXXXXXXXXX"
+        playStore:  "",   // Android → p.ej. "https://play.google.com/store/apps/details?id=com.ntl.app"
+        androidApk: "",   // APK directo (opcional) → p.ej. "https://tudominio.com/ntl.apk"
+        contactEmail: "hola@notaxlost.com",   // fallback de lista de espera (mailto)
+        waitlistEndpoint: ""   // opcional: endpoint para guardar emails (Supabase/función). Vacío = mailto
+    };
+
+    (function () {
+        const ua = navigator.userAgent || "";
+        const isIOS = /iphone|ipad|ipod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+        const isAndroid = /android/i.test(ua);
+
+        const has = (u) => typeof u === 'string' && u.trim().length > 0;
+        const anyDownload = has(APP_LINKS.appStore) || has(APP_LINKS.playStore) || has(APP_LINKS.androidApk);
+
+        const dl = document.getElementById('download-section');
+        const wl = document.getElementById('waitlist-section');
+
+        if (anyDownload) {
+            dl.classList.remove('hidden');
+            const show = (id, url) => {
+                const el = document.getElementById(id);
+                if (has(url)) { el.href = url; el.classList.remove('hidden'); el.classList.add('inline-flex'); }
+            };
+            show('btn-appstore', APP_LINKS.appStore);
+            show('btn-playstore', APP_LINKS.playStore);
+            show('btn-apk', APP_LINKS.androidApk);
+
+            const hint = document.getElementById('platform-hint');
+            if (isIOS && has(APP_LINKS.appStore)) hint.textContent = 'Detected iPhone — get it on the App Store';
+            else if (isAndroid && (has(APP_LINKS.playStore) || has(APP_LINKS.androidApk))) hint.textContent = 'Detected Android — get it on Google Play';
+            else hint.textContent = 'Choose your platform:';
+        } else {
+            wl.classList.remove('hidden');
+            const form = document.getElementById('waitlist-form');
+            const msg = document.getElementById('waitlist-msg');
+            form.addEventListener('submit', async function (e) {
+                e.preventDefault();
+                const email = document.getElementById('waitlist-email').value.trim();
+                if (!email) return;
+                if (has(APP_LINKS.waitlistEndpoint)) {
+                    try {
+                        const r = await fetch(APP_LINKS.waitlistEndpoint, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ email })
+                        });
+                        msg.textContent = r.ok ? 'Thanks! We\'ll let you know at launch.' : 'Something went wrong, try again.';
+                        msg.className = 'text-sm mt-4 h-5 ' + (r.ok ? 'text-ntl-green' : 'text-red-500');
+                    } catch (err) {
+                        msg.textContent = 'Network error, try again.';
+                        msg.className = 'text-sm mt-4 h-5 text-red-500';
+                    }
+                } else {
+                    // Sin backend aún: abrir el cliente de correo hacia el equipo.
+                    window.location.href = 'mailto:' + APP_LINKS.contactEmail +
+                        '?subject=' + encodeURIComponent('NTL waitlist') +
+                        '&body=' + encodeURIComponent('Please add me to the NTL launch waitlist: ' + email);
+                    msg.textContent = 'Opening your email app…';
+                    msg.className = 'text-sm mt-4 h-5 text-ntl-green';
+                }
+            });
+        }
+    })();
+    </script>
+
+</body>
+</html>
