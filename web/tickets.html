@@ -398,6 +398,8 @@
             if (storeId) { console.log('Welcome tourist from store:', storeId); }
         };
     </script>
-  <script src="/ntl-attrib.js"></script>
+  <!-- Cache-busting: sube el número de ?v=N cada vez que modifiques ntl-attrib.js
+       para forzar a los navegadores a recargar el script (si no, sirven el cacheado). -->
+  <script src="/ntl-attrib.js?v=2"></script>
 </body>
 </html>
