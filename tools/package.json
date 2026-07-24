@@ -1,0 +1,15 @@
+{
+  "name": "ntl-web-tools",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Dev tooling for the NoTaxLost tickets catalog: extract cards, scrape GetYourGuide photos, build catalog.js from catalog.csv. NOT deployed (kept out of web/).",
+  "scripts": {
+    "extract": "node extract-cards.mjs",
+    "scrape": "node scrape-gyg.mjs",
+    "build": "node build-catalog.mjs"
+  },
+  "dependencies": {
+    "playwright": "^1.49.0"
+  }
+}
