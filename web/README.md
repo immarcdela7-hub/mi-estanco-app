@@ -4,6 +4,31 @@ Sitio HTML estático servido por nginx desde `/var/www/ntl`. Página principal:
 `tickets.html` (`notaxlost.com/tickets`). Diseño claro con azul marino/verde de
 marca NTL, Tailwind compilado en `css/app.css`. Sin frameworks en runtime.
 
+## "Don't know what to visit? We do." (`recommend.js`)
+
+Recomendador contextual bajo los filtros. Elige 3 actividades **sin preguntar
+nada**, a partir de:
+
+- **La hora**: mañana → cultura y excursiones; tarde → mar y aventura;
+  noche → gastronomía, flamenco, atardeceres y fiesta.
+- **La zona del cartel QR**: si la URL trae `?zona=salou` (o `?provincia=`),
+  prioriza lo que hay cerca y lo dice ("Right here in Salou").
+- **Valoración y tirón**, con un empujón a lo mejor valorado.
+
+Cada tarjeta muestra un motivo corto ("Beat the queues", "Golden hour pick"),
+sin repetir motivo ni sitio entre las tres. El botón **Surprise me** vuelve a
+tirar con mucha más aleatoriedad.
+
+Detalles a respetar si se toca:
+
+- Tras pintar las tarjetas **hay que llamar a `window.ntlApplyAttribution()`**
+  o los enlaces nuevos se quedan sin `cmp=EST-XXXXX` y se pierde la atribución.
+- El bloque va oculto (`hidden`) y solo se muestra si hay catálogo: sin datos o
+  sin JS, la página funciona igual.
+- Los estilos son **CSS plano** en `tickets.html`, no clases de Tailwind:
+  `css/app.css` es un build purgado y no incluye clases que no se usaran antes.
+- Al modificar `recommend.js`, sube el `?v=N` de su `<script>` en `tickets.html`.
+
 ## Catálogo dirigido por datos
 
 Las tarjetas **no** se escriben a mano en el HTML: se generan por JS desde

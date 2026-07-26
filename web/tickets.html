@@ -60,6 +60,41 @@
            Plain CSS on purpose: app.css is a purged Tailwind build and may not
            ship justify-center / flex-wrap. Centered on desktop, scrollable on mobile. */
         .ntl-filterbar { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; }
+        /* Recomendador "Don't know what to visit? We do." — CSS plano por el
+           mismo motivo que las barras de filtros: app.css esta purgado y no
+           incluye clases que no se usaran antes (p. ej. sm:grid-cols-3). */
+        .ntl-picks-card { background:#fff; border:1px solid #f3f4f6; border-radius:1rem; padding:1.25rem;
+            box-shadow:0 10px 15px -3px rgba(15,23,42,.07), 0 4px 6px -4px rgba(15,23,42,.05); }
+        .ntl-picks-head { display:flex; flex-wrap:wrap; align-items:flex-start; justify-content:space-between; gap:.75rem; margin-bottom:1rem; }
+        .ntl-picks-title { margin:0; font-size:1.375rem; font-weight:800; letter-spacing:-.02em; color:rgb(0 43 91); }
+        .ntl-picks-title span { color:rgb(107 163 43); }
+        .ntl-picks-sub { margin:.2rem 0 0; font-size:.875rem; color:#6b7280; }
+        .ntl-picks-btn { display:inline-flex; align-items:center; gap:.5rem; flex-shrink:0; border:0; cursor:pointer;
+            background:rgb(0 43 91); color:#fff; border-radius:9999px; padding:.65rem 1.1rem; font-size:.75rem;
+            font-weight:700; font-family:inherit; transition:background .2s; }
+        .ntl-picks-btn:hover { background:rgb(0 200 83); }
+        .ntl-picks-grid { display:grid; grid-template-columns:repeat(1,minmax(0,1fr)); gap:.75rem; }
+        @media (min-width:768px) { .ntl-picks-grid { grid-template-columns:repeat(3,minmax(0,1fr)); } }
+
+        .ntl-pick { display:flex; gap:.75rem; align-items:center; text-decoration:none; background:#fff;
+            border:1px solid #f3f4f6; border-radius:.75rem; padding:.75rem; transition:box-shadow .2s, border-color .2s; }
+        .ntl-pick:hover { border-color:rgb(0 123 190); box-shadow:0 10px 15px -3px rgba(15,23,42,.09); }
+        .ntl-pick-img { position:relative; height:5rem; width:6rem; flex-shrink:0; overflow:hidden; border-radius:.5rem; background:#f3f4f6; }
+        .ntl-pick-img img { display:block; height:100%; width:100%; object-fit:cover; transition:transform .5s; }
+        .ntl-pick:hover .ntl-pick-img img { transform:scale(1.05); }
+        .ntl-pick-body { min-width:0; flex:1; }
+        .ntl-pick-reason { margin-bottom:.15rem; font-size:10px; font-weight:700; text-transform:uppercase;
+            letter-spacing:.05em; color:rgb(0 123 190); }
+        .ntl-pick-title { margin:0; font-size:.875rem; font-weight:700; line-height:1.25; color:#111827;
+            display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+        .ntl-pick-meta { margin-top:.35rem; display:flex; align-items:center; gap:.5rem; font-size:.75rem; color:#6b7280; }
+        .ntl-pick-meta b { color:#111827; font-weight:700; }
+        @media (max-width:640px) { .ntl-picks-title { font-size:1.15rem; } }
+
+        /* "Surprise me": destello breve al recalcular las recomendaciones. */
+        @keyframes ntlPop { from { opacity: .35; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+        .ntl-pop { animation: ntlPop .28s ease-out; }
+        @media (prefers-reduced-motion: reduce) { .ntl-pop { animation: none; } }
         @media (max-width: 640px) {
             .ntl-filterbar { flex-wrap: nowrap; overflow-x: auto; justify-content: flex-start; -ms-overflow-style: none; scrollbar-width: none; }
             .ntl-filterbar::-webkit-scrollbar { display: none; }
@@ -127,6 +162,24 @@
             <button class="filter-btn inline-flex items-center gap-1.5 bg-white text-gray-600 px-5 py-2.5 rounded-full text-sm font-bold shadow-md whitespace-nowrap snap-start hover:bg-gray-50 transition" data-filter="sea"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 14c1.5 0 2.2-1 3.5-1s2 1 3.5 1 2.2-1 3.5-1 2 1 3.5 1 2.2-1 3.5-1M3 19c1.5 0 2.2-1 3.5-1s2 1 3.5 1 2.2-1 3.5-1 2 1 3.5 1 2.2-1 3.5-1M12 3v7"/></svg>Sea &amp; Adventure</button>
             <button class="filter-btn inline-flex items-center gap-1.5 bg-white text-gray-600 px-5 py-2.5 rounded-full text-sm font-bold shadow-md whitespace-nowrap snap-start hover:bg-gray-50 transition" data-filter="tours"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 20l-5-2.5V5l5 2.5m0 12.5l6-3m-6 3V7.5m6 9.5l5 2.5V9l-5-2.5m0 12.5V7.5m0 0L9 5"/></svg>Tours &amp; Trips</button>
             <button class="filter-btn inline-flex items-center gap-1.5 bg-white text-gray-600 px-5 py-2.5 rounded-full text-sm font-bold shadow-md whitespace-nowrap snap-start hover:bg-gray-50 transition" data-filter="food"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 3h8l-1 8a3 3 0 01-6 0L8 3zM12 14v5M9 21h6"/></svg>Food &amp; Nightlife</button>
+        </div>
+    </section>
+
+    <!-- "Don't know what to visit? We do." — recomendador contextual (recommend.js).
+         Oculto por defecto: solo se muestra si hay catalogo y JS disponible. -->
+    <section class="max-w-6xl mx-auto px-4 mb-6" id="ntlPicks" hidden>
+        <div class="ntl-picks-card">
+            <div class="ntl-picks-head">
+                <div style="min-width:0">
+                    <h2 class="ntl-picks-title">Don't know what to visit? <span>We do.</span></h2>
+                    <p class="ntl-picks-sub" id="picksContext"></p>
+                </div>
+                <button id="btnSurprise" type="button" class="ntl-picks-btn">
+                    <svg style="width:1rem;height:1rem" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3l2.09 6.26L20 11l-5.91 1.74L12 19l-2.09-6.26L4 11l5.91-1.74L12 3z"/></svg>
+                    Surprise me
+                </button>
+            </div>
+            <div id="picksGrid" class="ntl-picks-grid"></div>
         </div>
     </section>
 
@@ -401,5 +454,8 @@
   <!-- Cache-busting: sube el número de ?v=N cada vez que modifiques ntl-attrib.js
        para forzar a los navegadores a recargar el script (si no, sirven el cacheado). -->
   <script src="/ntl-attrib.js?v=2"></script>
+  <!-- Recomendador "Don't know what to visit? We do." (usa window.NTL_CATALOG y
+       reaplica la atribucion tras pintar). Sube ?v=N al modificarlo. -->
+  <script src="/recommend.js?v=1"></script>
 </body>
 </html>
