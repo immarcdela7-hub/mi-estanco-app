@@ -1,502 +1,1618 @@
 [
   {
+    "tid": "50027",
     "url": "https://www.getyourguide.com/barcelona-l45/sagrada-familia-skip-the-line-ticket-t50027/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Sagrada Familia: Skip-the-Line Ticket",
     "status": 200,
-    "ogImage": "https://cdn.getyourguide.com/img/tour/62bacf6a87bba.jpeg/53.jpg",
-    "ogTitle": "Barcelona: Sagrada Familia Entry Ticket with Audio Guide | GetYourGuide",
-    "price": "33.8",
-    "rating": "4.632471176640849",
-    "jsonTitle": "GetYourGuide",
-    "imagen": "https://cdn.getyourguide.com/img/tour/62bacf6a87bba.jpeg/53.jpg"
+    "chosen": 33.8,
+    "currency": "EUR",
+    "visible": 34,
+    "jsonPrices": [
+      {
+        "v": 33.8,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "49"
   },
   {
+    "tid": "72879",
     "url": "https://www.getyourguide.com/barcelona-l45/barcelona-sagrada-familia-tour-optional-tower-visit-t72879/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Sagrada Familia: Guided Tour + Tower",
     "status": 200,
-    "ogImage": "https://cdn.getyourguide.com/img/tour/590354fed56f6.jpeg/53.jpg",
-    "ogTitle": "Barcelona: Sagrada Familia Tour & Optional Tower Visit | GetYourGuide",
-    "price": "75",
-    "rating": "4.345042401218967",
-    "jsonTitle": "GetYourGuide",
-    "imagen": "https://cdn.getyourguide.com/img/tour/590354fed56f6.jpeg/53.jpg"
+    "chosen": 75,
+    "currency": "EUR",
+    "visible": 75,
+    "jsonPrices": [
+      {
+        "v": 75,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "34"
   },
   {
+    "tid": "288805",
     "url": "https://www.getyourguide.com/barcelona-l45/barcelona-sagrada-familia-skip-the-line-entry-ticket-tour-t288805/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Sagrada Familia: Skip-the-Line & Guided Tour",
     "status": 200,
-    "ogImage": "https://cdn.getyourguide.com/img/tour/448290a706817776.jpeg/53.jpg",
-    "ogTitle": "Barcelona: Sagrada Familia Skip-the-Line Entry Ticket & Tour | GetYourGuide",
-    "price": "63.2",
-    "rating": "4.815740584002953",
-    "jsonTitle": "GetYourGuide",
-    "imagen": "https://cdn.getyourguide.com/img/tour/448290a706817776.jpeg/53.jpg"
+    "chosen": 63.2,
+    "currency": "EUR",
+    "visible": 79,
+    "jsonPrices": [
+      {
+        "v": 63.2,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "65"
   },
   {
+    "tid": "53791",
     "url": "https://www.getyourguide.com/barcelona-l45/skip-the-line-park-guell-entrance-ticket-t53791/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Park Güell: Skip-the-Line Entry",
     "status": 200,
-    "ogImage": "https://cdn.getyourguide.com/img/tour/93473fd2896a1e0e.jpeg/53.jpg",
-    "ogTitle": "Barcelona: Park Güell Admission Ticket | GetYourGuide",
-    "price": "21.5",
-    "rating": "4.42952162010018",
-    "jsonTitle": "GetYourGuide",
-    "imagen": "https://cdn.getyourguide.com/img/tour/93473fd2896a1e0e.jpeg/53.jpg"
+    "chosen": 21.5,
+    "currency": "EUR",
+    "visible": 22,
+    "jsonPrices": [
+      {
+        "v": 21.5,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "49"
   },
   {
+    "tid": "1225",
     "url": "https://www.getyourguide.com/barcelona-l45/barcelona-24-or-48-hour-hop-on-hop-off-bus-tour-t1225/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Hop-on Hop-off Bus Tour",
     "status": 200,
-    "ogImage": "https://cdn.getyourguide.com/img/tour/5e171de5001c0983e952afec01e3c681c9ff5e451f649d366f14be8452a7ce09.jpg/53.jpg",
-    "ogTitle": "Barcelona City Tour Hop-On Hop-Off Bus Tour | GetYourGuide",
-    "price": "33",
-    "rating": "4.400651443039913",
-    "jsonTitle": "GetYourGuide",
-    "imagen": "https://cdn.getyourguide.com/img/tour/5e171de5001c0983e952afec01e3c681c9ff5e451f649d366f14be8452a7ce09.jpg/53.jpg"
+    "chosen": 33,
+    "currency": "EUR",
+    "visible": 33,
+    "jsonPrices": [
+      {
+        "v": 33,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "13"
   },
   {
+    "tid": "1012539",
     "url": "https://www.getyourguide.com/barcelona-l45/barcelona-jet-ski-rental-without-a-license-30-minutes-60-minutes-t1012539/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Jet Ski Rental (No License Needed)",
     "status": 200,
-    "ogImage": "https://cdn.getyourguide.com/img/tour/651098ced076b3cca4cb135a512583334c9ff251b30f66bb81afd7f25b0673a2.jpeg/53.jpg",
-    "ogTitle": "Barcelona: Jet Ski Rental without a License (Photos Included) | GetYourGuide",
-    "price": "71.2",
-    "rating": "4.6762175316941486",
-    "jsonTitle": "GetYourGuide",
-    "imagen": "https://cdn.getyourguide.com/img/tour/651098ced076b3cca4cb135a512583334c9ff251b30f66bb81afd7f25b0673a2.jpeg/53.jpg"
+    "chosen": 71.2,
+    "currency": "EUR",
+    "visible": 89,
+    "jsonPrices": [
+      {
+        "v": 71.2,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "34"
   },
   {
+    "tid": "398519",
     "url": "https://www.getyourguide.com/barcelona-l45/barcelona-casa-batllo-10d-experience-t398519/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Casa Batlló: 10D Experience",
     "status": 200,
-    "ogImage": "https://cdn.getyourguide.com/img/tour/aa3ab6c4aaa9cc0c.jpeg/53.jpg",
-    "ogTitle": "Barcelona: Casa Batlló Entry with Self-Audioguide Tour | GetYourGuide",
-    "price": "29",
-    "rating": "4.665509377675066",
-    "jsonTitle": "GetYourGuide",
-    "imagen": "https://cdn.getyourguide.com/img/tour/aa3ab6c4aaa9cc0c.jpeg/53.jpg"
+    "chosen": 29,
+    "currency": "EUR",
+    "visible": 29,
+    "jsonPrices": [
+      {
+        "v": 29,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "95"
   },
   {
+    "tid": "56179",
     "url": "https://www.getyourguide.com/barcelona-l45/discover-the-costa-brava-from-barcelona-t56179/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Costa Brava Day Tour with Lunch",
     "status": 200,
-    "ogImage": "https://cdn.getyourguide.com/img/tour/62d10aa996e20.jpeg/53.jpg",
-    "ogTitle": "From Barcelona: Costa Brava Day Tour with Lunch | GetYourGuide",
-    "price": "103.5",
-    "rating": "4.780545082981755",
-    "jsonTitle": "GetYourGuide",
-    "imagen": "https://cdn.getyourguide.com/img/tour/62d10aa996e20.jpeg/53.jpg"
+    "chosen": 74.75,
+    "currency": "EUR",
+    "visible": 115,
+    "jsonPrices": [
+      {
+        "v": 74.75,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "35"
   },
   {
+    "tid": "99678",
     "url": "https://www.getyourguide.com/barcelona-l45/barcelona-25-hour-bike-or-e-bike-historical-tour-t99678/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Historical Bike or E-Bike Tour",
     "status": 200,
-    "ogImage": "https://cdn.getyourguide.com/img/tour/b3df3f1f0d404add56cb7eab2a90ab48338ed603d9e4b98ab8bcd26d9d8bf68b.jpeg/53.jpg",
-    "ogTitle": "Barcelona: 2.5-Hour Bike or E-Bike Historical Tour | GetYourGuide",
-    "price": "23.2",
-    "rating": "4.435312894009586",
-    "jsonTitle": "GetYourGuide",
-    "imagen": "https://cdn.getyourguide.com/img/tour/b3df3f1f0d404add56cb7eab2a90ab48338ed603d9e4b98ab8bcd26d9d8bf68b.jpeg/53.jpg"
+    "chosen": 23.2,
+    "currency": "EUR",
+    "visible": 29,
+    "jsonPrices": [
+      {
+        "v": 23.2,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "89"
   },
   {
+    "tid": "436024",
     "url": "https://www.getyourguide.com/barcelona-l45/from-barcelona-guided-day-trip-to-andorra-france-and-spain-t436024/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "3 Countries Trip: Andorra, France & Spain",
     "status": 200,
-    "ogImage": "https://cdn.getyourguide.com/img/tour/db19d7fe1131c1ca4bea64a4089d0e2128f2662792a9add5554ac7c399e1fa0d.jpg/53.jpg",
-    "ogTitle": "From Barcelona: Guided Day Trip to Andorra, France and Spain | GetYourGuide",
-    "price": "65.4",
-    "rating": "4.614569640450605",
-    "jsonTitle": "GetYourGuide",
-    "imagen": "https://cdn.getyourguide.com/img/tour/db19d7fe1131c1ca4bea64a4089d0e2128f2662792a9add5554ac7c399e1fa0d.jpg/53.jpg"
+    "chosen": 65.4,
+    "currency": "EUR",
+    "visible": 109,
+    "jsonPrices": [
+      {
+        "v": 65.4,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "29"
   },
   {
+    "tid": "405115",
     "url": "https://www.getyourguide.com/barcelona-l45/barcelona-flamenco-show-at-palau-dalmases-t405115/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Flamenco Show at Palau Dalmases",
     "status": 200,
-    "ogImage": "https://cdn.getyourguide.com/img/tour/afbdf8a8adeda43b4d738fca5f4a8124c9415c1332700dcdd8e8a786830ff237.jpg/53.jpg",
-    "ogTitle": "Barcelona: Flamenco Show at Palau Dalmases | GetYourGuide",
-    "price": "30",
-    "rating": "4.615304457394943",
-    "jsonTitle": "GetYourGuide",
-    "imagen": "https://cdn.getyourguide.com/img/tour/afbdf8a8adeda43b4d738fca5f4a8124c9415c1332700dcdd8e8a786830ff237.jpg/53.jpg"
+    "chosen": 30,
+    "currency": "EUR",
+    "visible": 30,
+    "jsonPrices": [
+      {
+        "v": 30,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "140"
   },
   {
+    "tid": "108412",
     "url": "https://www.getyourguide.com/barcelona-l45/2-hour-sunset-sailing-tour-of-barcelona-from-port-vell-t108412/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Sunset Sail, Tapas & Live Music",
     "status": 200,
-    "ogImage": "https://cdn.getyourguide.com/img/tour/5c7fab43c09ec.jpeg/53.jpg",
-    "ogTitle": "Barcelona: Sunset Sail, Tapas, Bar & Optional Music & Dinner | GetYourGuide",
-    "price": "60.8",
-    "rating": "4.744649438485332",
-    "jsonTitle": "GetYourGuide",
-    "imagen": "https://cdn.getyourguide.com/img/tour/5c7fab43c09ec.jpeg/53.jpg"
+    "chosen": 60.8,
+    "currency": "EUR",
+    "visible": 64,
+    "jsonPrices": [
+      {
+        "v": 60.8,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "30"
   },
   {
+    "tid": "23477",
     "url": "https://www.getyourguide.com/barcelona-l45/barcelona-montjuic-cable-car-roundtrip-ticket-t23477/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Montjuïc Cable Car Roundtrip",
     "status": 200,
-    "ogImage": "https://cdn.getyourguide.com/img/tour/546ccc9797ca7.jpeg/53.jpg",
-    "ogTitle": "Barcelona: Montjuïc Cable Car Roundtrip Ticket | GetYourGuide",
-    "price": "19",
-    "rating": "4.473466261557659",
-    "jsonTitle": "GetYourGuide",
-    "imagen": "https://cdn.getyourguide.com/img/tour/546ccc9797ca7.jpeg/53.jpg"
+    "chosen": 19,
+    "currency": "EUR",
+    "visible": 10,
+    "jsonPrices": [
+      {
+        "v": 19,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "75"
   },
   {
+    "tid": "449261",
     "url": "https://www.getyourguide.com/barcelona-l45/barcelona-barca-immersive-exhibition-ticket-t449261/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "FC Barcelona Museum: Barça Immersive Tour",
     "status": 200,
-    "ogImage": "https://cdn.getyourguide.com/img/tour/6482d923576aa.jpeg/53.jpg",
-    "ogTitle": "Barcelona: FC Barcelona Museum \"Barça Immersive Tour\" Ticket | GetYourGuide",
-    "price": "30.1",
-    "rating": "4.340896341175529",
-    "jsonTitle": "GetYourGuide",
-    "imagen": "https://cdn.getyourguide.com/img/tour/6482d923576aa.jpeg/53.jpg"
+    "chosen": 30.1,
+    "currency": "EUR",
+    "visible": 30,
+    "jsonPrices": [
+      {
+        "v": 30.1,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "16"
   },
   {
+    "tid": "119389",
     "url": "https://www.getyourguide.com/barcelona-l45/from-barcelona-kayaking-snorkeling-in-la-costa-brava-t119389/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Costa Brava: Kayak, Snorkel & Cliff Jump",
     "status": 200,
-    "ogImage": "https://cdn.getyourguide.com/img/tour/640f0704d14b6.png/53.jpg",
-    "ogTitle": "Costa Brava Tour: Kayak, Snorkel & Cliff Jump from Barcelona | GetYourGuide",
-    "price": "85",
-    "rating": "4.914174291440961",
-    "jsonTitle": "GetYourGuide",
-    "imagen": "https://cdn.getyourguide.com/img/tour/640f0704d14b6.png/53.jpg"
+    "chosen": 85,
+    "currency": "EUR",
+    "visible": 85,
+    "jsonPrices": [
+      {
+        "v": 85,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "28"
   },
   {
+    "tid": "303593",
     "url": "https://www.getyourguide.com/barcelona-l45/barcelona-food-tasting-tour-tapas-wine-and-vermouth-t303593/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Tapas Walking Tour with Wine & Vermouth",
     "status": 200,
-    "ogImage": "https://cdn.getyourguide.com/img/tour/62e6830d10ceb.jpeg/53.jpg",
-    "ogTitle": "Barcelona: Tapas Walking Tour with Food, Wine, and History | GetYourGuide",
-    "price": "66",
-    "rating": "4.746867375075661",
-    "jsonTitle": "GetYourGuide",
-    "imagen": "https://cdn.getyourguide.com/img/tour/62e6830d10ceb.jpeg/53.jpg"
+    "chosen": 66,
+    "currency": "EUR",
+    "visible": 66,
+    "jsonPrices": [
+      {
+        "v": 66,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "65"
   },
   {
+    "tid": "382639",
     "url": "https://www.getyourguide.com/barcelona-l45/barcelona-montserrat-tour-with-optional-winelunch-t382639/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Montserrat, Cogwheel & Winery Tour",
     "status": 200,
-    "ogImage": "https://cdn.getyourguide.com/img/tour/3be29c404103f00b.jpeg/53.jpg",
-    "ogTitle": "Barcelona: Montserrat, Cogwheel, Black Madonna & Winery Tour | GetYourGuide",
-    "price": "39",
-    "rating": "4.760503421247556",
-    "jsonTitle": "GetYourGuide",
-    "imagen": "https://cdn.getyourguide.com/img/tour/3be29c404103f00b.jpeg/53.jpg"
+    "chosen": 39,
+    "currency": "EUR",
+    "visible": 39,
+    "jsonPrices": [
+      {
+        "v": 39,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "85"
   },
   {
+    "tid": "44533",
     "url": "https://www.getyourguide.com/barcelona-l45/paella-cooking-experience-with-boqueria-market-tour-t44533/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Paella Cooking & Boqueria Market Tour",
     "status": 200,
-    "ogImage": "https://cdn.getyourguide.com/img/tour/5eba3f690f289dfd5604e16facd02d8d61b9f568d3bc287bb88b858575da41ef.jpeg/53.jpg",
-    "ogTitle": "Barcelona: Paella Cooking Experience & Boqueria Market Tour | GetYourGuide",
-    "price": "72",
-    "rating": "4.790606645914964",
-    "jsonTitle": "GetYourGuide",
-    "imagen": "https://cdn.getyourguide.com/img/tour/5eba3f690f289dfd5604e16facd02d8d61b9f568d3bc287bb88b858575da41ef.jpeg/53.jpg"
+    "chosen": 72,
+    "currency": "EUR",
+    "visible": 72,
+    "jsonPrices": [
+      {
+        "v": 72,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "79"
   },
   {
+    "tid": "913286",
     "url": "https://www.getyourguide.com/barcelona-l45/barcelona-la-pedrera-casa-mila-ticket-audio-guide-option-t913286/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "La Pedrera-Casa Milà: Ticket & Audio Guide",
     "status": 200,
-    "ogImage": "https://cdn.getyourguide.com/img/location/ee9f7cf42064d331.jpeg/99.jpg",
-    "ogTitle": "The best Barcelona Audio guides 2026 - Free cancellation | GetYourGuide",
-    "price": "9",
-    "rating": "4.5802603",
-    "jsonTitle": "GetYourGuide",
-    "imagen": "https://cdn.getyourguide.com/img/location/ee9f7cf42064d331.jpeg/99.jpg"
+    "chosen": 9,
+    "currency": "EUR",
+    "visible": 25,
+    "jsonPrices": [
+      {
+        "v": 9,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "28"
   },
   {
+    "tid": "808734",
     "url": "https://www.getyourguide.com/barcelona-l45/barcelona-skip-the-line-guided-tour-of-the-picasso-museum-t808734/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Picasso Museum: Skip-the-Line Guided Tour",
     "status": 200,
-    "ogImage": "https://cdn.getyourguide.com/img/tour/28f59f42be297ddecdff394012e2264dd15cbc61b862555907eb065311dfa928.jpg/53.jpg",
-    "ogTitle": "Barcelona: Skip-the-Line Guided Tour of the Picasso Museum | GetYourGuide",
-    "price": "239",
-    "rating": "4.599988851784954",
-    "jsonTitle": "GetYourGuide",
-    "imagen": "https://cdn.getyourguide.com/img/tour/28f59f42be297ddecdff394012e2264dd15cbc61b862555907eb065311dfa928.jpg/53.jpg"
+    "chosen": 239,
+    "currency": "EUR",
+    "visible": 239,
+    "jsonPrices": [
+      {
+        "v": 239,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "39"
   },
   {
+    "tid": "41657",
     "url": "https://www.getyourguide.com/barcelona-l45/barcelona-palau-de-la-musica-guided-tour-t41657/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Palau de la Música: Guided Tour",
     "status": 200,
-    "ogImage": "https://cdn.getyourguide.com/img/tour/cb2b8013528313b212ef094bbcceb95523a9afcc93441616f83b434b50ae4972.jpg/53.jpg",
-    "ogTitle": "Barcelona: Palau de la Música Guided Tour | GetYourGuide",
-    "price": "24",
-    "rating": "4.703277774990078",
-    "jsonTitle": "GetYourGuide",
-    "imagen": "https://cdn.getyourguide.com/img/tour/cb2b8013528313b212ef094bbcceb95523a9afcc93441616f83b434b50ae4972.jpg/53.jpg"
+    "chosen": 24,
+    "currency": "EUR",
+    "visible": 24,
+    "jsonPrices": [
+      {
+        "v": 24,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "22"
   },
   {
+    "tid": "61515",
     "url": "https://www.getyourguide.com/barcelona-l45/barcelona-aquarium-entry-ticket-t61515/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Barcelona Aquarium: Entry Ticket",
     "status": 200,
-    "ogImage": "https://cdn.getyourguide.com/img/tour/086f74df2002c7a9.jpeg/53.jpg",
-    "ogTitle": "Barcelona Aquarium: Entry Ticket | GetYourGuide",
-    "price": "30",
-    "rating": "4.420543730871006",
-    "jsonTitle": "GetYourGuide",
-    "imagen": "https://cdn.getyourguide.com/img/tour/086f74df2002c7a9.jpeg/53.jpg"
+    "chosen": 30,
+    "currency": "EUR",
+    "visible": 30,
+    "jsonPrices": [
+      {
+        "v": 30,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "25"
   },
   {
+    "tid": "603564",
     "url": "https://www.getyourguide.com/barcelona-l45/barcelona-helicopter-tour-with-local-guide-t603564/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Barcelona Helicopter Tour",
     "status": 200,
-    "ogImage": "https://cdn.getyourguide.com/img/tour/e13898af69eba0b2244759d8f1ec4919724e3fcd9ccb150e94d08fa9f734b44d.jpg/53.jpg",
-    "ogTitle": "Barcelona: Helicopter Tour | GetYourGuide",
-    "price": "117.8",
-    "rating": "4.5021596697623325",
-    "jsonTitle": "GetYourGuide",
-    "imagen": "https://cdn.getyourguide.com/img/tour/e13898af69eba0b2244759d8f1ec4919724e3fcd9ccb150e94d08fa9f734b44d.jpg/53.jpg"
+    "chosen": 117.8,
+    "currency": "EUR",
+    "visible": 124,
+    "jsonPrices": [
+      {
+        "v": 117.8,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "125"
   },
   {
+    "tid": "425752",
     "url": "https://www.getyourguide.com/barcelona-l45/from-barcelona-la-roca-village-shopping-expressr-day-trip-t425752/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "La Roca Village Shopping Express",
     "status": 200,
-    "ogImage": "https://cdn.getyourguide.com/img/tour/018d27de1968d1aefe8e59bf82e0e8aca991a4ca94cecca4c9f106ae76c75909.jpg/53.jpg",
-    "ogTitle": "From Barcelona: La Roca Village Shopping Express® Day Trip | GetYourGuide",
-    "price": "22",
-    "rating": "4.699406152423704",
-    "jsonTitle": "GetYourGuide",
-    "imagen": "https://cdn.getyourguide.com/img/tour/018d27de1968d1aefe8e59bf82e0e8aca991a4ca94cecca4c9f106ae76c75909.jpg/53.jpg"
+    "chosen": 22,
+    "currency": "EUR",
+    "visible": 22,
+    "jsonPrices": [
+      {
+        "v": 22,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "17"
   },
   {
+    "tid": "694860",
     "url": "https://www.getyourguide.com/barcelona-l45/barcelona-concert-a-vivaldi-the-four-seasons-and-more-t694860/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Vivaldi: The Four Seasons Concert",
     "status": 200,
-    "ogImage": "https://cdn.getyourguide.com/img/tour/bed359477b0111f80d6070400eed107c72d1a768caa8ac283fa671f77e05b890.jpg/53.jpg",
-    "ogTitle": "Barcelona Concert: A. Vivaldi - The Four Seasons and more | GetYourGuide",
-    "price": "26",
-    "rating": "4.690822888359986",
-    "jsonTitle": "GetYourGuide",
-    "imagen": "https://cdn.getyourguide.com/img/tour/bed359477b0111f80d6070400eed107c72d1a768caa8ac283fa671f77e05b890.jpg/53.jpg"
+    "chosen": 26,
+    "currency": "EUR",
+    "visible": 26,
+    "jsonPrices": [
+      {
+        "v": 26,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "33"
   },
   {
+    "tid": "1043339",
     "url": "https://www.getyourguide.com/barcelona-l45/barcelona-city-highlights-private-tuk-tuk-tour-t1043339/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Private City Highlights Tuk-Tuk Tour",
     "status": 200,
-    "ogImage": "https://cdn.getyourguide.com/img/tour/a5ad924fa7184a7a87b3bad3afc8d10ca4beae02f975f455b18f9ce528002a2f.jpg/53.jpg",
-    "ogTitle": "Barcelona: City Highlights Private Tuk-Tuk Tour | GetYourGuide",
-    "price": "23.7",
-    "rating": "4.826028147132117",
-    "jsonTitle": "GetYourGuide",
-    "imagen": "https://cdn.getyourguide.com/img/tour/a5ad924fa7184a7a87b3bad3afc8d10ca4beae02f975f455b18f9ce528002a2f.jpg/53.jpg"
+    "chosen": 23.7,
+    "currency": "EUR",
+    "visible": 40,
+    "jsonPrices": [
+      {
+        "v": 23.7,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "39"
   },
   {
+    "tid": "503392",
     "url": "https://www.getyourguide.com/barcelona-l45/barcelona-gothic-quarter-walking-tour-with-10-attractions-t503392/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Gothic Quarter Walking Tour (10+ Sights)",
     "status": 200,
-    "ogImage": "https://cdn.getyourguide.com/img/tour/ff5f1f662cec5940e4c277f2f2238401f927cfa556ddeb6fa1c50b66b6207b70.jpg/53.jpg",
-    "ogTitle": "Barcelona: Gothic Quarter Walking Tour with 10+ Sights | GetYourGuide",
-    "price": "22",
-    "rating": "4.92168926038353",
-    "jsonTitle": "GetYourGuide",
-    "imagen": "https://cdn.getyourguide.com/img/tour/ff5f1f662cec5940e4c277f2f2238401f927cfa556ddeb6fa1c50b66b6207b70.jpg/53.jpg"
+    "chosen": 22,
+    "currency": "EUR",
+    "visible": 22,
+    "jsonPrices": [
+      {
+        "v": 22,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "22"
   },
   {
+    "tid": "1161228",
     "url": "https://www.getyourguide.com/barcelona-l45/barcelona-essential-tour-in-a-vintage-electric-car-t1161228/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Essential Tour in a Vintage Electric Car",
     "status": 200,
-    "ogImage": "https://cdn.getyourguide.com/img/tour/99bc089cb1489e9b60247bea8014450db84d564e9254c1448f467452c61d7dbf.png/53.jpg",
-    "ogTitle": "Barcelona: Private Tuk Tuk Sightseeing Tour - Gaudí, Sagrada Familia, and Highlights | GetYourGuide",
-    "price": "44.5",
-    "rating": "4.812093352599303",
-    "jsonTitle": "GetYourGuide",
-    "imagen": "https://cdn.getyourguide.com/img/tour/99bc089cb1489e9b60247bea8014450db84d564e9254c1448f467452c61d7dbf.png/53.jpg"
+    "chosen": 35.6,
+    "currency": "EUR",
+    "visible": 45,
+    "jsonPrices": [
+      {
+        "v": 35.6,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "89"
   },
   {
+    "tid": "419045",
     "url": "https://www.getyourguide.com/barcelona-l45/barcelona-park-guell-guided-tour-t419045/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Park Güell: Guided Tour with Skip-the-Line",
     "status": 200,
-    "ogImage": "https://cdn.getyourguide.com/img/tour/ce92bfd0b52bdc20679ddecfb9d8a1172b8f6887152ca3ecc858e004d5fad601.png/53.jpg",
-    "ogTitle": "Barcelona: Park Guell Guided Tour with Skip The Line Entry | GetYourGuide",
-    "price": "26",
-    "rating": "4.663240054539017",
-    "jsonTitle": "GetYourGuide",
-    "imagen": "https://cdn.getyourguide.com/img/tour/ce92bfd0b52bdc20679ddecfb9d8a1172b8f6887152ca3ecc858e004d5fad601.png/53.jpg"
+    "chosen": 26,
+    "currency": "EUR",
+    "visible": 26,
+    "jsonPrices": [
+      {
+        "v": 26,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "30"
   },
   {
+    "tid": "76003",
     "url": "https://www.getyourguide.com/barcelona-l45/barcelona-flamenco-show-at-the-theater-t76003/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Flamenco Show at the Theater",
     "status": 200,
-    "ogImage": "https://cdn.getyourguide.com/img/tour/8d94bb036f911af8.jpeg/53.jpg",
-    "ogTitle": "Barcelona: Flamenco Show at the Theater \"City Hall\" | GetYourGuide",
-    "price": "25",
-    "rating": "4.551602441774364",
-    "jsonTitle": "GetYourGuide",
-    "imagen": "https://cdn.getyourguide.com/img/tour/8d94bb036f911af8.jpeg/53.jpg"
+    "chosen": 25,
+    "currency": "EUR",
+    "visible": 25,
+    "jsonPrices": [
+      {
+        "v": 25,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "30"
   },
   {
+    "tid": "4241",
     "url": "https://www.getyourguide.com/barcelona-l45/barcelona-hop-on-hop-off-tour-1-or-2-day-ticket-t4241/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "City Sightseeing Hop-On Hop-Off Bus",
     "status": 200,
-    "ogImage": "https://cdn.getyourguide.com/img/tour/edac71d6a2dfed9d.jpeg/53.jpg",
-    "ogTitle": "Barcelona: City Sightseeing Hop-On Hop-Off Bus Tour | GetYourGuide",
-    "price": "33",
-    "rating": "4.380701635740272",
-    "jsonTitle": "GetYourGuide",
-    "imagen": "https://cdn.getyourguide.com/img/tour/edac71d6a2dfed9d.jpeg/53.jpg"
+    "chosen": 33,
+    "currency": "EUR",
+    "visible": 33,
+    "jsonPrices": [
+      {
+        "v": 33,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "33"
   },
   {
+    "tid": "1177",
     "url": "https://www.getyourguide.com/barcelona-l45/montserrat-royal-basilica-cog-wheel-train-from-barcelona-t1177/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Montserrat: Cog-Wheel Train & Black Madonna",
     "status": 200,
-    "ogImage": "https://cdn.getyourguide.com/img/tour/63580375c2779b096cbc8dbdfb82c3e16efd2021569cccea569462ef6f554aee.jpg/53.jpg",
-    "ogTitle": "Barcelona: Montserrat Tour with Cog-Wheel & Black Madonna | GetYourGuide",
-    "price": "50.15",
-    "rating": "4.564822861687745",
-    "jsonTitle": "GetYourGuide",
-    "imagen": "https://cdn.getyourguide.com/img/tour/63580375c2779b096cbc8dbdfb82c3e16efd2021569cccea569462ef6f554aee.jpg/53.jpg"
+    "chosen": 50.15,
+    "currency": "EUR",
+    "visible": 59,
+    "jsonPrices": [
+      {
+        "v": 50.15,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "55"
   },
   {
+    "tid": "663776",
     "url": "https://www.getyourguide.com/barcelona-l45/gaudi-s-park-guell-guided-tour-with-fast-track-ticket-t663776/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Park Güell: Guided Tour with Fast-Track Ticket",
     "status": 200,
-    "ogImage": "https://cdn.getyourguide.com/img/tour/12261969cccf19bd40150fb39169265536f883fe5cd60c3ea0d66b3cce57517f.jpg/53.jpg",
-    "ogTitle": "Barcelona: Gaudí’s Park Güell Tour with Fast-Track Ticket | GetYourGuide",
-    "price": "25.3",
-    "rating": "4.682604139994866",
-    "jsonTitle": "GetYourGuide",
-    "imagen": "https://cdn.getyourguide.com/img/tour/12261969cccf19bd40150fb39169265536f883fe5cd60c3ea0d66b3cce57517f.jpg/53.jpg"
+    "chosen": 25.3,
+    "currency": "EUR",
+    "visible": 35,
+    "jsonPrices": [
+      {
+        "v": 25.3,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "30"
   },
   {
+    "tid": "498339",
     "url": "https://www.getyourguide.com/barcelona-l45/barcelona-private-tour-past-present-t498339/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Barcelona: Old Town Private Walking Tour",
     "status": 200,
-    "ogImage": "https://cdn.getyourguide.com/img/tour/6fb95c622641e3e766d9c688f63b68f1514a2b9042ed2bc9eae55f35f7b3b3da.png/53.jpg",
-    "ogTitle": "Barcelona: Old Town Private Walking Tour of Past and Present | GetYourGuide",
-    "price": "40.5",
-    "rating": "4.985940386831267",
-    "jsonTitle": "GetYourGuide",
-    "imagen": "https://cdn.getyourguide.com/img/tour/6fb95c622641e3e766d9c688f63b68f1514a2b9042ed2bc9eae55f35f7b3b3da.png/53.jpg"
+    "chosen": 40.5,
+    "currency": "EUR",
+    "visible": 45,
+    "jsonPrices": [
+      {
+        "v": 40.5,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "120"
   },
   {
+    "tid": "415748",
     "url": "https://www.getyourguide.com/barcelona-l45/barcelona-city-tour-by-electric-tuk-tuk-t415748/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Barcelona: Private City Tour by Eco Tuk-Tuk",
     "status": 200,
-    "ogImage": "https://cdn.getyourguide.com/img/tour/635a38a7e0b79.jpeg/53.jpg",
-    "ogTitle": "Barcelona: Private City Tour by Eco Tuk Tuk | GetYourGuide",
-    "price": "23.7",
-    "rating": "4.855486116446057",
-    "jsonTitle": "GetYourGuide",
-    "imagen": "https://cdn.getyourguide.com/img/tour/635a38a7e0b79.jpeg/53.jpg"
+    "chosen": 23.7,
+    "currency": "EUR",
+    "visible": 40,
+    "jsonPrices": [
+      {
+        "v": 23.7,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "99"
   },
   {
+    "tid": "968509",
     "url": "https://www.getyourguide.com/barcelona-l45/barcelona-espectaculo-de-flamenco-intimo-en-las-brujas-club-t968509/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Barcelona: Intimate Flamenco Show at Las Brujas",
     "status": 200,
-    "ogImage": "https://cdn.getyourguide.com/img/tour/8868892385f7249bce89a3b2699fd84e1afc00e23a5836874848e4d831173c28.jpg/53.jpg",
-    "ogTitle": "Barcelona: Espectáculo de Flamenco íntimo en Las Brujas | GetYourGuide",
-    "price": "18",
-    "rating": "4.810785994438199",
-    "jsonTitle": "GetYourGuide",
-    "imagen": "https://cdn.getyourguide.com/img/tour/8868892385f7249bce89a3b2699fd84e1afc00e23a5836874848e4d831173c28.jpg/53.jpg"
+    "chosen": 19.2,
+    "currency": "EUR",
+    "visible": 32,
+    "jsonPrices": [
+      {
+        "v": 19.2,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "25"
   },
   {
+    "tid": "115369",
     "url": "https://www.getyourguide.com/salou-l1884/salou-entry-to-portaventura-ferrari-land-caribe-aquatic-t115369/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "PortAventura, Ferrari Land & Caribe",
     "status": 200,
-    "ogImage": "https://cdn.getyourguide.com/img/tour/2994f5ab5af5bcff775ea4f98150fb4f5a697b03488d19a6dabfbb21668af112.jpg/53.jpg",
-    "ogTitle": "Salou: PortAventura, Ferrari Land, and Caribe Aquatic Entry | GetYourGuide",
-    "price": "74.25",
-    "rating": "4.353875016383941",
-    "jsonTitle": "GetYourGuide",
-    "imagen": "https://cdn.getyourguide.com/img/tour/2994f5ab5af5bcff775ea4f98150fb4f5a697b03488d19a6dabfbb21668af112.jpg/53.jpg"
+    "chosen": 74.25,
+    "currency": "EUR",
+    "visible": 0,
+    "jsonPrices": [
+      {
+        "v": 74.25,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "60"
   },
   {
+    "tid": "115174",
     "url": "https://www.getyourguide.com/salou-l1884/portaventura-ferrari-land-tickets-1-2-or-3-day-entry-t115174/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "PortAventura & Ferrari Land: 1–3 Day Ticket",
     "status": 200,
-    "ogImage": "https://cdn.getyourguide.com/img/tour/83bfcf830f2191fa4e3365338a67b6b9a08e1d578b62c34b6735cba58eb8a9e9.jpg/53.jpg",
-    "ogTitle": "Salou: PortAventura and Ferrari Land 1, 2, or 3-Day Ticket | GetYourGuide",
-    "price": "54",
-    "rating": "4.281269149976144",
-    "jsonTitle": "GetYourGuide",
-    "imagen": "https://cdn.getyourguide.com/img/tour/83bfcf830f2191fa4e3365338a67b6b9a08e1d578b62c34b6735cba58eb8a9e9.jpg/53.jpg"
+    "chosen": 54,
+    "currency": "EUR",
+    "visible": 1,
+    "jsonPrices": [
+      {
+        "v": 54,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "60"
   },
   {
+    "tid": "33815",
     "url": "https://www.getyourguide.com/salou-l1884/salou-portaventura-costa-caribe-aquatic-park-ticket-t33815/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "PortAventura: Caribe Aquatic Park Ticket",
     "status": 200,
-    "ogImage": "https://cdn.getyourguide.com/img/tour/4358858243d9046472ec3b888998f1f23df49d971384b62ee0f0b9d4011d9462.jpg/53.jpg",
-    "ogTitle": "Salou: PortAventura Caribe Aquatic Park 1-Day Ticket | GetYourGuide",
-    "price": "24",
-    "rating": "3.9328961824622493",
-    "jsonTitle": "GetYourGuide",
-    "imagen": "https://cdn.getyourguide.com/img/tour/4358858243d9046472ec3b888998f1f23df49d971384b62ee0f0b9d4011d9462.jpg/53.jpg"
+    "chosen": 24,
+    "currency": "EUR",
+    "visible": 24,
+    "jsonPrices": [
+      {
+        "v": 24,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "32"
   },
   {
+    "tid": "225756",
     "url": "https://www.getyourguide.com/salou-l1884/barcelona-full-day-panoramic-tour-with-free-time-from-salou-t225756/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "From Salou: Barcelona Full-Day Panoramic Tour",
     "status": 200,
-    "ogImage": "https://cdn.getyourguide.com/img/tour/5c9a07f8f2d18.jpeg/53.jpg",
-    "ogTitle": "From Salou: Full Day Barcelona Panoramic Tour with Free Time | GetYourGuide",
-    "price": "54",
-    "rating": "4.385784129787949",
-    "jsonTitle": "GetYourGuide",
-    "imagen": "https://cdn.getyourguide.com/img/tour/5c9a07f8f2d18.jpeg/53.jpg"
+    "chosen": 54,
+    "currency": "EUR",
+    "visible": 54,
+    "jsonPrices": [
+      {
+        "v": 54,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "60"
   },
   {
+    "tid": "1399334",
     "url": "https://www.getyourguide.com/salou-l1884/all-inclusive-beach-day-in-salou-driver-beach-set-and-restaurant-t1399334/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Salou: All-Inclusive Beach Day with Driver & Lunch",
     "status": 200,
-    "ogImage": "https://cdn.getyourguide.com/img/tour/c5fcb49cd3e8fe6b1288e0939e4c4c7081d15ce83fe95efc80ddea838f453638.png/53.jpg",
-    "ogTitle": "All-Inclusive Beach Day in Salou: Driver, Beach Set and Restaurant | GetYourGuide",
-    "price": "325.6",
-    "rating": "",
-    "jsonTitle": "GetYourGuide",
-    "imagen": "https://cdn.getyourguide.com/img/tour/c5fcb49cd3e8fe6b1288e0939e4c4c7081d15ce83fe95efc80ddea838f453638.png/53.jpg"
+    "chosen": 325.6,
+    "currency": "EUR",
+    "visible": 407,
+    "jsonPrices": [
+      {
+        "v": 325.6,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "89"
   },
   {
+    "tid": "400058",
     "url": "https://www.getyourguide.com/salou-l1884/salou-off-road-guided-quad-safari-with-hotel-pickup-t400058/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Salou: Off-Road Quad Safari with Hotel Pickup",
     "status": 200,
-    "ogImage": "https://cdn.getyourguide.com/img/tour/932dbf6fab1538420f8bdfc92db87cff47034aceae4d6ddcb7f2c862abd80f76.jpeg/53.jpg",
-    "ogTitle": "Salou: Off-Road Guided Quad Safari with Hotel Pickup | GetYourGuide",
-    "price": "90",
-    "rating": "4.770648894274603",
-    "jsonTitle": "GetYourGuide",
-    "imagen": "https://cdn.getyourguide.com/img/tour/932dbf6fab1538420f8bdfc92db87cff47034aceae4d6ddcb7f2c862abd80f76.jpeg/53.jpg"
+    "chosen": 90,
+    "currency": "EUR",
+    "visible": 90,
+    "jsonPrices": [
+      {
+        "v": 90,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "55"
   },
   {
+    "tid": "379979",
     "url": "https://www.getyourguide.com/salou-l1884/bosc-aventura-salou-simple-pack-t379979/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Bosc Aventura Salou: Explorer Pack",
     "status": 200,
-    "ogImage": "https://cdn.getyourguide.com/img/tour/623efe530f790.jpeg/53.jpg",
-    "ogTitle": "Bosc Aventura Salou: Explorer Pack | GetYourGuide",
-    "price": "21",
-    "rating": "4.271460800223812",
-    "jsonTitle": "GetYourGuide",
-    "imagen": "https://cdn.getyourguide.com/img/tour/623efe530f790.jpeg/53.jpg"
+    "chosen": 21,
+    "currency": "EUR",
+    "visible": 21,
+    "jsonPrices": [
+      {
+        "v": 21,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "22"
   },
   {
+    "tid": "416416",
     "url": "https://www.getyourguide.com/salou-l1884/salou-bosc-aventura-salou-zip-lining-experience-t416416/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Salou: Bosc Aventura Zip-Lining Experience",
     "status": 200,
-    "ogImage": "https://cdn.getyourguide.com/img/tour/624f504bd15e7.jpeg/53.jpg",
-    "ogTitle": "Salou: Bosc Aventura Salou Zip Lining Experience | GetYourGuide",
-    "price": "30",
-    "rating": "4.094698490732795",
-    "jsonTitle": "GetYourGuide",
-    "imagen": "https://cdn.getyourguide.com/img/tour/624f504bd15e7.jpeg/53.jpg"
+    "chosen": 30,
+    "currency": "EUR",
+    "visible": 30,
+    "jsonPrices": [
+      {
+        "v": 30,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "25"
   },
   {
+    "tid": "937964",
     "url": "https://www.getyourguide.com/salou-l1884/salou-minigolf-pass-with-gear-t937964/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Salou: Minigolf Pass with Gear",
     "status": 200,
-    "ogImage": "https://cdn.getyourguide.com/img/tour/f0ad294cd196fcd599e4c53ec74f02994b4bf5306749fceda184735462ef4202.jpg/53.jpg",
-    "ogTitle": "Salou: Minigolf Pass with Gear | GetYourGuide",
-    "price": "7",
-    "rating": "4.397036982769272",
-    "jsonTitle": "GetYourGuide",
-    "imagen": "https://cdn.getyourguide.com/img/tour/f0ad294cd196fcd599e4c53ec74f02994b4bf5306749fceda184735462ef4202.jpg/53.jpg"
+    "chosen": 7,
+    "currency": "EUR",
+    "visible": 7,
+    "jsonPrices": [
+      {
+        "v": 7,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "10"
   },
   {
+    "tid": "221310",
     "url": "https://www.getyourguide.com/salou-l1884/cambrils-salou-salou-cambrils-round-trip-ferry-t221310/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Salou–Cambrils: Round-Trip Ferry",
     "status": 200,
-    "ogImage": "https://cdn.getyourguide.com/img/tour/0af92e15abc865ea.jpeg/53.jpg",
-    "ogTitle": "Cambrils-Salou / Salou-Cambrils Round Trip Ferry | GetYourGuide",
-    "price": "14",
-    "rating": "4.616903618120998",
-    "jsonTitle": "GetYourGuide",
-    "imagen": "https://cdn.getyourguide.com/img/tour/0af92e15abc865ea.jpeg/53.jpg"
+    "chosen": 14,
+    "currency": "EUR",
+    "visible": 14,
+    "jsonPrices": [
+      {
+        "v": 14,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "16"
   },
   {
+    "tid": "1394594",
     "url": "https://www.getyourguide.com/cambrils-l91400/cambrils-3h-premium-catamaran-with-optional-balinese-beds-t1394594/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Cambrils: Premium Sunset Catamaran with Drinks",
     "status": 200,
-    "ogImage": "https://cdn.getyourguide.com/img/tour/8271cfe31a4353cb2cf5ba96642e8e642771475471b0f6fa7e6419789905456e.jpg/53.jpg",
-    "ogTitle": "Cambrils: Premium Catamaran with open bar, lunch & VIP area | GetYourGuide",
-    "price": "33.75",
-    "rating": "5",
-    "jsonTitle": "GetYourGuide",
-    "imagen": "https://cdn.getyourguide.com/img/tour/8271cfe31a4353cb2cf5ba96642e8e642771475471b0f6fa7e6419789905456e.jpg/53.jpg"
+    "chosen": 33.75,
+    "currency": "EUR",
+    "visible": 45,
+    "jsonPrices": [
+      {
+        "v": 33.75,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "55"
   },
   {
+    "tid": "170472",
     "url": "https://www.getyourguide.com/cambrils-l91400/from-salou-cambrils-ultimate-speedboat-experience-t170472/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "From Salou/Cambrils: Ultimate Speedboat Tour",
     "status": 200,
-    "ogImage": "https://cdn.getyourguide.com/img/tour/bb6f8edd26909c9f.jpeg/53.jpg",
-    "ogTitle": "From Salou/Cambrils: Speedboat Tour | GetYourGuide",
-    "price": "38",
-    "rating": "4.745162666508545",
-    "jsonTitle": "GetYourGuide",
-    "imagen": "https://cdn.getyourguide.com/img/tour/bb6f8edd26909c9f.jpeg/53.jpg"
+    "chosen": 38,
+    "currency": "EUR",
+    "visible": 38,
+    "jsonPrices": [
+      {
+        "v": 38,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "45"
   },
   {
+    "tid": "1345237",
     "url": "https://www.getyourguide.com/cambrils-l91400/costa-dorada-cambrils-inflatable-water-park-t1345237/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Costa Daurada: Cambrils Inflatable Water Park",
     "status": 200,
-    "ogImage": "https://cdn.getyourguide.com/img/tour/fef12fa1c933b87b552989e51c51838dc8a6e6d7c47da83798b9ad726dc527ee.png/53.jpg",
-    "ogTitle": "Costa Dorada - Cambrils: Inflatable Water Park | GetYourGuide",
-    "price": "20",
-    "rating": "4.475611175895493",
-    "jsonTitle": "GetYourGuide",
-    "imagen": "https://cdn.getyourguide.com/img/tour/fef12fa1c933b87b552989e51c51838dc8a6e6d7c47da83798b9ad726dc527ee.png/53.jpg"
+    "chosen": 20,
+    "currency": "EUR",
+    "visible": 20,
+    "jsonPrices": [
+      {
+        "v": 20,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "18"
   },
   {
+    "tid": "399540",
     "url": "https://www.getyourguide.com/cambrils-l91400/cambrils-parc-sama-entry-ticket-t399540/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Cambrils: Parc Samà Entry Ticket",
     "status": 200,
-    "ogImage": "https://cdn.getyourguide.com/img/tour/60a639a471d28.jpeg/53.jpg",
-    "ogTitle": "Cambrils: Parc Samà Entry Ticket | GetYourGuide",
-    "price": "12",
-    "rating": "4.491883745302079",
-    "jsonTitle": "GetYourGuide",
-    "imagen": "https://cdn.getyourguide.com/img/tour/60a639a471d28.jpeg/53.jpg"
+    "chosen": 12,
+    "currency": "EUR",
+    "visible": 12,
+    "jsonPrices": [
+      {
+        "v": 12,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "12"
+  },
+  {
+    "tid": "173643",
+    "url": "https://www.getyourguide.com/barcelona-l45/barcelona-2-hour-sunset-sailboat-trip-t173643/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Sunset Sailboat Trip with Open Bar & Snacks",
+    "status": 200,
+    "chosen": 48,
+    "currency": "EUR",
+    "visible": 60,
+    "jsonPrices": [
+      {
+        "v": 48,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "45"
+  },
+  {
+    "tid": "84906",
+    "url": "https://www.getyourguide.com/barcelona-l45/barcelona-the-original-barcelona-boat-party-t84906/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Barcelona: The Original Barcelona Boat Party",
+    "status": 200,
+    "chosen": 58.5,
+    "currency": "EUR",
+    "visible": 65,
+    "jsonPrices": [
+      {
+        "v": 58.5,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "59"
+  },
+  {
+    "tid": "147204",
+    "url": "https://www.getyourguide.com/barcelona-l45/barcelona-catamaran-party-cruise-with-bbq-meal-t147204/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Barcelona: Catamaran Party Cruise with BBQ Meal",
+    "status": 200,
+    "chosen": 50,
+    "currency": "EUR",
+    "visible": 50,
+    "jsonPrices": [
+      {
+        "v": 50,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "50"
+  },
+  {
+    "tid": "170032",
+    "url": "https://www.getyourguide.com/barcelona-l45/barcelona-speakeasy-explore-hidden-bars-with-tapas-t170032/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Barcelona: Speakeasy Crawl, Hidden Bars with Optional Tapas",
+    "status": 200,
+    "chosen": 20,
+    "currency": "EUR",
+    "visible": 40,
+    "jsonPrices": [
+      {
+        "v": 20,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "20"
+  },
+  {
+    "tid": "333276",
+    "url": "https://www.getyourguide.com/barcelona-l45/barcelona-tapas-crawl-full-meal-drinks-all-included-t333276/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Hidden Barcelona Tapas Tour: Wine, Fun & Local Secrets",
+    "status": 200,
+    "chosen": 74,
+    "currency": "EUR",
+    "visible": 74,
+    "jsonPrices": [
+      {
+        "v": 74,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "74"
+  },
+  {
+    "tid": "839587",
+    "url": "https://www.getyourguide.com/barcelona-l45/barcelona-beach-club-pool-party-with-dj-t839587/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Barcelona: Beach Club with Pool Party & Open Air Club",
+    "status": 200,
+    "chosen": 58.5,
+    "currency": "EUR",
+    "visible": 5,
+    "jsonPrices": [
+      {
+        "v": 58.5,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "59"
+  },
+  {
+    "tid": "890438",
+    "url": "https://www.getyourguide.com/barcelona-l45/barcelona-tipsy-tapas-history-tour-in-the-gothic-quarter-t890438/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Barcelona: Tipsy Tapas & History Tour in the Gothic Quarter",
+    "status": 200,
+    "chosen": 79,
+    "currency": "EUR",
+    "visible": 79,
+    "jsonPrices": [
+      {
+        "v": 79,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "79"
+  },
+  {
+    "tid": "928143",
+    "url": "https://www.getyourguide.com/barcelona-l45/barcelona-afterwork-catamaran-cruise-w-music-drinks-t928143/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Barcelona: AFTERWORK Catamaran Cruise w/ Music & Drinks",
+    "status": 200,
+    "chosen": 25,
+    "currency": "EUR",
+    "visible": 25,
+    "jsonPrices": [
+      {
+        "v": 25,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "25"
+  },
+  {
+    "tid": "1082881",
+    "url": "https://www.getyourguide.com/barcelona-l45/barcelona-top-night-club-experience-vip-club-entry-t1082881/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Barcelona Top Night Club Experience + VIP Club Entry",
+    "status": 200,
+    "chosen": 19.99,
+    "currency": "EUR",
+    "visible": 22,
+    "jsonPrices": [
+      {
+        "v": 19.99,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "20"
+  },
+  {
+    "tid": "1125011",
+    "url": "https://www.getyourguide.com/barcelona-l45/barcelona-night-walking-tour-bars-vip-club-pass-t1125011/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Barcelona Party Night Tour Bars & VIP Club Pass",
+    "status": 200,
+    "chosen": 15.99,
+    "currency": "EUR",
+    "visible": 20,
+    "jsonPrices": [
+      {
+        "v": 15.99,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "16"
+  },
+  {
+    "tid": "1138649",
+    "url": "https://www.getyourguide.com/barcelona-l45/barcelona-bar-crawl-at-gaixample-t1138649/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Barcelona: Bar Crawl at Gaixample",
+    "status": 200,
+    "chosen": 30,
+    "currency": "EUR",
+    "visible": 40,
+    "jsonPrices": [
+      {
+        "v": 30,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "30"
+  },
+  {
+    "tid": "1184893",
+    "url": "https://www.getyourguide.com/sitges-l1769/barcelona-sitges-carnival-party-bus-t1184893/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Barcelona Party Bus & After VIP club entry",
+    "status": 200,
+    "chosen": 49.5,
+    "currency": "EUR",
+    "visible": 55,
+    "jsonPrices": [
+      {
+        "v": 49.5,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "55"
+  },
+  {
+    "tid": "1219232",
+    "url": "https://www.getyourguide.com/barcelona-l45/buzz-barcelona-beach-club-white-party-t1219232/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Barcelona Nightlife Experience: Karaoke, Dance & Local Guide",
+    "status": 200,
+    "chosen": 16.25,
+    "currency": "EUR",
+    "visible": 25,
+    "jsonPrices": [
+      {
+        "v": 16.25,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "16"
+  },
+  {
+    "tid": "1220933",
+    "url": "https://www.getyourguide.com/barcelona-l45/barcelona-buzz-summer-package-full-moon-rooftop-boat-t1220933/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Barcelona Boat Party (Thu, Fri, Sat & Sun) + Nightlife Tour",
+    "status": 200,
+    "chosen": 75.05,
+    "currency": "EUR",
+    "visible": 79,
+    "jsonPrices": [
+      {
+        "v": 75.05,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "75"
+  },
+  {
+    "tid": "1255110",
+    "url": "https://www.getyourguide.com/barcelona-l45/barcelona-sangria-cocktail-making-class-with-tapas-t1255110/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Barcelona: Sangria & Cocktail Making Class with Tapas",
+    "status": 200,
+    "chosen": 42,
+    "currency": "EUR",
+    "visible": 42,
+    "jsonPrices": [
+      {
+        "v": 42,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "42"
+  },
+  {
+    "tid": "1258142",
+    "url": "https://www.getyourguide.com/barcelona-l45/barcelona-nightlife-tour-with-local-dj-dance-floor-t1258142/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Experience Authentic Barcelona Nightlife with a Local DJ",
+    "status": 200,
+    "chosen": 39,
+    "currency": "EUR",
+    "visible": 39,
+    "jsonPrices": [
+      {
+        "v": 39,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "39"
+  },
+  {
+    "tid": "1262639",
+    "url": "https://www.getyourguide.com/barcelona-l45/barcelona-rooftop-bars-and-nightclubs-tour-t1262639/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Barcelona: Pubcrawl with VIP entry to Rooftop and Nightclubs",
+    "status": 200,
+    "chosen": 30.77,
+    "currency": "EUR",
+    "visible": 31,
+    "jsonPrices": [
+      {
+        "v": 30.77,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "31"
+  },
+  {
+    "tid": "157464",
+    "url": "https://www.getyourguide.com/barcelona-l45/the-ice-bar-experience-at-icebarcelona-t157464/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Barcelona: Icebar Experience at the Beach + 1 Drink",
+    "status": 200,
+    "chosen": 19,
+    "currency": "EUR",
+    "visible": 19,
+    "jsonPrices": [
+      {
+        "v": 19,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "19"
+  },
+  {
+    "tid": "629660",
+    "url": "https://www.getyourguide.com/barcelona-l45/barcelona-flamenco-show-with-drink-at-la-rambla-t629660/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Intimate Flamenco Show El Duende Bar & Cocktails Barcelona",
+    "status": 200,
+    "chosen": 24.84,
+    "currency": "EUR",
+    "visible": 27,
+    "jsonPrices": [
+      {
+        "v": 24.84,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "25"
+  },
+  {
+    "tid": "711046",
+    "url": "https://www.getyourguide.com/barcelona-l45/barcelona-city-sights-electric-quad-tour-t711046/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Barcelona: City Sights Electric Quad Tour",
+    "status": 200,
+    "chosen": 79,
+    "currency": "EUR",
+    "visible": 79,
+    "jsonPrices": [
+      {
+        "v": 79,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "79"
+  },
+  {
+    "tid": "1299826",
+    "url": "https://www.getyourguide.com/barcelona-l45/mataro-unlicensed-jet-ski-rental-at-the-port-of-mataro-t1299826/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Barcelona Jetski: Jetski Rental without a License",
+    "status": 200,
+    "chosen": 60,
+    "currency": "EUR",
+    "visible": 60,
+    "jsonPrices": [
+      {
+        "v": 60,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "60"
+  },
+  {
+    "tid": "1310822",
+    "url": "https://www.getyourguide.com/barcelona-l45/barcelona-magical-gothic-quarter-kisses-hidden-bars-tour-t1310822/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Barcelona Gotic Tour with BEST BARS and KISSING WALL",
+    "status": 200,
+    "chosen": 22,
+    "currency": "EUR",
+    "visible": 22,
+    "jsonPrices": [
+      {
+        "v": 22,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "22"
+  },
+  {
+    "tid": "1320452",
+    "url": "https://www.getyourguide.com/barcelona-l45/exclusive-underground-raval-by-night-with-dinner-and-drinks-t1320452/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Exclusive Underground: Raval by Night with Dinner and Drinks",
+    "status": 200,
+    "chosen": 185,
+    "currency": "EUR",
+    "visible": 185,
+    "jsonPrices": [
+      {
+        "v": 185,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "185"
+  },
+  {
+    "tid": "149528",
+    "url": "https://www.getyourguide.com/girona-l550/girona-game-of-thrones-small-group-tour-t149528/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Girona: Game of Thrones Small Group Tour",
+    "status": 200,
+    "chosen": 31.5,
+    "currency": "EUR",
+    "visible": 35,
+    "jsonPrices": [
+      {
+        "v": 31.5,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "32"
+  },
+  {
+    "tid": "151013",
+    "url": "https://www.getyourguide.com/girona-l550/girona-small-group-walking-tour-t151013/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Girona: Small Group Walking Tour",
+    "status": 200,
+    "chosen": 31.5,
+    "currency": "EUR",
+    "visible": 35,
+    "jsonPrices": [
+      {
+        "v": 31.5,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "32"
+  },
+  {
+    "tid": "309788",
+    "url": "https://www.getyourguide.com/girona-l550/girona-jewish-heritage-guided-city-tour-and-museum-visit-t309788/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Girona: Jewish Heritage Guided City Tour and Museum Visit",
+    "status": 200,
+    "chosen": 45,
+    "currency": "EUR",
+    "visible": 45,
+    "jsonPrices": [
+      {
+        "v": 45,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "45"
+  },
+  {
+    "tid": "407669",
+    "url": "https://www.getyourguide.com/girona-l550/girona-art-museum-cathedral-st-felix-church-3-in-1-pass-t407669/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Girona: Cathedral of Girona + Art Museum + St. Felix Church",
+    "status": 200,
+    "chosen": 12,
+    "currency": "EUR",
+    "visible": 10,
+    "jsonPrices": [
+      {
+        "v": 12,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "12"
+  },
+  {
+    "tid": "419114",
+    "url": "https://www.getyourguide.com/girona-l550/girona-museum-of-cinema-entry-ticket-t419114/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Girona: Museum of Cinema Entry Ticket",
+    "status": 200,
+    "chosen": 7,
+    "currency": "EUR",
+    "visible": 7,
+    "jsonPrices": [
+      {
+        "v": 7,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "7"
+  },
+  {
+    "tid": "831886",
+    "url": "https://www.getyourguide.com/figueres-l4723/figueres-dali-theatre-museum-entry-ticket-t831886/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Figueres: Dalí Theatre-Museum Entry Ticket",
+    "status": 200,
+    "chosen": 22.5,
+    "currency": "EUR",
+    "visible": 23,
+    "jsonPrices": [
+      {
+        "v": 22.5,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "23"
+  },
+  {
+    "tid": "215928",
+    "url": "https://www.getyourguide.com/lloret-de-mar-l2322/lloret-de-mar-catamaran-sailing-cruise-with-bbq-and-drinks-t215928/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Lloret de Mar: Catamaran Sailing Cruise with BBQ and Drinks",
+    "status": 200,
+    "chosen": 50,
+    "currency": "EUR",
+    "visible": 50,
+    "jsonPrices": [
+      {
+        "v": 50,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "50"
+  },
+  {
+    "tid": "220695",
+    "url": "https://www.getyourguide.com/l-estartit-l91403/from-l-estartit-3-hour-snorkeling-trip-to-the-medes-islands-t220695/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "From L’Estartit: Snorkeling Trip to the Medes Islands",
+    "status": 200,
+    "chosen": 38,
+    "currency": "EUR",
+    "visible": 38,
+    "jsonPrices": [
+      {
+        "v": 38,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "38"
+  },
+  {
+    "tid": "222411",
+    "url": "https://www.getyourguide.com/lloret-de-mar-l2322/from-lloret-de-mar-roundtrip-ferry-to-tossa-de-mar-t222411/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "From Lloret de Mar: Roundtrip Ferry to Tossa de Mar",
+    "status": 200,
+    "chosen": 33,
+    "currency": "EUR",
+    "visible": 33,
+    "jsonPrices": [
+      {
+        "v": 33,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "33"
+  },
+  {
+    "tid": "396079",
+    "url": "https://www.getyourguide.com/sant-feliu-de-guixols-l98145/costa-brava-sea-caves-kayaking-and-snorkeling-tour-t396079/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Costa Brava: Sea Caves Kayaking and Snorkeling Tour",
+    "status": 200,
+    "chosen": 34,
+    "currency": "EUR",
+    "visible": 34,
+    "jsonPrices": [
+      {
+        "v": 34,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "34"
+  },
+  {
+    "tid": "425645",
+    "url": "https://www.getyourguide.com/roses-spain-l92004/from-roses-cruise-on-costa-brava-to-cadaques-t425645/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "From Roses: Cruise on Costa Brava to Cadaqués",
+    "status": 200,
+    "chosen": 27,
+    "currency": "EUR",
+    "visible": 27,
+    "jsonPrices": [
+      {
+        "v": 27,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "27"
+  },
+  {
+    "tid": "475482",
+    "url": "https://www.getyourguide.com/tossa-de-mar-l90930/tossa-de-mar-guided-kayaking-tour-snorkelling-t475482/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Tossa de Mar: Guided Kayaking Tour & Snorkelling",
+    "status": 200,
+    "chosen": 45,
+    "currency": "EUR",
+    "visible": 45,
+    "jsonPrices": [
+      {
+        "v": 45,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "45"
+  },
+  {
+    "tid": "546141",
+    "url": "https://www.getyourguide.com/palamos-l1751/palamos-sunset-boat-tour-with-glass-of-cava-t546141/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Palamós: Sunset Boat Tour with Glass of Cava",
+    "status": 200,
+    "chosen": 40,
+    "currency": "EUR",
+    "visible": 40,
+    "jsonPrices": [
+      {
+        "v": 40,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "40"
+  },
+  {
+    "tid": "1170725",
+    "url": "https://www.getyourguide.com/lloret-de-mar-l2322/sailboat-day-with-bbq-on-the-costa-brava-t1170725/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Sailboat day with BBQ on the Costa Brava",
+    "status": 200,
+    "chosen": 2000,
+    "currency": "EUR",
+    "visible": 2,
+    "jsonPrices": [
+      {
+        "v": 2000,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "2000"
+  },
+  {
+    "tid": "427417",
+    "url": "https://www.getyourguide.com/lloret-de-mar-l2322/lloret-de-mar-sunset-catamaran-cruise-with-dj-and-drinks-t427417/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Lloret de Mar: Sunset Catamaran Cruise with DJ and Drinks",
+    "status": 200,
+    "chosen": 35,
+    "currency": "EUR",
+    "visible": 35,
+    "jsonPrices": [
+      {
+        "v": 35,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "35"
+  },
+  {
+    "tid": "412981",
+    "url": "https://www.getyourguide.com/blanes-l96850/costa-brava-marimurtra-botanical-garden-entry-ticket-t412981/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Blanes: Marimurtra Botanical Garden Entry Ticket",
+    "status": 200,
+    "chosen": 10,
+    "currency": "EUR",
+    "visible": 10,
+    "jsonPrices": [
+      {
+        "v": 10,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "10"
+  },
+  {
+    "tid": "431485",
+    "url": "https://www.getyourguide.com/girona-l550/girona-espai-crater-volcanology-center-entry-ticket-t431485/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Olot: Espai Cràter Volcanology Center Entry Ticket",
+    "status": 200,
+    "chosen": 7.5,
+    "currency": "EUR",
+    "visible": 8,
+    "jsonPrices": [
+      {
+        "v": 7.5,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "8"
+  },
+  {
+    "tid": "1204455",
+    "url": "https://www.getyourguide.com/peratallada-l147462/scenic-bike-tour-to-medieval-villages-in-costa-brava-t1204455/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Bike Tour to Medieval Villages in Costa Brava",
+    "status": 200,
+    "chosen": 89,
+    "currency": "EUR",
+    "visible": 89,
+    "jsonPrices": [
+      {
+        "v": 89,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "89"
+  },
+  {
+    "tid": "680690",
+    "url": "https://www.getyourguide.com/tossa-de-mar-l90930/lloret-de-mar-guided-sightseeing-tour-in-a-4x4-vehicle-t680690/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Vintage 4x4 Tour Costa Brava :Lloret de Mar & Hidden Gems",
+    "status": 200,
+    "chosen": 35,
+    "currency": "EUR",
+    "visible": 35,
+    "jsonPrices": [
+      {
+        "v": 35,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "35"
+  },
+  {
+    "tid": "590538",
+    "url": "https://www.getyourguide.com/girona-l550/girona-evening-food-tour-tapas-bar-experience-t590538/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Girona Evening Food Tour & Tapas Bar Experience",
+    "status": 200,
+    "chosen": 90.25,
+    "currency": "EUR",
+    "visible": 95,
+    "jsonPrices": [
+      {
+        "v": 90.25,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "90"
+  },
+  {
+    "tid": "1044479",
+    "url": "https://www.getyourguide.com/tossa-de-mar-l90930/tossa-de-mar-boat-excursion-in-the-calanques-of-the-costa-brava-t1044479/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Tossa de Mar Secret Coves & Hidden Caves Exclusive Experience",
+    "status": 200,
+    "chosen": 59,
+    "currency": "EUR",
+    "visible": 59,
+    "jsonPrices": [
+      {
+        "v": 59,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "59"
+  },
+  {
+    "tid": "1316529",
+    "url": "https://www.getyourguide.com/girona-l550/girona-old-town-walking-tour-with-local-guide-t1316529/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Girona: Old Town Walking Tour with Local Guide",
+    "status": 200,
+    "chosen": 80,
+    "currency": "EUR",
+    "visible": 80,
+    "jsonPrices": [
+      {
+        "v": 80,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "80"
+  },
+  {
+    "tid": "838426",
+    "url": "https://www.getyourguide.com/vielha-l218675/4x4-sightseeing-tour-in-valle-d-aran-wildlife-flora-and-alpine-landscapes-t838426/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "4×4 sightseeing tour in Valle d'Aran - Wildlife, flora, and alpine landscapes",
+    "status": 200,
+    "chosen": 135,
+    "currency": "EUR",
+    "visible": 135,
+    "jsonPrices": [
+      {
+        "v": 135,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "135"
+  },
+  {
+    "tid": "1003663",
+    "url": "https://www.getyourguide.com/baqueira-l186124/private-ski-lessons-in-baqueira-beret-t1003663/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Private Ski Lessons in Baqueira Beret",
+    "status": 200,
+    "chosen": 70,
+    "currency": "EUR",
+    "visible": 70,
+    "jsonPrices": [
+      {
+        "v": 70,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "70"
+  },
+  {
+    "tid": "1057236",
+    "url": "https://www.getyourguide.com/lleida-l100032/lleida-llacs-cycling-route-t1057236/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Lleida: Llacs Cycling Route",
+    "status": 200,
+    "chosen": 60,
+    "currency": "EUR",
+    "visible": 75,
+    "jsonPrices": [
+      {
+        "v": 60,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "60"
+  },
+  {
+    "tid": "1380382",
+    "url": "https://www.getyourguide.com/lleida-l100032/les-garonne-river-rafting-trip-with-guide-equipment-t1380382/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Les: Garonne River Rafting Trip with Guide & Equipment",
+    "status": 200,
+    "chosen": 44,
+    "currency": "EUR",
+    "visible": 44,
+    "jsonPrices": [
+      {
+        "v": 44,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "44"
+  },
+  {
+    "tid": "1397540",
+    "url": "https://www.getyourguide.com/lleida-l100032/aiguestortes-national-park-guided-hike-with-waterfall-t1397540/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Aigüestortes National Park: Guided Hike with Waterfall",
+    "status": 200,
+    "chosen": 125,
+    "currency": "EUR",
+    "visible": 125,
+    "jsonPrices": [
+      {
+        "v": 125,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "125"
+  },
+  {
+    "tid": "1084504",
+    "url": "https://www.getyourguide.com/salou-l1884/salou-bingo-bangas-party-night-with-drinks-t1084504/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "title": "Salou: Bingo Bangas Party Night with Drinks",
+    "status": 200,
+    "chosen": 40.95,
+    "currency": "EUR",
+    "visible": 41,
+    "jsonPrices": [
+      {
+        "v": 40.95,
+        "src": "lowPrice"
+      }
+    ],
+    "prevPrecio": "41"
   }
 ]

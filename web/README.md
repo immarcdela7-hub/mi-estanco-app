@@ -37,7 +37,7 @@ catalog.js    (generado; lo carga tickets.html y pinta las tarjetas)
 | `categoria_label` | etiqueta que se muestra arriba del título (p. ej. "Nightlife") |
 | `titulo` / `descripcion` | textos de la tarjeta |
 | `precio` | número (se usa para ordenar por precio) |
-| `precio_display` | texto de precio (p. ej. "45€ - 55€" o "From 25€") |
+| `precio_display` | texto de precio, `from N€` (precio real "desde" de GYG) |
 | `rating` | nota (p. ej. 4.8) |
 | `trending` | `si` / `no` (muestra la etiqueta "Trending") |
 | `keywords` | palabras para el buscador (`data-name`) |
@@ -61,6 +61,31 @@ node scrape-gyg.mjs --all        # re-scrapea todas
 Va despacio a propósito (pocas por minuto) para que GYG no bloquee. Si alguna
 falla, plan B: pega la URL de la imagen a mano en el CSV.
 
+## Precios (refrescar cada pocos meses)
+
+Los precios de GetYourGuide **cambian con la temporada**, así que conviene relanzar
+esto cada pocos meses. El precio "desde" se saca del JSON-LD de cada ficha (la oferta
+más baja) con navegador real y rate-limited. Moneda: EUR.
+
+```
+cd tools
+node scrape-prices.mjs           # scrapea las 101 URLs -> tools/scrape-results.json
+node apply-prices.mjs            # DRY-RUN: lista outliers (<10€ o >300€) y cambios
+#  -> revisa los outliers a mano contra la ficha de GYG (ayuda: node verify-outliers.mjs).
+#     Si GYG expone un precio raro en su JSON-LD (p. ej. coge un tour privado en vez
+#     del básico), corrígelo en  tools/price-overrides.json  ->  { "<tid>": <precio> }
+node apply-prices.mjs --apply    # escribe catalog.csv: precio + precio_display="from N€"
+node build-catalog.mjs           # regenera catalog.js
+```
+
+Reglas:
+- `precio` (numérico, para ordenar/filtrar) y `precio_display` (`from N€`) se mantienen
+  **siempre coherentes**; `apply-prices.mjs` lo garantiza.
+- **Revisa outliers**: por debajo de 10€ o por encima de 300€ pueden ser errores de
+  scraping (coger el precio de un tour privado en vez del básico) — verifícalos.
+- `tools/scrape-results.json` guarda el crudo (precio, moneda, ofertas JSON-LD) para
+  poder repetir y auditar.
+
 ## Atribución (crítico — no romper)
 
 `ntl-attrib.js` guarda `?ref=EST-XXXXX` en una cookie de 30 días y añade
@@ -81,6 +106,9 @@ Deep-links de carteles por local: `?zona=barcelona|salou|cambrils|costadaurada`
 |---|---|
 | `extract-cards.mjs` | (una vez) vuelca el HTML original a `catalog.csv` |
 | `scrape-gyg.mjs` | rellena la columna `imagen` desde GYG |
+| `scrape-prices.mjs` | scrapea el precio "desde" real de las 101 → `scrape-results.json` |
+| `apply-prices.mjs` | aplica precios al CSV (`--apply`); marca outliers; usa `price-overrides.json` |
+| `verify-outliers.mjs` | abre en el navegador las fichas dudosas para revisar el precio a mano |
 | `harvest-listings.mjs` | recolecta URLs reales de actividades de páginas de GYG |
 | `curate.py` / `select.py` | filtran y seleccionan candidatos → `new-activities.json` |
 | `add-activities.mjs` | enriquece y añade actividades nuevas al CSV |
