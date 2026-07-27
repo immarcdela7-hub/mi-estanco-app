@@ -406,10 +406,11 @@
         </div>
     </div>
 
-    <!-- Discover More: widget de ciudad de GetYourGuide, uno por provincia.
-         Los cuatro van en el HTML desde el principio (ocultos salvo el activo)
-         porque el script de GYG busca los data-gyg-href al cargar; si se
-         inyectaran despues podria no verlos. Solo se cambia cual se muestra. -->
+    <!-- Discover More: widget de ciudad de GetYourGuide segun la provincia.
+         Se monta UNO SOLO y ademas de forma perezosa, cuando la seccion entra
+         en pantalla. Tener los cuatro puestos de golpe costaba ~6 MB y 108
+         peticiones en la carga inicial, y esta seccion va al final de 101
+         tarjetas: la mayoria de visitas no llegan a verla. -->
     <section class="py-8 px-4 max-w-lg mx-auto relative mt-8" data-view="catalog" id="discoverMore">
         <div class="bg-white p-4 rounded-3xl shadow-xl border border-gray-100">
             <div class="mb-5 flex items-center justify-between px-2">
@@ -418,39 +419,9 @@
                     Powered by GYG
                 </div>
             </div>
-            <div class="ntl-citywidget" data-province="barcelona">
-                <div data-gyg-href="https://widget.getyourguide.com/default/city.frame" data-gyg-location-id="45" data-gyg-locale-code="en-US" data-gyg-widget="city" data-gyg-partner-id="IBO5PAK"></div>
-            </div>
-            <div class="ntl-citywidget" data-province="tarragona" hidden>
-                <div data-gyg-href="https://widget.getyourguide.com/default/city.frame" data-gyg-location-id="1884" data-gyg-locale-code="en-US" data-gyg-widget="city" data-gyg-partner-id="IBO5PAK"></div>
-            </div>
-            <div class="ntl-citywidget" data-province="girona" hidden>
-                <div data-gyg-href="https://widget.getyourguide.com/default/city.frame" data-gyg-location-id="550" data-gyg-locale-code="en-US" data-gyg-widget="city" data-gyg-partner-id="IBO5PAK"></div>
-            </div>
-            <div class="ntl-citywidget" data-province="lleida" hidden>
-                <div data-gyg-href="https://widget.getyourguide.com/default/city.frame" data-gyg-location-id="100032" data-gyg-locale-code="en-US" data-gyg-widget="city" data-gyg-partner-id="IBO5PAK"></div>
-            </div>
+            <div id="cityWidgetBox" class="ntl-citybox"></div>
         </div>
     </section>
-
-    <!-- Sella el codigo del establecimiento en los widgets ANTES de que el
-         script de GetYourGuide los procese: data-gyg-cmp va en el div (fuera
-         del iframe), asi que las ventas del widget tambien quedan atribuidas
-         al local del cartel. No puede esperar a ntl-attrib.js, que carga al
-         final: para entonces el widget ya se habria inicializado. -->
-    <script>
-      (function () {
-        var ref = new URLSearchParams(location.search).get('ref');
-        if (!ref) {
-          var m = document.cookie.match(/(?:^|; )ntl_ref=([^;]*)/);
-          if (m) ref = decodeURIComponent(m[1]);
-        }
-        if (!ref) return;
-        document.querySelectorAll('[data-gyg-widget]').forEach(function (el) {
-          el.setAttribute('data-gyg-cmp', ref);
-        });
-      })();
-    </script>
 
     <!-- Trust Badges -->
     <section class="py-6 px-6 text-center text-xs text-gray-400">
@@ -598,21 +569,59 @@
             }
 
             // ---------- Widget de ciudad segun la provincia activa ----------
-            // Nombre que se muestra y a que ciudad de GYG apunta cada provincia.
-            // "All Catalunya" cae en Barcelona, que es donde esta el grueso.
+            // A que ciudad de GYG apunta cada provincia. El id sale de la URL
+            // de GYG (…/barcelona-l45/ -> 45). "All Catalunya" cae en
+            // Barcelona, que es donde esta el grueso del catalogo.
             const CITY_WIDGET = {
-                barcelona: 'Barcelona',
-                tarragona: 'Salou',   // la Costa Daurada es donde tenemos oferta
-                girona: 'Girona',
-                lleida: 'Lleida',
+                barcelona: { id: '45', nombre: 'Barcelona' },
+                tarragona: { id: '1884', nombre: 'Salou' },  // la Costa Daurada es donde tenemos oferta
+                girona: { id: '550', nombre: 'Girona' },
+                lleida: { id: '100032', nombre: 'Lleida' },
             };
-            const cityWidgets = document.querySelectorAll('.ntl-citywidget');
+            const cityBox = document.getElementById('cityWidgetBox');
+            const discoverSection = document.getElementById('discoverMore');
             const discoverTitle = document.getElementById('discoverTitle');
+            let cityMounted = null;   // provincia cuyo widget esta puesto
+            let citySeen = false;     // ¿ha llegado el usuario a esta seccion?
+
+            // El cmp va en el propio div (fuera del iframe): asi lo que se
+            // reserve desde el widget tambien queda atribuido al local.
+            function refActual() {
+                const r = new URLSearchParams(location.search).get('ref');
+                if (r) return r;
+                const m = document.cookie.match(/(?:^|; )ntl_ref=([^;]*)/);
+                return m ? decodeURIComponent(m[1]) : '';
+            }
+
+            function montarCiudad(prov) {
+                if (!cityBox || cityMounted === prov) return;
+                cityMounted = prov;
+                const c = CITY_WIDGET[prov];
+                const ref = refActual();
+                cityBox.innerHTML =
+                    '<div data-gyg-href="https://widget.getyourguide.com/default/city.frame"' +
+                    ' data-gyg-location-id="' + c.id + '" data-gyg-locale-code="en-US"' +
+                    ' data-gyg-widget="city" data-gyg-partner-id="IBO5PAK"' +
+                    (ref ? ' data-gyg-cmp="' + ref.replace(/"/g, '') + '"' : '') + '></div>';
+            }
 
             function updateCityWidget() {
                 const prov = CITY_WIDGET[activeProvince] ? activeProvince : 'barcelona';
-                cityWidgets.forEach((w) => { w.hidden = w.dataset.province !== prov; });
-                if (discoverTitle) discoverTitle.textContent = 'Discover more in ' + CITY_WIDGET[prov];
+                if (discoverTitle) discoverTitle.textContent = 'Discover more in ' + CITY_WIDGET[prov].nombre;
+                if (citySeen) montarCiudad(prov);
+            }
+
+            // Solo se carga cuando la seccion se acerca a pantalla.
+            if (discoverSection && 'IntersectionObserver' in window) {
+                const io = new IntersectionObserver((entradas) => {
+                    if (!entradas.some((e) => e.isIntersecting)) return;
+                    citySeen = true;
+                    io.disconnect();
+                    updateCityWidget();
+                }, { rootMargin: '300px' });
+                io.observe(discoverSection);
+            } else if (discoverSection) {
+                citySeen = true; // navegador antiguo: sin carga perezosa
             }
 
             // ---------- LISTENERS ----------

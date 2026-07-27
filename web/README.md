@@ -97,17 +97,17 @@ seleccionada**: Barcelona (`l45`), Salou para Tarragona (`l1884`), Girona
 Sirve sobre todo donde nuestra oferta es corta (Lleida tiene 3 actividades):
 convierte un "aquí no hay casi nada" en una salida al catálogo completo de GYG.
 
-Dos detalles que **no** se pueden cambiar a la ligera:
+Se monta **uno solo** y **de forma perezosa**, cuando la sección entra en
+pantalla (`IntersectionObserver`). Va al final de 101 tarjetas, así que la
+mayoría de visitas no llegan a verla y no pagan su coste: cada widget son
+~1,5 MB y ~27 peticiones a GetYourGuide.
 
-- Los cuatro `div` van en el HTML **desde el principio** (ocultos salvo el
-  activo). El script de GYG busca los `data-gyg-href` al cargar la página; si
-  se inyectaran después podría no verlos. Cambiar de provincia solo cambia
-  cuál se muestra.
-- El `data-gyg-cmp` se sella con el código del establecimiento en un
-  `<script>` inline **anterior** al de GYG. Ese atributo vive en el `div`
-  (fuera del iframe), así que las ventas del widget también quedan atribuidas
-  al local. No puede hacerlo `ntl-attrib.js`, que carga al final: para entonces
-  el widget ya se habría inicializado.
+- El script de GYG **sí detecta los `data-gyg-href` inyectados después**
+  (verificado en navegador real: monta en 43-315 ms), así que no hace falta
+  tenerlos todos puestos ni forzar un re-escaneo.
+- El `data-gyg-cmp` se pone en el `div` al inyectarlo. Ese atributo vive fuera
+  del iframe y GYG lo traslada a la URL del iframe, así que las reservas del
+  widget también quedan atribuidas al local.
 
 Para cambiar a qué ciudad apunta una provincia: el mapa `CITY_WIDGET` en
 `tickets.html` y el `data-gyg-location-id` del `div` correspondiente. El id sale
@@ -116,6 +116,26 @@ de la URL de GYG (`…/barcelona-l45/` → `45`).
 > Tarragona apunta a **Salou** porque es donde está nuestra oferta (11
 > actividades). Si prefieres la ciudad de Tarragona, saca su id del generador
 > de widgets del Partner Portal y cámbialo.
+
+## Widget de disponibilidad (en el detalle de un plan)
+
+Cada parada ofrece **"Check dates & live price"**: despliega debajo el widget de
+disponibilidad de GYG con calendario, personas y **precio en vivo**. Es la
+solución de fondo a que nuestros precios sean una foto fija.
+
+- **Bajo demanda y uno cada vez** (`plans-ui.js` → `mountAvailability`): son
+  iframes de ~600 KB; abrir uno cierra el anterior.
+- Lleva `data-gyg-cmp` con el código del establecimiento.
+- **Red de seguridad**: si a los 3,5 s no hay iframe (GYG caído o bloqueado),
+  el hueco se sustituye por un enlace normal a la actividad, con su
+  `partner_id` y su `cmp`. El cliente nunca ve un hueco roto.
+
+## Pruebas
+
+En `tools/tests/` hay tres baterías con navegador real. Ejecútalas ante
+cualquier cambio en `web/` — sobre todo por la atribución, que es un fallo
+silencioso: si un enlace pierde el `cmp`, la web *parece* seguir bien pero las
+ventas ya no se pueden repartir. Ver `tools/tests/README.md`.
 
 ## Catálogo dirigido por datos
 
