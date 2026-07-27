@@ -128,6 +128,47 @@ await page.goto(BASE, { waitUntil: 'domcontentloaded' });
 await page.waitForTimeout(1200);
 await page.screenshot({ path: './capturas/escritorio.png' });
 
+// ---------- 6a-bis. Fechas y precio en vivo desde el catalogo ----------
+const cp = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+await cp.goto(BASE + '?ref=EST-00012', { waitUntil: 'domcontentloaded' });
+await cp.waitForTimeout(1300);
+
+const nBotones = await cp.locator('.ntl-card-dates').count();
+log('Todas las tarjetas ofrecen ver fechas', nBotones === 101, `${nBotones} botones`);
+log('La ventana empieza cerrada', await cp.locator('#availModal').isHidden());
+
+await cp.locator('.ntl-card-dates').first().click();
+await cp.waitForTimeout(400);
+const modal = await cp.evaluate(() => {
+  const d = document.querySelector('#availModalBody [data-gyg-widget]');
+  return { abierto: !document.getElementById('availModal').hidden,
+    titulo: document.getElementById('availModalTitle').textContent,
+    tour: d ? d.dataset.gygTourId : null, cmp: d ? d.getAttribute('data-gyg-cmp') : null };
+});
+log('Al pulsar se abre con el widget de esa actividad',
+  modal.abierto && /^\d+$/.test(modal.tour || '') && modal.titulo.length > 5, JSON.stringify(modal));
+log('El widget del catalogo lleva el cmp', modal.cmp === 'EST-00012', modal.cmp);
+
+// Cerrar debe descargar el iframe: si no, se quedaria consumiendo datos.
+await cp.keyboard.press('Escape');
+await cp.waitForTimeout(300);
+const cerrado = await cp.evaluate(() => ({
+  oculto: document.getElementById('availModal').hidden,
+  vacio: document.getElementById('availModalBody').innerHTML === '',
+  scroll: document.body.style.overflow,
+}));
+log('Escape cierra y descarga el iframe',
+  cerrado.oculto && cerrado.vacio && cerrado.scroll !== 'hidden', JSON.stringify(cerrado));
+
+// El refactor de la tarjeta no debe haber roto el enlace ni los filtros.
+const tras = await cp.evaluate(() => {
+  const as = [...document.querySelectorAll('.experience-item a[href*="getyourguide."]')];
+  return { enlaces: as.length, cmp: as.filter((a) => a.href.includes('cmp=EST-00012')).length };
+});
+log('Cada tarjeta sigue enlazando con su atribucion',
+  tras.enlaces === 101 && tras.cmp === 101, `${tras.cmp}/${tras.enlaces}`);
+await cp.close();
+
 // ---------- 6b. Widget de ciudad: perezoso y por provincia ----------
 const wp = await browser.newPage({ viewport: { width: 1280, height: 900 } });
 await wp.goto(BASE + '?ref=EST-00012&zona=salou', { waitUntil: 'domcontentloaded' });

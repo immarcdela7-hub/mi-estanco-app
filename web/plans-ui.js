@@ -145,6 +145,11 @@
     return m ? decodeURIComponent(m[1]) : '';
   }
 
+  // El catalogo tambien monta este widget (en una ventana modal, porque en una
+  // rejilla no se puede desplegar en linea). Se comparte para no duplicar ni la
+  // atribucion ni la red de seguridad.
+  window.ntlMountAvailability = mountAvailability;
+
   // La navegacion hacia atras vive en la cabecera (ntlSetBack), no aqui.
   // El detalle no lleva el hero azul del catalogo: su portada son las fotos del
   // propio plan, que es lo que de verdad lo vende.

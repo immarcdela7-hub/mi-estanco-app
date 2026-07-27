@@ -117,11 +117,27 @@ de la URL de GYG (`…/barcelona-l45/` → `45`).
 > actividades). Si prefieres la ciudad de Tarragona, saca su id del generador
 > de widgets del Partner Portal y cámbialo.
 
-## Widget de disponibilidad (en el detalle de un plan)
+## Widget de disponibilidad ("Check dates & live price")
 
-Cada parada ofrece **"Check dates & live price"**: despliega debajo el widget de
-disponibilidad de GYG con calendario, personas y **precio en vivo**. Es la
-solución de fondo a que nuestros precios sean una foto fija.
+Está en los **dos sitios**: en cada tarjeta del catálogo y en cada parada de un
+plan. Muestra calendario, personas y **precio en vivo** — la solución de fondo a
+que nuestros precios sean una foto fija.
+
+Se presenta distinto según el sitio, porque el contexto lo pide:
+
+- **Catálogo**: abre una **ventana** (en móvil, hoja inferior). En una rejilla
+  de tres columnas no se puede desplegar en línea sin descuadrarla. Al cerrar se
+  vacía el contenido para descargar el iframe.
+- **Detalle de un plan**: se despliega **en línea** bajo la parada, que es una
+  lista vertical y ahí sí encaja.
+
+Los dos usan la misma función (`window.ntlMountAvailability`, en `plans-ui.js`),
+así que la atribución y la red de seguridad son idénticas.
+
+> **La reserva se cierra siempre en GetYourGuide.** Su botón "Check availability"
+> navega a su web; es así por diseño y está documentado. Reservar sin salir
+> requeriría la Partner API (mínimo 100.000 visitas/mes). El valor del widget es
+> ver fecha y precio real **antes** de salir, y llegar a GYG ya decidido.
 
 - **Bajo demanda y uno cada vez** (`plans-ui.js` → `mountAvailability`): son
   iframes de ~600 KB; abrir uno cierra el anterior.
