@@ -49,32 +49,53 @@
   }
 
   // ---------- Contexto: zona del cartel QR ----------
-  var ZONE_TO_PROVINCE = {
-    barcelona: 'barcelona', salou: 'tarragona', cambrils: 'tarragona',
-    costadaurada: 'tarragona', costadorada: 'tarragona', tarragona: 'tarragona',
-    girona: 'girona', lleida: 'lleida',
-  };
-  var ZONE_TO_CITY = {
-    salou: 'salou', cambrils: 'cambrils',
-    costadaurada: 'costadaurada', costadorada: 'costadaurada',
-  };
-  var ZONE_NAME = {
-    barcelona: 'Barcelona', salou: 'Salou', cambrils: 'Cambrils',
-    costadaurada: 'Costa Daurada', costadorada: 'Costa Daurada',
-    tarragona: 'Tarragona', girona: 'Girona', lleida: 'Lleida',
+  // El CRM graba en el QR la ciudad del establecimiento (?zona=lloret-de-mar).
+  // No mantenemos una lista fija de ciudades: se resuelve contra las que
+  // realmente existen en el catalogo, asi funciona cualquier ciudad nueva sin
+  // tocar este archivo. Solo quedan a mano los alias que no son una ciudad.
+  var ZONE_ALIASES = {
+    costadaurada: { province: 'tarragona', city: 'costadaurada', name: 'Costa Daurada' },
+    costadorada: { province: 'tarragona', city: 'costadaurada', name: 'Costa Daurada' },
+    costabrava: { province: 'girona', city: null, name: 'Costa Brava' },
   };
 
-  function readZone() {
+  // Compara sin acentos, guiones ni espacios: "Lloret de Mar", "lloret-de-mar"
+  // y "lloretdemar" son la misma zona.
+  function norm(v) {
+    return String(v == null ? '' : v).normalize('NFD').replace(/[̀-ͯ]/g, '')
+      .toLowerCase().replace(/[^a-z0-9]/g, '');
+  }
+
+  function titleCase(slug) {
+    return String(slug).split(/[-\s]+/).filter(Boolean).map(function (w) {
+      return w.length <= 2 ? w : w.charAt(0).toUpperCase() + w.slice(1);
+    }).join(' ');
+  }
+
+  function readZone(catalog) {
     var p = new URLSearchParams(location.search);
-    var clean = function (v) { return (v || '').toLowerCase().replace(/[^a-z]/g, ''); };
-    var z = clean(p.get('zona') || p.get('zone'));
-    if (z && ZONE_TO_PROVINCE[z]) {
-      return { zone: z, province: ZONE_TO_PROVINCE[z], city: ZONE_TO_CITY[z] || null, name: ZONE_NAME[z] };
+    var raw = p.get('zona') || p.get('zone') || p.get('provincia') || p.get('province') || '';
+    var z = norm(raw);
+    if (!z) return null;
+
+    if (ZONE_ALIASES[z]) {
+      var al = ZONE_ALIASES[z];
+      return { province: al.province, city: al.city, name: al.name };
     }
-    var pr = clean(p.get('provincia') || p.get('province'));
-    if (pr && ZONE_TO_PROVINCE[pr]) {
-      return { zone: pr, province: ZONE_TO_PROVINCE[pr], city: null, name: ZONE_NAME[pr] };
+
+    // ¿Coincide con la ciudad de alguna actividad?
+    for (var i = 0; i < catalog.length; i++) {
+      if (norm(catalog[i].city) === z) {
+        return { province: catalog[i].provincia, city: catalog[i].city, name: titleCase(catalog[i].city) };
+      }
     }
+    // ¿Y con una provincia?
+    for (var j = 0; j < catalog.length; j++) {
+      if (norm(catalog[j].provincia) === z) {
+        return { province: catalog[j].provincia, city: null, name: titleCase(catalog[j].provincia) };
+      }
+    }
+    // Ciudad sin actividades propias: no sabemos situarla, seguimos sin zona.
     return null;
   }
 
@@ -231,7 +252,7 @@
 
     var now = new Date();
     var slot = currentSlot(now);
-    var place = readZone();
+    var place = readZone(catalog);
 
     if (ctx) ctx.textContent = contextLine(slot, place, now);
 

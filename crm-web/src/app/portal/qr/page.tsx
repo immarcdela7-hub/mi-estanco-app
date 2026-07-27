@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
 export default async function PartnerQrPage() {
   const { establishment } = await requirePartner();
   const baseUrl = await getSetting("base_url");
-  const url = buildTrackingUrl(baseUrl, establishment.code);
+  const url = buildTrackingUrl(baseUrl, establishment.code, establishment.city);
 
   return (
     <>

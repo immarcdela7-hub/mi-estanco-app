@@ -44,7 +44,7 @@ export default async function EstablishmentDetail({
   ]);
   if (!est) notFound();
 
-  const url = buildTrackingUrl(baseUrl, est.code);
+  const url = buildTrackingUrl(baseUrl, est.code, est.city);
   const extraCodes = est.qrCodes.filter((c) => c.code !== est.code);
 
   return (

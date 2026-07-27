@@ -426,21 +426,34 @@
                 });
             });
 
-            // ---------- DEEP-LINKS (per-shop QR posters): ?zona= / ?provincia= ----------
+            // ---------- DEEP-LINKS (carteles QR): ?zona= / ?provincia= ----------
+            // El CRM graba la ciudad del establecimiento en el QR
+            // (?zona=lloret-de-mar). No mantenemos una lista fija de ciudades:
+            // se resuelve contra las que existen en el catalogo, asi una ciudad
+            // nueva funciona sola. Se compara sin acentos, guiones ni espacios.
             const params = new URLSearchParams(location.search);
-            const clean = (v) => (v || '').toLowerCase().replace(/[^a-z]/g, '');
-            const zona = clean(params.get('zona') || params.get('zone'));
-            const provParam = clean(params.get('provincia') || params.get('province'));
-            const zoneToProvince = { barcelona: 'barcelona', salou: 'tarragona', cambrils: 'tarragona', costadaurada: 'tarragona', costadorada: 'tarragona', tarragona: 'tarragona', girona: 'girona', lleida: 'lleida' };
-            const zoneToCity = { salou: 'salou', cambrils: 'cambrils', costadaurada: 'costadaurada', costadorada: 'costadaurada' };
-            if (zona && zoneToProvince[zona]) {
-                activeProvince = zoneToProvince[zona];
-                cityFilter = zoneToCity[zona] || 'all';
-                activateProvinceButton(activeProvince);
-            } else if (provParam && zoneToProvince[provParam]) {
-                activeProvince = zoneToProvince[provParam];
-                activateProvinceButton(activeProvince);
+            const norm = (v) => String(v == null ? '' : v).normalize('NFD').replace(/[̀-ͯ]/g, '')
+                .toLowerCase().replace(/[^a-z0-9]/g, '');
+            const zRaw = norm(params.get('zona') || params.get('zone')
+                || params.get('provincia') || params.get('province'));
+
+            if (zRaw === 'costadaurada' || zRaw === 'costadorada') {
+                activeProvince = 'tarragona';
+                cityFilter = 'costadaurada';
+            } else if (zRaw) {
+                const inCity = CATALOG.filter((a) => norm(a.city) === zRaw);
+                if (inCity.length) {
+                    activeProvince = inCity[0].provincia;
+                    // En pueblos con poca oferta, filtrar por ciudad dejaria la
+                    // pagina casi vacia: nos quedamos en la provincia y que sea
+                    // el recomendador quien destaque lo que hay al lado.
+                    cityFilter = inCity.length >= 5 ? inCity[0].city : 'all';
+                } else {
+                    const inProv = CATALOG.find((a) => norm(a.provincia) === zRaw);
+                    if (inProv) activeProvince = inProv.provincia;
+                }
             }
+            if (activeProvince !== 'all') activateProvinceButton(activeProvince);
 
             filterAndSortExperiences();
         });

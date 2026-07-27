@@ -11,8 +11,9 @@ nada**, a partir de:
 
 - **La hora**: mañana → cultura y excursiones; tarde → mar y aventura;
   noche → gastronomía, flamenco, atardeceres y fiesta.
-- **La zona del cartel QR**: si la URL trae `?zona=salou` (o `?provincia=`),
-  prioriza lo que hay cerca y lo dice ("Right here in Salou").
+- **La zona del cartel QR**: el CRM graba la ciudad del establecimiento en el
+  propio QR (`?zona=lloret-de-mar`), así que prioriza lo que hay cerca y lo dice
+  ("Right here in Lloret de Mar").
 - **Valoración y tirón**, con un empujón a lo mejor valorado.
 
 Cada tarjeta muestra un motivo corto ("Beat the queues", "Golden hour pick"),
