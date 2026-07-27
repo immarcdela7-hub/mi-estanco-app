@@ -102,13 +102,17 @@
 
   function detailHtml(pl) {
     return '' +
-      '<button class="ntl-pv-back" type="button" id="planDetailBack">' +
-        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>' +
-        'All plans</button>' +
-      '<h2 class="ntl-pv-title">' + esc(pl.titulo) + '</h2>' +
-      '<p class="ntl-pv-sub">' + esc(pl.subtitulo) + '</p>' +
-      '<p class="ntl-pv-meta">' + esc(pl.duracion) + ' &middot; ' + pl.pasos.length +
-        ' stops &middot; from ' + pl.desde + '&euro;</p>' +
+      '<div class="ntl-pv-head">' +
+        '<button class="ntl-pv-back" type="button" id="planDetailBack" title="All plans" aria-label="All plans">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>' +
+        '</button>' +
+        '<div class="ntl-pv-headtext">' +
+          '<h2 class="ntl-pv-title">' + esc(pl.titulo) + '</h2>' +
+          '<p class="ntl-pv-sub">' + esc(pl.subtitulo) + '</p>' +
+          '<p class="ntl-pv-meta">' + esc(pl.duracion) + ' &middot; ' + pl.pasos.length +
+            ' stops &middot; from ' + pl.desde + '&euro;</p>' +
+        '</div>' +
+      '</div>' +
       '<div class="ntl-pv-steps">' + pl.pasos.map(stepHtml).join('') + '</div>';
   }
 

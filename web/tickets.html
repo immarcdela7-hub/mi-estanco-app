@@ -64,13 +64,12 @@
         /* Hero mas bajo: ocupaba demasiada pantalla y retrasaba el catalogo.
            Se ajusta aqui en vez de cambiar las clases de Tailwind porque
            app.css esta purgado y no incluye otros valores de padding. */
-        .ntl-hero { padding-top:2rem !important; padding-bottom:3.5rem !important; }
-        .ntl-hero .ntl-hero-badge { margin-bottom:1rem !important; }
-        .ntl-hero h1 { font-size:2rem !important; margin-bottom:.75rem !important; }
-        .ntl-hero .ntl-hero-search { margin-top:1.25rem !important; }
+        .ntl-hero { padding-top:1.25rem !important; padding-bottom:2.5rem !important; }
+        .ntl-hero h1 { font-size:1.75rem !important; margin-bottom:.5rem !important; }
+        .ntl-hero .ntl-hero-search { margin-top:1rem !important; }
         @media (min-width:768px) {
-            .ntl-hero { padding-top:2.5rem !important; padding-bottom:4rem !important; }
-            .ntl-hero h1 { font-size:2.5rem !important; }
+            .ntl-hero { padding-top:1.75rem !important; padding-bottom:3rem !important; }
+            .ntl-hero h1 { font-size:2.25rem !important; }
         }
         /* Barra de ayuda "Don't know what to visit? We do.". CSS plano por el
            mismo motivo que las barras de filtros: app.css esta purgado y no
@@ -116,17 +115,21 @@
            de Tailwind, y ese display:flex le gana al atributo hidden. Sin esto
            se quedarian visibles al cambiar de vista. */
         [data-view][hidden] { display:none !important; }
-        .ntl-pv-back { display:inline-flex; align-items:center; gap:.35rem; border:0; background:none;
-            color:rgb(0 123 190); font-size:.8rem; font-weight:700; font-family:inherit; cursor:pointer;
-            padding:0; margin-bottom:1rem; }
-        .ntl-pv-back:hover { color:rgb(0 43 91); }
-        .ntl-pv-back svg { width:1rem; height:1rem; }
-        .ntl-pv-back[hidden] { display:none; }
+        /* Cabecera: la flecha de volver va como boton redondo alineado con el
+           titulo (igual que la del logo), no suelta encima. */
+        .ntl-pv-head { display:flex; align-items:flex-start; gap:.85rem; }
+        .ntl-pv-head[hidden] { display:none; }
+        .ntl-pv-headtext { min-width:0; }
+        .ntl-pv-back { flex-shrink:0; width:2.25rem; height:2.25rem; border-radius:9999px;
+            border:1px solid #e5e7eb; background:#fff; color:#6b7280; display:flex; align-items:center;
+            justify-content:center; cursor:pointer; padding:0; margin-top:.15rem; transition:.15s; }
+        .ntl-pv-back:hover { border-color:rgb(0 123 190); color:rgb(0 123 190); }
+        .ntl-pv-back svg { width:1.05rem; height:1.05rem; }
         .ntl-pv-title { margin:0; font-size:1.5rem; font-weight:800; letter-spacing:-.02em; color:rgb(0 43 91); }
         .ntl-pv-sub { margin:.25rem 0 0; font-size:.9rem; color:#6b7280; }
-        .ntl-pv-meta { margin:.5rem 0 1.25rem; font-size:.72rem; font-weight:700; text-transform:uppercase;
+        .ntl-pv-meta { margin:.5rem 0 0; font-size:.72rem; font-weight:700; text-transform:uppercase;
             letter-spacing:.05em; color:rgb(0 123 190); }
-        #plansIntro[hidden] { display:none; }
+        .ntl-pv-detail .ntl-pv-head { margin-bottom:1.25rem; }
         .ntl-pv-grid { display:grid; grid-template-columns:repeat(1,minmax(0,1fr)); gap:1rem; margin-top:1.25rem; }
         @media (min-width:700px) { .ntl-pv-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
         @media (min-width:1024px) { .ntl-pv-grid { grid-template-columns:repeat(3,minmax(0,1fr)); } }
@@ -227,10 +230,6 @@
         <div class="absolute -bottom-10 -left-10 w-48 h-48 bg-white rounded-full blur-2xl opacity-10"></div>
         
         <div class="relative z-10 max-w-xl mx-auto">
-            <div class="ntl-hero-badge inline-flex items-center gap-2 bg-white/10 text-blue-100 border border-white/20 font-medium px-4 py-1.5 rounded-full text-xs mb-6 backdrop-blur-sm">
-                <svg class="w-4 h-4 text-ntl-vibrant" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                Catalunya
-            </div>
             <h1 class="text-4xl md:text-5xl font-extrabold mb-4 leading-tight tracking-tight">Catalunya's best,<br><span class="text-ntl-green">in one scan.</span></h1>
             
             <!-- Live Search Bar -->
@@ -299,13 +298,14 @@
     <!-- Vista aparte de planes curados: sustituye al catalogo (que se oculta)
          hasta que se pulsa "Back". Contenido en plans-ui.js. -->
     <section class="max-w-6xl mx-auto px-4 mb-10" id="ntlPlansView" hidden>
-        <button id="plansBack" type="button" class="ntl-pv-back">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
-            Back to experiences
-        </button>
-        <div id="plansIntro">
-            <h2 class="ntl-pv-title">Ready-made plans</h2>
-            <p class="ntl-pv-sub">Put together by us, in the order we would actually do them.</p>
+        <div id="plansIntro" class="ntl-pv-head">
+            <button id="plansBack" type="button" class="ntl-pv-back" title="Back to experiences" aria-label="Back to experiences">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+            </button>
+            <div class="ntl-pv-headtext">
+                <h2 class="ntl-pv-title">Ready-made plans</h2>
+                <p class="ntl-pv-sub">Put together by us, in the order we would actually do them.</p>
+            </div>
         </div>
         <div id="plansGrid" class="ntl-pv-grid"></div>
         <div id="planDetail" class="ntl-pv-detail" hidden></div>
