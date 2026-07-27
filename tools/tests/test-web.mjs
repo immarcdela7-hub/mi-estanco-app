@@ -53,12 +53,12 @@ async function visibles() {
   return page.evaluate(() => [...document.querySelectorAll('.experience-item')]
     .filter((e) => e.offsetParent !== null).length);
 }
-await page.click('[data-province="lleida"]');
+await page.click('button.province-btn[data-province="lleida"]');
 await page.waitForTimeout(400);
 const vLleida = await visibles();
 log('Filtro provincia Lleida', vLleida > 0 && vLleida < 101, `${vLleida} visibles`);
 
-await page.click('[data-province="barcelona"]');
+await page.click('button.province-btn[data-province="barcelona"]');
 await page.waitForTimeout(400);
 const vBcn = await visibles();
 log('Filtro provincia Barcelona', vBcn > 0 && vBcn < 101, `${vBcn} visibles`);
@@ -68,14 +68,14 @@ await page.waitForTimeout(400);
 const vCombo = await visibles();
 log('Combinado Barcelona+Culture', vCombo > 0 && vCombo <= vBcn, `${vCombo} visibles`);
 
-await page.click('[data-province="all"]');
+await page.click('button.province-btn[data-province="all"]');
 await page.click('[data-filter="all"]');
 await page.waitForTimeout(400);
 const vAll = await visibles();
 log('Reset a todo', vAll === 101, `${vAll} visibles`);
 
 // Combinacion vacia (Lleida + una categoria que quiza no tenga)
-await page.click('[data-province="lleida"]');
+await page.click('button.province-btn[data-province="lleida"]');
 await page.click('[data-filter="sea"]');
 await page.waitForTimeout(400);
 const vVacio = await visibles();
@@ -87,7 +87,7 @@ log('Estado vacio coherente', vVacio > 0 ? emptyShown === false : emptyShown ===
   `${vVacio} visibles, emptyState=${emptyShown}`);
 
 // ---------- 4. Busqueda ----------
-await page.click('[data-province="all"]');
+await page.click('button.province-btn[data-province="all"]');
 await page.click('[data-filter="all"]');
 await page.fill('#searchInput', 'sagrada');
 await page.waitForTimeout(500);
@@ -153,7 +153,7 @@ log('Y lleva el cmp del establecimiento', trasBajar.cmp === 'EST-00012', trasBaj
 const esperado = { girona: '550', lleida: '100032', barcelona: '45', all: '45' };
 let okProv = 0;
 for (const [prov, loc] of Object.entries(esperado)) {
-  await wp.click(`[data-province="${prov}"]`);
+  await wp.click(`button.province-btn[data-province="${prov}"]`);
   await wp.waitForTimeout(280);
   const w = await wp.evaluate(() => {
     const ds = document.querySelectorAll('#cityWidgetBox [data-gyg-widget]');
