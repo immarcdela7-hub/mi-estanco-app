@@ -146,9 +146,50 @@ así que la atribución y la red de seguridad son idénticas.
   el hueco se sustituye por un enlace normal a la actividad, con su
   `partner_id` y su `cmp`. El cliente nunca ve un hueco roto.
 
+## Actividades propias (`own.js`) — aquí sí se reserva
+
+Lo de arriba tiene un techo: mientras vendamos producto de GetYourGuide, la
+reserva es suya y termina en su dominio. Sus widgets no permiten cobrar fuera,
+y la única alternativa (Partner API) pide 100.000 visitas/mes.
+
+Las **actividades propias** son el camino que sí llega hasta el final. Son
+nuestras — catas, visitas guiadas, lo que acordemos directamente con el
+proveedor — y el cliente elige día, hora y personas, ve el total y confirma
+**sin salir de notaxlost.com**.
+
+No se editan en `catalog.csv`: viven en el CRM (**Actividades propias**) y
+`own.js` las trae al cargar la página.
+
+```
+CRM /api/publico/actividades      -> tarjetas (van en la misma rejilla)
+CRM /api/publico/disponibilidad   -> días y horas con plazas libres
+CRM /api/publico/reservas  (POST) -> la reserva, ya con el código del QR
+```
+
+Cómo se comporta:
+
+- **Se distinguen a la vista**: distintivo verde "Book here" y pie azul
+  "Choose a date & book here". No es cosmética: el cliente tiene que saber con
+  quién contrata, y el acuerdo con GetYourGuide es no exclusivo pero sí exige
+  no confundir sobre quién vende.
+- **Son una tarjeta más**: mismas clases y mismos `data-*`, así que entran en
+  los filtros, el buscador, el orden y las dos vistas. Se registran con
+  `window.ntlAddItems(nodos)` porque llegan después del render inicial.
+- **La atribución no viaja en un enlace** (aquí no hay enlace externo al que
+  colgarle `cmp`), sino en el cuerpo de la reserva: `ref` con el código del QR.
+  El CRM lo resuelve contra el establecimiento y calcula su comisión.
+- **El precio y el cupo los pone el CRM**, nunca el navegador. Lo que se envía
+  es qué, cuándo y cuántos; el importe se recalcula al otro lado.
+- **Si el CRM no responde, la web sigue entera**: simplemente no aparecen las
+  propias. El catálogo de GetYourGuide y su atribución no se enteran.
+- **Enlace directo**: `/tickets?actividad=<slug>` abre esa reserva ya abierta.
+
+El origen del CRM se fija en `tickets.html` (`window.NTL_CRM`), no dentro de
+`own.js`, para poder apuntarlo a otro sitio sin tocar el módulo.
+
 ## Pruebas
 
-En `tools/tests/` hay tres baterías con navegador real. Ejecútalas ante
+En `tools/tests/` hay seis baterías con navegador real. Ejecútalas ante
 cualquier cambio en `web/` — sobre todo por la atribución, que es un fallo
 silencioso: si un enlace pierde el `cmp`, la web *parece* seguir bien pero las
 ventas ya no se pueden repartir. Ver `tools/tests/README.md`.
@@ -248,6 +289,11 @@ terminan en `&cmp=PRUEBA1` conservando `partner_id=IBO5PAK`.
 
 Deep-links de carteles por local: `?zona=barcelona|salou|cambrils|costadaurada`
 (o `?provincia=girona|lleida|…`) preselecciona la provincia.
+
+En las **actividades propias** no hay enlace a GetYourGuide, así que el `cmp` no
+aplica: el mismo `ref` viaja en el cuerpo de la reserva (`own.js`) y el CRM lo
+resuelve contra el establecimiento. Es el mismo código y el mismo reparto, por
+otro camino.
 
 ## Herramientas (`tools/`, no se despliega)
 

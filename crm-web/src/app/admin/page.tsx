@@ -58,13 +58,14 @@ const STEPS = [
 ];
 
 export default async function AdminDashboard() {
-  const [summary, monthly, top, recent, pending, nEst] = await Promise.all([
+  const [summary, monthly, top, recent, pending, nEst, reservasSinConfirmar] = await Promise.all([
     salesSummary(),
     monthlyCommissions(),
     topEstablishments(),
     recentSales(),
     pendingByEstablishment(),
     prisma.establishment.count(),
+    prisma.booking.count({ where: { status: "SOLICITADA" } }),
   ]);
 
   return (
@@ -89,6 +90,27 @@ export default async function AdminDashboard() {
             </div>
           ))}
         </div>
+      )}
+
+      {/* Una reserva propia es un cliente esperando respuesta, no un apunte
+          contable: se avisa arriba del todo y se entra de un clic. */}
+      {reservasSinConfirmar > 0 && (
+        <Link
+          href="/admin/reservas?estado=SOLICITADA"
+          className="mb-6 flex items-center gap-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 transition hover:border-amber-300"
+        >
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-amber-100 text-amber-800">
+            <IconClock />
+          </span>
+          <span className="text-sm text-amber-900">
+            <b>
+              {reservasSinConfirmar === 1
+                ? "Hay 1 reserva propia esperando confirmación"
+                : `Hay ${reservasSinConfirmar} reservas propias esperando confirmación`}
+            </b>
+            . El cliente ya ha reservado en la web; confírmala para registrar la venta.
+          </span>
+        </Link>
       )}
 
       <div className="mb-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">

@@ -151,6 +151,44 @@ Verificación rápida: abre `https://notaxlost.com/tickets?ref=PRUEBA1` en incó
 y comprueba que los enlaces de GetYourGuide conservan `partner_id=...` y llevan
 `cmp=PRUEBA1`.
 
+## 9. Actividades propias (reserva dentro de notaxlost.com)
+
+Las de GetYourGuide se reservan siempre en su web. Las **nuestras** no: el
+cliente elige día y hora y confirma sin salir de `notaxlost.com`. Para que
+funcione hacen falta dos piezas, una a cada lado.
+
+**En el CRM** no hay que configurar nada: al actualizar, la migración crea las
+tablas y aparecen los menús *Actividades propias* y *Reservas*. Crea una
+actividad y quedará publicada al momento.
+
+**En la web** hace falta subir `own.js` junto al resto de `web/`:
+
+```bash
+cd /opt/ntl-crm && git pull
+rsync -a --delete web/ /var/www/ntl/ && chown -R www-data:www-data /var/www/ntl
+```
+
+La web llama a tres rutas públicas del CRM (`/api/publico/actividades`,
+`/api/publico/disponibilidad` y `/api/publico/reservas`). Son las únicas sin
+sesión, así que están limitadas por IP en la app **y** en nginx; el POST de
+reserva solo se acepta desde el origen de la web. Si sirves la web desde otro
+dominio (pruebas, staging), añádelo en el `.env`:
+
+```bash
+PUBLIC_WEB_ORIGINS=https://staging.notaxlost.com
+```
+
+y decláralo en `docker-compose.yml` dentro de `app.environment`. Si usas nginx,
+copia otra vez `deploy/nginx-crm.conf`: trae el bloque nuevo de `/api/publico/`.
+
+Comprobación rápida, desde cualquier sitio:
+
+```bash
+curl -s https://crm.notaxlost.com/api/publico/actividades | head -c 200
+```
+
+Debe responder un JSON con `actividades` (vacío si aún no has creado ninguna).
+
 ---
 
 ## Mantenimiento

@@ -46,6 +46,10 @@ services:
       DATABASE_URL: postgresql://${POSTGRES_USER:-crm}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-crm}
       AUTH_SECRET: ${AUTH_SECRET:?define AUTH_SECRET en .env}
       INITIAL_ADMIN_PASSWORD: ${INITIAL_ADMIN_PASSWORD:-}
+      # Origenes extra desde los que se aceptan reservas de actividades
+      # propias, separados por comas. El de la web ya sale de la URL base de
+      # los QR; esto es solo para pruebas o dominios adicionales.
+      PUBLIC_WEB_ORIGINS: ${PUBLIC_WEB_ORIGINS:-}
       NODE_ENV: production
     # Solo accesible desde el propio servidor; el proxy inverso (nginx/apache) lo publica.
     ports:

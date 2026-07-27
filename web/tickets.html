@@ -278,6 +278,103 @@
             .ntl-modal-box { max-width:none; border-radius:1.25rem 1.25rem 0 0; max-height:92vh; }
         }
 
+        /* ----- Actividades propias -----
+           Van en la misma rejilla que las de GetYourGuide, pero se distinguen:
+           estas se reservan aqui. El distintivo tambien es una obligacion,
+           porque el cliente tiene que saber con quien esta contratando. */
+        .ntl-own { border-color:#d6e6f5; }
+        .ntl-own:hover { border-color:rgb(0 123 190); }
+        .ntl-own-flag { position:absolute; left:.5rem; bottom:.5rem; background:rgb(0 200 83); color:#fff;
+            font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:.06em;
+            padding:.2rem .45rem; border-radius:.3rem; box-shadow:0 1px 2px rgba(15,23,42,.2); }
+        .ntl-own-nopic { width:100%; height:100%; background:linear-gradient(135deg,#e8f1fa,#d3e6f7); }
+        .ntl-own-dates { color:rgb(0 123 190); font-weight:800; }
+        .ntl-own-dates:hover { background:#f2f9ff; }
+
+        /* ----- Reservador propio -----
+           El equivalente a lo que GetYourGuide solo permite dentro de su web:
+           fechas, hora, personas, total y confirmacion, aqui dentro. */
+        .ntl-bk .ntl-modal-box { max-width:38rem; }
+        .ntl-bk-top { display:flex; align-items:center; flex-wrap:wrap; gap:.5rem; padding-bottom:1rem;
+            border-bottom:1px solid #f3f4f6; }
+        .ntl-bk-price { font-size:1.05rem; font-weight:800; color:rgb(0 43 91); }
+        .ntl-bk-price small { font-size:.72rem; font-weight:600; color:#6b7280; }
+        .ntl-bk-dot { width:3px; height:3px; border-radius:9999px; background:#d1d5db; }
+        .ntl-bk-meta { font-size:.78rem; color:#6b7280; }
+        .ntl-bk-label { margin:1.1rem 0 .5rem; font-size:.68rem; font-weight:800; text-transform:uppercase;
+            letter-spacing:.08em; color:#9ca3af; }
+        .ntl-bk-label-inline { margin-top:0; }
+
+        .ntl-bk-days { display:flex; gap:.5rem; overflow-x:auto; padding-bottom:.35rem;
+            scrollbar-width:thin; -webkit-overflow-scrolling:touch; }
+        .ntl-bk-day { flex:0 0 auto; width:3.6rem; padding:.5rem .25rem; border:1px solid #e5e7eb;
+            border-radius:.7rem; background:#fff; font-family:inherit; cursor:pointer; text-align:center;
+            display:flex; flex-direction:column; gap:.1rem; transition:.15s; }
+        .ntl-bk-day:hover { border-color:rgb(0 123 190); }
+        .ntl-bk-day.is-on { background:rgb(0 43 91); border-color:rgb(0 43 91); color:#fff; }
+        .ntl-bk-dow { font-size:.62rem; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:#9ca3af; }
+        .ntl-bk-day.is-on .ntl-bk-dow, .ntl-bk-day.is-on .ntl-bk-dmon { color:rgba(255,255,255,.75); }
+        .ntl-bk-dnum { font-size:1.05rem; font-weight:800; line-height:1.1; color:inherit; }
+        .ntl-bk-dmon { font-size:.62rem; font-weight:600; color:#6b7280; }
+
+        .ntl-bk-slots { display:flex; flex-wrap:wrap; gap:.5rem; }
+        .ntl-bk-slot { border:1px solid #e5e7eb; border-radius:9999px; background:#fff; cursor:pointer;
+            font-family:inherit; font-size:.85rem; font-weight:700; color:rgb(0 43 91);
+            padding:.45rem .9rem; display:inline-flex; align-items:baseline; gap:.4rem; transition:.15s; }
+        .ntl-bk-slot small { font-size:.62rem; font-weight:600; color:#9ca3af; }
+        .ntl-bk-slot:hover { border-color:rgb(0 123 190); }
+        .ntl-bk-slot.is-on { background:rgb(0 43 91); border-color:rgb(0 43 91); color:#fff; }
+        .ntl-bk-slot.is-on small { color:rgba(255,255,255,.7); }
+
+        .ntl-bk-row { display:flex; align-items:flex-end; justify-content:space-between; gap:1rem;
+            margin-top:1.1rem; padding-top:1rem; border-top:1px solid #f3f4f6; }
+        .ntl-bk-people { display:inline-flex; align-items:center; gap:.15rem; border:1px solid #e5e7eb;
+            border-radius:9999px; padding:.15rem; }
+        .ntl-bk-pm { width:2rem; height:2rem; border:0; border-radius:9999px; background:#f3f4f6;
+            color:rgb(0 43 91); font-size:1.05rem; font-weight:800; cursor:pointer; font-family:inherit;
+            display:flex; align-items:center; justify-content:center; }
+        .ntl-bk-pm:hover { background:rgb(0 43 91); color:#fff; }
+        .ntl-bk-n { min-width:2rem; text-align:center; font-size:.95rem; font-weight:800; color:rgb(0 43 91); }
+        .ntl-bk-total { text-align:right; }
+        .ntl-bk-total span { display:block; font-size:.68rem; font-weight:800; text-transform:uppercase;
+            letter-spacing:.08em; color:#9ca3af; }
+        .ntl-bk-total b { font-size:1.35rem; font-weight:800; color:rgb(0 43 91); letter-spacing:-.02em; }
+
+        .ntl-bk-form { margin-top:1.1rem; }
+        .ntl-bk-fields { display:grid; grid-template-columns:1fr 1fr; gap:.7rem; }
+        .ntl-bk-field-wide { grid-column:1 / -1; }
+        .ntl-bk-field span { display:block; margin-bottom:.25rem; font-size:.7rem; font-weight:700; color:#6b7280; }
+        .ntl-bk-field input { width:100%; border:1px solid #e5e7eb; border-radius:.6rem; padding:.55rem .7rem;
+            font-family:inherit; font-size:.9rem; color:#111827; background:#fff; }
+        .ntl-bk-field input:focus { outline:none; border-color:rgb(0 123 190); box-shadow:0 0 0 3px rgba(0,123,190,.12); }
+        .ntl-bk-trap { position:absolute; left:-9999px; width:1px; height:1px; opacity:0; }
+        .ntl-bk-go { width:100%; margin-top:.9rem; border:0; border-radius:9999px; background:rgb(0 43 91);
+            color:#fff; font-family:inherit; font-size:.9rem; font-weight:800; padding:.85rem 1rem;
+            cursor:pointer; transition:.15s; }
+        .ntl-bk-go:hover:not(:disabled) { background:rgb(0 200 83); }
+        .ntl-bk-go:disabled { background:#e5e7eb; color:#9ca3af; cursor:default; }
+        .ntl-bk-legal { margin:.7rem 0 0; font-size:.68rem; color:#9ca3af; text-align:center; line-height:1.5; }
+        .ntl-bk-error { margin:.9rem 0 0; border-radius:.6rem; background:#fef2f2; color:#b91c1c;
+            padding:.6rem .8rem; font-size:.82rem; font-weight:600; }
+
+        .ntl-bk-done { text-align:center; padding:.5rem 0 .25rem; }
+        .ntl-bk-check { width:3rem; height:3rem; margin:0 auto .75rem; border-radius:9999px;
+            background:rgba(0,200,83,.12); color:rgb(0 200 83); display:flex; align-items:center; justify-content:center; }
+        .ntl-bk-check svg { width:1.5rem; height:1.5rem; }
+        .ntl-bk-done h4 { margin:0; font-size:1.25rem; font-weight:800; color:rgb(0 43 91); letter-spacing:-.02em; }
+        .ntl-bk-ref { margin:.25rem 0 1rem; font-size:.95rem; font-weight:800; letter-spacing:.08em;
+            color:rgb(0 123 190); font-variant-numeric:tabular-nums; }
+        .ntl-bk-recap { margin:0; text-align:left; border:1px solid #f3f4f6; border-radius:.75rem; overflow:hidden; }
+        .ntl-bk-recap > div { display:flex; justify-content:space-between; gap:1rem; padding:.6rem .85rem;
+            border-bottom:1px solid #f3f4f6; }
+        .ntl-bk-recap > div:last-child { border-bottom:0; }
+        .ntl-bk-recap dt { font-size:.78rem; color:#6b7280; }
+        .ntl-bk-recap dd { margin:0; font-size:.82rem; font-weight:700; color:#111827; text-align:right; }
+        @media (max-width:640px) {
+            .ntl-bk-fields { grid-template-columns:1fr; }
+            .ntl-bk-row { flex-direction:row; align-items:center; }
+        }
+
         /* "Surprise me": destello breve al recalcular las recomendaciones. */
         @keyframes ntlPop { from { opacity: .35; transform: translateY(4px); } to { opacity: 1; transform: none; } }
         .ntl-pop { animation: ntlPop .28s ease-out; }
@@ -665,6 +762,14 @@
                 updateCityWidget();
             }
 
+            // Las actividades propias llegan del CRM despues de pintar el
+            // catalogo (own.js). Se registran aqui para que entren en los
+            // filtros y en el orden como una tarjeta mas.
+            window.ntlAddItems = function (nodos) {
+                nodos.forEach((n) => { if (experienceItems.indexOf(n) === -1) experienceItems.push(n); });
+                filterAndSortExperiences();
+            };
+
             // ---------- Widget de ciudad segun la provincia activa ----------
             // A que ciudad de GYG apunta cada provincia. El id sale de la URL
             // de GYG (…/barcelona-l45/ -> 45). "All Catalunya" cae en
@@ -813,6 +918,11 @@
   <script src="/recommend.js?v=3"></script>
   <!-- Planes curados. Sube ?v=N al modificarlo. -->
   <script src="/plans-ui.js?v=6"></script>
+  <!-- Actividades propias: las trae del CRM y las reserva aqui mismo, sin
+       salir de notaxlost.com. Si el CRM no responde, la web sigue igual.
+       NTL_CRM se puede cambiar sin tocar own.js. Sube ?v=N al modificarlo. -->
+  <script>window.NTL_CRM = 'https://crm.notaxlost.com';</script>
+  <script src="/own.js?v=1"></script>
 
   <!-- Cambio entre las dos vistas (catalogo / planes) y visibilidad de la barra
        de ayuda. Va aqui, despues de los dos renderizadores, para saber ya si
