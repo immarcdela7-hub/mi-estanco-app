@@ -83,21 +83,66 @@
   }
 
   // ---------- Detalle de un plan ----------
+  var tourIdOf = function (u) { return (String(u).match(/-t(\d+)/) || [])[1] || ''; };
+
+  // El paso ya no es un <a> entero: dentro hay un boton para desplegar el
+  // widget de disponibilidad, y no se pueden anidar elementos interactivos.
   function stepHtml(p, i) {
+    var tid = tourIdOf(p.url);
     return '' +
-      '<a class="ntl-step" href="' + esc(p.url) + '">' +
-        '<div class="ntl-step-n">' + (i + 1) + '</div>' +
-        '<div class="ntl-step-img"><img src="' + esc(p.imagen) + '" alt="' + esc(p.titulo) + '" loading="lazy"></div>' +
-        '<div class="ntl-step-body">' +
-          '<h4 class="ntl-step-title">' + esc(p.titulo) + '</h4>' +
-          (p.nota ? '<p class="ntl-step-note">' + esc(p.nota) + '</p>' : '') +
-          '<div class="ntl-step-meta">' +
-            (p.rating ? '<b>' + STAR + ' ' + esc(p.rating) + '</b>' : '') +
-            '<b>' + esc(p.precioDisplay) + '</b>' +
+      '<div class="ntl-step">' +
+        '<div class="ntl-step-main">' +
+          '<div class="ntl-step-n">' + (i + 1) + '</div>' +
+          '<a class="ntl-step-img" href="' + esc(p.url) + '" tabindex="-1" aria-hidden="true">' +
+            '<img src="' + esc(p.imagen) + '" alt="" loading="lazy"></a>' +
+          '<div class="ntl-step-body">' +
+            '<a class="ntl-step-title" href="' + esc(p.url) + '">' + esc(p.titulo) + '</a>' +
+            (p.nota ? '<p class="ntl-step-note">' + esc(p.nota) + '</p>' : '') +
+            '<div class="ntl-step-meta">' +
+              (p.rating ? '<b>' + STAR + ' ' + esc(p.rating) + '</b>' : '') +
+              '<b>' + esc(p.precioDisplay) + '</b>' +
+              (tid ? '<button type="button" class="ntl-step-dates" data-tour="' + esc(tid) +
+                     '" data-url="' + esc(p.url) + '">Check dates &amp; live price</button>' : '') +
+            '</div>' +
           '</div>' +
+          '<a class="ntl-step-book" href="' + esc(p.url) + '">Book</a>' +
         '</div>' +
-        '<span class="ntl-step-book">Book</span>' +
-      '</a>';
+        '<div class="ntl-step-avail" hidden></div>' +
+      '</div>';
+  }
+
+  // Monta el widget de disponibilidad de GYG para una actividad.
+  // Ojo: el script de GetYourGuide busca los data-gyg-href al cargar la pagina;
+  // este div se inyecta despues, asi que puede no verlo. Por eso hay red de
+  // seguridad: si en unos segundos no ha aparecido el iframe, dejamos un enlace
+  // normal a la actividad, que siempre funciona.
+  function mountAvailability(box, tourId, url) {
+    var ref = currentRef();
+    box.innerHTML =
+      '<div data-gyg-href="https://widget.getyourguide.com/default/availability.frame"' +
+      ' data-gyg-tour-id="' + esc(tourId) + '"' +
+      ' data-gyg-locale-code="en-US" data-gyg-currency="EUR"' +
+      ' data-gyg-widget="availability" data-gyg-variant="horizontal"' +
+      ' data-gyg-partner-id="IBO5PAK"' +
+      (ref ? ' data-gyg-cmp="' + esc(ref) + '"' : '') + '>' +
+      '<span class="ntl-avail-loading">Loading live availability…</span></div>';
+
+    setTimeout(function () {
+      if (box.querySelector('iframe')) return; // el widget monto bien
+      box.innerHTML = '<a class="ntl-avail-fallback" href="' + esc(url) + '">' +
+        'Check dates and live price on GetYourGuide' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
+        '<path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></a>';
+      if (typeof window.ntlApplyAttribution === 'function') window.ntlApplyAttribution();
+    }, 3500);
+  }
+
+  // El mismo ref que usa ntl-attrib.js, para sellar el cmp en el widget.
+  function currentRef() {
+    var r = new URLSearchParams(location.search).get('ref');
+    if (r) return r;
+    var m = document.cookie.match(/(?:^|; )ntl_ref=([^;]*)/);
+    return m ? decodeURIComponent(m[1]) : '';
   }
 
   // La navegacion hacia atras vive en la cabecera (ntlSetBack), no aqui.
@@ -156,6 +201,20 @@
 
       // CRITICO: los enlaces de los pasos acaban de crearse.
       if (typeof window.ntlApplyAttribution === 'function') window.ntlApplyAttribution();
+
+      // "Check dates": despliega el widget de disponibilidad de esa parada.
+      // Uno cada vez: son iframes y no conviene cargar tres a la vez.
+      detail.querySelectorAll('.ntl-step-dates').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var box = btn.closest('.ntl-step').querySelector('.ntl-step-avail');
+          if (!box.hidden) { box.hidden = true; box.innerHTML = ''; btn.classList.remove('is-open'); return; }
+          detail.querySelectorAll('.ntl-step-avail').forEach(function (b) { b.hidden = true; b.innerHTML = ''; });
+          detail.querySelectorAll('.ntl-step-dates').forEach(function (b) { b.classList.remove('is-open'); });
+          box.hidden = false;
+          btn.classList.add('is-open');
+          mountAvailability(box, btn.dataset.tour, btn.dataset.url);
+        });
+      });
 
       // Desde el detalle, la flecha vuelve a la lista de planes.
       if (typeof window.ntlSetBack === 'function') window.ntlSetBack('detail', showGrid);

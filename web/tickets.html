@@ -205,9 +205,25 @@
         /* Pasos de un plan (vista de detalle). */
         /* Paradas de un plan. Con generosidad: son el contenido principal de
            esta vista, no una lista secundaria. */
-        .ntl-step { display:flex; align-items:center; gap:1rem; text-decoration:none; padding:.85rem;
-            border:1px solid #f3f4f6; border-radius:.85rem; background:#fff; transition:.15s; }
+        .ntl-step { border:1px solid #f3f4f6; border-radius:.85rem; background:#fff; transition:.15s; }
         .ntl-step:hover { border-color:rgb(0 123 190); box-shadow:0 8px 14px -8px rgba(15,23,42,.18); }
+        .ntl-step-main { display:flex; align-items:center; gap:1rem; padding:.85rem; }
+        .ntl-step-title { text-decoration:none; display:block; }
+        .ntl-step-img { display:block; }
+
+        /* "Check dates": despliega el widget de disponibilidad de esa parada. */
+        .ntl-step-dates { border:1px solid #dbe3ec; background:#fff; color:rgb(0 43 91); border-radius:9999px;
+            padding:.3rem .75rem; font-size:.72rem; font-weight:700; font-family:inherit; cursor:pointer;
+            transition:.15s; margin-left:.25rem; }
+        .ntl-step-dates:hover { border-color:rgb(0 123 190); color:rgb(0 123 190); }
+        .ntl-step-dates.is-open { background:rgb(0 43 91); border-color:rgb(0 43 91); color:#fff; }
+        .ntl-step-avail { padding:0 .85rem .85rem; }
+        .ntl-step-avail[hidden] { display:none; }
+        .ntl-avail-loading { display:block; padding:1.25rem; text-align:center; font-size:.8rem; color:#9ca3af; }
+        .ntl-avail-fallback { display:inline-flex; align-items:center; gap:.4rem; background:rgb(0 43 91);
+            color:#fff; text-decoration:none; border-radius:9999px; padding:.6rem 1.2rem; font-size:.8rem; font-weight:700; }
+        .ntl-avail-fallback:hover { background:rgb(0 200 83); }
+        .ntl-avail-fallback svg { width:.85rem; height:.85rem; }
         .ntl-step-n { flex-shrink:0; width:1.9rem; height:1.9rem; border-radius:9999px; background:rgb(0 43 91);
             color:#fff; font-size:.8rem; font-weight:800; display:flex; align-items:center; justify-content:center; }
         .ntl-step-img { flex-shrink:0; width:8.5rem; height:6rem; border-radius:.7rem; overflow:hidden; background:#f3f4f6; }
@@ -221,11 +237,13 @@
             padding:.6rem 1.4rem; border-radius:9999px; }
         .ntl-step:hover .ntl-step-book { background:rgb(0 200 83); }
         @media (max-width:640px) {
-            .ntl-step { gap:.75rem; padding:.7rem; }
+            .ntl-step-main { gap:.75rem; padding:.7rem; }
             .ntl-step-img { width:5rem; height:4.25rem; }
             .ntl-step-title { font-size:.95rem; }
             .ntl-step-note { font-size:.8rem; }
+            .ntl-step-meta { flex-wrap:wrap; }
             .ntl-step-book { display:none; }
+            .ntl-step-avail { padding:0 .7rem .7rem; }
         }
 
         /* "Surprise me": destello breve al recalcular las recomendaciones. */
@@ -688,7 +706,7 @@
        reaplica la atribucion tras pintar). Sube ?v=N al modificarlo. -->
   <script src="/recommend.js?v=3"></script>
   <!-- Planes curados. Sube ?v=N al modificarlo. -->
-  <script src="/plans-ui.js?v=5"></script>
+  <script src="/plans-ui.js?v=6"></script>
 
   <!-- Cambio entre las dos vistas (catalogo / planes) y visibilidad de la barra
        de ayuda. Va aqui, despues de los dos renderizadores, para saber ya si
