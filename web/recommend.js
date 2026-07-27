@@ -241,11 +241,12 @@
 
   // ---------- Arranque ----------
   function init() {
-    var section = document.getElementById('ntlPicks');
+    // Solo pintamos el contenido: mostrar u ocultar la barra que lo contiene
+    // lo decide el controlador de tickets.html, que corre despues.
     var grid = document.getElementById('picksGrid');
     var ctx = document.getElementById('picksContext');
     var btn = document.getElementById('btnSurprise');
-    if (!section || !grid) return;
+    if (!grid) return;
 
     var catalog = Array.isArray(window.NTL_CATALOG) ? window.NTL_CATALOG : [];
     if (!catalog.length) return; // sin datos no mostramos el bloque
@@ -283,8 +284,6 @@
         grid.classList.add('ntl-pop');
       });
     }
-
-    section.hidden = false;
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);

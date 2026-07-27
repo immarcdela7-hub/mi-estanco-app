@@ -90,9 +90,10 @@
   }
 
   function init() {
-    var section = document.getElementById('ntlPlans');
+    // Igual que recommend.js: aqui solo se pinta; la barra que lo contiene la
+    // muestra el controlador de tickets.html.
     var list = document.getElementById('plansList');
-    if (!section || !list) return;
+    if (!list) return;
 
     var plans = Array.isArray(window.NTL_PLANS) ? window.NTL_PLANS : [];
     if (!plans.length) return; // sin planes, el bloque no aparece
@@ -122,8 +123,6 @@
         art.querySelector('.ntl-plan-body').hidden = false;
       }
     });
-
-    section.hidden = false;
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);

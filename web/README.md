@@ -4,10 +4,25 @@ Sitio HTML estático servido por nginx desde `/var/www/ntl`. Página principal:
 `tickets.html` (`notaxlost.com/tickets`). Diseño claro con azul marino/verde de
 marca NTL, Tailwind compilado en `css/app.css`. Sin frameworks en runtime.
 
-## "Don't know what to visit? We do." (`recommend.js`)
+## "Don't know what to visit? We do." — la barra de ayuda
 
-Recomendador contextual bajo los filtros. Elige 3 actividades **sin preguntar
-nada**, a partir de:
+Bajo los filtros hay **una sola barra compacta** que agrupa las dos ayudas
+(recomendaciones y planes) en dos pestañas. Va **plegada por defecto y ocupa una
+línea**: el catálogo es lo principal de la página y no debe quedar enterrado.
+Invita con el eslogan y el contexto ("Monday, 18:56 in Salou"), y se despliega
+al pulsar.
+
+- La carcasa (desplegar, pestañas) está en un `<script>` al final de
+  `tickets.html`, después de `recommend.js` y `plans-ui.js`, para poder ocultar
+  la pestaña que se haya quedado sin contenido.
+- Si no hay catálogo, se abre directamente en planes; si no hay ninguna de las
+  dos cosas, la barra no aparece.
+- Ojo: la clase `is-open` se pone en la `<section>` `#ntlHelper`, no en el
+  `div.ntl-helper` interior.
+
+### Pestaña "Our picks" (`recommend.js`)
+
+Elige 3 actividades **sin preguntar nada**, a partir de:
 
 - **La hora**: mañana → cultura y excursiones; tarde → mar y aventura;
   noche → gastronomía, flamenco, atardeceres y fiesta.
@@ -30,14 +45,14 @@ Detalles a respetar si se toca:
   `css/app.css` es un build purgado y no incluye clases que no se usaran antes.
 - Al modificar `recommend.js`, sube el `?v=N` de su `<script>` en `tickets.html`.
 
-## Planes curados (`plans.csv` → `plans.js` → `plans-ui.js`)
+## Pestaña "Ready-made plans" (`plans.csv` → `plans.js` → `plans-ui.js`)
 
 Itinerarios nuestros ("First time in Barcelona", "Barcelona after dark", "48h on
 the Costa Daurada"): una lista **ordenada** de actividades del catálogo, cada una
 con una nota escrita por nosotros. Es lo que convierte el escaparate en consejo.
 
-Se muestran en acordeón bajo el recomendador, ordenados por la zona del QR y por
-la hora. El plan de la zona sale primero.
+Se muestran en acordeón dentro de la barra de ayuda, ordenados por la zona del QR
+y por la hora. El plan de la zona sale primero.
 
 ### Añadir o editar un plan
 

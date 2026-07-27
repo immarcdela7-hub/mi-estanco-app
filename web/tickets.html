@@ -60,21 +60,51 @@
            Plain CSS on purpose: app.css is a purged Tailwind build and may not
            ship justify-center / flex-wrap. Centered on desktop, scrollable on mobile. */
         .ntl-filterbar { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; }
-        /* Recomendador "Don't know what to visit? We do." — CSS plano por el
+        /* Barra de ayuda "Don't know what to visit? We do.". CSS plano por el
            mismo motivo que las barras de filtros: app.css esta purgado y no
-           incluye clases que no se usaran antes (p. ej. sm:grid-cols-3). */
-        .ntl-picks-card { background:#fff; border:1px solid #f3f4f6; border-radius:1rem; padding:1.25rem;
-            box-shadow:0 10px 15px -3px rgba(15,23,42,.07), 0 4px 6px -4px rgba(15,23,42,.05); }
-        .ntl-picks-head { display:flex; flex-wrap:wrap; align-items:flex-start; justify-content:space-between; gap:.75rem; margin-bottom:1rem; }
-        .ntl-picks-title { margin:0; font-size:1.375rem; font-weight:800; letter-spacing:-.02em; color:rgb(0 43 91); }
-        .ntl-picks-title span { color:rgb(107 163 43); }
-        .ntl-picks-sub { margin:.2rem 0 0; font-size:.875rem; color:#6b7280; }
-        .ntl-picks-btn { display:inline-flex; align-items:center; gap:.5rem; flex-shrink:0; border:0; cursor:pointer;
-            background:rgb(0 43 91); color:#fff; border-radius:9999px; padding:.65rem 1.1rem; font-size:.75rem;
+           incluye clases que no se usaran antes (p. ej. sm:grid-cols-3).
+           Va plegada: el catalogo es lo principal y no debe quedar enterrado. */
+        .ntl-helper { background:#fff; border:1px solid #e5e7eb; border-radius:1rem; overflow:hidden;
+            box-shadow:0 1px 2px rgba(15,23,42,.05); transition:border-color .2s, box-shadow .2s; }
+        .ntl-helper:hover { border-color:rgb(0 123 190); }
+        /* Ojo: la clase is-open va en la <section> #ntlHelper, no en .ntl-helper. */
+        #ntlHelper.is-open .ntl-helper { border-color:rgb(0 123 190); box-shadow:0 10px 15px -3px rgba(15,23,42,.08); }
+        .ntl-helper-bar { display:flex; width:100%; align-items:center; gap:.85rem; padding:.85rem 1rem;
+            background:none; border:0; cursor:pointer; text-align:left; font-family:inherit; }
+        .ntl-helper-bar:hover { background:#f9fafb; }
+        .ntl-helper-spark { flex-shrink:0; width:2.1rem; height:2.1rem; border-radius:9999px;
+            background:rgb(0 43 91); color:rgb(0 200 83); display:flex; align-items:center; justify-content:center; }
+        .ntl-helper-spark svg { width:1.1rem; height:1.1rem; }
+        .ntl-helper-text { display:flex; flex-direction:column; gap:.1rem; min-width:0; flex:1; }
+        .ntl-helper-title { font-size:1rem; font-weight:800; letter-spacing:-.01em; color:rgb(0 43 91); }
+        .ntl-helper-title span { color:rgb(107 163 43); }
+        .ntl-helper-sub { font-size:.78rem; color:#6b7280; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+        .ntl-helper-cta { flex-shrink:0; display:flex; align-items:center; gap:.4rem; color:rgb(0 123 190);
+            font-size:.78rem; font-weight:700; }
+        .ntl-helper-chevron svg { width:1.15rem; height:1.15rem; display:block; transition:transform .2s; }
+        #ntlHelper.is-open .ntl-helper-chevron svg { transform:rotate(180deg); }
+        .ntl-helper-body { border-top:1px solid #f3f4f6; padding:.9rem 1rem 1.1rem; }
+        .ntl-helper-body[hidden] { display:none; }
+
+        .ntl-tabs { display:flex; flex-wrap:wrap; align-items:center; gap:.4rem; margin-bottom:.85rem; }
+        .ntl-tab { border:1px solid #e5e7eb; background:#fff; color:#6b7280; border-radius:9999px;
+            padding:.4rem .9rem; font-size:.75rem; font-weight:700; font-family:inherit; cursor:pointer; transition:.15s; }
+        .ntl-tab:hover { border-color:rgb(0 123 190); color:rgb(0 43 91); }
+        .ntl-tab.is-active { background:rgb(0 43 91); border-color:rgb(0 43 91); color:#fff; }
+        .ntl-pane[hidden] { display:none; }
+        .ntl-pane-note { margin:0 0 .7rem; font-size:.8rem; color:#6b7280; }
+
+        .ntl-picks-btn { display:inline-flex; align-items:center; gap:.4rem; margin-left:auto; border:0; cursor:pointer;
+            background:rgb(0 43 91); color:#fff; border-radius:9999px; padding:.45rem .9rem; font-size:.72rem;
             font-weight:700; font-family:inherit; transition:background .2s; }
         .ntl-picks-btn:hover { background:rgb(0 200 83); }
+        .ntl-picks-btn[hidden] { display:none; }
         .ntl-picks-grid { display:grid; grid-template-columns:repeat(1,minmax(0,1fr)); gap:.75rem; }
         @media (min-width:768px) { .ntl-picks-grid { grid-template-columns:repeat(3,minmax(0,1fr)); } }
+        @media (max-width:640px) {
+            .ntl-helper-title { font-size:.9rem; }
+            .ntl-helper-cta-label { display:none; }
+        }
 
         .ntl-pick { display:flex; gap:.75rem; align-items:center; text-decoration:none; background:#fff;
             border:1px solid #f3f4f6; border-radius:.75rem; padding:.75rem; transition:box-shadow .2s, border-color .2s; }
@@ -91,10 +121,7 @@
         .ntl-pick-meta b { color:#111827; font-weight:700; }
         @media (max-width:640px) { .ntl-picks-title { font-size:1.15rem; } }
 
-        /* Planes curados. CSS plano, mismo motivo (app.css esta purgado). */
-        .ntl-plans-card { background:#fff; border:1px solid #f3f4f6; border-radius:1rem; padding:1.25rem;
-            box-shadow:0 10px 15px -3px rgba(15,23,42,.07), 0 4px 6px -4px rgba(15,23,42,.05); }
-        .ntl-plans-head { margin-bottom:1rem; }
+        /* Planes curados, dentro de la barra de ayuda. */
         .ntl-plans-list { display:grid; grid-template-columns:repeat(1,minmax(0,1fr)); gap:.6rem; }
         .ntl-plan { border:1px solid #e5e7eb; border-radius:.75rem; overflow:hidden; background:#fff; }
         .ntl-plan.is-open { border-color:rgb(0 123 190); }
@@ -207,32 +234,45 @@
         </div>
     </section>
 
-    <!-- "Don't know what to visit? We do." — recomendador contextual (recommend.js).
-         Oculto por defecto: solo se muestra si hay catalogo y JS disponible. -->
-    <section class="max-w-6xl mx-auto px-4 mb-6" id="ntlPicks" hidden>
-        <div class="ntl-picks-card">
-            <div class="ntl-picks-head">
-                <div style="min-width:0">
-                    <h2 class="ntl-picks-title">Don't know what to visit? <span>We do.</span></h2>
-                    <p class="ntl-picks-sub" id="picksContext"></p>
-                </div>
-                <button id="btnSurprise" type="button" class="ntl-picks-btn">
-                    <svg style="width:1rem;height:1rem" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3l2.09 6.26L20 11l-5.91 1.74L12 19l-2.09-6.26L4 11l5.91-1.74L12 3z"/></svg>
-                    Surprise me
-                </button>
-            </div>
-            <div id="picksGrid" class="ntl-picks-grid"></div>
-        </div>
-    </section>
+    <!-- Ayuda para decidir: una sola barra compacta que se despliega. Va
+         plegada por defecto a proposito: el catalogo es lo principal de la
+         pagina y esto no debe empujarlo fuera de pantalla. Contenido en
+         recommend.js (recomendaciones) y plans-ui.js (planes). -->
+    <section class="max-w-6xl mx-auto px-4 mb-5" id="ntlHelper" hidden>
+        <div class="ntl-helper">
+            <button class="ntl-helper-bar" type="button" id="helperToggle" aria-expanded="false" aria-controls="helperBody">
+                <span class="ntl-helper-spark">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3l2.09 6.26L20 11l-5.91 1.74L12 19l-2.09-6.26L4 11l5.91-1.74L12 3z"/></svg>
+                </span>
+                <span class="ntl-helper-text">
+                    <span class="ntl-helper-title">Don't know what to visit? <span>We do.</span></span>
+                    <span class="ntl-helper-sub" id="picksContext"></span>
+                </span>
+                <span class="ntl-helper-cta">
+                    <span class="ntl-helper-cta-label">Show me</span>
+                    <span class="ntl-helper-chevron">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                    </span>
+                </span>
+            </button>
 
-    <!-- Planes curados (plans-ui.js, datos en plans.js). Oculto si no hay planes. -->
-    <section class="max-w-6xl mx-auto px-4 mb-6" id="ntlPlans" hidden>
-        <div class="ntl-plans-card">
-            <div class="ntl-plans-head">
-                <h2 class="ntl-picks-title">Ready-made plans</h2>
-                <p class="ntl-picks-sub">Put together by us, in the order we would actually do them.</p>
+            <div class="ntl-helper-body" id="helperBody" hidden>
+                <div class="ntl-tabs">
+                    <button class="ntl-tab is-active" type="button" data-pane="picks">Our picks</button>
+                    <button class="ntl-tab" type="button" data-pane="plans">Ready-made plans</button>
+                    <button id="btnSurprise" type="button" class="ntl-picks-btn">
+                        <svg style="width:.9rem;height:.9rem" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3l2.09 6.26L20 11l-5.91 1.74L12 19l-2.09-6.26L4 11l5.91-1.74L12 3z"/></svg>
+                        Surprise me
+                    </button>
+                </div>
+                <div class="ntl-pane" data-pane="picks">
+                    <div id="picksGrid" class="ntl-picks-grid"></div>
+                </div>
+                <div class="ntl-pane" data-pane="plans" hidden>
+                    <p class="ntl-pane-note">Put together by us, in the order we would actually do them.</p>
+                    <div id="plansList" class="ntl-plans-list"></div>
+                </div>
             </div>
-            <div id="plansList" class="ntl-plans-list"></div>
         </div>
     </section>
 
@@ -524,8 +564,64 @@
   <script src="/ntl-attrib.js?v=2"></script>
   <!-- Recomendador "Don't know what to visit? We do." (usa window.NTL_CATALOG y
        reaplica la atribucion tras pintar). Sube ?v=N al modificarlo. -->
-  <script src="/recommend.js?v=1"></script>
+  <script src="/recommend.js?v=2"></script>
   <!-- Planes curados. Sube ?v=N al modificarlo. -->
-  <script src="/plans-ui.js?v=1"></script>
+  <script src="/plans-ui.js?v=2"></script>
+
+  <!-- Carcasa de la barra de ayuda: desplegar y cambiar de pestana. Va aqui,
+       despues de los dos anteriores, para que ya hayan pintado su contenido y
+       podamos ocultar la pestana que se haya quedado vacia. -->
+  <script>
+    (function () {
+      function init() {
+        var sec = document.getElementById('ntlHelper');
+        var bar = document.getElementById('helperToggle');
+        var body = document.getElementById('helperBody');
+        if (!sec || !bar || !body) return;
+
+        var panes = {};
+        body.querySelectorAll('.ntl-pane').forEach(function (p) { panes[p.dataset.pane] = p; });
+        var tabs = [].slice.call(body.querySelectorAll('.ntl-tab'));
+
+        // Una pestana sin contenido no se ofrece.
+        var hay = {
+          picks: !!document.querySelector('#picksGrid .ntl-pick'),
+          plans: !!document.querySelector('#plansList .ntl-plan'),
+        };
+        tabs.forEach(function (t) { if (!hay[t.dataset.pane]) t.hidden = true; });
+        if (!hay.picks && !hay.plans) return; // nada que ofrecer: la barra no aparece
+
+        function show(name) {
+          tabs.forEach(function (t) { t.classList.toggle('is-active', t.dataset.pane === name); });
+          Object.keys(panes).forEach(function (k) { panes[k].hidden = k !== name; });
+        }
+        // Si no hay recomendaciones, abrimos directamente en planes.
+        show(hay.picks ? 'picks' : 'plans');
+        var surprise = document.getElementById('btnSurprise');
+        if (surprise && !hay.picks) surprise.hidden = true;
+
+        tabs.forEach(function (t) {
+          t.addEventListener('click', function () {
+            show(t.dataset.pane);
+            if (t.dataset.pane === 'plans' && surprise) surprise.hidden = true;
+            else if (surprise && hay.picks) surprise.hidden = false;
+          });
+        });
+
+        var ctaLabel = bar.querySelector('.ntl-helper-cta-label');
+        bar.addEventListener('click', function () {
+          var open = bar.getAttribute('aria-expanded') === 'true';
+          bar.setAttribute('aria-expanded', open ? 'false' : 'true');
+          sec.classList.toggle('is-open', !open);
+          body.hidden = open;
+          if (ctaLabel) ctaLabel.textContent = open ? 'Show me' : 'Hide';
+        });
+
+        sec.hidden = false;
+      }
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+      else init();
+    })();
+  </script>
 </body>
 </html>
