@@ -137,6 +137,24 @@ export const IconClock = (p: IconProps = {}) =>
     p
   );
 
+export const IconCalendar = (p: IconProps = {}) =>
+  base(
+    <>
+      <rect x="3" y="4" width="18" height="17" rx="2" />
+      <path d="M3 10h18M8 2v4M16 2v4" />
+    </>,
+    p
+  );
+
+export const IconCompass = (p: IconProps = {}) =>
+  base(
+    <>
+      <circle cx="12" cy="12" r="10" />
+      <polygon points="16.5 7.5 14 14 7.5 16.5 10 10" />
+    </>,
+    p
+  );
+
 export const IconTag = (p: IconProps = {}) =>
   base(
     <>

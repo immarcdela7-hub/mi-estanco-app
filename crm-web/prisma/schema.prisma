@@ -23,6 +23,12 @@ enum SaleStatus {
   PAGADA
 }
 
+enum BookingStatus {
+  SOLICITADA
+  CONFIRMADA
+  CANCELADA
+}
+
 model User {
   id                 Int            @id @default(autoincrement())
   username           String         @unique
@@ -53,6 +59,7 @@ model Establishment {
   sales         Sale[]
   payouts       Payout[]
   qrCodes       QrCode[]
+  bookings      Booking[]
 }
 
 model QrCode {
@@ -75,16 +82,86 @@ model Sale {
   bookingRef      String        @default("")
   tickets         Int           @default(1)
   amountTotal     Decimal       @default(0) @db.Decimal(10, 2)
+  // Lo que ingresa NoTaxLost por esta venta. En las de GetYourGuide es la
+  // comisión que paga GYG; en las actividades propias, nuestro margen. El
+  // reparto al establecimiento se calcula igual en los dos casos, así que
+  // liquidaciones no distingue: mira `source` para saber de dónde viene.
   gygCommission   Decimal       @default(0) @db.Decimal(10, 2)
   partnerShare    Decimal       @default(0) @db.Decimal(10, 2)
   status          SaleStatus    @default(PENDIENTE)
   payout          Payout?       @relation(fields: [payoutId], references: [id])
   payoutId        Int?
   source          String        @default("manual")
+  booking         Booking?
   createdAt       DateTime      @default(now())
 
   @@index([establishmentId, status])
   @@index([saleDate])
+}
+
+/// Actividad que vende NoTaxLost por su cuenta (catas, visitas guiadas…). A
+/// diferencia de las de GetYourGuide, la reserva se completa en notaxlost.com
+/// y aterriza aquí: nosotros controlamos precio, cupo y confirmación.
+model OwnActivity {
+  id            Int       @id @default(autoincrement())
+  slug          String    @unique
+  title         String
+  summary       String    @default("")
+  description   String    @default("")
+  province      String    @default("")
+  city          String    @default("")
+  category      String    @default("culture")
+  imageUrl      String    @default("")
+  pricePerPerson Decimal  @default(0) @db.Decimal(10, 2)
+  // Porcentaje del importe que se queda NoTaxLost; el resto es del proveedor.
+  ntlMarginPct  Decimal   @default(20) @db.Decimal(5, 2)
+  durationMin   Int       @default(90)
+  minPeople     Int       @default(1)
+  capacity      Int       @default(10)
+  /// Horas de inicio separadas por "|", por ejemplo "10:00|12:30|17:00".
+  slots         String    @default("")
+  /// Días con actividad, 0=domingo … 6=sábado, separados por comas.
+  weekdays      String    @default("0,1,2,3,4,5,6")
+  /// Antelación mínima para reservar y hasta cuántos días vista se abre.
+  leadHours     Int       @default(24)
+  horizonDays   Int       @default(60)
+  meetingPoint  String    @default("")
+  supplierName  String    @default("")
+  supplierEmail String    @default("")
+  active        Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  bookings      Booking[]
+
+  @@index([active])
+}
+
+model Booking {
+  id              Int            @id @default(autoincrement())
+  reference       String         @unique
+  activity        OwnActivity    @relation(fields: [activityId], references: [id])
+  activityId      Int
+  /// Establecimiento del QR por el que llegó el cliente, si venía con `ref`.
+  establishment   Establishment? @relation(fields: [establishmentId], references: [id])
+  establishmentId Int?
+  refCode         String         @default("")
+  bookingDate     DateTime       @db.Date
+  slot            String         @default("")
+  people          Int            @default(1)
+  amountTotal     Decimal        @default(0) @db.Decimal(10, 2)
+  customerName    String
+  customerEmail   String
+  customerPhone   String         @default("")
+  notes           String         @default("")
+  locale          String         @default("es")
+  status          BookingStatus  @default(SOLICITADA)
+  /// Venta generada al confirmar, para que entre en las liquidaciones.
+  sale            Sale?          @relation(fields: [saleId], references: [id])
+  saleId          Int?           @unique
+  createdAt       DateTime       @default(now())
+
+  @@index([activityId, bookingDate])
+  @@index([status])
+  @@index([establishmentId])
 }
 
 model Payout {

@@ -1,5 +1,7 @@
 import { Sidebar } from "@/components/Sidebar";
 import {
+  IconCalendar,
+  IconCompass,
   IconDashboard,
   IconGlobe,
   IconReceipt,
@@ -26,6 +28,8 @@ export default async function AdminLayout({
     // El pool de QR preimpresos ya no se usa: cada QR se imprime al crear el
     // local, para que lleve grabada su ciudad. La página sigue accesible en
     // /admin/codigos-qr por si hiciera falta, pero fuera del menú.
+    { href: "/admin/actividades", label: "Actividades propias", icon: <IconCompass /> },
+    { href: "/admin/reservas", label: "Reservas", icon: <IconCalendar /> },
     { href: "/admin/ventas", label: "Ventas", icon: <IconReceipt /> },
     { href: "/admin/liquidaciones", label: "Liquidaciones", icon: <IconWallet /> },
     { href: "/admin/integracion-web", label: "Integración web", icon: <IconGlobe /> },

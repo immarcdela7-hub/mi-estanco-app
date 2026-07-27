@@ -9,6 +9,7 @@ export function ActionForm({
   submitLabel,
   submitClassName,
   resetOnSuccess = false,
+  compact = false,
   children,
   className = "",
 }: {
@@ -16,6 +17,8 @@ export function ActionForm({
   submitLabel: string;
   submitClassName?: string;
   resetOnSuccess?: boolean;
+  /** Sin separación sobre el botón, para los que van sueltos dentro de una tabla. */
+  compact?: boolean;
   children: React.ReactNode;
   className?: string;
 }) {
@@ -37,7 +40,7 @@ export function ActionForm({
       <button
         type="submit"
         disabled={pending}
-        className={`${submitClassName ?? btnPrimary} mt-4`}
+        className={`${submitClassName ?? btnPrimary}${compact ? "" : " mt-4"}`}
       >
         {pending ? "Guardando…" : submitLabel}
       </button>

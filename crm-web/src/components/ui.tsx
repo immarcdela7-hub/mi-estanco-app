@@ -76,6 +76,7 @@ const BADGE_STYLES: Record<string, string> = {
   blue: "bg-blue-100 text-blue-800",
   gray: "bg-slate-200 text-slate-600",
   amber: "bg-amber-100 text-amber-800",
+  red: "bg-red-100 text-red-700",
 };
 
 export function Badge({
@@ -99,6 +100,16 @@ export function SaleStatusBadge({ status }: { status: string }) {
     PENDIENTE: { color: "amber", label: "Pendiente" },
     VALIDADA: { color: "blue", label: "Validada" },
     PAGADA: { color: "green", label: "Pagada" },
+  };
+  const s = map[status] ?? { color: "gray", label: status };
+  return <Badge color={s.color}>{s.label}</Badge>;
+}
+
+export function BookingStatusBadge({ status }: { status: string }) {
+  const map: Record<string, { color: keyof typeof BADGE_STYLES; label: string }> = {
+    SOLICITADA: { color: "amber", label: "Solicitada" },
+    CONFIRMADA: { color: "green", label: "Confirmada" },
+    CANCELADA: { color: "red", label: "Cancelada" },
   };
   const s = map[status] ?? { color: "gray", label: status };
   return <Badge color={s.color}>{s.label}</Badge>;
