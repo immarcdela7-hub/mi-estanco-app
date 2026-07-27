@@ -91,6 +91,48 @@
         .ntl-pick-meta b { color:#111827; font-weight:700; }
         @media (max-width:640px) { .ntl-picks-title { font-size:1.15rem; } }
 
+        /* Planes curados. CSS plano, mismo motivo (app.css esta purgado). */
+        .ntl-plans-card { background:#fff; border:1px solid #f3f4f6; border-radius:1rem; padding:1.25rem;
+            box-shadow:0 10px 15px -3px rgba(15,23,42,.07), 0 4px 6px -4px rgba(15,23,42,.05); }
+        .ntl-plans-head { margin-bottom:1rem; }
+        .ntl-plans-list { display:grid; grid-template-columns:repeat(1,minmax(0,1fr)); gap:.6rem; }
+        .ntl-plan { border:1px solid #e5e7eb; border-radius:.75rem; overflow:hidden; background:#fff; }
+        .ntl-plan.is-open { border-color:rgb(0 123 190); }
+        .ntl-plan-head { display:flex; width:100%; align-items:center; justify-content:space-between; gap:1rem;
+            background:none; border:0; cursor:pointer; text-align:left; padding:.9rem 1rem; font-family:inherit; }
+        .ntl-plan-head:hover { background:#f9fafb; }
+        .ntl-plan-info { display:flex; flex-direction:column; gap:.15rem; min-width:0; }
+        .ntl-plan-title { font-size:1rem; font-weight:800; color:rgb(0 43 91); }
+        .ntl-plan-sub { font-size:.8rem; color:#6b7280; }
+        .ntl-plan-meta { font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:rgb(0 123 190); margin-top:.15rem; }
+        .ntl-plan-chevron { flex-shrink:0; color:#9ca3af; transition:transform .2s; }
+        .ntl-plan-chevron svg { width:1.25rem; height:1.25rem; display:block; }
+        .ntl-plan.is-open .ntl-plan-chevron { transform:rotate(180deg); }
+        .ntl-plan-body { border-top:1px solid #f3f4f6; padding:.5rem; display:flex; flex-direction:column; gap:.4rem; }
+        /* Sin esto el display:flex de arriba gana al atributo hidden y los
+           planes saldrian todos desplegados. */
+        .ntl-plan-body[hidden] { display:none; }
+
+        .ntl-step { display:flex; align-items:center; gap:.75rem; text-decoration:none; padding:.5rem;
+            border-radius:.6rem; transition:background .15s; }
+        .ntl-step:hover { background:#f9fafb; }
+        .ntl-step-n { flex-shrink:0; width:1.5rem; height:1.5rem; border-radius:9999px; background:rgb(0 43 91);
+            color:#fff; font-size:.7rem; font-weight:800; display:flex; align-items:center; justify-content:center; }
+        .ntl-step-img { flex-shrink:0; width:4.5rem; height:3.25rem; border-radius:.5rem; overflow:hidden; background:#f3f4f6; }
+        .ntl-step-img img { width:100%; height:100%; object-fit:cover; display:block; }
+        .ntl-step-body { min-width:0; flex:1; }
+        .ntl-step-title { margin:0; font-size:.85rem; font-weight:700; color:#111827; line-height:1.25; }
+        .ntl-step-note { margin:.15rem 0 0; font-size:.75rem; color:#6b7280; line-height:1.35; }
+        .ntl-step-meta { margin-top:.25rem; display:flex; gap:.5rem; font-size:.7rem; color:#6b7280; }
+        .ntl-step-meta b { color:#111827; }
+        .ntl-step-book { flex-shrink:0; background:rgb(0 43 91); color:#fff; font-size:.7rem; font-weight:700;
+            padding:.4rem .85rem; border-radius:9999px; }
+        .ntl-step:hover .ntl-step-book { background:rgb(0 200 83); }
+        @media (max-width:640px) {
+            .ntl-step-img { display:none; }
+            .ntl-step-book { display:none; }
+        }
+
         /* "Surprise me": destello breve al recalcular las recomendaciones. */
         @keyframes ntlPop { from { opacity: .35; transform: translateY(4px); } to { opacity: 1; transform: none; } }
         .ntl-pop { animation: ntlPop .28s ease-out; }
@@ -183,6 +225,17 @@
         </div>
     </section>
 
+    <!-- Planes curados (plans-ui.js, datos en plans.js). Oculto si no hay planes. -->
+    <section class="max-w-6xl mx-auto px-4 mb-6" id="ntlPlans" hidden>
+        <div class="ntl-plans-card">
+            <div class="ntl-plans-head">
+                <h2 class="ntl-picks-title">Ready-made plans</h2>
+                <p class="ntl-picks-sub">Put together by us, in the order we would actually do them.</p>
+            </div>
+            <div id="plansList" class="ntl-plans-list"></div>
+        </div>
+    </section>
+
     <!-- Advanced Filters -->
     <section class="max-w-6xl mx-auto px-6 mb-8 flex items-center justify-between gap-4 flex-wrap">
         <div class="flex items-center gap-3 flex-wrap">
@@ -254,6 +307,8 @@
     
     <!-- Catalog data (generated from catalog.csv by tools/build-catalog.mjs) -->
     <script src="/catalog.js"></script>
+    <!-- Planes curados (generado desde plans.csv por tools/build-plans.mjs) -->
+    <script src="/plans.js"></script>
 
     <!-- Render, Filtering & View Toggle Logic -->
     <script>
@@ -470,5 +525,7 @@
   <!-- Recomendador "Don't know what to visit? We do." (usa window.NTL_CATALOG y
        reaplica la atribucion tras pintar). Sube ?v=N al modificarlo. -->
   <script src="/recommend.js?v=1"></script>
+  <!-- Planes curados. Sube ?v=N al modificarlo. -->
+  <script src="/plans-ui.js?v=1"></script>
 </body>
 </html>

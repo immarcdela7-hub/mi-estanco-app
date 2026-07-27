@@ -2,7 +2,6 @@ import { Sidebar } from "@/components/Sidebar";
 import {
   IconDashboard,
   IconGlobe,
-  IconQr,
   IconReceipt,
   IconSettings,
   IconStore,
@@ -24,7 +23,9 @@ export default async function AdminLayout({
   const items = [
     { href: "/admin", label: "Panel", icon: <IconDashboard /> },
     { href: "/admin/establecimientos", label: "Establecimientos", icon: <IconStore /> },
-    { href: "/admin/codigos-qr", label: "Códigos QR", icon: <IconQr /> },
+    // El pool de QR preimpresos ya no se usa: cada QR se imprime al crear el
+    // local, para que lleve grabada su ciudad. La página sigue accesible en
+    // /admin/codigos-qr por si hiciera falta, pero fuera del menú.
     { href: "/admin/ventas", label: "Ventas", icon: <IconReceipt /> },
     { href: "/admin/liquidaciones", label: "Liquidaciones", icon: <IconWallet /> },
     { href: "/admin/integracion-web", label: "Integración web", icon: <IconGlobe /> },

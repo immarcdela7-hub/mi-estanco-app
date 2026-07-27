@@ -30,6 +30,42 @@ Detalles a respetar si se toca:
   `css/app.css` es un build purgado y no incluye clases que no se usaran antes.
 - Al modificar `recommend.js`, sube el `?v=N` de su `<script>` en `tickets.html`.
 
+## Planes curados (`plans.csv` → `plans.js` → `plans-ui.js`)
+
+Itinerarios nuestros ("First time in Barcelona", "Barcelona after dark", "48h on
+the Costa Daurada"): una lista **ordenada** de actividades del catálogo, cada una
+con una nota escrita por nosotros. Es lo que convierte el escaparate en consejo.
+
+Se muestran en acordeón bajo el recomendador, ordenados por la zona del QR y por
+la hora. El plan de la zona sale primero.
+
+### Añadir o editar un plan
+
+1. Edita `plans.csv` (una fila = un plan):
+
+   | columna | qué es |
+   |---|---|
+   | `id` | identificador corto, sin espacios (`gaudi-day`) |
+   | `titulo` / `subtitulo` | lo que se ve en la cabecera del plan |
+   | `provincia` / `city` | para que salga primero cuando el QR es de esa zona |
+   | `momento` | `morning`, `afternoon`, `evening`, `night`, `any` (o varios separados por comas) |
+   | `duracion` | texto libre: `1 day`, `1 night`, `2 days` |
+   | `actividades` | **ids de GetYourGuide** separados por `\|`: `50027\|53791\|1043339` |
+   | `notas` | una nota por actividad, en el mismo orden, separadas por `\|` |
+
+   El id de una actividad es el número que va tras la `t` en su URL de GYG
+   (`…-t50027/` → `50027`), y tiene que existir ya en `catalog.csv`.
+
+2. Regenera: `node tools/build-plans.mjs`. Avisa si un id no está en el catálogo
+   o si el número de notas no cuadra con el de actividades.
+3. Despliega (sincroniza `web/` → `/var/www/ntl`).
+
+El precio "from X€" del plan se calcula solo sumando los mínimos de sus paradas.
+
+> Al modificar `plans-ui.js`, sube el `?v=N` de su `<script>` en `tickets.html`.
+> Y ojo con el CSS: `.ntl-plan-body` lleva `display:flex`, así que necesita la
+> regla `[hidden]{display:none}` o los planes salen todos desplegados.
+
 ## Catálogo dirigido por datos
 
 Las tarjetas **no** se escriben a mano en el HTML: se generan por JS desde
