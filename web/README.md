@@ -18,6 +18,11 @@ abre una **vista aparte** que oculta el catálogo (todo lo marcado con
 - El cambio de vista está en un `<script>` al final de `tickets.html`, después
   de `recommend.js` y `plans-ui.js`, para saber ya si cada uno tiene contenido:
   sin recomendaciones la barra no aparece, y sin planes se oculta su botón.
+- **Navegación hacia atrás**: vive en la cabecera, no dentro de las secciones.
+  La flecha de arriba a la izquierda es contextual (`window.ntlSetBack(modo)`):
+  en el catálogo sale a `notaxlost.com` ("Main site"), en los planes vuelve a
+  las experiencias, y en el detalle vuelve a la lista de planes. El **logo NTL
+  va centrado** y es el que siempre sale a la web principal.
 - Regla imprescindible: `[data-view][hidden] { display:none !important; }`.
   Varias secciones del catálogo llevan la clase `flex` de Tailwind y ese
   `display:flex` le gana al atributo `hidden`.

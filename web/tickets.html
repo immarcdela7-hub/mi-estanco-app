@@ -61,6 +61,24 @@
            ship justify-center / flex-wrap. Centered on desktop, scrollable on mobile. */
         .ntl-filterbar { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; }
 
+        /* Cabecera: flecha + texto a la izquierda para moverse DENTRO de la web,
+           logo centrado para salir a notaxlost.com. Los dos laterales llevan
+           flex:1 para que el logo quede realmente centrado. */
+        .ntl-header { display:flex; }
+        .ntl-hd-side { flex:1 1 0; min-width:0; display:flex; align-items:center; }
+        .ntl-hd-right { justify-content:flex-end; }
+        .ntl-hd-logo { flex:0 0 auto; }
+        .ntl-hd-back { display:inline-flex; align-items:center; gap:.5rem; color:#6b7280;
+            font-size:.8rem; font-weight:700; text-decoration:none; padding:.35rem .75rem .35rem .5rem;
+            border-radius:9999px; transition:.15s; white-space:nowrap; }
+        .ntl-hd-back:hover { background:#f3f4f6; color:rgb(0 43 91); }
+        .ntl-hd-back svg { width:1.05rem; height:1.05rem; flex-shrink:0; }
+        @media (max-width:640px) {
+            /* En movil el sello ocupa demasiado y aprieta el texto de volver. */
+            .ntl-hd-badge { display:none; }
+            .ntl-hd-back span { max-width:9rem; overflow:hidden; text-overflow:ellipsis; }
+        }
+
         /* Hero mas bajo: ocupaba demasiada pantalla y retrasaba el catalogo.
            Se ajusta aqui en vez de cambiar las clases de Tailwind porque
            app.css esta purgado y no incluye otros valores de padding. */
@@ -174,23 +192,28 @@
         @media (max-width:640px) { .ntl-picks-title { font-size:1.15rem; } }
 
         /* Pasos de un plan (vista de detalle). */
-        .ntl-step { display:flex; align-items:center; gap:.75rem; text-decoration:none; padding:.5rem;
-            border-radius:.6rem; transition:background .15s; }
-        .ntl-step:hover { background:#f9fafb; }
-        .ntl-step-n { flex-shrink:0; width:1.5rem; height:1.5rem; border-radius:9999px; background:rgb(0 43 91);
-            color:#fff; font-size:.7rem; font-weight:800; display:flex; align-items:center; justify-content:center; }
-        .ntl-step-img { flex-shrink:0; width:4.5rem; height:3.25rem; border-radius:.5rem; overflow:hidden; background:#f3f4f6; }
+        /* Paradas de un plan. Con generosidad: son el contenido principal de
+           esta vista, no una lista secundaria. */
+        .ntl-step { display:flex; align-items:center; gap:1rem; text-decoration:none; padding:.85rem;
+            border:1px solid #f3f4f6; border-radius:.85rem; background:#fff; transition:.15s; }
+        .ntl-step:hover { border-color:rgb(0 123 190); box-shadow:0 8px 14px -8px rgba(15,23,42,.18); }
+        .ntl-step-n { flex-shrink:0; width:1.9rem; height:1.9rem; border-radius:9999px; background:rgb(0 43 91);
+            color:#fff; font-size:.8rem; font-weight:800; display:flex; align-items:center; justify-content:center; }
+        .ntl-step-img { flex-shrink:0; width:8.5rem; height:6rem; border-radius:.7rem; overflow:hidden; background:#f3f4f6; }
         .ntl-step-img img { width:100%; height:100%; object-fit:cover; display:block; }
         .ntl-step-body { min-width:0; flex:1; }
-        .ntl-step-title { margin:0; font-size:.85rem; font-weight:700; color:#111827; line-height:1.25; }
-        .ntl-step-note { margin:.15rem 0 0; font-size:.75rem; color:#6b7280; line-height:1.35; }
-        .ntl-step-meta { margin-top:.25rem; display:flex; gap:.5rem; font-size:.7rem; color:#6b7280; }
+        .ntl-step-title { margin:0; font-size:1.05rem; font-weight:700; color:#111827; line-height:1.3; }
+        .ntl-step-note { margin:.3rem 0 0; font-size:.875rem; color:#6b7280; line-height:1.45; }
+        .ntl-step-meta { margin-top:.45rem; display:flex; gap:.75rem; font-size:.8rem; color:#6b7280; }
         .ntl-step-meta b { color:#111827; }
-        .ntl-step-book { flex-shrink:0; background:rgb(0 43 91); color:#fff; font-size:.7rem; font-weight:700;
-            padding:.4rem .85rem; border-radius:9999px; }
+        .ntl-step-book { flex-shrink:0; background:rgb(0 43 91); color:#fff; font-size:.8rem; font-weight:700;
+            padding:.6rem 1.4rem; border-radius:9999px; }
         .ntl-step:hover .ntl-step-book { background:rgb(0 200 83); }
         @media (max-width:640px) {
-            .ntl-step-img { display:none; }
+            .ntl-step { gap:.75rem; padding:.7rem; }
+            .ntl-step-img { width:5rem; height:4.25rem; }
+            .ntl-step-title { font-size:.95rem; }
+            .ntl-step-note { font-size:.8rem; }
             .ntl-step-book { display:none; }
         }
 
@@ -207,18 +230,24 @@
 <body class="bg-gray-50 text-gray-900 font-sans antialiased pb-20">
 
     <!-- Sticky Header -->
-    <header class="bg-white w-full flex justify-between items-center py-4 px-6 border-b border-gray-100 sticky top-0 z-50 shadow-sm">
-        <div class="flex items-center gap-4">
-            <a href="/" class="flex items-center justify-center w-8 h-8 bg-gray-50 rounded-full text-gray-500 hover:bg-gray-200 transition" title="Back to main site">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-            </a>
-            <a href="/" class="text-2xl font-extrabold italic tracking-tighter">
-                <span class="text-ntl-navy">N</span><span class="text-ntl-accent">T</span><span class="text-ntl-green">L</span>
+    <header class="ntl-header bg-white w-full items-center py-4 px-6 border-b border-gray-100 sticky top-0 z-50 shadow-sm">
+        <!-- Izquierda: navegacion DENTRO de la web (vuelve a las experiencias o
+             a la lista de planes). El logo del centro es el que sale a
+             notaxlost.com. -->
+        <div class="ntl-hd-side">
+            <a href="/" id="hdBack" class="ntl-hd-back">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                <span id="hdBackLabel">Main site</span>
             </a>
         </div>
-        <div class="text-[10px] font-bold text-gray-500 uppercase tracking-widest bg-gray-100 px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-inner">
-            <div class="w-1.5 h-1.5 bg-ntl-vibrant rounded-full animate-pulse"></div>
-            Official Partner
+        <a href="/" class="ntl-hd-logo text-2xl font-extrabold italic tracking-tighter" title="notaxlost.com">
+            <span class="text-ntl-navy">N</span><span class="text-ntl-accent">T</span><span class="text-ntl-green">L</span>
+        </a>
+        <div class="ntl-hd-side ntl-hd-right">
+            <div class="ntl-hd-badge text-[10px] font-bold text-gray-500 uppercase tracking-widest bg-gray-100 px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-inner">
+                <div class="w-1.5 h-1.5 bg-ntl-vibrant rounded-full animate-pulse"></div>
+                Official Partner
+            </div>
         </div>
     </header>
 
@@ -298,14 +327,9 @@
     <!-- Vista aparte de planes curados: sustituye al catalogo (que se oculta)
          hasta que se pulsa "Back". Contenido en plans-ui.js. -->
     <section class="max-w-6xl mx-auto px-4 mb-10" id="ntlPlansView" hidden>
-        <div id="plansIntro" class="ntl-pv-head">
-            <button id="plansBack" type="button" class="ntl-pv-back" title="Back to experiences" aria-label="Back to experiences">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
-            </button>
-            <div class="ntl-pv-headtext">
-                <h2 class="ntl-pv-title">Ready-made plans</h2>
-                <p class="ntl-pv-sub">Put together by us, in the order we would actually do them.</p>
-            </div>
+        <div id="plansIntro">
+            <h2 class="ntl-pv-title">Ready-made plans</h2>
+            <p class="ntl-pv-sub">Put together by us, in the order we would actually do them.</p>
         </div>
         <div id="plansGrid" class="ntl-pv-grid"></div>
         <div id="planDetail" class="ntl-pv-detail" hidden></div>
@@ -601,7 +625,7 @@
        reaplica la atribucion tras pintar). Sube ?v=N al modificarlo. -->
   <script src="/recommend.js?v=3"></script>
   <!-- Planes curados. Sube ?v=N al modificarlo. -->
-  <script src="/plans-ui.js?v=3"></script>
+  <script src="/plans-ui.js?v=4"></script>
 
   <!-- Cambio entre las dos vistas (catalogo / planes) y visibilidad de la barra
        de ayuda. Va aqui, despues de los dos renderizadores, para saber ya si
@@ -612,7 +636,8 @@
         var helper = document.getElementById('ntlHelper');
         var plansView = document.getElementById('ntlPlansView');
         var btnPlans = document.getElementById('btnPlans');
-        var btnBack = document.getElementById('plansBack');
+        var hdBack = document.getElementById('hdBack');
+        var hdLabel = document.getElementById('hdBackLabel');
         var catalogo = [].slice.call(document.querySelectorAll('[data-view="catalog"]'));
 
         var hayPicks = !!document.querySelector('#picksGrid .ntl-pick');
@@ -628,17 +653,46 @@
           catalogo.forEach(function (el) { el.hidden = true; });
           if (plansView) plansView.hidden = false;
           if (typeof window.ntlPlansReset === 'function') window.ntlPlansReset();
+          else window.ntlSetBack('plans');
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }
         function verCatalogo() {
           if (plansView) plansView.hidden = true;
           catalogo.forEach(function (el) { el.hidden = false; });
           if (helper && !hayPicks) helper.hidden = true;
+          window.ntlSetBack('home');
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
+        // La flecha de la cabecera es contextual: en el catalogo sale a
+        // notaxlost.com (enlace normal), y dentro de los planes retrocede un
+        // paso sin salir de la pagina. El logo del centro siempre sale a "/".
+        var accion = null;
+        window.ntlSetBack = function (modo, handler) {
+          if (modo === 'home') {
+            accion = null;
+            if (hdLabel) hdLabel.textContent = 'Main site';
+            if (hdBack) hdBack.setAttribute('href', '/');
+          } else if (modo === 'plans') {
+            accion = verCatalogo;
+            if (hdLabel) hdLabel.textContent = 'Back to experiences';
+            if (hdBack) hdBack.setAttribute('href', '#');
+          } else {
+            accion = handler;
+            if (hdLabel) hdLabel.textContent = 'All plans';
+            if (hdBack) hdBack.setAttribute('href', '#');
+          }
+        };
+        if (hdBack) {
+          hdBack.addEventListener('click', function (ev) {
+            if (!accion) return; // modo "home": deja que el enlace navegue
+            ev.preventDefault();
+            accion();
+          });
+        }
+        window.ntlSetBack('home');
+
         if (btnPlans && hayPlanes) btnPlans.addEventListener('click', verPlanes);
-        if (btnBack) btnBack.addEventListener('click', verCatalogo);
       }
       if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
       else init();

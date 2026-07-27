@@ -100,19 +100,13 @@
       '</a>';
   }
 
+  // La navegacion hacia atras vive en la cabecera (ntlSetBack), no aqui.
   function detailHtml(pl) {
     return '' +
-      '<div class="ntl-pv-head">' +
-        '<button class="ntl-pv-back" type="button" id="planDetailBack" title="All plans" aria-label="All plans">' +
-          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>' +
-        '</button>' +
-        '<div class="ntl-pv-headtext">' +
-          '<h2 class="ntl-pv-title">' + esc(pl.titulo) + '</h2>' +
-          '<p class="ntl-pv-sub">' + esc(pl.subtitulo) + '</p>' +
-          '<p class="ntl-pv-meta">' + esc(pl.duracion) + ' &middot; ' + pl.pasos.length +
-            ' stops &middot; from ' + pl.desde + '&euro;</p>' +
-        '</div>' +
-      '</div>' +
+      '<h2 class="ntl-pv-title">' + esc(pl.titulo) + '</h2>' +
+      '<p class="ntl-pv-sub">' + esc(pl.subtitulo) + '</p>' +
+      '<p class="ntl-pv-meta">' + esc(pl.duracion) + ' &middot; ' + pl.pasos.length +
+        ' stops &middot; from ' + pl.desde + '&euro;</p>' +
       '<div class="ntl-pv-steps">' + pl.pasos.map(stepHtml).join('') + '</div>';
   }
 
@@ -120,7 +114,6 @@
     var grid = document.getElementById('plansGrid');
     var detail = document.getElementById('planDetail');
     var intro = document.getElementById('plansIntro');
-    var back = document.getElementById('plansBack');
     if (!grid || !detail) return;
 
     var plans = Array.isArray(window.NTL_PLANS) ? window.NTL_PLANS : [];
@@ -138,7 +131,8 @@
       detail.innerHTML = '';
       grid.hidden = false;
       if (intro) intro.hidden = false;
-      if (back) back.hidden = false;
+      // La flecha de la cabecera vuelve a llevar al catalogo.
+      if (typeof window.ntlSetBack === 'function') window.ntlSetBack('plans');
     }
 
     function showDetail(id) {
@@ -147,14 +141,13 @@
       detail.innerHTML = detailHtml(pl);
       grid.hidden = true;
       if (intro) intro.hidden = true;
-      if (back) back.hidden = true;
       detail.hidden = false;
 
       // CRITICO: los enlaces de los pasos acaban de crearse.
       if (typeof window.ntlApplyAttribution === 'function') window.ntlApplyAttribution();
 
-      var b = document.getElementById('planDetailBack');
-      if (b) b.addEventListener('click', showGrid);
+      // Desde el detalle, la flecha vuelve a la lista de planes.
+      if (typeof window.ntlSetBack === 'function') window.ntlSetBack('detail', showGrid);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
