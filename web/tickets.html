@@ -60,18 +60,25 @@
            Plain CSS on purpose: app.css is a purged Tailwind build and may not
            ship justify-center / flex-wrap. Centered on desktop, scrollable on mobile. */
         .ntl-filterbar { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; }
+
+        /* Hero mas bajo: ocupaba demasiada pantalla y retrasaba el catalogo.
+           Se ajusta aqui en vez de cambiar las clases de Tailwind porque
+           app.css esta purgado y no incluye otros valores de padding. */
+        .ntl-hero { padding-top:2rem !important; padding-bottom:3.5rem !important; }
+        .ntl-hero .ntl-hero-badge { margin-bottom:1rem !important; }
+        .ntl-hero h1 { font-size:2rem !important; margin-bottom:.75rem !important; }
+        .ntl-hero .ntl-hero-search { margin-top:1.25rem !important; }
+        @media (min-width:768px) {
+            .ntl-hero { padding-top:2.5rem !important; padding-bottom:4rem !important; }
+            .ntl-hero h1 { font-size:2.5rem !important; }
+        }
         /* Barra de ayuda "Don't know what to visit? We do.". CSS plano por el
            mismo motivo que las barras de filtros: app.css esta purgado y no
            incluye clases que no se usaran antes (p. ej. sm:grid-cols-3).
            Va plegada: el catalogo es lo principal y no debe quedar enterrado. */
         .ntl-helper { background:#fff; border:1px solid #e5e7eb; border-radius:1rem; overflow:hidden;
             box-shadow:0 1px 2px rgba(15,23,42,.05); transition:border-color .2s, box-shadow .2s; }
-        .ntl-helper:hover { border-color:rgb(0 123 190); }
-        /* Ojo: la clase is-open va en la <section> #ntlHelper, no en .ntl-helper. */
-        #ntlHelper.is-open .ntl-helper { border-color:rgb(0 123 190); box-shadow:0 10px 15px -3px rgba(15,23,42,.08); }
-        .ntl-helper-bar { display:flex; width:100%; align-items:center; gap:.85rem; padding:.85rem 1rem;
-            background:none; border:0; cursor:pointer; text-align:left; font-family:inherit; }
-        .ntl-helper-bar:hover { background:#f9fafb; }
+        .ntl-helper-bar { display:flex; width:100%; align-items:center; gap:.85rem; padding:.85rem 1rem; }
         .ntl-helper-spark { flex-shrink:0; width:2.1rem; height:2.1rem; border-radius:9999px;
             background:rgb(0 43 91); color:rgb(0 200 83); display:flex; align-items:center; justify-content:center; }
         .ntl-helper-spark svg { width:1.1rem; height:1.1rem; }
@@ -79,32 +86,74 @@
         .ntl-helper-title { font-size:1rem; font-weight:800; letter-spacing:-.01em; color:rgb(0 43 91); }
         .ntl-helper-title span { color:rgb(107 163 43); }
         .ntl-helper-sub { font-size:.78rem; color:#6b7280; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-        .ntl-helper-cta { flex-shrink:0; display:flex; align-items:center; gap:.4rem; color:rgb(0 123 190);
-            font-size:.78rem; font-weight:700; }
-        .ntl-helper-chevron svg { width:1.15rem; height:1.15rem; display:block; transition:transform .2s; }
-        #ntlHelper.is-open .ntl-helper-chevron svg { transform:rotate(180deg); }
+        .ntl-helper-actions { flex-shrink:0; display:flex; align-items:center; gap:.5rem; }
+        .ntl-plans-link { display:inline-flex; align-items:center; gap:.3rem; border:1px solid #e5e7eb;
+            background:#fff; color:rgb(0 43 91); border-radius:9999px; padding:.45rem .9rem; font-size:.72rem;
+            font-weight:700; font-family:inherit; cursor:pointer; transition:.15s; }
+        .ntl-plans-link:hover { border-color:rgb(0 123 190); color:rgb(0 123 190); }
+        .ntl-plans-link svg { width:.85rem; height:.85rem; }
+        .ntl-plans-link[hidden] { display:none; }
         .ntl-helper-body { border-top:1px solid #f3f4f6; padding:.9rem 1rem 1.1rem; }
-        .ntl-helper-body[hidden] { display:none; }
 
-        .ntl-tabs { display:flex; flex-wrap:wrap; align-items:center; gap:.4rem; margin-bottom:.85rem; }
-        .ntl-tab { border:1px solid #e5e7eb; background:#fff; color:#6b7280; border-radius:9999px;
-            padding:.4rem .9rem; font-size:.75rem; font-weight:700; font-family:inherit; cursor:pointer; transition:.15s; }
-        .ntl-tab:hover { border-color:rgb(0 123 190); color:rgb(0 43 91); }
-        .ntl-tab.is-active { background:rgb(0 43 91); border-color:rgb(0 43 91); color:#fff; }
-        .ntl-pane[hidden] { display:none; }
-        .ntl-pane-note { margin:0 0 .7rem; font-size:.8rem; color:#6b7280; }
-
-        .ntl-picks-btn { display:inline-flex; align-items:center; gap:.4rem; margin-left:auto; border:0; cursor:pointer;
+        .ntl-picks-btn { display:inline-flex; align-items:center; gap:.4rem; border:0; cursor:pointer;
             background:rgb(0 43 91); color:#fff; border-radius:9999px; padding:.45rem .9rem; font-size:.72rem;
             font-weight:700; font-family:inherit; transition:background .2s; }
         .ntl-picks-btn:hover { background:rgb(0 200 83); }
         .ntl-picks-btn[hidden] { display:none; }
         .ntl-picks-grid { display:grid; grid-template-columns:repeat(1,minmax(0,1fr)); gap:.75rem; }
         @media (min-width:768px) { .ntl-picks-grid { grid-template-columns:repeat(3,minmax(0,1fr)); } }
-        @media (max-width:640px) {
-            .ntl-helper-title { font-size:.9rem; }
-            .ntl-helper-cta-label { display:none; }
+        @media (max-width:768px) {
+            /* En movil la barra se apila: titulo arriba, botones debajo. */
+            .ntl-helper-bar { flex-wrap:wrap; }
+            .ntl-helper-title { font-size:.95rem; }
+            .ntl-helper-text { flex-basis:calc(100% - 3rem); }
+            .ntl-helper-actions { width:100%; }
+            .ntl-plans-link { margin-left:auto; }
         }
+
+        /* ---- Vista aparte de planes ---- */
+        /* Imprescindible: varias secciones del catalogo llevan la clase "flex"
+           de Tailwind, y ese display:flex le gana al atributo hidden. Sin esto
+           se quedarian visibles al cambiar de vista. */
+        [data-view][hidden] { display:none !important; }
+        .ntl-pv-back { display:inline-flex; align-items:center; gap:.35rem; border:0; background:none;
+            color:rgb(0 123 190); font-size:.8rem; font-weight:700; font-family:inherit; cursor:pointer;
+            padding:0; margin-bottom:1rem; }
+        .ntl-pv-back:hover { color:rgb(0 43 91); }
+        .ntl-pv-back svg { width:1rem; height:1rem; }
+        .ntl-pv-back[hidden] { display:none; }
+        .ntl-pv-title { margin:0; font-size:1.5rem; font-weight:800; letter-spacing:-.02em; color:rgb(0 43 91); }
+        .ntl-pv-sub { margin:.25rem 0 0; font-size:.9rem; color:#6b7280; }
+        .ntl-pv-meta { margin:.5rem 0 1.25rem; font-size:.72rem; font-weight:700; text-transform:uppercase;
+            letter-spacing:.05em; color:rgb(0 123 190); }
+        #plansIntro[hidden] { display:none; }
+        .ntl-pv-grid { display:grid; grid-template-columns:repeat(1,minmax(0,1fr)); gap:1rem; margin-top:1.25rem; }
+        @media (min-width:700px) { .ntl-pv-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+        @media (min-width:1024px) { .ntl-pv-grid { grid-template-columns:repeat(3,minmax(0,1fr)); } }
+        .ntl-pv-grid[hidden], .ntl-pv-detail[hidden] { display:none; }
+
+        /* Tarjeta de plan con collage de las fotos de sus paradas */
+        .ntl-pcard { display:flex; flex-direction:column; text-align:left; background:#fff; border:1px solid #e5e7eb;
+            border-radius:1rem; overflow:hidden; cursor:pointer; padding:0; font-family:inherit; width:100%;
+            transition:box-shadow .2s, border-color .2s, transform .2s; }
+        .ntl-pcard:hover { border-color:rgb(0 123 190); box-shadow:0 12px 20px -8px rgba(15,23,42,.18); transform:translateY(-2px); }
+        .ntl-pcard-photos { display:grid; grid-template-columns:1.7fr 1fr; gap:3px; height:9.5rem; background:#f3f4f6; }
+        .ntl-pcard-side { display:grid; grid-template-rows:1fr 1fr; gap:3px; }
+        .ntl-pcard-cell { position:relative; overflow:hidden; display:block; background:#e5e7eb; }
+        .ntl-pcard-cell img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .5s; }
+        .ntl-pcard:hover .ntl-pcard-cell img { transform:scale(1.04); }
+        .ntl-pcard-more { position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+            background:rgba(0,43,91,.65); color:#fff; font-size:.9rem; font-weight:800; }
+        .ntl-pcard-body { display:flex; flex-direction:column; gap:.2rem; padding:.9rem 1rem .4rem; flex:1; }
+        .ntl-pcard-title { font-size:1rem; font-weight:800; color:rgb(0 43 91); line-height:1.2; }
+        .ntl-pcard-sub { font-size:.8rem; color:#6b7280; line-height:1.35; }
+        .ntl-pcard-meta { margin-top:.3rem; font-size:.68rem; font-weight:700; text-transform:uppercase;
+            letter-spacing:.04em; color:rgb(0 123 190); }
+        .ntl-pcard-cta { display:flex; align-items:center; gap:.3rem; padding:.6rem 1rem .95rem;
+            font-size:.75rem; font-weight:700; color:rgb(0 43 91); }
+        .ntl-pcard:hover .ntl-pcard-cta { color:rgb(0 123 190); }
+        .ntl-pcard-cta svg { width:.85rem; height:.85rem; }
+        .ntl-pv-steps { display:flex; flex-direction:column; gap:.5rem; }
 
         .ntl-pick { display:flex; gap:.75rem; align-items:center; text-decoration:none; background:#fff;
             border:1px solid #f3f4f6; border-radius:.75rem; padding:.75rem; transition:box-shadow .2s, border-color .2s; }
@@ -121,25 +170,7 @@
         .ntl-pick-meta b { color:#111827; font-weight:700; }
         @media (max-width:640px) { .ntl-picks-title { font-size:1.15rem; } }
 
-        /* Planes curados, dentro de la barra de ayuda. */
-        .ntl-plans-list { display:grid; grid-template-columns:repeat(1,minmax(0,1fr)); gap:.6rem; }
-        .ntl-plan { border:1px solid #e5e7eb; border-radius:.75rem; overflow:hidden; background:#fff; }
-        .ntl-plan.is-open { border-color:rgb(0 123 190); }
-        .ntl-plan-head { display:flex; width:100%; align-items:center; justify-content:space-between; gap:1rem;
-            background:none; border:0; cursor:pointer; text-align:left; padding:.9rem 1rem; font-family:inherit; }
-        .ntl-plan-head:hover { background:#f9fafb; }
-        .ntl-plan-info { display:flex; flex-direction:column; gap:.15rem; min-width:0; }
-        .ntl-plan-title { font-size:1rem; font-weight:800; color:rgb(0 43 91); }
-        .ntl-plan-sub { font-size:.8rem; color:#6b7280; }
-        .ntl-plan-meta { font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:rgb(0 123 190); margin-top:.15rem; }
-        .ntl-plan-chevron { flex-shrink:0; color:#9ca3af; transition:transform .2s; }
-        .ntl-plan-chevron svg { width:1.25rem; height:1.25rem; display:block; }
-        .ntl-plan.is-open .ntl-plan-chevron { transform:rotate(180deg); }
-        .ntl-plan-body { border-top:1px solid #f3f4f6; padding:.5rem; display:flex; flex-direction:column; gap:.4rem; }
-        /* Sin esto el display:flex de arriba gana al atributo hidden y los
-           planes saldrian todos desplegados. */
-        .ntl-plan-body[hidden] { display:none; }
-
+        /* Pasos de un plan (vista de detalle). */
         .ntl-step { display:flex; align-items:center; gap:.75rem; text-decoration:none; padding:.5rem;
             border-radius:.6rem; transition:background .15s; }
         .ntl-step:hover { background:#f9fafb; }
@@ -189,21 +220,21 @@
     </header>
 
     <!-- Hero Section -->
-    <section class="bg-ntl-navy text-white pt-12 pb-20 px-6 text-center rounded-b-[2.5rem] shadow-2xl relative overflow-hidden">
+    <section class="ntl-hero bg-ntl-navy text-white pt-12 pb-20 px-6 text-center rounded-b-[2.5rem] shadow-2xl relative overflow-hidden">
         <!-- Abstract shapes -->
         <div class="absolute top-0 right-0 w-full h-full bg-gradient-to-b from-blue-900/50 to-transparent z-0"></div>
         <div class="absolute -top-20 -right-20 w-72 h-72 bg-gradient-to-br from-ntl-accent to-ntl-vibrant rounded-full blur-3xl opacity-40 mix-blend-screen"></div>
         <div class="absolute -bottom-10 -left-10 w-48 h-48 bg-white rounded-full blur-2xl opacity-10"></div>
         
         <div class="relative z-10 max-w-xl mx-auto">
-            <div class="inline-flex items-center gap-2 bg-white/10 text-blue-100 border border-white/20 font-medium px-4 py-1.5 rounded-full text-xs mb-6 backdrop-blur-sm">
+            <div class="ntl-hero-badge inline-flex items-center gap-2 bg-white/10 text-blue-100 border border-white/20 font-medium px-4 py-1.5 rounded-full text-xs mb-6 backdrop-blur-sm">
                 <svg class="w-4 h-4 text-ntl-vibrant" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                 Catalunya
             </div>
             <h1 class="text-4xl md:text-5xl font-extrabold mb-4 leading-tight tracking-tight">Catalunya's best,<br><span class="text-ntl-green">in one scan.</span></h1>
             
             <!-- Live Search Bar -->
-            <div class="mt-8 relative max-w-sm mx-auto">
+            <div class="ntl-hero-search mt-8 relative max-w-sm mx-auto">
                 <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                     <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                 </div>
@@ -213,7 +244,7 @@
     </section>
 
     <!-- Province Filter (top-level geography, full width, centered) -->
-    <section class="max-w-6xl mx-auto px-4 -mt-6 relative z-20 mb-3">
+    <section class="max-w-6xl mx-auto px-4 -mt-6 relative z-20 mb-3" data-view="catalog">
         <div class="ntl-filterbar pb-1" id="provinceContainer">
             <button class="province-btn active bg-ntl-navy text-white px-5 py-2.5 rounded-full text-sm font-bold shadow-md whitespace-nowrap transition" data-province="all">All Catalunya</button>
             <button class="province-btn bg-white text-gray-600 px-5 py-2.5 rounded-full text-sm font-bold shadow-md whitespace-nowrap hover:bg-gray-50 transition" data-province="barcelona">Barcelona</button>
@@ -224,7 +255,7 @@
     </section>
 
     <!-- Filter Categories (full width, centered) -->
-    <section class="max-w-6xl mx-auto px-4 relative z-20 mb-4">
+    <section class="max-w-6xl mx-auto px-4 relative z-20 mb-4" data-view="catalog">
         <div class="ntl-filterbar pb-2" id="filterContainer">
             <button class="filter-btn active inline-flex items-center gap-1.5 bg-ntl-navy text-white px-5 py-2.5 rounded-full text-sm font-bold shadow-md whitespace-nowrap snap-start transition" data-filter="all"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3l2.09 6.26L20 11l-5.91 1.74L12 19l-2.09-6.26L4 11l5.91-1.74L12 3z"/></svg>All</button>
             <button class="filter-btn inline-flex items-center gap-1.5 bg-white text-gray-600 px-5 py-2.5 rounded-full text-sm font-bold shadow-md whitespace-nowrap snap-start hover:bg-gray-50 transition" data-filter="culture"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 21h18M5 21V8l7-4 7 4v13M9 21v-6h6v6"/></svg>Culture</button>
@@ -238,9 +269,9 @@
          plegada por defecto a proposito: el catalogo es lo principal de la
          pagina y esto no debe empujarlo fuera de pantalla. Contenido en
          recommend.js (recomendaciones) y plans-ui.js (planes). -->
-    <section class="max-w-6xl mx-auto px-4 mb-5" id="ntlHelper" hidden>
+    <section class="max-w-6xl mx-auto px-4 mb-5" id="ntlHelper" data-view="catalog" hidden>
         <div class="ntl-helper">
-            <button class="ntl-helper-bar" type="button" id="helperToggle" aria-expanded="false" aria-controls="helperBody">
+            <div class="ntl-helper-bar">
                 <span class="ntl-helper-spark">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3l2.09 6.26L20 11l-5.91 1.74L12 19l-2.09-6.26L4 11l5.91-1.74L12 3z"/></svg>
                 </span>
@@ -248,36 +279,40 @@
                     <span class="ntl-helper-title">Don't know what to visit? <span>We do.</span></span>
                     <span class="ntl-helper-sub" id="picksContext"></span>
                 </span>
-                <span class="ntl-helper-cta">
-                    <span class="ntl-helper-cta-label">Show me</span>
-                    <span class="ntl-helper-chevron">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
-                    </span>
-                </span>
-            </button>
-
-            <div class="ntl-helper-body" id="helperBody" hidden>
-                <div class="ntl-tabs">
-                    <button class="ntl-tab is-active" type="button" data-pane="picks">Our picks</button>
-                    <button class="ntl-tab" type="button" data-pane="plans">Ready-made plans</button>
+                <span class="ntl-helper-actions">
                     <button id="btnSurprise" type="button" class="ntl-picks-btn">
                         <svg style="width:.9rem;height:.9rem" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3l2.09 6.26L20 11l-5.91 1.74L12 19l-2.09-6.26L4 11l5.91-1.74L12 3z"/></svg>
                         Surprise me
                     </button>
-                </div>
-                <div class="ntl-pane" data-pane="picks">
-                    <div id="picksGrid" class="ntl-picks-grid"></div>
-                </div>
-                <div class="ntl-pane" data-pane="plans" hidden>
-                    <p class="ntl-pane-note">Put together by us, in the order we would actually do them.</p>
-                    <div id="plansList" class="ntl-plans-list"></div>
-                </div>
+                    <button id="btnPlans" type="button" class="ntl-plans-link">
+                        Ready-made plans
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                    </button>
+                </span>
+            </div>
+            <div class="ntl-helper-body">
+                <div id="picksGrid" class="ntl-picks-grid"></div>
             </div>
         </div>
     </section>
 
+    <!-- Vista aparte de planes curados: sustituye al catalogo (que se oculta)
+         hasta que se pulsa "Back". Contenido en plans-ui.js. -->
+    <section class="max-w-6xl mx-auto px-4 mb-10" id="ntlPlansView" hidden>
+        <button id="plansBack" type="button" class="ntl-pv-back">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+            Back to experiences
+        </button>
+        <div id="plansIntro">
+            <h2 class="ntl-pv-title">Ready-made plans</h2>
+            <p class="ntl-pv-sub">Put together by us, in the order we would actually do them.</p>
+        </div>
+        <div id="plansGrid" class="ntl-pv-grid"></div>
+        <div id="planDetail" class="ntl-pv-detail" hidden></div>
+    </section>
+
     <!-- Advanced Filters -->
-    <section class="max-w-6xl mx-auto px-6 mb-8 flex items-center justify-between gap-4 flex-wrap">
+    <section class="max-w-6xl mx-auto px-6 mb-8 flex items-center justify-between gap-4 flex-wrap" data-view="catalog">
         <div class="flex items-center gap-3 flex-wrap">
             <select id="priceFilter" class="bg-white border border-gray-200 text-gray-700 text-sm rounded-full px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-ntl-vibrant font-medium cursor-pointer">
                 <option value="default">Sort by: Recommended</option>
@@ -292,7 +327,7 @@
     </section>
 
     <!-- Dynamic Container -->
-    <div class="px-6 max-w-6xl mx-auto mb-10">
+    <div class="px-6 max-w-6xl mx-auto mb-10" data-view="catalog">
         
         <!-- View Controls -->
         <div class="flex items-center justify-between mb-4">
@@ -318,7 +353,7 @@
     </div>
 
     <!-- GetYourGuide Discover More Section -->
-    <section class="py-8 px-4 max-w-lg mx-auto relative mt-8">
+    <section class="py-8 px-4 max-w-lg mx-auto relative mt-8" data-view="catalog">
         <div class="bg-white p-4 rounded-3xl shadow-xl border border-gray-100">
             <div class="mb-5 flex items-center justify-between px-2">
                 <h2 class="text-lg font-extrabold text-gray-900">Discover More</h2>
@@ -564,60 +599,46 @@
   <script src="/ntl-attrib.js?v=2"></script>
   <!-- Recomendador "Don't know what to visit? We do." (usa window.NTL_CATALOG y
        reaplica la atribucion tras pintar). Sube ?v=N al modificarlo. -->
-  <script src="/recommend.js?v=2"></script>
+  <script src="/recommend.js?v=3"></script>
   <!-- Planes curados. Sube ?v=N al modificarlo. -->
-  <script src="/plans-ui.js?v=2"></script>
+  <script src="/plans-ui.js?v=3"></script>
 
-  <!-- Carcasa de la barra de ayuda: desplegar y cambiar de pestana. Va aqui,
-       despues de los dos anteriores, para que ya hayan pintado su contenido y
-       podamos ocultar la pestana que se haya quedado vacia. -->
+  <!-- Cambio entre las dos vistas (catalogo / planes) y visibilidad de la barra
+       de ayuda. Va aqui, despues de los dos renderizadores, para saber ya si
+       cada uno tiene contenido. -->
   <script>
     (function () {
       function init() {
-        var sec = document.getElementById('ntlHelper');
-        var bar = document.getElementById('helperToggle');
-        var body = document.getElementById('helperBody');
-        if (!sec || !bar || !body) return;
+        var helper = document.getElementById('ntlHelper');
+        var plansView = document.getElementById('ntlPlansView');
+        var btnPlans = document.getElementById('btnPlans');
+        var btnBack = document.getElementById('plansBack');
+        var catalogo = [].slice.call(document.querySelectorAll('[data-view="catalog"]'));
 
-        var panes = {};
-        body.querySelectorAll('.ntl-pane').forEach(function (p) { panes[p.dataset.pane] = p; });
-        var tabs = [].slice.call(body.querySelectorAll('.ntl-tab'));
+        var hayPicks = !!document.querySelector('#picksGrid .ntl-pick');
+        var hayPlanes = !!document.querySelector('#plansGrid .ntl-pcard');
 
-        // Una pestana sin contenido no se ofrece.
-        var hay = {
-          picks: !!document.querySelector('#picksGrid .ntl-pick'),
-          plans: !!document.querySelector('#plansList .ntl-plan'),
-        };
-        tabs.forEach(function (t) { if (!hay[t.dataset.pane]) t.hidden = true; });
-        if (!hay.picks && !hay.plans) return; // nada que ofrecer: la barra no aparece
+        // Sin recomendaciones la barra no aporta nada; si ademas no hay planes,
+        // no se ofrece nada de esto y la pagina queda como el catalogo de siempre.
+        if (helper && !hayPicks) helper.hidden = true;
+        else if (helper) helper.hidden = false;
+        if (btnPlans && !hayPlanes) btnPlans.hidden = true;
 
-        function show(name) {
-          tabs.forEach(function (t) { t.classList.toggle('is-active', t.dataset.pane === name); });
-          Object.keys(panes).forEach(function (k) { panes[k].hidden = k !== name; });
+        function verPlanes() {
+          catalogo.forEach(function (el) { el.hidden = true; });
+          if (plansView) plansView.hidden = false;
+          if (typeof window.ntlPlansReset === 'function') window.ntlPlansReset();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
         }
-        // Si no hay recomendaciones, abrimos directamente en planes.
-        show(hay.picks ? 'picks' : 'plans');
-        var surprise = document.getElementById('btnSurprise');
-        if (surprise && !hay.picks) surprise.hidden = true;
+        function verCatalogo() {
+          if (plansView) plansView.hidden = true;
+          catalogo.forEach(function (el) { el.hidden = false; });
+          if (helper && !hayPicks) helper.hidden = true;
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
 
-        tabs.forEach(function (t) {
-          t.addEventListener('click', function () {
-            show(t.dataset.pane);
-            if (t.dataset.pane === 'plans' && surprise) surprise.hidden = true;
-            else if (surprise && hay.picks) surprise.hidden = false;
-          });
-        });
-
-        var ctaLabel = bar.querySelector('.ntl-helper-cta-label');
-        bar.addEventListener('click', function () {
-          var open = bar.getAttribute('aria-expanded') === 'true';
-          bar.setAttribute('aria-expanded', open ? 'false' : 'true');
-          sec.classList.toggle('is-open', !open);
-          body.hidden = open;
-          if (ctaLabel) ctaLabel.textContent = open ? 'Show me' : 'Hide';
-        });
-
-        sec.hidden = false;
+        if (btnPlans && hayPlanes) btnPlans.addEventListener('click', verPlanes);
+        if (btnBack) btnBack.addEventListener('click', verCatalogo);
       }
       if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
       else init();

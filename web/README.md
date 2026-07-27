@@ -6,19 +6,21 @@ marca NTL, Tailwind compilado en `css/app.css`. Sin frameworks en runtime.
 
 ## "Don't know what to visit? We do." — la barra de ayuda
 
-Bajo los filtros hay **una sola barra compacta** que agrupa las dos ayudas
-(recomendaciones y planes) en dos pestañas. Va **plegada por defecto y ocupa una
-línea**: el catálogo es lo principal de la página y no debe quedar enterrado.
-Invita con el eslogan y el contexto ("Monday, 18:56 in Salou"), y se despliega
-al pulsar.
+Bajo los filtros hay una barra **siempre visible** con las 3 recomendaciones del
+momento, el botón **Surprise me** y un acceso a **Ready-made plans**. No se
+puede ocultar: es parte de la página, no un panel que haya que descubrir. Ocupa
+poco para que el catálogo (lo principal) se vea sin bajar.
 
-- La carcasa (desplegar, pestañas) está en un `<script>` al final de
-  `tickets.html`, después de `recommend.js` y `plans-ui.js`, para poder ocultar
-  la pestaña que se haya quedado sin contenido.
-- Si no hay catálogo, se abre directamente en planes; si no hay ninguna de las
-  dos cosas, la barra no aparece.
-- Ojo: la clase `is-open` se pone en la `<section>` `#ntlHelper`, no en el
-  `div.ntl-helper` interior.
+Los planes **no** viven dentro de la barra: al pulsar "Ready-made plans" se
+abre una **vista aparte** que oculta el catálogo (todo lo marcado con
+`data-view="catalog"`) hasta que se pulsa "Back to experiences".
+
+- El cambio de vista está en un `<script>` al final de `tickets.html`, después
+  de `recommend.js` y `plans-ui.js`, para saber ya si cada uno tiene contenido:
+  sin recomendaciones la barra no aparece, y sin planes se oculta su botón.
+- Regla imprescindible: `[data-view][hidden] { display:none !important; }`.
+  Varias secciones del catálogo llevan la clase `flex` de Tailwind y ese
+  `display:flex` le gana al atributo `hidden`.
 
 ### Pestaña "Our picks" (`recommend.js`)
 
@@ -45,14 +47,16 @@ Detalles a respetar si se toca:
   `css/app.css` es un build purgado y no incluye clases que no se usaran antes.
 - Al modificar `recommend.js`, sube el `?v=N` de su `<script>` en `tickets.html`.
 
-## Pestaña "Ready-made plans" (`plans.csv` → `plans.js` → `plans-ui.js`)
+## Vista de planes (`plans.csv` → `plans.js` → `plans-ui.js`)
 
 Itinerarios nuestros ("First time in Barcelona", "Barcelona after dark", "48h on
 the Costa Daurada"): una lista **ordenada** de actividades del catálogo, cada una
 con una nota escrita por nosotros. Es lo que convierte el escaparate en consejo.
 
-Se muestran en acordeón dentro de la barra de ayuda, ordenados por la zona del QR
-y por la hora. El plan de la zona sale primero.
+Se presentan como **tarjetas con un collage de las fotos de sus paradas**, su
+descripción y "duración · paradas · desde X€"; al elegir una se abre su detalle
+con los pasos en orden. Se ordenan por la zona del QR y por la hora: el plan de
+la zona sale primero.
 
 ### Añadir o editar un plan
 
@@ -78,8 +82,6 @@ y por la hora. El plan de la zona sale primero.
 El precio "from X€" del plan se calcula solo sumando los mínimos de sus paradas.
 
 > Al modificar `plans-ui.js`, sube el `?v=N` de su `<script>` en `tickets.html`.
-> Y ojo con el CSS: `.ntl-plan-body` lleva `display:flex`, así que necesita la
-> regla `[hidden]{display:none}` o los planes salen todos desplegados.
 
 ## Catálogo dirigido por datos
 
