@@ -161,11 +161,15 @@ funcione hacen falta dos piezas, una a cada lado.
 tablas y aparecen los menús *Actividades propias* y *Reservas*. Crea una
 actividad y quedará publicada al momento.
 
-**En la web** hace falta subir `own.js` junto al resto de `web/`:
+**En la web** hace falta subir dos archivos: el módulo nuevo y la página que lo
+carga. Se copian sueltos a propósito — un `rsync --delete` sobre `/var/www/ntl`
+borraría cualquier cosa que esté en el servidor y no en el repositorio.
 
 ```bash
 cd /opt/ntl-crm && git pull
-rsync -a --delete web/ /var/www/ntl/ && chown -R www-data:www-data /var/www/ntl
+cp /var/www/ntl/tickets.html /var/www/ntl/tickets.html.bak   # por si acaso
+cp web/own.js web/tickets.html /var/www/ntl/
+chown www-data:www-data /var/www/ntl/own.js /var/www/ntl/tickets.html
 ```
 
 La web llama a tres rutas públicas del CRM (`/api/publico/actividades`,
