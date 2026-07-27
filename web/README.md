@@ -166,12 +166,23 @@ CRM /api/publico/disponibilidad   -> días y horas con plazas libres
 CRM /api/publico/reservas  (POST) -> la reserva, ya con el código del QR
 ```
 
+El reservador va en **dos pasos**: primero *cuándo* (fecha, hora, personas,
+total) y solo después *quién* (nombre y correo). Quien abre esto quiere saber
+si hay sitio el sábado, no rellenar sus datos todavía. Se abre con la primera
+fecha y la primera hora ya marcadas, para que nadie se encuentre un botón
+apagado sin saber por qué.
+
 Cómo se comporta:
 
 - **Se distinguen a la vista**: distintivo verde "Book here" y pie azul
   "Choose a date & book here". No es cosmética: el cliente tiene que saber con
   quién contrata, y el acuerdo con GetYourGuide es no exclusivo pero sí exige
   no confundir sobre quién vende.
+- **El botón del pie NO lleva la clase `.ntl-card-dates`.** Esa la escucha el
+  catálogo para abrir el widget de GetYourGuide; si se la ponemos, se abren los
+  dos a la vez y el suyo sin `tour`, que cae en su anuncio genérico. `own.js`
+  usa `.ntl-own-dates` y `tickets.html` además ignora cualquier clic que venga
+  de dentro de una `.ntl-own`.
 - **Son una tarjeta más**: mismas clases y mismos `data-*`, así que entran en
   los filtros, el buscador, el orden y las dos vistas. Se registran con
   `window.ntlAddItems(nodos)` porque llegan después del render inicial.

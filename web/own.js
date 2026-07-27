@@ -6,8 +6,12 @@
    precio y confirmacion— ocurre en notaxlost.com. Al otro lado esta el CRM
    (/api/publico/…), que es quien manda sobre el cupo y el precio.
 
-   La atribucion del QR viaja en el propio cuerpo de la reserva (`ref`), no en
-   un enlace: aqui no hay enlace externo al que colgarle cmp. */
+   El reservador va en dos pasos (cuando -> quien) en vez de un formulario
+   largo: quien entra solo quiere saber si hay sitio el sabado, no rellenar
+   sus datos todavia.
+
+   La atribucion del QR viaja en el cuerpo de la reserva (`ref`), no en un
+   enlace: aqui no hay enlace externo al que colgarle cmp. */
 (function () {
   'use strict';
 
@@ -31,6 +35,12 @@
     });
   }
 
+  function duracion(min) {
+    if (min < 60) return min + ' min';
+    var h = Math.floor(min / 60), m = min % 60;
+    return m ? h + ' h ' + m + ' min' : h + (h === 1 ? ' hour' : ' hours');
+  }
+
   var MESES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   var DIAS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
@@ -46,6 +56,12 @@
     return p.dow + ' ' + p.d + ' ' + p.m;
   }
 
+  var ICONO_RELOJ = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
+    '<circle cx="12" cy="12" r="9"/><path stroke-linecap="round" d="M12 7v5l3 2"/></svg>';
+  var ICONO_PIN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
+    '<path stroke-linecap="round" stroke-linejoin="round" d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z"/>' +
+    '<circle cx="12" cy="10" r="2.5"/></svg>';
+
   // ---------------------------------------------------------------- tarjetas
 
   var CAT_LABEL = {
@@ -55,7 +71,9 @@
 
   /* Misma estructura que las tarjetas del catalogo (mismas clases y data-*),
      para que los filtros, el orden y las dos vistas funcionen igual. Lo que
-     cambia es el distintivo y el pie: hay que dejar claro quien vende. */
+     cambia es el distintivo y el pie: hay que dejar claro quien vende.
+     El boton NO lleva la clase .ntl-card-dates: esa la escucha el catalogo
+     para abrir el widget de GetYourGuide, y se abririan los dos a la vez. */
   function cardHtml(a) {
     var precio = eur(a.precio);
     return '' +
@@ -85,15 +103,15 @@
       '<span class="price-tag text-sm font-bold text-gray-900 mr-3 hidden sm:block">' + esc(precio) + '</span>' +
       '<span class="book-btn bg-ntl-navy text-white text-xs font-bold px-4 py-2 rounded-full group-hover:bg-ntl-vibrant transition shadow-sm text-center">Book</span>' +
       '</div></div></div></div></a>' +
-      '<button type="button" class="ntl-card-dates ntl-own-dates" data-own-open="' + esc(a.slug) + '">' +
+      '<button type="button" class="ntl-own-dates" data-own-open="' + esc(a.slug) + '">' +
       'Choose a date &amp; book here</button>' +
       '</div>';
   }
 
   // ------------------------------------------------------------------ modal
 
-  var modal, cuerpo, titulo;
-  var estado = null; // { act, dias, fecha, hora, personas }
+  var modal, cuerpo;
+  var estado = null; // { act, dias, fecha, hora, personas, paso }
 
   function crearModal() {
     if (modal) return;
@@ -104,17 +122,9 @@
     modal.innerHTML =
       '<div class="ntl-modal-backdrop" data-close></div>' +
       '<div class="ntl-modal-box" role="dialog" aria-modal="true" aria-labelledby="ownModalTitle">' +
-      '<div class="ntl-modal-head">' +
-      '<h3 class="ntl-modal-title" id="ownModalTitle"></h3>' +
-      '<button type="button" class="ntl-modal-x" data-close aria-label="Close">' +
-      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
-      '<path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6L6 18"/></svg>' +
-      '</button></div>' +
-      '<div class="ntl-modal-body" id="ownModalBody"></div>' +
-      '</div>';
+      '<div id="ownModalBody"></div></div>';
     document.body.appendChild(modal);
     cuerpo = modal.querySelector('#ownModalBody');
-    titulo = modal.querySelector('#ownModalTitle');
 
     modal.addEventListener('click', function (ev) {
       if (ev.target.closest('[data-close]')) cerrar();
@@ -122,6 +132,7 @@
     document.addEventListener('keydown', function (ev) {
       if (ev.key === 'Escape' && modal && !modal.hidden) cerrar();
     });
+    conectarModal();
   }
 
   function cerrar() {
@@ -138,35 +149,39 @@
     }
   }
 
+  function cerrarBoton() {
+    return '<button type="button" class="ntl-bk-x" data-close aria-label="Close">' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
+      '<path stroke-linecap="round" d="M6 6l12 12M18 6L6 18"/></svg></button>';
+  }
+
   function abrir(slug) {
     crearModal();
     modal.hidden = false;
     document.body.style.overflow = 'hidden';
-    titulo.textContent = 'Loading…';
-    cuerpo.innerHTML = '<div class="ntl-avail-loading">Loading dates and availability…</div>';
+    cuerpo.innerHTML = cerrarBoton() +
+      '<div class="ntl-bk-cargando"><span class="ntl-bk-spin"></span>Checking availability…</div>';
 
     fetch(CRM + '/api/publico/disponibilidad?slug=' + encodeURIComponent(slug))
       .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
       .then(function (act) {
+        var dias = act.dias || [];
         estado = {
           act: act,
-          dias: act.dias || [],
-          fecha: (act.dias && act.dias[0]) ? act.dias[0].date : '',
-          hora: '',
+          dias: dias,
+          fecha: dias[0] ? dias[0].date : '',
+          // La primera hora libre viene marcada: quien abre esto quiere ver un
+          // precio y un boton que funcione, no otra decision en blanco.
+          hora: dias[0] && dias[0].slots[0] ? dias[0].slots[0].time : '',
           personas: Math.max(1, act.min_personas || 1),
+          paso: 1,
         };
-        if (estado.fecha) {
-          var d = estado.dias[0];
-          estado.hora = d.slots.length === 1 ? d.slots[0].time : '';
-        }
-        titulo.textContent = act.titulo;
         pintar();
       })
       .catch(function () {
-        titulo.textContent = 'Booking';
-        cuerpo.innerHTML =
-          '<p class="ntl-bk-error">We could not load the availability right now. ' +
-          'Please try again in a moment.</p>';
+        cuerpo.innerHTML = cerrarBoton() +
+          '<div class="ntl-bk-vacio"><h4>We could not load the availability</h4>' +
+          '<p>Please try again in a moment.</p></div>';
       });
   }
 
@@ -185,31 +200,58 @@
     return null;
   }
 
-  function pintar() {
+  function topePersonas() {
+    var h = huecoActual();
+    return h ? h.free : estado.act.max_personas;
+  }
+
+  function total() {
+    return estado.act.precio * estado.personas;
+  }
+
+  // --------------------------------------------------------------- pintado
+
+  function heroHtml() {
     var act = estado.act;
-    var dia = diaActual();
-    var hueco = huecoActual();
-    var tope = hueco ? hueco.free : act.max_personas;
-    if (estado.personas > tope) estado.personas = tope;
-    var total = act.precio * estado.personas;
+    return '<header class="ntl-bk-hero' + (act.imagen ? '' : ' ntl-bk-hero-liso') + '">' +
+      (act.imagen ? '<img src="' + esc(act.imagen) + '" alt="">' : '') +
+      '<div class="ntl-bk-hero-velo"></div>' +
+      cerrarBoton() +
+      '<div class="ntl-bk-hero-txt">' +
+      '<span class="ntl-bk-sello">Booked with NoTaxLost</span>' +
+      '<h3 id="ownModalTitle">' + esc(act.titulo) + '</h3>' +
+      '</div></header>';
+  }
 
-    if (!estado.dias.length) {
-      cuerpo.innerHTML =
-        '<p class="ntl-bk-error">No dates open right now. Write to us and we will find one for you.</p>';
-      return;
-    }
-
-    cuerpo.innerHTML = '' +
-      '<div class="ntl-bk-top">' +
-      '<span class="ntl-bk-price">' + esc(eur(act.precio)) + ' <small>per person</small></span>' +
-      '<span class="ntl-bk-dot"></span>' +
-      '<span class="ntl-bk-meta">' + Math.round(act.duracion_min / 15) * 15 + ' min</span>' +
+  function metaHtml() {
+    var act = estado.act;
+    return '<div class="ntl-bk-meta">' +
+      '<span class="ntl-bk-precio">' + esc(eur(act.precio)) + '<small>per person</small></span>' +
+      '<span class="ntl-bk-meta-i">' + ICONO_RELOJ + duracion(act.duracion_min) + '</span>' +
       (act.punto_encuentro
-        ? '<span class="ntl-bk-dot"></span><span class="ntl-bk-meta">' + esc(act.punto_encuentro) + '</span>'
-        : '') +
-      '</div>' +
+        ? '<span class="ntl-bk-meta-i">' + ICONO_PIN + esc(act.punto_encuentro) + '</span>' : '') +
+      '</div>';
+  }
 
-      '<div class="ntl-bk-label">Pick a date</div>' +
+  function pasosHtml() {
+    var p = estado.paso;
+    return '<ol class="ntl-bk-pasos">' +
+      '<li class="' + (p > 1 ? 'is-hecho' : 'is-ahora') + '"><span>1</span>Date &amp; time</li>' +
+      '<li class="' + (p === 2 ? 'is-ahora' : '') + '"><span>2</span>Your details</li>' +
+      '</ol>';
+  }
+
+  function paso1Html() {
+    var dia = diaActual();
+    var tope = topePersonas();
+    var min = Math.max(1, estado.act.min_personas || 1);
+
+    return '<section class="ntl-bk-panel">' +
+      '<div class="ntl-bk-rot">Pick a date</div>' +
+      '<div class="ntl-bk-calendario">' +
+      '<button type="button" class="ntl-bk-flecha" data-scroll="-1" aria-label="Earlier dates">' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">' +
+      '<path stroke-linecap="round" stroke-linejoin="round" d="M15 6l-6 6 6 6"/></svg></button>' +
       '<div class="ntl-bk-days">' +
       estado.dias.map(function (d) {
         var p = partes(d.date);
@@ -220,8 +262,12 @@
           '<span class="ntl-bk-dmon">' + p.m + '</span></button>';
       }).join('') +
       '</div>' +
+      '<button type="button" class="ntl-bk-flecha" data-scroll="1" aria-label="Later dates">' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">' +
+      '<path stroke-linecap="round" stroke-linejoin="round" d="M9 6l6 6-6 6"/></svg></button>' +
+      '</div>' +
 
-      '<div class="ntl-bk-label">Start time</div>' +
+      '<div class="ntl-bk-rot">Start time</div>' +
       '<div class="ntl-bk-slots">' +
       (dia ? dia.slots.map(function (s) {
         return '<button type="button" class="ntl-bk-slot' + (s.time === estado.hora ? ' is-on' : '') +
@@ -230,34 +276,77 @@
       }).join('') : '') +
       '</div>' +
 
-      '<div class="ntl-bk-row">' +
-      '<div><div class="ntl-bk-label ntl-bk-label-inline">People</div>' +
-      '<div class="ntl-bk-people">' +
-      '<button type="button" class="ntl-bk-pm" data-people="-1" aria-label="One less">&minus;</button>' +
+      '<div class="ntl-bk-rot">How many of you?</div>' +
+      '<div class="ntl-bk-personas">' +
+      '<button type="button" class="ntl-bk-pm" data-people="-1"' +
+      (estado.personas <= min ? ' disabled' : '') + ' aria-label="One less">&minus;</button>' +
       '<span class="ntl-bk-n">' + estado.personas + '</span>' +
-      '<button type="button" class="ntl-bk-pm" data-people="1" aria-label="One more">+</button>' +
-      '</div></div>' +
-      '<div class="ntl-bk-total"><span>Total</span><b>' + esc(eur(total)) + '</b></div>' +
+      '<button type="button" class="ntl-bk-pm" data-people="1"' +
+      (estado.personas >= tope ? ' disabled' : '') + ' aria-label="One more">+</button>' +
+      '</div>' +
+      (min > 1 ? '<p class="ntl-bk-pista">This experience runs from ' + min + ' people.</p>' : '') +
+      '</section>' +
+
+      '<footer class="ntl-bk-pie">' +
+      '<div class="ntl-bk-total"><span>Total</span><b>' + esc(eur(total())) + '</b></div>' +
+      '<button type="button" class="ntl-bk-go" data-continuar' + (estado.hora ? '' : ' disabled') + '>' +
+      (estado.hora ? 'Continue' : 'Pick a start time') + '</button>' +
+      '</footer>';
+  }
+
+  function paso2Html() {
+    return '<section class="ntl-bk-panel">' +
+      '<div class="ntl-bk-elegido">' +
+      '<div><b>' + esc(fechaLarga(estado.fecha)) + ' · ' + esc(estado.hora) + '</b>' +
+      '<span>' + estado.personas + (estado.personas === 1 ? ' person' : ' people') +
+      ' · ' + esc(eur(total())) + '</span></div>' +
+      '<button type="button" class="ntl-bk-cambiar" data-volver>Change</button>' +
       '</div>' +
 
       '<form class="ntl-bk-form" novalidate>' +
-      '<div class="ntl-bk-fields">' +
-      '<label class="ntl-bk-field"><span>Name</span><input name="nombre" required autocomplete="name"></label>' +
-      '<label class="ntl-bk-field"><span>Email</span><input name="email" type="email" required autocomplete="email"></label>' +
-      '<label class="ntl-bk-field"><span>Phone (optional)</span><input name="telefono" autocomplete="tel"></label>' +
-      '<label class="ntl-bk-field ntl-bk-field-wide"><span>Anything we should know? (optional)</span>' +
-      '<input name="notas" maxlength="500"></label>' +
-      '</div>' +
+      '<label class="ntl-bk-field"><span>Your name</span>' +
+      '<input name="nombre" required autocomplete="name" placeholder="Marc Delgado"></label>' +
+      '<label class="ntl-bk-field"><span>Email</span>' +
+      '<input name="email" type="email" required autocomplete="email" placeholder="you@email.com"></label>' +
+      '<label class="ntl-bk-field"><span>Phone <i>optional</i></span>' +
+      '<input name="telefono" autocomplete="tel" placeholder="+34 600 000 000"></label>' +
+      '<label class="ntl-bk-field"><span>Anything we should know? <i>optional</i></span>' +
+      '<input name="notas" maxlength="500" placeholder="Allergies, celebrating something…"></label>' +
       '<input type="text" name="web" class="ntl-bk-trap" tabindex="-1" autocomplete="off" aria-hidden="true">' +
-      '<button type="submit" class="ntl-bk-go"' + (estado.hora ? '' : ' disabled') + '>' +
-      (estado.hora
-        ? 'Confirm for ' + esc(fechaLarga(estado.fecha)) + ' at ' + esc(estado.hora) + ' — ' + esc(eur(total))
-        : 'Pick a start time') +
-      '</button>' +
-      '<p class="ntl-bk-legal">Booked with NoTaxLost. No payment now: we confirm by email and you pay ' +
-      'at the meeting point.</p>' +
-      '</form>';
+      '<button type="submit" class="ntl-bk-go">Confirm booking · ' + esc(eur(total())) + '</button>' +
+      '<p class="ntl-bk-legal">No payment now. We confirm by email and you pay at the meeting point.</p>' +
+      '</form></section>';
   }
+
+  function pintar() {
+    if (!estado.dias.length) {
+      cuerpo.innerHTML = heroHtml() +
+        '<div class="ntl-bk-vacio"><h4>No dates open right now</h4>' +
+        '<p>Write to us and we will find one for you.</p></div>';
+      return;
+    }
+    var tope = topePersonas();
+    if (estado.personas > tope) estado.personas = tope;
+
+    cuerpo.innerHTML = heroHtml() + metaHtml() + pasosHtml() +
+      (estado.paso === 1 ? paso1Html() : paso2Html());
+
+    if (estado.paso === 1) centrarDia();
+    else {
+      var primero = cuerpo.querySelector('.ntl-bk-field input');
+      if (primero) primero.focus();
+    }
+  }
+
+  /** El dia elegido siempre a la vista, aunque este a dos semanas vista. */
+  function centrarDia() {
+    var tira = cuerpo.querySelector('.ntl-bk-days');
+    var activo = tira && tira.querySelector('.ntl-bk-day.is-on');
+    if (!tira || !activo) return;
+    tira.scrollLeft = activo.offsetLeft - (tira.clientWidth - activo.offsetWidth) / 2;
+  }
+
+  // --------------------------------------------------------------- enviar
 
   function enviar(form) {
     var boton = form.querySelector('.ntl-bk-go');
@@ -288,7 +377,7 @@
     })
       .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
       .then(function (res) {
-        if (!res.ok) throw new Error(res.j && res.j.error ? res.j.error : 'No pudimos guardar la reserva.');
+        if (!res.ok) throw new Error(res.j && res.j.error ? res.j.error : 'We could not save your booking.');
         confirmado(res.j);
       })
       .catch(function (e) {
@@ -302,14 +391,13 @@
   }
 
   function confirmado(r) {
-    cuerpo.innerHTML = '' +
+    cuerpo.innerHTML = heroHtml() +
       '<div class="ntl-bk-done">' +
       '<div class="ntl-bk-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">' +
       '<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></div>' +
       '<h4>You are booked</h4>' +
-      '<p class="ntl-bk-ref">' + esc(r.referencia) + '</p>' +
+      '<p class="ntl-bk-refn">' + esc(r.referencia) + '</p>' +
       '<dl class="ntl-bk-recap">' +
-      '<div><dt>Activity</dt><dd>' + esc(r.actividad) + '</dd></div>' +
       '<div><dt>When</dt><dd>' + esc(fechaLarga(r.fecha)) + ' at ' + esc(r.hora) + '</dd></div>' +
       '<div><dt>People</dt><dd>' + esc(r.personas) + '</dd></div>' +
       '<div><dt>Total</dt><dd>' + esc(eur(r.total)) + '</dd></div>' +
@@ -324,37 +412,46 @@
   function conectarModal() {
     modal.addEventListener('click', function (ev) {
       var t = ev.target;
-      var dia = t.closest ? t.closest('[data-fecha]') : null;
+      if (!t.closest || !estado) return;
+
+      var flecha = t.closest('[data-scroll]');
+      if (flecha) {
+        var tira = cuerpo.querySelector('.ntl-bk-days');
+        if (tira) tira.scrollBy({ left: parseInt(flecha.dataset.scroll, 10) * 240, behavior: 'smooth' });
+        return;
+      }
+      var dia = t.closest('[data-fecha]');
       if (dia) {
         estado.fecha = dia.dataset.fecha;
         var d = diaActual();
-        estado.hora = d && d.slots.length === 1 ? d.slots[0].time : '';
+        estado.hora = d && d.slots[0] ? d.slots[0].time : '';
         pintar();
         return;
       }
-      var hora = t.closest ? t.closest('[data-hora]') : null;
+      var hora = t.closest('[data-hora]');
       if (hora) {
         estado.hora = hora.dataset.hora;
         pintar();
         return;
       }
-      var pm = t.closest ? t.closest('[data-people]') : null;
+      var pm = t.closest('[data-people]');
       if (pm) {
-        var hueco = huecoActual();
-        var tope = hueco ? hueco.free : estado.act.max_personas;
         var min = Math.max(1, estado.act.min_personas || 1);
-        estado.personas = Math.min(tope, Math.max(min, estado.personas + parseInt(pm.dataset.people, 10)));
+        estado.personas = Math.min(topePersonas(),
+          Math.max(min, estado.personas + parseInt(pm.dataset.people, 10)));
         pintar();
+        return;
       }
+      if (t.closest('[data-continuar]')) { estado.paso = 2; pintar(); return; }
+      if (t.closest('[data-volver]')) { estado.paso = 1; pintar(); }
     });
+
     modal.addEventListener('submit', function (ev) {
       var form = ev.target.closest('.ntl-bk-form');
       if (!form) return;
       ev.preventDefault();
-      if (!form.nombre.value.trim() || !form.email.value.trim()) {
-        form.nombre.value.trim() ? form.email.focus() : form.nombre.focus();
-        return;
-      }
+      if (!form.nombre.value.trim()) { form.nombre.focus(); return; }
+      if (!form.email.value.trim()) { form.email.focus(); return; }
       enviar(form);
     });
   }
@@ -366,14 +463,12 @@
     var container = document.getElementById('experiencesContainer');
     if (!container) return;
 
-    var html = actividades.map(cardHtml).join('');
-    container.insertAdjacentHTML('afterbegin', html);
+    container.insertAdjacentHTML('afterbegin', actividades.map(cardHtml).join(''));
 
     var nuevas = Array.prototype.slice.call(container.querySelectorAll('.experience-item.ntl-own'));
     if (typeof window.ntlAddItems === 'function') window.ntlAddItems(nuevas);
 
     crearModal();
-    conectarModal();
 
     document.addEventListener('click', function (ev) {
       var t = ev.target.closest ? ev.target.closest('[data-own-open]') : null;

@@ -165,6 +165,16 @@ const dentro = await page.evaluate(() => ({
 log('El reservador es nuestro, sin iframes de terceros', dentro.iframes === 0, JSON.stringify(dentro));
 log('Muestra los tres dias con hueco', dentro.dias === 3, `${dentro.dias} dias`);
 
+// El boton de la tarjeta propia comparte sitio con el de GetYourGuide. Si se
+// le cuela la clase .ntl-card-dates, el catalogo abre ADEMAS su widget sin
+// tour y sale su anuncio generico encima de nuestra reserva.
+const soloUno = await page.evaluate(() => ({
+  gyg: document.getElementById('availModal')?.hidden,
+  nuestro: document.getElementById('ownModal')?.hidden,
+}));
+log('No se abre tambien el modal de GetYourGuide',
+  soloUno.gyg === true && soloUno.nuestro === false, JSON.stringify(soloUno));
+
 // ---------- 4. Dia, hora, personas y total ----------
 const inicio = await page.evaluate(() => ({
   diaMarcado: document.querySelector('.ntl-bk-day.is-on')?.dataset.fecha,
@@ -172,23 +182,23 @@ const inicio = await page.evaluate(() => ({
   personas: document.querySelector('.ntl-bk-n')?.textContent,
   boton: document.querySelector('.ntl-bk-go')?.textContent.trim(),
   deshabilitado: document.querySelector('.ntl-bk-go')?.disabled,
-}));
-log('Empieza en el primer dia libre, sin hora elegida',
-  inicio.diaMarcado === dia(1) && inicio.horaMarcada === null, JSON.stringify(inicio));
-log('Arranca con el minimo de personas de la actividad', inicio.personas === '2', inicio.personas);
-log('No deja confirmar sin hora', inicio.deshabilitado === true, inicio.boton);
-
-await page.click('.ntl-bk-slot[data-hora="11:00"]');
-await page.waitForTimeout(200);
-const conHora = await page.evaluate(() => ({
   total: document.querySelector('.ntl-bk-total b')?.textContent,
-  boton: document.querySelector('.ntl-bk-go')?.textContent.trim(),
-  deshabilitado: document.querySelector('.ntl-bk-go')?.disabled,
 }));
-log('El total es el precio real por las personas', /70/.test(conHora.total || ''), conHora.total);
-log('Con hora elegida ya se puede confirmar', conHora.deshabilitado === false, conHora.boton);
-log('El boton dice exactamente que se reserva',
-  /11:00/.test(conHora.boton) && /70/.test(conHora.boton), conHora.boton);
+log('Empieza en el primer dia libre y con la primera hora marcada',
+  inicio.diaMarcado === dia(1) && inicio.horaMarcada === '11:00', JSON.stringify(inicio));
+log('Arranca con el minimo de personas de la actividad', inicio.personas === '2', inicio.personas);
+log('El total es el precio real por las personas', /70/.test(inicio.total || ''), inicio.total);
+log('Se puede seguir desde el primer momento', inicio.deshabilitado === false, inicio.boton);
+
+// Paso 1 y paso 2: quien abre esto quiere ver si hay sitio, no dar sus datos.
+const dosPasos = await page.evaluate(() => ({
+  pasos: document.querySelectorAll('.ntl-bk-pasos li').length,
+  ahora: document.querySelector('.ntl-bk-pasos li.is-ahora')?.textContent,
+  campos: document.querySelectorAll('.ntl-bk-field input').length,
+}));
+log('El primer paso no pide datos personales',
+  dosPasos.pasos === 2 && dosPasos.campos === 0 && /Date/.test(dosPasos.ahora || ''),
+  JSON.stringify(dosPasos));
 
 await page.click('.ntl-bk-pm[data-people="1"]');
 await page.waitForTimeout(150);
@@ -203,24 +213,73 @@ log('Sumar una persona recalcula el total', tres.n === '3' && /105/.test(tres.to
 await page.click('.ntl-bk-pm[data-people="1"]');
 await page.click('.ntl-bk-pm[data-people="1"]');
 await page.waitForTimeout(150);
+const cinco = await page.evaluate(() => document.querySelector('.ntl-bk-n')?.textContent);
+log('Con plazas de sobra se puede subir', cinco === '5', `${cinco} personas con 8 libres`);
+
 await page.click('.ntl-bk-slot[data-hora="17:00"]');
 await page.waitForTimeout(200);
+const tope = await page.evaluate(() => ({
+  n: document.querySelector('.ntl-bk-n')?.textContent,
+  mas: document.querySelector('.ntl-bk-pm[data-people="1"]')?.disabled,
+  menos: document.querySelector('.ntl-bk-pm[data-people="-1"]')?.disabled,
+}));
+log('Al cambiar a una hora con menos sitio se ajusta el grupo',
+  tope.n === '3', `${tope.n} personas con 3 libres`);
+log('Y el boton de sumar se apaga en el tope', tope.mas === true, JSON.stringify(tope));
+
+// Bajar hasta el minimo apaga el otro boton, en vez de dejar restar a cero.
+await page.click('.ntl-bk-pm[data-people="-1"]');
+await page.waitForTimeout(150);
+const minimo = await page.evaluate(() => ({
+  n: document.querySelector('.ntl-bk-n')?.textContent,
+  menos: document.querySelector('.ntl-bk-pm[data-people="-1"]')?.disabled,
+  pista: document.querySelector('.ntl-bk-pista')?.textContent,
+}));
+log('No se puede bajar del minimo de la actividad',
+  minimo.n === '2' && minimo.menos === true, JSON.stringify(minimo));
+log('Y se explica por que', /from 2 people/.test(minimo.pista || ''), minimo.pista);
 await page.click('.ntl-bk-pm[data-people="1"]');
 await page.waitForTimeout(150);
-const tope = await page.evaluate(() => document.querySelector('.ntl-bk-n')?.textContent);
-log('No deja pedir mas plazas de las que quedan', tope === '3', `${tope} personas con 3 libres`);
 
-// Cambiar de dia con una sola hora la selecciona sola.
+// Cambiar de dia deja marcada su primera hora, sin dejar el paso en blanco.
 await page.click(`.ntl-bk-day[data-fecha="${dia(2)}"]`);
 await page.waitForTimeout(200);
 const unaHora = await page.evaluate(() => ({
   horas: document.querySelectorAll('.ntl-bk-slot').length,
   marcada: document.querySelector('.ntl-bk-slot.is-on')?.dataset.hora ?? null,
 }));
-log('Un dia con una sola hora la marca solo',
+log('Al cambiar de dia se marca su primera hora',
   unaHora.horas === 1 && unaHora.marcada === '17:00', JSON.stringify(unaHora));
 
-// ---------- 5. Confirmar: la reserva se cierra aqui ----------
+// ---------- 5. Paso 2: los datos, con lo elegido a la vista ----------
+await page.click('[data-continuar]');
+await page.waitForSelector('.ntl-bk-form', { timeout: 4000 });
+const paso2 = await page.evaluate(() => ({
+  elegido: document.querySelector('.ntl-bk-elegido')?.textContent,
+  hecho: !!document.querySelector('.ntl-bk-pasos li.is-hecho'),
+  boton: document.querySelector('.ntl-bk-form .ntl-bk-go')?.textContent.trim(),
+}));
+log('El paso 2 recuerda dia, hora, personas e importe',
+  /17:00/.test(paso2.elegido || '') && /3 people/.test(paso2.elegido || '') &&
+  /105/.test(paso2.elegido || ''), paso2.elegido);
+log('Y el primer paso queda marcado como hecho', paso2.hecho === true, '');
+log('El boton dice exactamente lo que se paga', /105/.test(paso2.boton || ''), paso2.boton);
+
+// Volver atras no pierde lo elegido: cambiar de idea es gratis.
+await page.click('[data-volver]');
+await page.waitForSelector('.ntl-bk-day', { timeout: 4000 });
+const vuelta = await page.evaluate(() => ({
+  dia: document.querySelector('.ntl-bk-day.is-on')?.dataset.fecha,
+  hora: document.querySelector('.ntl-bk-slot.is-on')?.dataset.hora,
+  personas: document.querySelector('.ntl-bk-n')?.textContent,
+}));
+log('Volver atras conserva la eleccion',
+  vuelta.dia === dia(2) && vuelta.hora === '17:00' && vuelta.personas === '3',
+  JSON.stringify(vuelta));
+await page.click('[data-continuar]');
+await page.waitForSelector('.ntl-bk-form', { timeout: 4000 });
+
+// ---------- 6. Confirmar: la reserva se cierra aqui ----------
 await page.fill('.ntl-bk-field input[name="nombre"]', 'Marc Delgado');
 await page.fill('.ntl-bk-field input[name="email"]', 'marc@example.com');
 await page.fill('.ntl-bk-field input[name="telefono"]', '600123456');
@@ -229,7 +288,7 @@ await page.waitForSelector('.ntl-bk-done', { timeout: 5000 });
 
 log('La confirmacion se ve en nuestra web', await page.locator('.ntl-bk-done').isVisible(), '');
 const recibo = await page.evaluate(() => ({
-  ref: document.querySelector('.ntl-bk-ref')?.textContent,
+  ref: document.querySelector('.ntl-bk-refn')?.textContent,
   texto: document.querySelector('.ntl-bk-recap')?.textContent,
   url: location.href,
 }));
@@ -256,14 +315,16 @@ await p2.click('.ntl-own-dates');
 await p2.waitForSelector('.ntl-bk-day', { timeout: 4000 });
 await p2.click('.ntl-bk-slot[data-hora="17:00"]');
 await p2.waitForTimeout(150);
+await p2.click('[data-continuar]');
+await p2.waitForSelector('.ntl-bk-form', { timeout: 4000 });
 await p2.fill('.ntl-bk-field input[name="nombre"]', 'Ana Puig');
 await p2.fill('.ntl-bk-field input[name="email"]', 'tarde@example.com');
-await p2.click('.ntl-bk-go');
+await p2.click('.ntl-bk-form .ntl-bk-go');
 await p2.waitForTimeout(900);
 const conflicto = await p2.evaluate(() => ({
   error: document.querySelector('.ntl-bk-error')?.textContent ?? null,
   hecho: !!document.querySelector('.ntl-bk-done'),
-  boton: document.querySelector('.ntl-bk-go')?.disabled,
+  boton: document.querySelector('.ntl-bk-form .ntl-bk-go')?.disabled,
 }));
 log('Si el CRM rechaza por cupo, se dice y no se da por hecha',
   conflicto.hecho === false && /3 plazas/.test(conflicto.error || ''), JSON.stringify(conflicto));
@@ -272,7 +333,7 @@ log('Y se puede volver a intentar', conflicto.boton === false, `deshabilitado=${
 // Sin nombre ni correo no se envia nada: la reserva necesita a quien avisar.
 await p2.fill('.ntl-bk-field input[name="email"]', '');
 const previa = ultimaReserva;
-await p2.click('.ntl-bk-go');
+await p2.click('.ntl-bk-form .ntl-bk-go');
 await p2.waitForTimeout(400);
 log('No se envia sin correo de contacto', ultimaReserva === previa, 'no hubo peticion nueva');
 await p2.close();
