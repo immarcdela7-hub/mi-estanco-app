@@ -388,19 +388,51 @@
         </div>
     </div>
 
-    <!-- GetYourGuide Discover More Section -->
-    <section class="py-8 px-4 max-w-lg mx-auto relative mt-8" data-view="catalog">
+    <!-- Discover More: widget de ciudad de GetYourGuide, uno por provincia.
+         Los cuatro van en el HTML desde el principio (ocultos salvo el activo)
+         porque el script de GYG busca los data-gyg-href al cargar; si se
+         inyectaran despues podria no verlos. Solo se cambia cual se muestra. -->
+    <section class="py-8 px-4 max-w-lg mx-auto relative mt-8" data-view="catalog" id="discoverMore">
         <div class="bg-white p-4 rounded-3xl shadow-xl border border-gray-100">
             <div class="mb-5 flex items-center justify-between px-2">
-                <h2 class="text-lg font-extrabold text-gray-900">Discover More</h2>
+                <h2 class="text-lg font-extrabold text-gray-900" id="discoverTitle">Discover more</h2>
                 <div class="flex items-center gap-1 text-[10px] text-gray-400 font-bold uppercase">
                     Powered by GYG
                 </div>
             </div>
-            <!-- GYG City Widget -->
-            <div data-gyg-href="https://widget.getyourguide.com/default/city.frame" data-gyg-location-id="45" data-gyg-locale-code="en-US" data-gyg-widget="city" data-gyg-partner-id="IBO5PAK"></div>
+            <div class="ntl-citywidget" data-province="barcelona">
+                <div data-gyg-href="https://widget.getyourguide.com/default/city.frame" data-gyg-location-id="45" data-gyg-locale-code="en-US" data-gyg-widget="city" data-gyg-partner-id="IBO5PAK"></div>
+            </div>
+            <div class="ntl-citywidget" data-province="tarragona" hidden>
+                <div data-gyg-href="https://widget.getyourguide.com/default/city.frame" data-gyg-location-id="1884" data-gyg-locale-code="en-US" data-gyg-widget="city" data-gyg-partner-id="IBO5PAK"></div>
+            </div>
+            <div class="ntl-citywidget" data-province="girona" hidden>
+                <div data-gyg-href="https://widget.getyourguide.com/default/city.frame" data-gyg-location-id="550" data-gyg-locale-code="en-US" data-gyg-widget="city" data-gyg-partner-id="IBO5PAK"></div>
+            </div>
+            <div class="ntl-citywidget" data-province="lleida" hidden>
+                <div data-gyg-href="https://widget.getyourguide.com/default/city.frame" data-gyg-location-id="100032" data-gyg-locale-code="en-US" data-gyg-widget="city" data-gyg-partner-id="IBO5PAK"></div>
+            </div>
         </div>
     </section>
+
+    <!-- Sella el codigo del establecimiento en los widgets ANTES de que el
+         script de GetYourGuide los procese: data-gyg-cmp va en el div (fuera
+         del iframe), asi que las ventas del widget tambien quedan atribuidas
+         al local del cartel. No puede esperar a ntl-attrib.js, que carga al
+         final: para entonces el widget ya se habria inicializado. -->
+    <script>
+      (function () {
+        var ref = new URLSearchParams(location.search).get('ref');
+        if (!ref) {
+          var m = document.cookie.match(/(?:^|; )ntl_ref=([^;]*)/);
+          if (m) ref = decodeURIComponent(m[1]);
+        }
+        if (!ref) return;
+        document.querySelectorAll('[data-gyg-widget]').forEach(function (el) {
+          el.setAttribute('data-gyg-cmp', ref);
+        });
+      })();
+    </script>
 
     <!-- Trust Badges -->
     <section class="py-6 px-6 text-center text-xs text-gray-400">
@@ -544,6 +576,25 @@
                 sorted.forEach(item => container.appendChild(item));
 
                 emptyState.classList.toggle('hidden', visibleCount !== 0);
+                updateCityWidget();
+            }
+
+            // ---------- Widget de ciudad segun la provincia activa ----------
+            // Nombre que se muestra y a que ciudad de GYG apunta cada provincia.
+            // "All Catalunya" cae en Barcelona, que es donde esta el grueso.
+            const CITY_WIDGET = {
+                barcelona: 'Barcelona',
+                tarragona: 'Salou',   // la Costa Daurada es donde tenemos oferta
+                girona: 'Girona',
+                lleida: 'Lleida',
+            };
+            const cityWidgets = document.querySelectorAll('.ntl-citywidget');
+            const discoverTitle = document.getElementById('discoverTitle');
+
+            function updateCityWidget() {
+                const prov = CITY_WIDGET[activeProvince] ? activeProvince : 'barcelona';
+                cityWidgets.forEach((w) => { w.hidden = w.dataset.province !== prov; });
+                if (discoverTitle) discoverTitle.textContent = 'Discover more in ' + CITY_WIDGET[prov];
             }
 
             // ---------- LISTENERS ----------

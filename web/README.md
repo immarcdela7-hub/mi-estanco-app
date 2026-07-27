@@ -88,6 +88,35 @@ El precio "from X€" del plan se calcula solo sumando los mínimos de sus parad
 
 > Al modificar `plans-ui.js`, sube el `?v=N` de su `<script>` en `tickets.html`.
 
+## Widget de ciudad de GetYourGuide ("Discover more")
+
+Bajo el catálogo hay un widget de ciudad de GYG que **cambia con la provincia
+seleccionada**: Barcelona (`l45`), Salou para Tarragona (`l1884`), Girona
+(`l550`) y Lleida (`l100032`). "All Catalunya" muestra Barcelona.
+
+Sirve sobre todo donde nuestra oferta es corta (Lleida tiene 3 actividades):
+convierte un "aquí no hay casi nada" en una salida al catálogo completo de GYG.
+
+Dos detalles que **no** se pueden cambiar a la ligera:
+
+- Los cuatro `div` van en el HTML **desde el principio** (ocultos salvo el
+  activo). El script de GYG busca los `data-gyg-href` al cargar la página; si
+  se inyectaran después podría no verlos. Cambiar de provincia solo cambia
+  cuál se muestra.
+- El `data-gyg-cmp` se sella con el código del establecimiento en un
+  `<script>` inline **anterior** al de GYG. Ese atributo vive en el `div`
+  (fuera del iframe), así que las ventas del widget también quedan atribuidas
+  al local. No puede hacerlo `ntl-attrib.js`, que carga al final: para entonces
+  el widget ya se habría inicializado.
+
+Para cambiar a qué ciudad apunta una provincia: el mapa `CITY_WIDGET` en
+`tickets.html` y el `data-gyg-location-id` del `div` correspondiente. El id sale
+de la URL de GYG (`…/barcelona-l45/` → `45`).
+
+> Tarragona apunta a **Salou** porque es donde está nuestra oferta (11
+> actividades). Si prefieres la ciudad de Tarragona, saca su id del generador
+> de widgets del Partner Portal y cámbialo.
+
 ## Catálogo dirigido por datos
 
 Las tarjetas **no** se escriben a mano en el HTML: se generan por JS desde
