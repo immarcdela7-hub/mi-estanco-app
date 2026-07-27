@@ -133,48 +133,59 @@
            de Tailwind, y ese display:flex le gana al atributo hidden. Sin esto
            se quedarian visibles al cambiar de vista. */
         [data-view][hidden] { display:none !important; }
-        /* Cabecera: la flecha de volver va como boton redondo alineado con el
-           titulo (igual que la del logo), no suelta encima. */
-        .ntl-pv-head { display:flex; align-items:flex-start; gap:.85rem; }
-        .ntl-pv-head[hidden] { display:none; }
-        .ntl-pv-headtext { min-width:0; }
-        .ntl-pv-back { flex-shrink:0; width:2.25rem; height:2.25rem; border-radius:9999px;
-            border:1px solid #e5e7eb; background:#fff; color:#6b7280; display:flex; align-items:center;
-            justify-content:center; cursor:pointer; padding:0; margin-top:.15rem; transition:.15s; }
-        .ntl-pv-back:hover { border-color:rgb(0 123 190); color:rgb(0 123 190); }
-        .ntl-pv-back svg { width:1.05rem; height:1.05rem; }
-        .ntl-pv-title { margin:0; font-size:1.5rem; font-weight:800; letter-spacing:-.02em; color:rgb(0 43 91); }
-        .ntl-pv-sub { margin:.25rem 0 0; font-size:.9rem; color:#6b7280; }
-        .ntl-pv-meta { margin:.5rem 0 0; font-size:.72rem; font-weight:700; text-transform:uppercase;
-            letter-spacing:.05em; color:rgb(0 123 190); }
-        .ntl-pv-detail .ntl-pv-head { margin-bottom:1.25rem; }
-        .ntl-pv-grid { display:grid; grid-template-columns:repeat(1,minmax(0,1fr)); gap:1rem; margin-top:1.25rem; }
+        /* Estas vistas NO llevan el hero azul (es del catalogo): respiran con
+           espacio en blanco y una jerarquia tipografica clara. */
+        .ntl-pv-intro { padding:2.75rem 0 .5rem; }
+        .ntl-pv-intro[hidden] { display:none; }
+        .ntl-pv-eyebrow { display:block; font-size:.7rem; font-weight:800; text-transform:uppercase;
+            letter-spacing:.12em; color:rgb(0 123 190); margin-bottom:.5rem; }
+        .ntl-pv-title { margin:0; font-size:2.125rem; font-weight:800; letter-spacing:-.03em;
+            line-height:1.1; color:rgb(0 43 91); }
+        .ntl-pv-sub { margin:.6rem 0 0; font-size:1.05rem; line-height:1.5; color:#6b7280; max-width:34rem; }
+
+        /* Portada del detalle: las fotos del propio plan hacen de banner. */
+        .ntl-pd-banner { display:grid; grid-template-columns:2fr 1fr 1fr; gap:4px; height:14rem;
+            border-radius:1.25rem; overflow:hidden; margin-top:1.75rem; background:#f3f4f6; }
+        .ntl-pd-cell { display:block; overflow:hidden; background:#e5e7eb; }
+        .ntl-pd-cell img { width:100%; height:100%; object-fit:cover; display:block; }
+        .ntl-pd-head { padding:1.75rem 0 1.5rem; }
+        @media (max-width:640px) {
+            .ntl-pv-intro { padding-top:1.75rem; }
+            .ntl-pv-title { font-size:1.6rem; }
+            .ntl-pv-sub { font-size:.95rem; }
+            .ntl-pd-banner { grid-template-columns:1fr; height:11rem; margin-top:1.25rem; }
+            .ntl-pd-cell { display:none; }
+            .ntl-pd-cell-main { display:block; }
+            .ntl-pd-head { padding:1.25rem 0 1.1rem; }
+        }
+        .ntl-pv-grid { display:grid; grid-template-columns:repeat(1,minmax(0,1fr)); gap:1.5rem; margin-top:2rem; }
         @media (min-width:700px) { .ntl-pv-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
         @media (min-width:1024px) { .ntl-pv-grid { grid-template-columns:repeat(3,minmax(0,1fr)); } }
         .ntl-pv-grid[hidden], .ntl-pv-detail[hidden] { display:none; }
 
         /* Tarjeta de plan con collage de las fotos de sus paradas */
-        .ntl-pcard { display:flex; flex-direction:column; text-align:left; background:#fff; border:1px solid #e5e7eb;
-            border-radius:1rem; overflow:hidden; cursor:pointer; padding:0; font-family:inherit; width:100%;
-            transition:box-shadow .2s, border-color .2s, transform .2s; }
-        .ntl-pcard:hover { border-color:rgb(0 123 190); box-shadow:0 12px 20px -8px rgba(15,23,42,.18); transform:translateY(-2px); }
-        .ntl-pcard-photos { display:grid; grid-template-columns:1.7fr 1fr; gap:3px; height:9.5rem; background:#f3f4f6; }
+        .ntl-pcard { display:flex; flex-direction:column; text-align:left; background:#fff; border:1px solid #eceff3;
+            border-radius:1.25rem; overflow:hidden; cursor:pointer; padding:0; font-family:inherit; width:100%;
+            box-shadow:0 1px 2px rgba(15,23,42,.04);
+            transition:box-shadow .25s ease, border-color .25s ease, transform .25s ease; }
+        .ntl-pcard:hover { border-color:#dbe3ec; box-shadow:0 18px 30px -14px rgba(15,23,42,.25); transform:translateY(-3px); }
+        .ntl-pcard-photos { display:grid; grid-template-columns:1.7fr 1fr; gap:3px; height:10.5rem; background:#f3f4f6; }
         .ntl-pcard-side { display:grid; grid-template-rows:1fr 1fr; gap:3px; }
         .ntl-pcard-cell { position:relative; overflow:hidden; display:block; background:#e5e7eb; }
-        .ntl-pcard-cell img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .5s; }
-        .ntl-pcard:hover .ntl-pcard-cell img { transform:scale(1.04); }
+        .ntl-pcard-cell img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .6s ease; }
+        .ntl-pcard:hover .ntl-pcard-cell img { transform:scale(1.05); }
         .ntl-pcard-more { position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
-            background:rgba(0,43,91,.65); color:#fff; font-size:.9rem; font-weight:800; }
-        .ntl-pcard-body { display:flex; flex-direction:column; gap:.2rem; padding:.9rem 1rem .4rem; flex:1; }
-        .ntl-pcard-title { font-size:1rem; font-weight:800; color:rgb(0 43 91); line-height:1.2; }
-        .ntl-pcard-sub { font-size:.8rem; color:#6b7280; line-height:1.35; }
-        .ntl-pcard-meta { margin-top:.3rem; font-size:.68rem; font-weight:700; text-transform:uppercase;
-            letter-spacing:.04em; color:rgb(0 123 190); }
-        .ntl-pcard-cta { display:flex; align-items:center; gap:.3rem; padding:.6rem 1rem .95rem;
-            font-size:.75rem; font-weight:700; color:rgb(0 43 91); }
-        .ntl-pcard:hover .ntl-pcard-cta { color:rgb(0 123 190); }
-        .ntl-pcard-cta svg { width:.85rem; height:.85rem; }
-        .ntl-pv-steps { display:flex; flex-direction:column; gap:.5rem; }
+            background:rgba(0,43,91,.62); color:#fff; font-size:.95rem; font-weight:800; letter-spacing:-.01em; }
+        .ntl-pcard-body { display:flex; flex-direction:column; gap:.3rem; padding:1.15rem 1.25rem .5rem; flex:1; }
+        .ntl-pcard-title { font-size:1.125rem; font-weight:800; color:rgb(0 43 91); line-height:1.25; letter-spacing:-.015em; }
+        .ntl-pcard-sub { font-size:.875rem; color:#6b7280; line-height:1.45; }
+        .ntl-pcard-meta { margin-top:.45rem; font-size:.68rem; font-weight:800; text-transform:uppercase;
+            letter-spacing:.08em; color:rgb(0 123 190); }
+        .ntl-pcard-cta { display:flex; align-items:center; gap:.35rem; padding:.85rem 1.25rem 1.25rem;
+            font-size:.8rem; font-weight:700; color:rgb(0 43 91); }
+        .ntl-pcard:hover .ntl-pcard-cta { color:rgb(0 123 190); gap:.6rem; }
+        .ntl-pcard-cta svg { width:.85rem; height:.85rem; transition:transform .25s ease; }
+        .ntl-pv-steps { display:flex; flex-direction:column; gap:.75rem; }
 
         .ntl-pick { display:flex; gap:.75rem; align-items:center; text-decoration:none; background:#fff;
             border:1px solid #f3f4f6; border-radius:.75rem; padding:.75rem; transition:box-shadow .2s, border-color .2s; }
@@ -252,7 +263,7 @@
     </header>
 
     <!-- Hero Section -->
-    <section class="ntl-hero bg-ntl-navy text-white pt-12 pb-20 px-6 text-center rounded-b-[2.5rem] shadow-2xl relative overflow-hidden">
+    <section class="ntl-hero bg-ntl-navy text-white pt-12 pb-20 px-6 text-center rounded-b-[2.5rem] shadow-2xl relative overflow-hidden" data-view="catalog">
         <!-- Abstract shapes -->
         <div class="absolute top-0 right-0 w-full h-full bg-gradient-to-b from-blue-900/50 to-transparent z-0"></div>
         <div class="absolute -top-20 -right-20 w-72 h-72 bg-gradient-to-br from-ntl-accent to-ntl-vibrant rounded-full blur-3xl opacity-40 mix-blend-screen"></div>
@@ -326,8 +337,9 @@
 
     <!-- Vista aparte de planes curados: sustituye al catalogo (que se oculta)
          hasta que se pulsa "Back". Contenido en plans-ui.js. -->
-    <section class="max-w-6xl mx-auto px-4 mb-10" id="ntlPlansView" hidden>
-        <div id="plansIntro">
+    <section class="max-w-6xl mx-auto px-4 mb-16" id="ntlPlansView" hidden>
+        <div id="plansIntro" class="ntl-pv-intro">
+            <span class="ntl-pv-eyebrow">Curated by NoTaxLost</span>
             <h2 class="ntl-pv-title">Ready-made plans</h2>
             <p class="ntl-pv-sub">Put together by us, in the order we would actually do them.</p>
         </div>
@@ -625,7 +637,7 @@
        reaplica la atribucion tras pintar). Sube ?v=N al modificarlo. -->
   <script src="/recommend.js?v=3"></script>
   <!-- Planes curados. Sube ?v=N al modificarlo. -->
-  <script src="/plans-ui.js?v=4"></script>
+  <script src="/plans-ui.js?v=5"></script>
 
   <!-- Cambio entre las dos vistas (catalogo / planes) y visibilidad de la barra
        de ayuda. Va aqui, despues de los dos renderizadores, para saber ya si

@@ -101,12 +101,23 @@
   }
 
   // La navegacion hacia atras vive en la cabecera (ntlSetBack), no aqui.
+  // El detalle no lleva el hero azul del catalogo: su portada son las fotos del
+  // propio plan, que es lo que de verdad lo vende.
   function detailHtml(pl) {
+    var fotos = pl.pasos.map(function (p) { return p.imagen; }).slice(0, 3);
+    var banner = fotos.map(function (src, i) {
+      return '<span class="ntl-pd-cell' + (i === 0 ? ' ntl-pd-cell-main' : '') + '">' +
+        '<img src="' + esc(src) + '" alt="" loading="lazy"></span>';
+    }).join('');
+
     return '' +
-      '<h2 class="ntl-pv-title">' + esc(pl.titulo) + '</h2>' +
-      '<p class="ntl-pv-sub">' + esc(pl.subtitulo) + '</p>' +
-      '<p class="ntl-pv-meta">' + esc(pl.duracion) + ' &middot; ' + pl.pasos.length +
-        ' stops &middot; from ' + pl.desde + '&euro;</p>' +
+      '<div class="ntl-pd-banner">' + banner + '</div>' +
+      '<div class="ntl-pd-head">' +
+        '<span class="ntl-pv-eyebrow">' + esc(pl.duracion) + ' &middot; ' + pl.pasos.length +
+          ' stops &middot; from ' + pl.desde + '&euro;</span>' +
+        '<h2 class="ntl-pv-title">' + esc(pl.titulo) + '</h2>' +
+        '<p class="ntl-pv-sub">' + esc(pl.subtitulo) + '</p>' +
+      '</div>' +
       '<div class="ntl-pv-steps">' + pl.pasos.map(stepHtml).join('') + '</div>';
   }
 
