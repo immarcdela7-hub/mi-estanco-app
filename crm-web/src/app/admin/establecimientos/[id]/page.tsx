@@ -61,7 +61,10 @@ export default async function EstablishmentDetail({
 
       <div className="grid grid-cols-1 gap-4 xl:grid-cols-[1fr_1.4fr]">
         <div className="flex flex-col gap-4">
-          <Panel title="Código QR">
+          {/* Lo que se cuelga en el local es el cartel entero, no un QR suelto:
+              por eso el PDF va primero y el PNG queda para quien quiera
+              montárselo aparte (una pegatina, la carta, un expositor). */}
+          <Panel title="Cartel para imprimir">
             <div className="flex flex-col items-center gap-3">
               <img
                 src={`/api/qr/${est.code}`}
@@ -70,8 +73,26 @@ export default async function EstablishmentDetail({
                 height={190}
                 className="rounded-lg border border-line"
               />
-              <a href={`/api/qr/${est.code}?download=1`} className={`${btnGreen} w-full`}>
-                Descargar QR en PNG
+              <a href={`/api/descargas/cartel/${est.code}`} className={`${btnGreen} w-full`}>
+                Descargar cartel A6 (PDF)
+              </a>
+              <div className="flex w-full items-center justify-center gap-3 text-[13px] text-muted">
+                <span>¿Varias mesas?</span>
+                <a
+                  href={`/api/descargas/cartel/${est.code}?copias=5`}
+                  className="font-semibold text-brand-blue-dark hover:underline"
+                >
+                  5 copias
+                </a>
+                <a
+                  href={`/api/descargas/cartel/${est.code}?copias=10`}
+                  className="font-semibold text-brand-blue-dark hover:underline"
+                >
+                  10 copias
+                </a>
+              </div>
+              <a href={`/api/qr/${est.code}?download=1`} className={`${btnSecondary} w-full`}>
+                Solo el QR (PNG)
               </a>
               <code className="w-full overflow-x-auto rounded-lg bg-slate-100 px-3 py-2 text-xs text-slate-700">
                 {url}
@@ -80,11 +101,23 @@ export default async function EstablishmentDetail({
                 <div className="w-full text-sm">
                   <span className="font-semibold text-slate-700">Carteles adicionales: </span>
                   {extraCodes.map((c) => (
-                    <span key={c.code} className="mr-1">
+                    <span key={c.code} className="mr-1 inline-flex items-center gap-1">
                       <Badge color="blue">{c.code}</Badge>
+                      <a
+                        href={`/api/descargas/cartel/${c.code}`}
+                        className="text-xs font-semibold text-brand-blue-dark hover:underline"
+                      >
+                        PDF
+                      </a>
                     </span>
                   ))}
                 </div>
+              )}
+              {!est.city && (
+                <p className="w-full rounded-lg bg-amber-50 px-3 py-2 text-[13px] text-amber-900">
+                  Este local no tiene ciudad. El cartel funcionará, pero la web no
+                  podrá enseñar primero lo que hay cerca. Rellénala antes de imprimir.
+                </p>
               )}
             </div>
           </Panel>
