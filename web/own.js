@@ -69,6 +69,11 @@
     nightlife: 'Nightlife', family: 'Family',
   };
 
+  /* El distintivo de las nuestras. Va en el mismo sitio y con la misma forma que
+     los del catalogo (ver DISTINTIVO_LABEL en tickets.html): son una familia, y
+     solo cambia el color. En verde NTL porque esta es la nuestra. */
+  var DISTINTIVO_PROPIO = 'NTL EXPERIENCE';
+
   /* Misma estructura que las tarjetas del catalogo (mismas clases y data-*),
      para que los filtros, el orden y las dos vistas funcionen igual. Lo que
      cambia es el distintivo y el pie: hay que dejar claro quien vende.
@@ -87,7 +92,7 @@
       (a.imagen
         ? '<img src="' + esc(a.imagen) + '" alt="' + esc(a.titulo) + '" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">'
         : '<div class="ntl-own-nopic"></div>') +
-      '<div class="ntl-own-flag">Book here</div>' +
+      '<div class="ntl-badge ntl-badge-own">' + DISTINTIVO_PROPIO + '</div>' +
       '</div>' +
       '<div class="item-content">' +
       '<div class="text-content">' +

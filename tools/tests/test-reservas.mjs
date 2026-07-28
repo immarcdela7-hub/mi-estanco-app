@@ -112,12 +112,12 @@ log('Convive con las 125 de GetYourGuide', total === 126, `${total} tarjetas en 
 const distintivo = await page.evaluate(() => {
   const c = document.querySelector('.experience-item.ntl-own');
   return {
-    flag: c?.querySelector('.ntl-own-flag')?.textContent.trim(),
+    flag: c?.querySelector('.ntl-badge')?.textContent.trim(),
     boton: c?.querySelector('.ntl-own-dates')?.textContent.trim(),
     href: c?.querySelector('.item-link')?.getAttribute('href'),
   };
 });
-log('Se distingue de las de GetYourGuide', distintivo.flag === 'Book here', JSON.stringify(distintivo));
+log('Se distingue de las de GetYourGuide', distintivo.flag === 'NTL EXPERIENCE', JSON.stringify(distintivo));
 log('No lleva a ningun dominio ajeno', /^\?actividad=/.test(distintivo.href || ''), distintivo.href);
 
 // LA PRUEBA QUE NUNCA DEBE FALLAR: las propias no pueden romper la atribucion

@@ -11,6 +11,9 @@ const OUT = path.join(ROOT, 'web', 'catalog.js');
 
 const PROVINCES = ['barcelona', 'tarragona', 'girona', 'lleida'];
 const CATEGORIES = ['culture', 'sea', 'tours', 'food'];
+// Distintivo de la tarjeta. Vacio = sin distintivo (la mayoria).
+// Un valor desconocido no se pinta, asi que se avisa en vez de callarlo.
+const DISTINTIVOS = ['travelers-choice', 'top-pick'];
 
 const { records } = parseCsv(readFileSync(CSV, 'utf8'));
 
@@ -25,6 +28,10 @@ const catalog = records.map((r, i) => {
   if (!r.url_getyourguide) warn.push(`row ${i + 1} "${r.titulo}": missing url_getyourguide`);
   if (!/partner_id=IBO5PAK/.test(r.url_getyourguide || '')) warn.push(`row ${i + 1} "${r.titulo}": url missing partner_id=IBO5PAK`);
   if (!r.imagen) warn.push(`row ${i + 1} "${r.titulo}": missing imagen (run scrape-gyg or paste URL)`);
+  const distintivo = (r.distintivo || '').trim().toLowerCase();
+  if (distintivo && !DISTINTIVOS.includes(distintivo)) {
+    warn.push(`row ${i + 1} "${r.titulo}": unknown distintivo "${distintivo}" (valid: ${DISTINTIVOS.join(', ')} or empty)`);
+  }
   return {
     order: r.order ? parseInt(r.order, 10) : i + 1,
     provincia,
@@ -36,7 +43,7 @@ const catalog = records.map((r, i) => {
     precio: num(r.precio),
     precioDisplay: r.precio_display || '',
     rating: num(r.rating),
-    trending: /^s(i|í)|^y|^true|^1$/i.test((r.trending || '').trim()),
+    distintivo: DISTINTIVOS.includes(distintivo) ? distintivo : '',
     keywords: (r.keywords || r.titulo || '').toLowerCase(),
     etiquetaPie: r.etiqueta_pie || '',
     url: r.url_getyourguide || '',
@@ -53,4 +60,5 @@ const by = (k) => catalog.reduce((a, x) => ((a[x[k]] = (a[x[k]] || 0) + 1), a), 
 console.log('by province:', by('provincia'));
 console.log('by category:', by('categoria'));
 console.log('with image:', catalog.filter((x) => x.imagen).length, '/', catalog.length);
+console.log('by distintivo:', catalog.reduce((a, x) => ((a[x.distintivo || '(ninguno)'] = (a[x.distintivo || '(ninguno)'] || 0) + 1), a), {}));
 if (warn.length) { console.log(`\n${warn.length} warning(s):`); warn.slice(0, 40).forEach((w) => console.log('  -', w)); }

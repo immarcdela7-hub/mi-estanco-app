@@ -240,12 +240,39 @@ catalog.js    (generado; lo carga tickets.html y pinta las tarjetas)
 | `precio` | número (se usa para ordenar por precio) |
 | `precio_display` | texto de precio, `from N€` (precio real "desde" de GYG) |
 | `rating` | nota (p. ej. 4.8) |
-| `trending` | `si` / `no` (muestra la etiqueta "Trending") |
+| `distintivo` | `travelers-choice`, `top-pick` o vacío (ver abajo) |
 | `keywords` | palabras para el buscador (`data-name`) |
 | `etiqueta_pie` | etiqueta pequeña del pie (p. ej. "Open Bar") |
 | `url_getyourguide` | enlace de GYG **con** `?partner_id=IBO5PAK&utm_medium=local_partners` |
 | `imagen` | URL de la foto (hotlink a `cdn.getyourguide.com`) |
 | `imagen_old` | (histórico) ruta de la imagen local anterior; no se usa |
+
+## Distintivos de la tarjeta
+
+Cada tarjeta lleva **como mucho una** pastilla, siempre arriba a la derecha (la
+valoración vive arriba a la izquierda). Son la misma familia —mismo tamaño,
+forma y peso— y sólo cambian de color:
+
+| `distintivo` | Se ve | Color | De dónde sale | Cuántas |
+|---|---|---|---|---|
+| `travelers-choice` | TRAVELLERS' FAVOURITE | azul marino | está entre las **25 primeras** del ranking | 25 |
+| `top-pick` | GYG TOP PICK | ámbar | GYG la marca "Top pick" y está fuera del corte | 9 |
+| (vacío) | — | — | el resto | 91 |
+| — (propias) | NTL EXPERIENCE | verde NTL | `web/own.js`, las actividades nuestras | — |
+
+No se usa "Travelers' Choice" literal: es el nombre registrado del premio de
+Tripadvisor y estas actividades no lo han ganado.
+
+**Por qué el corte está en 25 y no en 50.** El catálogo contiene las 50 más
+vendidas, pero pintarles la pastilla a todas dejaba el **40%** de las tarjetas
+con la misma etiqueta, y un distintivo que lleva medio catálogo no distingue
+nada. Con 25 se queda en el 27% contando las dos pastillas. Se cambia en el
+`CORTE` de `tools/apply-distintivos.mjs` (y el de `tools/tests/test-distintivos.mjs`).
+
+> **GYG no marca "Bestseller"** a ninguna de las 821 actividades cosechadas: sus
+> etiquetas reales son New activity (198), Likely to sell out (33), Top pick (19),
+> Official ticket (16) y Originals (2). Por eso el segundo distintivo se alimenta
+> de "Top pick", que sí existe.
 
 ## El top 50 de Cataluña
 
@@ -269,6 +296,7 @@ node harvest-listings.mjs   # cosecha 16 listados -> tools/harvest.json
 node rank-top50.mjs         # ranking auditable   -> tools/top50.json
 node curate-top50.mjs       # las que faltan      -> tools/new-activities.json
 node add-activities.mjs     # las da de alta en catalog.csv
+node apply-distintivos.mjs --apply   # rellena la columna distintivo
 node build-catalog.mjs
 ```
 

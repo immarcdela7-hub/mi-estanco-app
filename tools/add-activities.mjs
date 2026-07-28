@@ -99,7 +99,7 @@ for (let i = 0; i < candidates.length; i++) {
       // Mismo formato que el resto del catalogo (lo fija apply-prices.mjs).
       precio_display: c.precio_display || (precio ? `from ${precio}€` : ''),
       rating,
-      trending: c.trending ? 'si' : 'no',
+      distintivo: c.distintivo || '',
       keywords: (c.keywords || `${titulo} ${c.city} ${c.categoria}`).toLowerCase(),
       etiqueta_pie: c.etiqueta_pie || '',
       url_getyourguide: clean + PARTNER,

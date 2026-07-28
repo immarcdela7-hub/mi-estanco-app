@@ -1,6 +1,6 @@
 # Pruebas de la web (navegador real)
 
-Seis baterías sobre `web/` y el motor de reservas del CRM, con Playwright.
+Siete baterías sobre `web/` y el motor de reservas del CRM, con Playwright.
 Cubren lo que no se puede ver leyendo el código: que la **atribución**
 sobreviva a cada cambio, que los filtros y las vistas funcionen, que se pueda
 reservar de principio a fin sin salir de la web, y que nada desborde en móvil.
@@ -17,6 +17,7 @@ node tests/test-plans.mjs                 # planes, detalle y disponibilidad
 node tests/test-gyg-widgets.mjs           # widgets de GYG inyectados por JS
 node tests/test-reservas.mjs              # reserva propia, de punta a punta
 node tests/test-disponibilidad.mjs        # motor de cupo del CRM (sin navegador)
+node tests/test-distintivos.mjs           # pastillas de las tarjetas y su atribucion
 ```
 
 Cada una imprime `=== N/N pruebas OK ===`. Las capturas van a `tools/capturas/`.
@@ -40,6 +41,14 @@ CRM se cae el catálogo de GetYourGuide sigue entero y con su atribución.
 se acepta. Ahí están los casos que en producción se ven una vez y duelen: el
 cambio de hora de octubre, un día que se queda sin plazas suficientes para el
 mínimo, y el reparto en céntimos entre nosotros y el establecimiento.
+
+`test-distintivos.mjs` cubre el sistema de pastillas: que ninguna tarjeta lleve
+más de una, que todas vayan en la misma posición, que las del top 50 lleven
+"TRAVELLERS' FAVOURITE" y el resto no, que la nuestra lleve "NTL EXPERIENCE" en
+verde sin perder su pie azul, y que **cada actividad del top 50 salga con su
+`cmp`** — las recién añadidas son justo las que más fácil se quedan fuera de la
+atribución. Lee el top 50 de `tools/top50.json`, así que si se regenera ese
+fichero la prueba se ajusta sola.
 
 **La prueba que nunca debe fallar** es la de atribución: si un cambio deja
 enlaces sin `cmp=EST-XXXXX`, las ventas dejan de poder repartirse al

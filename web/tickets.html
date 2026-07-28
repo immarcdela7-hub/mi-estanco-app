@@ -278,15 +278,32 @@
             .ntl-modal-box { max-width:none; border-radius:1.25rem 1.25rem 0 0; max-height:92vh; }
         }
 
+        /* ----- Distintivos de la tarjeta -----
+           Una sola pastilla por tarjeta y siempre en el mismo sitio (arriba a la
+           derecha; la valoracion vive arriba a la izquierda). Los tres son la
+           misma familia —mismo tamaño, forma y peso— y solo cambian de color,
+           para que se distingan de un vistazo sin parecer cosas distintas.
+           Fondo solido + sombra: tienen que leerse sobre fotos claras y oscuras. */
+        .ntl-badge { position:absolute; top:.5rem; right:.5rem; z-index:2;
+            font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:.05em;
+            line-height:1.15; padding:.25rem .5rem; border-radius:.3rem;
+            max-width:calc(100% - 1rem); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+            box-shadow:0 1px 3px rgba(15,23,42,.35); }
+        .ntl-badge-travelers { background:rgb(0 43 91); color:#fff; }
+        .ntl-badge-toppick   { background:#f2a20c; color:rgb(48 32 0); }
+        /* La nuestra, en verde NTL. Texto en azul marino y no blanco: sobre este
+           verde el blanco no llega a contraste legible. */
+        .ntl-badge-own        { background:rgb(0 200 83); color:rgb(0 43 91); }
+        /* En la vista compacta la foto son 80x80: no cabe. Se oculta igual que
+           la descripcion y la etiqueta de pie. */
+        .view-list .ntl-badge { display:none; }
+
         /* ----- Actividades propias -----
            Van en la misma rejilla que las de GetYourGuide, pero se distinguen:
            estas se reservan aqui. El distintivo tambien es una obligacion,
            porque el cliente tiene que saber con quien esta contratando. */
         .ntl-own { border-color:#d6e6f5; }
         .ntl-own:hover { border-color:rgb(0 123 190); }
-        .ntl-own-flag { position:absolute; left:.5rem; bottom:.5rem; background:rgb(0 200 83); color:#fff;
-            font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:.06em;
-            padding:.2rem .45rem; border-radius:.3rem; box-shadow:0 1px 2px rgba(15,23,42,.2); }
         .ntl-own-nopic { width:100%; height:100%; background:linear-gradient(135deg,#e8f1fa,#d3e6f7); }
         /* Pie de la tarjeta propia. Deliberadamente NO se llama
            .ntl-card-dates: esa clase la escucha el catalogo para abrir el
@@ -688,9 +705,24 @@
             const esc = (s) => String(s == null ? '' : s)
                 .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
+            // Texto de cada distintivo, aqui arriba para poder cambiarlo sin
+            // rebuscar. No se usa "Travelers' Choice" tal cual: es el nombre
+            // registrado del premio de Tripadvisor y estas actividades no lo han
+            // ganado. El valor viene de la columna `distintivo` de catalog.csv.
+            const DISTINTIVO_LABEL = {
+                'travelers-choice': "TRAVELLERS' FAVOURITE",
+                'top-pick': 'GYG TOP PICK',
+            };
+            const DISTINTIVO_CLASE = {
+                'travelers-choice': 'ntl-badge-travelers',
+                'top-pick': 'ntl-badge-toppick',
+            };
+
             function cardHtml(a) {
-                const trending = a.trending
-                    ? '<div class="absolute top-2 right-2 bg-yellow-400 text-yellow-900 px-2 py-1 rounded-md text-[10px] font-bold uppercase shadow-sm">Trending</div>'
+                // Una sola pastilla por tarjeta: si no hay distintivo, no hay nada.
+                const etiqueta = DISTINTIVO_LABEL[a.distintivo];
+                const distintivo = etiqueta
+                    ? `<div class="ntl-badge ${DISTINTIVO_CLASE[a.distintivo]}">${esc(etiqueta)}</div>`
                     : '';
                 const tid = (String(a.url).match(/-t(\d+)/) || [])[1] || '';
                 return `
@@ -700,7 +732,7 @@
                     <div class="item-image relative overflow-hidden shrink-0">
                         <img src="${esc(a.imagen)}" alt="${esc(a.titulo)}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
                         ${a.rating ? `<div class="absolute top-2 left-2 bg-white/90 px-2 py-1 rounded-md text-[10px] font-bold shadow-sm">${STAR} ${esc(a.rating)}</div>` : ''}
-                        ${trending}
+                        ${distintivo}
                     </div>
                     <div class="item-content">
                         <div class="text-content">
