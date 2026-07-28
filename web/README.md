@@ -241,11 +241,56 @@ catalog.js    (generado; lo carga tickets.html y pinta las tarjetas)
 | `precio_display` | texto de precio, `from N€` (precio real "desde" de GYG) |
 | `rating` | nota (p. ej. 4.8) |
 | `distintivo` | `travelers-choice`, `top-pick` o vacío (ver abajo) |
+| `zonas` | ciudades a las que **también** sirve, separadas por `\|`. Vacío = solo la suya |
 | `keywords` | palabras para el buscador (`data-name`) |
 | `etiqueta_pie` | etiqueta pequeña del pie (p. ej. "Open Bar") |
 | `url_getyourguide` | enlace de GYG **con** `?partner_id=IBO5PAK&utm_medium=local_partners` |
 | `imagen` | URL de la foto (hotlink a `cdn.getyourguide.com`) |
 | `imagen_old` | (histórico) ruta de la imagen local anterior; no se usa |
+
+## Zonas: que el QR de un bar de Reus ensene cosas de Reus
+
+Un QR llega con `?zona=<slug-de-ciudad>`, que el CRM saca del establecimiento
+(`citySlug()` en `crm-web/src/lib/qr.ts`). El problema: GetYourGuide **solo tiene
+oferta propia en 8 de los 24 municipios catalanes de más de 50.000 habitantes**
+(comprobado uno a uno; buscar "Sabadell" en GYG devuelve actividades de Sevilla).
+Sin más, el QR de Cornellà dejaría la pantalla vacía.
+
+Se resuelve con la columna **`zonas`**, no reetiquetando:
+
+```
+city  = barcelona                                   <- donde ES de verdad
+zonas = cornella-de-llobregat|rubi|viladecans       <- a quien SIRVE
+```
+
+> **La línea que no se cruza:** nunca se cambia el `city` de una actividad para
+> que parezca de otra ciudad. El cliente paga y viaja: si la tarjeta miente sobre
+> dónde es, se planta en el sitio equivocado. Hay una prueba que lo vigila
+> (`test-zonas.mjs` compara el `city` de cada fila contra el commit anterior).
+
+- **Criterio de "alrededores"**, escrito una vez y aplicado igual a todas:
+  misma área metropolitana o **~40 min en transporte público**. Está en
+  `tools/zonas.json` junto al mapa ciudad → hubs, con la nota de cada una.
+- **Orden dentro de una zona**: primero lo que es **DE** esa ciudad, después los
+  alrededores. Quien escanea en Reus ve Reus arriba.
+- El antiguo apaño de `costadaurada` (que estaba escrito en el JS) **ya no
+  existe**: Salou y Cambrils llevan `costadaurada` en su columna `zonas`.
+
+```
+node municipios.mjs      # lista de municipios >50k desde Idescat -> municipios.json
+node descubrir-ciudades.mjs  # que ciudades tienen oferta propia en GYG
+node curate-ciudades.mjs # lo que falta para que cada una tenga 10 propias
+node add-activities.mjs  # las da de alta
+node rank-ciudades.mjs --apply   # calcula los top 10 y escribe la columna zonas
+node build-catalog.mjs
+```
+
+`tools/top-ciudades.json` guarda el top 10 de cada ciudad y cuántas son suyas.
+
+> **Tres ciudades no llegan a diez y no se rellenan a ojo**: Lleida (5, no hay
+> nada a menos de 40 min), y **Manresa y Vic (0)**. Barcelona está a 70 min de
+> las dos; Montserrat está a 30 min de Manresa, pero esas actividades **salen de
+> Barcelona**. Sus QR se quedan en el filtro de provincia.
 
 ## Distintivos de la tarjeta
 

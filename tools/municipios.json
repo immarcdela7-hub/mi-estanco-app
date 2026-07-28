@@ -1,0 +1,206 @@
+{
+ "fuente": {
+  "organismo": "Idescat (Institut d'Estadistica de Catalunya)",
+  "indicador": "f171 — Població",
+  "anyo_padron": "2025",
+  "nota": "Idescat, a partir del Cens de població anual de l'INE.",
+  "api": "https://api.idescat.cat/emex/v1/dades.json?i=f171&tipus=mun",
+  "actualizado_idescat": "2026-02-25T11:00:00+00:00"
+ },
+ "criterio": "Municipios de Cataluña con 50.000 habitantes o mas.",
+ "total_municipios_catalunya": 947,
+ "municipios": [
+  {
+   "ine": "080193",
+   "nombre": "Barcelona",
+   "nombre_idescat": "Barcelona",
+   "slug": "barcelona",
+   "provincia": "barcelona",
+   "poblacion": 1713247
+  },
+  {
+   "ine": "081017",
+   "nombre": "l'Hospitalet de Llobregat",
+   "nombre_idescat": "Hospitalet de Llobregat, l'",
+   "slug": "l-hospitalet-de-llobregat",
+   "provincia": "barcelona",
+   "poblacion": 292161
+  },
+  {
+   "ine": "082798",
+   "nombre": "Terrassa",
+   "nombre_idescat": "Terrassa",
+   "slug": "terrassa",
+   "provincia": "barcelona",
+   "poblacion": 232676
+  },
+  {
+   "ine": "080155",
+   "nombre": "Badalona",
+   "nombre_idescat": "Badalona",
+   "slug": "badalona",
+   "provincia": "barcelona",
+   "poblacion": 230642
+  },
+  {
+   "ine": "081878",
+   "nombre": "Sabadell",
+   "nombre_idescat": "Sabadell",
+   "slug": "sabadell",
+   "provincia": "barcelona",
+   "poblacion": 224589
+  },
+  {
+   "ine": "251207",
+   "nombre": "Lleida",
+   "nombre_idescat": "Lleida",
+   "slug": "lleida",
+   "provincia": "lleida",
+   "poblacion": 147369
+  },
+  {
+   "ine": "431482",
+   "nombre": "Tarragona",
+   "nombre_idescat": "Tarragona",
+   "slug": "tarragona",
+   "provincia": "tarragona",
+   "poblacion": 143260
+  },
+  {
+   "ine": "081213",
+   "nombre": "Mataró",
+   "nombre_idescat": "Mataró",
+   "slug": "mataro",
+   "provincia": "barcelona",
+   "poblacion": 131370
+  },
+  {
+   "ine": "082457",
+   "nombre": "Santa Coloma de Gramenet",
+   "nombre_idescat": "Santa Coloma de Gramenet",
+   "slug": "santa-coloma-de-gramenet",
+   "provincia": "barcelona",
+   "poblacion": 123250
+  },
+  {
+   "ine": "431233",
+   "nombre": "Reus",
+   "nombre_idescat": "Reus",
+   "slug": "reus",
+   "provincia": "tarragona",
+   "poblacion": 111911
+  },
+  {
+   "ine": "170792",
+   "nombre": "Girona",
+   "nombre_idescat": "Girona",
+   "slug": "girona",
+   "provincia": "girona",
+   "poblacion": 108352
+  },
+  {
+   "ine": "082055",
+   "nombre": "Sant Cugat del Vallès",
+   "nombre_idescat": "Sant Cugat del Vallès",
+   "slug": "sant-cugat-del-valles",
+   "provincia": "barcelona",
+   "poblacion": 97959
+  },
+  {
+   "ine": "080734",
+   "nombre": "Cornellà de Llobregat",
+   "nombre_idescat": "Cornellà de Llobregat",
+   "slug": "cornella-de-llobregat",
+   "provincia": "barcelona",
+   "poblacion": 92255
+  },
+  {
+   "ine": "082009",
+   "nombre": "Sant Boi de Llobregat",
+   "nombre_idescat": "Sant Boi de Llobregat",
+   "slug": "sant-boi-de-llobregat",
+   "provincia": "barcelona",
+   "poblacion": 85317
+  },
+  {
+   "ine": "081846",
+   "nombre": "Rubí",
+   "nombre_idescat": "Rubí",
+   "slug": "rubi",
+   "provincia": "barcelona",
+   "poblacion": 82825
+  },
+  {
+   "ine": "081136",
+   "nombre": "Manresa",
+   "nombre_idescat": "Manresa",
+   "slug": "manresa",
+   "provincia": "barcelona",
+   "poblacion": 80692
+  },
+  {
+   "ine": "083073",
+   "nombre": "Vilanova i la Geltrú",
+   "nombre_idescat": "Vilanova i la Geltrú",
+   "slug": "vilanova-i-la-geltru",
+   "provincia": "barcelona",
+   "poblacion": 71305
+  },
+  {
+   "ine": "080569",
+   "nombre": "Castelldefels",
+   "nombre_idescat": "Castelldefels",
+   "slug": "castelldefels",
+   "provincia": "barcelona",
+   "poblacion": 69689
+  },
+  {
+   "ine": "083015",
+   "nombre": "Viladecans",
+   "nombre_idescat": "Viladecans",
+   "slug": "viladecans",
+   "provincia": "barcelona",
+   "poblacion": 67536
+  },
+  {
+   "ine": "081691",
+   "nombre": "el Prat de Llobregat",
+   "nombre_idescat": "Prat de Llobregat, el",
+   "slug": "el-prat-de-llobregat",
+   "provincia": "barcelona",
+   "poblacion": 66251
+  },
+  {
+   "ine": "080961",
+   "nombre": "Granollers",
+   "nombre_idescat": "Granollers",
+   "slug": "granollers",
+   "provincia": "barcelona",
+   "poblacion": 65123
+  },
+  {
+   "ine": "082665",
+   "nombre": "Cerdanyola del Vallès",
+   "nombre_idescat": "Cerdanyola del Vallès",
+   "slug": "cerdanyola-del-valles",
+   "provincia": "barcelona",
+   "poblacion": 58264
+  },
+  {
+   "ine": "081249",
+   "nombre": "Mollet del Vallès",
+   "nombre_idescat": "Mollet del Vallès",
+   "slug": "mollet-del-valles",
+   "provincia": "barcelona",
+   "poblacion": 52759
+  },
+  {
+   "ine": "082981",
+   "nombre": "Vic",
+   "nombre_idescat": "Vic",
+   "slug": "vic",
+   "provincia": "barcelona",
+   "poblacion": 50405
+  }
+ ]
+}

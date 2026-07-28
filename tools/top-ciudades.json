@@ -1,0 +1,1881 @@
+{
+ "criterio": {
+  "regla": "Misma area metropolitana, o hasta ~40 minutos en transporte publico desde el centro de la ciudad hasta el punto de encuentro de la actividad.",
+  "por_que_40_minutos": "Es lo que un turista alojado en la ciudad acepta moverse para una actividad de medio dia. Mas lejos deja de ser 'lo que tienes al lado' y se convierte en una excursion, que ya cubren los planes.",
+  "como_se_aplica": "Se aplica igual a todas las ciudades. Primero se ofrece lo que GetYourGuide tiene EN la propia ciudad; solo si no llega a diez se completa con los hubs de esta lista, en el orden en que aparecen.",
+  "linea_que_no_se_cruza": "NUNCA se cambia el campo `city` de una actividad para que parezca de otra ciudad. Una actividad de Barcelona es de Barcelona aunque se la ensenemos a alguien de Cornella. El cliente paga y viaja: si la tarjeta miente sobre donde es, se planta en el sitio equivocado. Por eso los alrededores viven en la columna `zonas` de la actividad, no en su `city`.",
+  "si_no_llega_a_diez": "Se deja con menos y se dice. Un catalogo con datos inventados es peor que uno incompleto."
+ },
+ "cuantas_por_ciudad": 10,
+ "fuente_municipios": {
+  "organismo": "Idescat (Institut d'Estadistica de Catalunya)",
+  "indicador": "f171 — Població",
+  "anyo_padron": "2025",
+  "nota": "Idescat, a partir del Cens de població anual de l'INE.",
+  "api": "https://api.idescat.cat/emex/v1/dades.json?i=f171&tipus=mun",
+  "actualizado_idescat": "2026-02-25T11:00:00+00:00"
+ },
+ "ciudades": [
+  {
+   "slug": "barcelona",
+   "nombre": "Barcelona",
+   "provincia": "barcelona",
+   "poblacion": 1713247,
+   "propias": 10,
+   "alrededores": 0,
+   "total": 10,
+   "hubs": [],
+   "completa": true,
+   "top": [
+    {
+     "tid": "50027",
+     "titulo": "Sagrada Familia: Skip-the-Line Ticket",
+     "city": "barcelona",
+     "propia": true,
+     "puntos": 5.791
+    },
+    {
+     "tid": "53791",
+     "titulo": "Park Güell: Skip-the-Line Entry",
+     "city": "barcelona",
+     "propia": true,
+     "puntos": 5.65
+    },
+    {
+     "tid": "398519",
+     "titulo": "Casa Batlló: 10D Experience",
+     "city": "barcelona",
+     "propia": true,
+     "puntos": 4.931
+    },
+    {
+     "tid": "1381568",
+     "titulo": "Barcelona: La Pedrera-Casa Milà Ticket & Audio Guide Option",
+     "city": "barcelona",
+     "propia": true,
+     "puntos": 4.883
+    },
+    {
+     "tid": "1225",
+     "titulo": "Hop-on Hop-off Bus Tour",
+     "city": "barcelona",
+     "propia": true,
+     "puntos": 4.829
+    },
+    {
+     "tid": "419045",
+     "titulo": "Park Güell: Guided Tour with Skip-the-Line",
+     "city": "barcelona",
+     "propia": true,
+     "puntos": 4.737
+    },
+    {
+     "tid": "61515",
+     "titulo": "Barcelona Aquarium: Entry Ticket",
+     "city": "barcelona",
+     "propia": true,
+     "puntos": 4.65
+    },
+    {
+     "tid": "288805",
+     "titulo": "Sagrada Familia: Skip-the-Line & Guided Tour",
+     "city": "barcelona",
+     "propia": true,
+     "puntos": 4.591
+    },
+    {
+     "tid": "449261",
+     "titulo": "FC Barcelona Museum: Barça Immersive Tour",
+     "city": "barcelona",
+     "propia": true,
+     "puntos": 4.577
+    },
+    {
+     "tid": "76003",
+     "titulo": "Flamenco Show at the Theater",
+     "city": "barcelona",
+     "propia": true,
+     "puntos": 4.512
+    }
+   ]
+  },
+  {
+   "slug": "l-hospitalet-de-llobregat",
+   "nombre": "l'Hospitalet de Llobregat",
+   "provincia": "barcelona",
+   "poblacion": 292161,
+   "propias": 0,
+   "alrededores": 10,
+   "total": 10,
+   "hubs": [
+    "barcelona"
+   ],
+   "completa": true,
+   "top": [
+    {
+     "tid": "50027",
+     "titulo": "Sagrada Familia: Skip-the-Line Ticket",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 5.791
+    },
+    {
+     "tid": "53791",
+     "titulo": "Park Güell: Skip-the-Line Entry",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 5.65
+    },
+    {
+     "tid": "398519",
+     "titulo": "Casa Batlló: 10D Experience",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.931
+    },
+    {
+     "tid": "1381568",
+     "titulo": "Barcelona: La Pedrera-Casa Milà Ticket & Audio Guide Option",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.883
+    },
+    {
+     "tid": "1225",
+     "titulo": "Hop-on Hop-off Bus Tour",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.829
+    },
+    {
+     "tid": "419045",
+     "titulo": "Park Güell: Guided Tour with Skip-the-Line",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.737
+    },
+    {
+     "tid": "61515",
+     "titulo": "Barcelona Aquarium: Entry Ticket",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.65
+    },
+    {
+     "tid": "288805",
+     "titulo": "Sagrada Familia: Skip-the-Line & Guided Tour",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.591
+    },
+    {
+     "tid": "449261",
+     "titulo": "FC Barcelona Museum: Barça Immersive Tour",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.577
+    },
+    {
+     "tid": "76003",
+     "titulo": "Flamenco Show at the Theater",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.512
+    }
+   ]
+  },
+  {
+   "slug": "terrassa",
+   "nombre": "Terrassa",
+   "provincia": "barcelona",
+   "poblacion": 232676,
+   "propias": 0,
+   "alrededores": 10,
+   "total": 10,
+   "hubs": [
+    "barcelona"
+   ],
+   "completa": true,
+   "top": [
+    {
+     "tid": "50027",
+     "titulo": "Sagrada Familia: Skip-the-Line Ticket",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 5.791
+    },
+    {
+     "tid": "53791",
+     "titulo": "Park Güell: Skip-the-Line Entry",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 5.65
+    },
+    {
+     "tid": "398519",
+     "titulo": "Casa Batlló: 10D Experience",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.931
+    },
+    {
+     "tid": "1381568",
+     "titulo": "Barcelona: La Pedrera-Casa Milà Ticket & Audio Guide Option",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.883
+    },
+    {
+     "tid": "1225",
+     "titulo": "Hop-on Hop-off Bus Tour",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.829
+    },
+    {
+     "tid": "419045",
+     "titulo": "Park Güell: Guided Tour with Skip-the-Line",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.737
+    },
+    {
+     "tid": "61515",
+     "titulo": "Barcelona Aquarium: Entry Ticket",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.65
+    },
+    {
+     "tid": "288805",
+     "titulo": "Sagrada Familia: Skip-the-Line & Guided Tour",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.591
+    },
+    {
+     "tid": "449261",
+     "titulo": "FC Barcelona Museum: Barça Immersive Tour",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.577
+    },
+    {
+     "tid": "76003",
+     "titulo": "Flamenco Show at the Theater",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.512
+    }
+   ]
+  },
+  {
+   "slug": "badalona",
+   "nombre": "Badalona",
+   "provincia": "barcelona",
+   "poblacion": 230642,
+   "propias": 0,
+   "alrededores": 10,
+   "total": 10,
+   "hubs": [
+    "barcelona"
+   ],
+   "completa": true,
+   "top": [
+    {
+     "tid": "50027",
+     "titulo": "Sagrada Familia: Skip-the-Line Ticket",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 5.791
+    },
+    {
+     "tid": "53791",
+     "titulo": "Park Güell: Skip-the-Line Entry",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 5.65
+    },
+    {
+     "tid": "398519",
+     "titulo": "Casa Batlló: 10D Experience",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.931
+    },
+    {
+     "tid": "1381568",
+     "titulo": "Barcelona: La Pedrera-Casa Milà Ticket & Audio Guide Option",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.883
+    },
+    {
+     "tid": "1225",
+     "titulo": "Hop-on Hop-off Bus Tour",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.829
+    },
+    {
+     "tid": "419045",
+     "titulo": "Park Güell: Guided Tour with Skip-the-Line",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.737
+    },
+    {
+     "tid": "61515",
+     "titulo": "Barcelona Aquarium: Entry Ticket",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.65
+    },
+    {
+     "tid": "288805",
+     "titulo": "Sagrada Familia: Skip-the-Line & Guided Tour",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.591
+    },
+    {
+     "tid": "449261",
+     "titulo": "FC Barcelona Museum: Barça Immersive Tour",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.577
+    },
+    {
+     "tid": "76003",
+     "titulo": "Flamenco Show at the Theater",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.512
+    }
+   ]
+  },
+  {
+   "slug": "sabadell",
+   "nombre": "Sabadell",
+   "provincia": "barcelona",
+   "poblacion": 224589,
+   "propias": 1,
+   "alrededores": 9,
+   "total": 10,
+   "hubs": [
+    "barcelona"
+   ],
+   "completa": true,
+   "top": [
+    {
+     "tid": "924584",
+     "titulo": "Barcelona: Visita guiada por Sabadell",
+     "city": "sabadell",
+     "propia": true,
+     "puntos": 0.475
+    },
+    {
+     "tid": "50027",
+     "titulo": "Sagrada Familia: Skip-the-Line Ticket",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 5.791
+    },
+    {
+     "tid": "53791",
+     "titulo": "Park Güell: Skip-the-Line Entry",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 5.65
+    },
+    {
+     "tid": "398519",
+     "titulo": "Casa Batlló: 10D Experience",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.931
+    },
+    {
+     "tid": "1381568",
+     "titulo": "Barcelona: La Pedrera-Casa Milà Ticket & Audio Guide Option",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.883
+    },
+    {
+     "tid": "1225",
+     "titulo": "Hop-on Hop-off Bus Tour",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.829
+    },
+    {
+     "tid": "419045",
+     "titulo": "Park Güell: Guided Tour with Skip-the-Line",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.737
+    },
+    {
+     "tid": "61515",
+     "titulo": "Barcelona Aquarium: Entry Ticket",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.65
+    },
+    {
+     "tid": "288805",
+     "titulo": "Sagrada Familia: Skip-the-Line & Guided Tour",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.591
+    },
+    {
+     "tid": "449261",
+     "titulo": "FC Barcelona Museum: Barça Immersive Tour",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.577
+    }
+   ]
+  },
+  {
+   "slug": "lleida",
+   "nombre": "Lleida",
+   "provincia": "lleida",
+   "poblacion": 147369,
+   "propias": 5,
+   "alrededores": 0,
+   "total": 5,
+   "hubs": [],
+   "completa": false,
+   "top": [
+    {
+     "tid": "1057236",
+     "titulo": "Lleida: Llacs Cycling Route",
+     "city": "lleida",
+     "propia": true,
+     "puntos": 0.745
+    },
+    {
+     "tid": "1152844",
+     "titulo": "Lleida City Sightseeing Tour & La Seu Vella - Groups and Private Tours with an Official Tour Guide",
+     "city": "lleida",
+     "propia": true,
+     "puntos": 0.745
+    },
+    {
+     "tid": "1380382",
+     "titulo": "Les: Garonne River Rafting Trip with Guide & Equipment",
+     "city": "lleida",
+     "propia": true,
+     "puntos": 0.485
+    },
+    {
+     "tid": "1397540",
+     "titulo": "Aigüestortes National Park: Guided Hike with Waterfall",
+     "city": "lleida",
+     "propia": true,
+     "puntos": 0.48
+    },
+    {
+     "tid": "1334801",
+     "titulo": "Discover Aigüestortes National Park: guided trek to Amitges",
+     "city": "lleida",
+     "propia": true,
+     "puntos": 0.475
+    }
+   ]
+  },
+  {
+   "slug": "tarragona",
+   "nombre": "Tarragona",
+   "provincia": "tarragona",
+   "poblacion": 143260,
+   "propias": 10,
+   "alrededores": 0,
+   "total": 10,
+   "hubs": [
+    "salou",
+    "cambrils"
+   ],
+   "completa": true,
+   "top": [
+    {
+     "tid": "388963",
+     "titulo": "Tarragona: Roman Heritage Guided Walking Tour",
+     "city": "tarragona",
+     "propia": true,
+     "puntos": 3.222
+    },
+    {
+     "tid": "387676",
+     "titulo": "Tarragona: Cathedral Entry Ticket",
+     "city": "tarragona",
+     "propia": true,
+     "puntos": 2.424
+    },
+    {
+     "tid": "465286",
+     "titulo": "Tarragona: Ebro River Guided Kayaking Tour to Miravet",
+     "city": "tarragona",
+     "propia": true,
+     "puntos": 2.266
+    },
+    {
+     "tid": "212676",
+     "titulo": "Salou: Priorat tasting Wine-Cellar Tour with hotel pickup",
+     "city": "tarragona",
+     "propia": true,
+     "puntos": 2.226
+    },
+    {
+     "tid": "554713",
+     "titulo": "Flamingo-Birdwatching in the Ebro Delta at Sunset",
+     "city": "tarragona",
+     "propia": true,
+     "puntos": 2.056
+    },
+    {
+     "tid": "1290190",
+     "titulo": "Palamós: Catamaran Excursion to the Formigues Islands and Cap Roig",
+     "city": "tarragona",
+     "propia": true,
+     "puntos": 1.938
+    },
+    {
+     "tid": "469784",
+     "titulo": "Salou: Private Zodiac Boat Trip Through the Coves of Salou",
+     "city": "tarragona",
+     "propia": true,
+     "puntos": 1.877
+    },
+    {
+     "tid": "168646",
+     "titulo": "Salou: Mussara Mountains Paragliding",
+     "city": "tarragona",
+     "propia": true,
+     "puntos": 1.707
+    },
+    {
+     "tid": "1376428",
+     "titulo": "Villajoyosa: Kayak, Snorkel & Cliff Jumping Tour",
+     "city": "tarragona",
+     "propia": true,
+     "puntos": 1.659
+    },
+    {
+     "tid": "1311771",
+     "titulo": "Tarragona: Jet ski rental without license.",
+     "city": "tarragona",
+     "propia": true,
+     "puntos": 1.616
+    }
+   ]
+  },
+  {
+   "slug": "mataro",
+   "nombre": "Mataró",
+   "provincia": "barcelona",
+   "poblacion": 131370,
+   "propias": 0,
+   "alrededores": 10,
+   "total": 10,
+   "hubs": [
+    "barcelona"
+   ],
+   "completa": true,
+   "top": [
+    {
+     "tid": "50027",
+     "titulo": "Sagrada Familia: Skip-the-Line Ticket",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 5.791
+    },
+    {
+     "tid": "53791",
+     "titulo": "Park Güell: Skip-the-Line Entry",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 5.65
+    },
+    {
+     "tid": "398519",
+     "titulo": "Casa Batlló: 10D Experience",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.931
+    },
+    {
+     "tid": "1381568",
+     "titulo": "Barcelona: La Pedrera-Casa Milà Ticket & Audio Guide Option",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.883
+    },
+    {
+     "tid": "1225",
+     "titulo": "Hop-on Hop-off Bus Tour",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.829
+    },
+    {
+     "tid": "419045",
+     "titulo": "Park Güell: Guided Tour with Skip-the-Line",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.737
+    },
+    {
+     "tid": "61515",
+     "titulo": "Barcelona Aquarium: Entry Ticket",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.65
+    },
+    {
+     "tid": "288805",
+     "titulo": "Sagrada Familia: Skip-the-Line & Guided Tour",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.591
+    },
+    {
+     "tid": "449261",
+     "titulo": "FC Barcelona Museum: Barça Immersive Tour",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.577
+    },
+    {
+     "tid": "76003",
+     "titulo": "Flamenco Show at the Theater",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.512
+    }
+   ]
+  },
+  {
+   "slug": "santa-coloma-de-gramenet",
+   "nombre": "Santa Coloma de Gramenet",
+   "provincia": "barcelona",
+   "poblacion": 123250,
+   "propias": 0,
+   "alrededores": 10,
+   "total": 10,
+   "hubs": [
+    "barcelona"
+   ],
+   "completa": true,
+   "top": [
+    {
+     "tid": "50027",
+     "titulo": "Sagrada Familia: Skip-the-Line Ticket",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 5.791
+    },
+    {
+     "tid": "53791",
+     "titulo": "Park Güell: Skip-the-Line Entry",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 5.65
+    },
+    {
+     "tid": "398519",
+     "titulo": "Casa Batlló: 10D Experience",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.931
+    },
+    {
+     "tid": "1381568",
+     "titulo": "Barcelona: La Pedrera-Casa Milà Ticket & Audio Guide Option",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.883
+    },
+    {
+     "tid": "1225",
+     "titulo": "Hop-on Hop-off Bus Tour",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.829
+    },
+    {
+     "tid": "419045",
+     "titulo": "Park Güell: Guided Tour with Skip-the-Line",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.737
+    },
+    {
+     "tid": "61515",
+     "titulo": "Barcelona Aquarium: Entry Ticket",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.65
+    },
+    {
+     "tid": "288805",
+     "titulo": "Sagrada Familia: Skip-the-Line & Guided Tour",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.591
+    },
+    {
+     "tid": "449261",
+     "titulo": "FC Barcelona Museum: Barça Immersive Tour",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.577
+    },
+    {
+     "tid": "76003",
+     "titulo": "Flamenco Show at the Theater",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.512
+    }
+   ]
+  },
+  {
+   "slug": "reus",
+   "nombre": "Reus",
+   "provincia": "tarragona",
+   "poblacion": 111911,
+   "propias": 1,
+   "alrededores": 9,
+   "total": 10,
+   "hubs": [
+    "salou",
+    "tarragona",
+    "cambrils"
+   ],
+   "completa": true,
+   "top": [
+    {
+     "tid": "1328869",
+     "titulo": "Reus: Trampoline Park Entry Ticket",
+     "city": "reus",
+     "propia": true,
+     "puntos": 0.495
+    },
+    {
+     "tid": "165677",
+     "titulo": "Cambrils: Catamaran cruise with drinks, lunch and swimming",
+     "city": "salou",
+     "propia": false,
+     "puntos": 4.013
+    },
+    {
+     "tid": "115174",
+     "titulo": "PortAventura & Ferrari Land: 1–3 Day Ticket",
+     "city": "salou",
+     "propia": false,
+     "puntos": 3.87
+    },
+    {
+     "tid": "33815",
+     "titulo": "PortAventura: Caribe Aquatic Park Ticket",
+     "city": "salou",
+     "propia": false,
+     "puntos": 3.627
+    },
+    {
+     "tid": "400058",
+     "titulo": "Salou: Off-Road Quad Safari with Hotel Pickup",
+     "city": "salou",
+     "propia": false,
+     "puntos": 3.492
+    },
+    {
+     "tid": "225756",
+     "titulo": "From Salou: Barcelona Full-Day Panoramic Tour",
+     "city": "salou",
+     "propia": false,
+     "puntos": 3.317
+    },
+    {
+     "tid": "115369",
+     "titulo": "PortAventura, Ferrari Land & Caribe",
+     "city": "salou",
+     "propia": false,
+     "puntos": 3.244
+    },
+    {
+     "tid": "221310",
+     "titulo": "Salou–Cambrils: Round-Trip Ferry",
+     "city": "salou",
+     "propia": false,
+     "puntos": 3.233
+    },
+    {
+     "tid": "1084504",
+     "titulo": "Salou: Bingo Bangas Party Night with Drinks",
+     "city": "salou",
+     "propia": false,
+     "puntos": 2.067
+    },
+    {
+     "tid": "937964",
+     "titulo": "Salou: Minigolf Pass with Gear",
+     "city": "salou",
+     "propia": false,
+     "puntos": 1.825
+    }
+   ]
+  },
+  {
+   "slug": "girona",
+   "nombre": "Girona",
+   "provincia": "girona",
+   "poblacion": 108352,
+   "propias": 10,
+   "alrededores": 0,
+   "total": 10,
+   "hubs": [
+    "figueres",
+    "lloret-de-mar",
+    "tossa-de-mar"
+   ],
+   "completa": true,
+   "top": [
+    {
+     "tid": "149528",
+     "titulo": "Girona: Game of Thrones Small Group Tour",
+     "city": "girona",
+     "propia": true,
+     "puntos": 3.437
+    },
+    {
+     "tid": "151013",
+     "titulo": "Girona: Small Group Walking Tour",
+     "city": "girona",
+     "propia": true,
+     "puntos": 3.376
+    },
+    {
+     "tid": "407669",
+     "titulo": "Girona: Cathedral of Girona + Art Museum + St. Felix Church",
+     "city": "girona",
+     "propia": true,
+     "puntos": 2.737
+    },
+    {
+     "tid": "309788",
+     "titulo": "Girona: Jewish Heritage Guided City Tour and Museum Visit",
+     "city": "girona",
+     "propia": true,
+     "puntos": 2.627
+    },
+    {
+     "tid": "797388",
+     "titulo": "ONLY Game of Thrones Sightseeing Tour - All the spots in one hour",
+     "city": "girona",
+     "propia": true,
+     "puntos": 2.294
+    },
+    {
+     "tid": "590538",
+     "titulo": "Girona Evening Food Tour & Tapas Bar Experience",
+     "city": "girona",
+     "propia": true,
+     "puntos": 2.222
+    },
+    {
+     "tid": "284437",
+     "titulo": "Girona: Guided 2-Hour Walking Tour with Food Tasting",
+     "city": "girona",
+     "propia": true,
+     "puntos": 2.127
+    },
+    {
+     "tid": "419114",
+     "titulo": "Girona: Museum of Cinema Entry Ticket",
+     "city": "girona",
+     "propia": true,
+     "puntos": 1.46
+    },
+    {
+     "tid": "431485",
+     "titulo": "Olot: Espai Cràter Volcanology Center Entry Ticket",
+     "city": "girona",
+     "propia": true,
+     "puntos": 1.419
+    },
+    {
+     "tid": "1316529",
+     "titulo": "Girona: Old Town Walking Tour with Local Guide",
+     "city": "girona",
+     "propia": true,
+     "puntos": 0.475
+    }
+   ]
+  },
+  {
+   "slug": "sant-cugat-del-valles",
+   "nombre": "Sant Cugat del Vallès",
+   "provincia": "barcelona",
+   "poblacion": 97959,
+   "propias": 5,
+   "alrededores": 5,
+   "total": 10,
+   "hubs": [
+    "barcelona"
+   ],
+   "completa": true,
+   "top": [
+    {
+     "tid": "418067",
+     "titulo": "Sant Cugat del Valles: Monastery Admission with Audioguide",
+     "city": "sant-cugat-del-valles",
+     "propia": true,
+     "puntos": 1.523
+    },
+    {
+     "tid": "417903",
+     "titulo": "Sant Cugat del Vallès: Comic and Illustration Museum Ticket",
+     "city": "sant-cugat-del-valles",
+     "propia": true,
+     "puntos": 0.962
+    },
+    {
+     "tid": "1196050",
+     "titulo": "Guided visits to the Monastery of Sant Cugat",
+     "city": "sant-cugat-del-valles",
+     "propia": true,
+     "puntos": 0.49
+    },
+    {
+     "tid": "463640",
+     "titulo": "Barcelona: Visita guiada por Sant Cugat",
+     "city": "sant-cugat-del-valles",
+     "propia": true,
+     "puntos": 0.48
+    },
+    {
+     "tid": "417914",
+     "titulo": "Sant Cugat del Vallès: Cal Gerrer House Museum Entry Ticket",
+     "city": "sant-cugat-del-valles",
+     "propia": true,
+     "puntos": 0.47
+    },
+    {
+     "tid": "50027",
+     "titulo": "Sagrada Familia: Skip-the-Line Ticket",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 5.791
+    },
+    {
+     "tid": "53791",
+     "titulo": "Park Güell: Skip-the-Line Entry",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 5.65
+    },
+    {
+     "tid": "398519",
+     "titulo": "Casa Batlló: 10D Experience",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.931
+    },
+    {
+     "tid": "1381568",
+     "titulo": "Barcelona: La Pedrera-Casa Milà Ticket & Audio Guide Option",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.883
+    },
+    {
+     "tid": "1225",
+     "titulo": "Hop-on Hop-off Bus Tour",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.829
+    }
+   ]
+  },
+  {
+   "slug": "cornella-de-llobregat",
+   "nombre": "Cornellà de Llobregat",
+   "provincia": "barcelona",
+   "poblacion": 92255,
+   "propias": 0,
+   "alrededores": 10,
+   "total": 10,
+   "hubs": [
+    "barcelona"
+   ],
+   "completa": true,
+   "top": [
+    {
+     "tid": "50027",
+     "titulo": "Sagrada Familia: Skip-the-Line Ticket",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 5.791
+    },
+    {
+     "tid": "53791",
+     "titulo": "Park Güell: Skip-the-Line Entry",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 5.65
+    },
+    {
+     "tid": "398519",
+     "titulo": "Casa Batlló: 10D Experience",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.931
+    },
+    {
+     "tid": "1381568",
+     "titulo": "Barcelona: La Pedrera-Casa Milà Ticket & Audio Guide Option",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.883
+    },
+    {
+     "tid": "1225",
+     "titulo": "Hop-on Hop-off Bus Tour",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.829
+    },
+    {
+     "tid": "419045",
+     "titulo": "Park Güell: Guided Tour with Skip-the-Line",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.737
+    },
+    {
+     "tid": "61515",
+     "titulo": "Barcelona Aquarium: Entry Ticket",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.65
+    },
+    {
+     "tid": "288805",
+     "titulo": "Sagrada Familia: Skip-the-Line & Guided Tour",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.591
+    },
+    {
+     "tid": "449261",
+     "titulo": "FC Barcelona Museum: Barça Immersive Tour",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.577
+    },
+    {
+     "tid": "76003",
+     "titulo": "Flamenco Show at the Theater",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.512
+    }
+   ]
+  },
+  {
+   "slug": "sant-boi-de-llobregat",
+   "nombre": "Sant Boi de Llobregat",
+   "provincia": "barcelona",
+   "poblacion": 85317,
+   "propias": 0,
+   "alrededores": 10,
+   "total": 10,
+   "hubs": [
+    "barcelona"
+   ],
+   "completa": true,
+   "top": [
+    {
+     "tid": "50027",
+     "titulo": "Sagrada Familia: Skip-the-Line Ticket",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 5.791
+    },
+    {
+     "tid": "53791",
+     "titulo": "Park Güell: Skip-the-Line Entry",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 5.65
+    },
+    {
+     "tid": "398519",
+     "titulo": "Casa Batlló: 10D Experience",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.931
+    },
+    {
+     "tid": "1381568",
+     "titulo": "Barcelona: La Pedrera-Casa Milà Ticket & Audio Guide Option",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.883
+    },
+    {
+     "tid": "1225",
+     "titulo": "Hop-on Hop-off Bus Tour",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.829
+    },
+    {
+     "tid": "419045",
+     "titulo": "Park Güell: Guided Tour with Skip-the-Line",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.737
+    },
+    {
+     "tid": "61515",
+     "titulo": "Barcelona Aquarium: Entry Ticket",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.65
+    },
+    {
+     "tid": "288805",
+     "titulo": "Sagrada Familia: Skip-the-Line & Guided Tour",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.591
+    },
+    {
+     "tid": "449261",
+     "titulo": "FC Barcelona Museum: Barça Immersive Tour",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.577
+    },
+    {
+     "tid": "76003",
+     "titulo": "Flamenco Show at the Theater",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.512
+    }
+   ]
+  },
+  {
+   "slug": "rubi",
+   "nombre": "Rubí",
+   "provincia": "barcelona",
+   "poblacion": 82825,
+   "propias": 0,
+   "alrededores": 10,
+   "total": 10,
+   "hubs": [
+    "barcelona"
+   ],
+   "completa": true,
+   "top": [
+    {
+     "tid": "50027",
+     "titulo": "Sagrada Familia: Skip-the-Line Ticket",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 5.791
+    },
+    {
+     "tid": "53791",
+     "titulo": "Park Güell: Skip-the-Line Entry",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 5.65
+    },
+    {
+     "tid": "398519",
+     "titulo": "Casa Batlló: 10D Experience",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.931
+    },
+    {
+     "tid": "1381568",
+     "titulo": "Barcelona: La Pedrera-Casa Milà Ticket & Audio Guide Option",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.883
+    },
+    {
+     "tid": "1225",
+     "titulo": "Hop-on Hop-off Bus Tour",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.829
+    },
+    {
+     "tid": "419045",
+     "titulo": "Park Güell: Guided Tour with Skip-the-Line",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.737
+    },
+    {
+     "tid": "61515",
+     "titulo": "Barcelona Aquarium: Entry Ticket",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.65
+    },
+    {
+     "tid": "288805",
+     "titulo": "Sagrada Familia: Skip-the-Line & Guided Tour",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.591
+    },
+    {
+     "tid": "449261",
+     "titulo": "FC Barcelona Museum: Barça Immersive Tour",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.577
+    },
+    {
+     "tid": "76003",
+     "titulo": "Flamenco Show at the Theater",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.512
+    }
+   ]
+  },
+  {
+   "slug": "manresa",
+   "nombre": "Manresa",
+   "provincia": "barcelona",
+   "poblacion": 80692,
+   "propias": 0,
+   "alrededores": 0,
+   "total": 0,
+   "hubs": [],
+   "completa": false,
+   "top": []
+  },
+  {
+   "slug": "vilanova-i-la-geltru",
+   "nombre": "Vilanova i la Geltrú",
+   "provincia": "barcelona",
+   "poblacion": 71305,
+   "propias": 5,
+   "alrededores": 5,
+   "total": 10,
+   "hubs": [
+    "sitges",
+    "barcelona"
+   ],
+   "completa": true,
+   "top": [
+    {
+     "tid": "419857",
+     "titulo": "Vilanova i la Geltrú: Guided Sitges Coast 3-Hour Kayak Tour",
+     "city": "vilanova-i-la-geltru",
+     "propia": true,
+     "puntos": 1.485
+    },
+    {
+     "tid": "1199414",
+     "titulo": "Bodega Jaume Serra, Barcelona: the cava that overlooks the sea",
+     "city": "vilanova-i-la-geltru",
+     "propia": true,
+     "puntos": 1.393
+    },
+    {
+     "tid": "1265475",
+     "titulo": "Sitges: Private Wine Tasting with Sommelier at Your Villa",
+     "city": "vilanova-i-la-geltru",
+     "propia": true,
+     "puntos": 0.781
+    },
+    {
+     "tid": "1396817",
+     "titulo": "Barcelona (Vilanova i la Geltrú): Sea excursion, swimming, sunset",
+     "city": "vilanova-i-la-geltru",
+     "propia": true,
+     "puntos": 0.48
+    },
+    {
+     "tid": "1396415",
+     "titulo": "Barcelona (Vilanova i la Geltrú): Sightseeing and swimming by boat with skipper",
+     "city": "vilanova-i-la-geltru",
+     "propia": true,
+     "puntos": 0.475
+    },
+    {
+     "tid": "1184893",
+     "titulo": "Barcelona Party Bus & After VIP club entry",
+     "city": "sitges",
+     "propia": false,
+     "puntos": 0.681
+    },
+    {
+     "tid": "50027",
+     "titulo": "Sagrada Familia: Skip-the-Line Ticket",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 5.791
+    },
+    {
+     "tid": "53791",
+     "titulo": "Park Güell: Skip-the-Line Entry",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 5.65
+    },
+    {
+     "tid": "398519",
+     "titulo": "Casa Batlló: 10D Experience",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.931
+    },
+    {
+     "tid": "1381568",
+     "titulo": "Barcelona: La Pedrera-Casa Milà Ticket & Audio Guide Option",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.883
+    }
+   ]
+  },
+  {
+   "slug": "castelldefels",
+   "nombre": "Castelldefels",
+   "provincia": "barcelona",
+   "poblacion": 69689,
+   "propias": 2,
+   "alrededores": 8,
+   "total": 10,
+   "hubs": [
+    "barcelona"
+   ],
+   "completa": true,
+   "top": [
+    {
+     "tid": "1275164",
+     "titulo": "Castelldefels: Tapas Tour with a Local Guide",
+     "city": "castelldefels",
+     "propia": true,
+     "puntos": 0.49
+    },
+    {
+     "tid": "1225216",
+     "titulo": "1 hour Jet Ski Tour Castelldefels – Garraf Coast + Transport",
+     "city": "castelldefels",
+     "propia": true,
+     "puntos": 0.485
+    },
+    {
+     "tid": "50027",
+     "titulo": "Sagrada Familia: Skip-the-Line Ticket",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 5.791
+    },
+    {
+     "tid": "53791",
+     "titulo": "Park Güell: Skip-the-Line Entry",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 5.65
+    },
+    {
+     "tid": "398519",
+     "titulo": "Casa Batlló: 10D Experience",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.931
+    },
+    {
+     "tid": "1381568",
+     "titulo": "Barcelona: La Pedrera-Casa Milà Ticket & Audio Guide Option",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.883
+    },
+    {
+     "tid": "1225",
+     "titulo": "Hop-on Hop-off Bus Tour",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.829
+    },
+    {
+     "tid": "419045",
+     "titulo": "Park Güell: Guided Tour with Skip-the-Line",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.737
+    },
+    {
+     "tid": "61515",
+     "titulo": "Barcelona Aquarium: Entry Ticket",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.65
+    },
+    {
+     "tid": "288805",
+     "titulo": "Sagrada Familia: Skip-the-Line & Guided Tour",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.591
+    }
+   ]
+  },
+  {
+   "slug": "viladecans",
+   "nombre": "Viladecans",
+   "provincia": "barcelona",
+   "poblacion": 67536,
+   "propias": 0,
+   "alrededores": 10,
+   "total": 10,
+   "hubs": [
+    "barcelona"
+   ],
+   "completa": true,
+   "top": [
+    {
+     "tid": "50027",
+     "titulo": "Sagrada Familia: Skip-the-Line Ticket",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 5.791
+    },
+    {
+     "tid": "53791",
+     "titulo": "Park Güell: Skip-the-Line Entry",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 5.65
+    },
+    {
+     "tid": "398519",
+     "titulo": "Casa Batlló: 10D Experience",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.931
+    },
+    {
+     "tid": "1381568",
+     "titulo": "Barcelona: La Pedrera-Casa Milà Ticket & Audio Guide Option",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.883
+    },
+    {
+     "tid": "1225",
+     "titulo": "Hop-on Hop-off Bus Tour",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.829
+    },
+    {
+     "tid": "419045",
+     "titulo": "Park Güell: Guided Tour with Skip-the-Line",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.737
+    },
+    {
+     "tid": "61515",
+     "titulo": "Barcelona Aquarium: Entry Ticket",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.65
+    },
+    {
+     "tid": "288805",
+     "titulo": "Sagrada Familia: Skip-the-Line & Guided Tour",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.591
+    },
+    {
+     "tid": "449261",
+     "titulo": "FC Barcelona Museum: Barça Immersive Tour",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.577
+    },
+    {
+     "tid": "76003",
+     "titulo": "Flamenco Show at the Theater",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.512
+    }
+   ]
+  },
+  {
+   "slug": "el-prat-de-llobregat",
+   "nombre": "el Prat de Llobregat",
+   "provincia": "barcelona",
+   "poblacion": 66251,
+   "propias": 0,
+   "alrededores": 10,
+   "total": 10,
+   "hubs": [
+    "barcelona"
+   ],
+   "completa": true,
+   "top": [
+    {
+     "tid": "50027",
+     "titulo": "Sagrada Familia: Skip-the-Line Ticket",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 5.791
+    },
+    {
+     "tid": "53791",
+     "titulo": "Park Güell: Skip-the-Line Entry",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 5.65
+    },
+    {
+     "tid": "398519",
+     "titulo": "Casa Batlló: 10D Experience",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.931
+    },
+    {
+     "tid": "1381568",
+     "titulo": "Barcelona: La Pedrera-Casa Milà Ticket & Audio Guide Option",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.883
+    },
+    {
+     "tid": "1225",
+     "titulo": "Hop-on Hop-off Bus Tour",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.829
+    },
+    {
+     "tid": "419045",
+     "titulo": "Park Güell: Guided Tour with Skip-the-Line",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.737
+    },
+    {
+     "tid": "61515",
+     "titulo": "Barcelona Aquarium: Entry Ticket",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.65
+    },
+    {
+     "tid": "288805",
+     "titulo": "Sagrada Familia: Skip-the-Line & Guided Tour",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.591
+    },
+    {
+     "tid": "449261",
+     "titulo": "FC Barcelona Museum: Barça Immersive Tour",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.577
+    },
+    {
+     "tid": "76003",
+     "titulo": "Flamenco Show at the Theater",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.512
+    }
+   ]
+  },
+  {
+   "slug": "granollers",
+   "nombre": "Granollers",
+   "provincia": "barcelona",
+   "poblacion": 65123,
+   "propias": 0,
+   "alrededores": 10,
+   "total": 10,
+   "hubs": [
+    "barcelona"
+   ],
+   "completa": true,
+   "top": [
+    {
+     "tid": "50027",
+     "titulo": "Sagrada Familia: Skip-the-Line Ticket",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 5.791
+    },
+    {
+     "tid": "53791",
+     "titulo": "Park Güell: Skip-the-Line Entry",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 5.65
+    },
+    {
+     "tid": "398519",
+     "titulo": "Casa Batlló: 10D Experience",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.931
+    },
+    {
+     "tid": "1381568",
+     "titulo": "Barcelona: La Pedrera-Casa Milà Ticket & Audio Guide Option",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.883
+    },
+    {
+     "tid": "1225",
+     "titulo": "Hop-on Hop-off Bus Tour",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.829
+    },
+    {
+     "tid": "419045",
+     "titulo": "Park Güell: Guided Tour with Skip-the-Line",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.737
+    },
+    {
+     "tid": "61515",
+     "titulo": "Barcelona Aquarium: Entry Ticket",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.65
+    },
+    {
+     "tid": "288805",
+     "titulo": "Sagrada Familia: Skip-the-Line & Guided Tour",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.591
+    },
+    {
+     "tid": "449261",
+     "titulo": "FC Barcelona Museum: Barça Immersive Tour",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.577
+    },
+    {
+     "tid": "76003",
+     "titulo": "Flamenco Show at the Theater",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.512
+    }
+   ]
+  },
+  {
+   "slug": "cerdanyola-del-valles",
+   "nombre": "Cerdanyola del Vallès",
+   "provincia": "barcelona",
+   "poblacion": 58264,
+   "propias": 0,
+   "alrededores": 10,
+   "total": 10,
+   "hubs": [
+    "barcelona"
+   ],
+   "completa": true,
+   "top": [
+    {
+     "tid": "50027",
+     "titulo": "Sagrada Familia: Skip-the-Line Ticket",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 5.791
+    },
+    {
+     "tid": "53791",
+     "titulo": "Park Güell: Skip-the-Line Entry",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 5.65
+    },
+    {
+     "tid": "398519",
+     "titulo": "Casa Batlló: 10D Experience",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.931
+    },
+    {
+     "tid": "1381568",
+     "titulo": "Barcelona: La Pedrera-Casa Milà Ticket & Audio Guide Option",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.883
+    },
+    {
+     "tid": "1225",
+     "titulo": "Hop-on Hop-off Bus Tour",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.829
+    },
+    {
+     "tid": "419045",
+     "titulo": "Park Güell: Guided Tour with Skip-the-Line",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.737
+    },
+    {
+     "tid": "61515",
+     "titulo": "Barcelona Aquarium: Entry Ticket",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.65
+    },
+    {
+     "tid": "288805",
+     "titulo": "Sagrada Familia: Skip-the-Line & Guided Tour",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.591
+    },
+    {
+     "tid": "449261",
+     "titulo": "FC Barcelona Museum: Barça Immersive Tour",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.577
+    },
+    {
+     "tid": "76003",
+     "titulo": "Flamenco Show at the Theater",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.512
+    }
+   ]
+  },
+  {
+   "slug": "mollet-del-valles",
+   "nombre": "Mollet del Vallès",
+   "provincia": "barcelona",
+   "poblacion": 52759,
+   "propias": 0,
+   "alrededores": 10,
+   "total": 10,
+   "hubs": [
+    "barcelona"
+   ],
+   "completa": true,
+   "top": [
+    {
+     "tid": "50027",
+     "titulo": "Sagrada Familia: Skip-the-Line Ticket",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 5.791
+    },
+    {
+     "tid": "53791",
+     "titulo": "Park Güell: Skip-the-Line Entry",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 5.65
+    },
+    {
+     "tid": "398519",
+     "titulo": "Casa Batlló: 10D Experience",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.931
+    },
+    {
+     "tid": "1381568",
+     "titulo": "Barcelona: La Pedrera-Casa Milà Ticket & Audio Guide Option",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.883
+    },
+    {
+     "tid": "1225",
+     "titulo": "Hop-on Hop-off Bus Tour",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.829
+    },
+    {
+     "tid": "419045",
+     "titulo": "Park Güell: Guided Tour with Skip-the-Line",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.737
+    },
+    {
+     "tid": "61515",
+     "titulo": "Barcelona Aquarium: Entry Ticket",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.65
+    },
+    {
+     "tid": "288805",
+     "titulo": "Sagrada Familia: Skip-the-Line & Guided Tour",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.591
+    },
+    {
+     "tid": "449261",
+     "titulo": "FC Barcelona Museum: Barça Immersive Tour",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.577
+    },
+    {
+     "tid": "76003",
+     "titulo": "Flamenco Show at the Theater",
+     "city": "barcelona",
+     "propia": false,
+     "puntos": 4.512
+    }
+   ]
+  },
+  {
+   "slug": "vic",
+   "nombre": "Vic",
+   "provincia": "barcelona",
+   "poblacion": 50405,
+   "propias": 0,
+   "alrededores": 0,
+   "total": 0,
+   "hubs": [],
+   "completa": false,
+   "top": []
+  }
+ ]
+}

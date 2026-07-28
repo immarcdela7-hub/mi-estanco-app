@@ -25,13 +25,29 @@
   "tag": "barcelona",
   "titulo": "Montserrat Tour with Cog-Wheel & Black Madonna",
   "valoracion": 4.6,
-  "resenas": 8409,
+  "resenas": 8416,
   "distintivos": [],
   "texto": "Barcelona Montserrat Tour with Cog-Wheel & Black Madonna 5 - 7 hours • Private option available • Pickup available 4.6 (8,409) From €59 €50",
   "apariciones": [
    {
     "listado": "barcelona",
     "posicion": 55
+   },
+   {
+    "listado": "sant-cugat",
+    "posicion": 44
+   },
+   {
+    "listado": "reus",
+    "posicion": 41
+   },
+   {
+    "listado": "vilanova",
+    "posicion": 41
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 42
    }
   ]
  },
@@ -61,13 +77,25 @@
   "tag": "barcelona",
   "titulo": "Barcelona City Tour Hop-On Hop-Off Bus Tour",
   "valoracion": 4.4,
-  "resenas": 23385,
+  "resenas": 23410,
   "distintivos": [],
   "texto": "Certified by GetYourGuide Barcelona Barcelona City Tour Hop-On Hop-Off Bus Tour 1 - 2 days • Optional audio guide 4.4 (23,385) From €33",
   "apariciones": [
    {
     "listado": "barcelona",
     "posicion": 8
+   },
+   {
+    "listado": "sant-cugat",
+    "posicion": 39
+   },
+   {
+    "listado": "reus",
+    "posicion": 34
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 36
    }
   ]
  },
@@ -140,6 +168,10 @@
    {
     "listado": "sitges",
     "posicion": 53
+   },
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 44
    }
   ]
  },
@@ -233,7 +265,7 @@
   "tag": "barcelona",
   "titulo": "Sagrada Familia Skip-the-Line Guided Tour",
   "valoracion": 4.4,
-  "resenas": 6295,
+  "resenas": 6305,
   "distintivos": [
    "Likely to sell out"
   ],
@@ -250,6 +282,26 @@
    {
     "listado": "salou",
     "posicion": 89
+   },
+   {
+    "listado": "sant-cugat",
+    "posicion": 11
+   },
+   {
+    "listado": "reus",
+    "posicion": 8
+   },
+   {
+    "listado": "vilanova",
+    "posicion": 21
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 10
+   },
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 74
    }
   ]
  },
@@ -325,7 +377,7 @@
   "tag": "catalonia",
   "titulo": "PortAventura Caribe Aquatic Park 1-Day Ticket",
   "valoracion": 3.9,
-  "resenas": 1414,
+  "resenas": 1419,
   "distintivos": [],
   "texto": "Certified by GetYourGuide Salou PortAventura Caribe Aquatic Park 1-Day Ticket 1 day • Skip the line 3.9 (1,414) From €24",
   "apariciones": [
@@ -340,6 +392,22 @@
    {
     "listado": "lleida",
     "posicion": 14
+   },
+   {
+    "listado": "sant-cugat",
+    "posicion": 42
+   },
+   {
+    "listado": "reus",
+    "posicion": 39
+   },
+   {
+    "listado": "vilanova",
+    "posicion": 13
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 40
    }
   ]
  },
@@ -358,6 +426,24 @@
    {
     "listado": "barcelona",
     "posicion": 111
+   }
+  ]
+ },
+ {
+  "tid": "42022",
+  "loc": "tarragona-l1293",
+  "slug": "monnatura-delta-de-l-ebre-t42022",
+  "path": "/tarragona-l1293/monnatura-delta-de-l-ebre-t42022/",
+  "tag": "tarragona-ciudad",
+  "titulo": "MónNatura Delta de l'Ebre Entrance Ticket",
+  "valoracion": 4.9,
+  "resenas": 6,
+  "distintivos": [],
+  "texto": "Tarragona MónNatura Delta de l'Ebre Entrance Ticket 1 day 4.9 (6) From €10",
+  "apariciones": [
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 46
    }
   ]
  },
@@ -416,6 +502,46 @@
   ]
  },
  {
+  "tid": "45871",
+  "loc": "falset-l4727",
+  "slug": "private-guided-wine-tour-to-the-priorat-by-a-local-t45871",
+  "path": "/falset-l4727/private-guided-wine-tour-to-the-priorat-by-a-local-t45871/",
+  "tag": "reus",
+  "titulo": "Guided Wine Tour to the Priorat by a Local",
+  "valoracion": 5,
+  "resenas": 14,
+  "distintivos": [],
+  "texto": "Reus Guided Wine Tour to the Priorat by a Local 1 day • Private group • Pickup available 5 (14) From €280",
+  "apariciones": [
+   {
+    "listado": "reus",
+    "posicion": 5
+   }
+  ]
+ },
+ {
+  "tid": "45872",
+  "loc": "falset-l4727",
+  "slug": "trek-wine-in-priorat-t45872",
+  "path": "/falset-l4727/trek-wine-in-priorat-t45872/",
+  "tag": "reus",
+  "titulo": "Trek & Wine in Priorat",
+  "valoracion": 5,
+  "resenas": 7,
+  "distintivos": [],
+  "texto": "Falset Trek & Wine in Priorat 5 hours • Private group • Pickup available 5 (7) From €90",
+  "apariciones": [
+   {
+    "listado": "reus",
+    "posicion": 4
+   },
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 49
+   }
+  ]
+ },
+ {
   "tid": "46735",
   "loc": "barcelona-l45",
   "slug": "1-day-trip-to-costa-caribe-aquatic-park-from-barcelona-t46735",
@@ -429,6 +555,10 @@
   "apariciones": [
    {
     "listado": "salou",
+    "posicion": 70
+   },
+   {
+    "listado": "tarragona-ciudad",
     "posicion": 70
    }
   ]
@@ -448,6 +578,18 @@
    {
     "listado": "barcelona",
     "posicion": 79
+   },
+   {
+    "listado": "sant-cugat",
+    "posicion": 19
+   },
+   {
+    "listado": "reus",
+    "posicion": 17
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 18
    }
   ]
  },
@@ -459,7 +601,7 @@
   "tag": "barcelona",
   "titulo": "Sagrada Familia Entry Ticket with Audio Guide",
   "valoracion": 4.6,
-  "resenas": 116278,
+  "resenas": 116336,
   "distintivos": [
    "Official ticket",
    "Likely to sell out"
@@ -473,6 +615,22 @@
    {
     "listado": "catalonia",
     "posicion": 45
+   },
+   {
+    "listado": "sant-cugat",
+    "posicion": 28
+   },
+   {
+    "listado": "reus",
+    "posicion": 27
+   },
+   {
+    "listado": "vilanova",
+    "posicion": 8
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 27
    }
   ]
  },
@@ -484,13 +642,25 @@
   "tag": "barcelona",
   "titulo": "Sagrada Familia Guided Tour with Tower Access",
   "valoracion": 4.3,
-  "resenas": 5680,
+  "resenas": 5684,
   "distintivos": [],
   "texto": "Certified by GetYourGuide Barcelona Sagrada Familia Guided Tour with Tower Access 1.5 hours • Skip the line 4.3 (5,680) From €72",
   "apariciones": [
    {
     "listado": "barcelona",
     "posicion": 61
+   },
+   {
+    "listado": "sant-cugat",
+    "posicion": 21
+   },
+   {
+    "listado": "reus",
+    "posicion": 19
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 20
    }
   ]
  },
@@ -502,7 +672,7 @@
   "tag": "barcelona",
   "titulo": "Sagrada Familia and Park Güell Tour",
   "valoracion": 4.2,
-  "resenas": 3390,
+  "resenas": 3392,
   "distintivos": [],
   "texto": "Barcelona Sagrada Familia and Park Güell Tour 4 - 4.5 hours • Skip the line • Private option available 4.2 (3,390) From €92",
   "apariciones": [
@@ -513,6 +683,18 @@
    {
     "listado": "catalonia",
     "posicion": 90
+   },
+   {
+    "listado": "sant-cugat",
+    "posicion": 22
+   },
+   {
+    "listado": "reus",
+    "posicion": 20
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 21
    }
   ]
  },
@@ -524,8 +706,10 @@
   "tag": "barcelona",
   "titulo": "Park Güell Admission Ticket",
   "valoracion": 4.4,
-  "resenas": 86010,
-  "distintivos": [],
+  "resenas": 86078,
+  "distintivos": [
+   "Top pick"
+  ],
   "texto": "Certified by GetYourGuide Barcelona Park Güell Admission Ticket 4.4 (86,010) From €22",
   "apariciones": [
    {
@@ -535,6 +719,22 @@
    {
     "listado": "catalonia",
     "posicion": 54
+   },
+   {
+    "listado": "sant-cugat",
+    "posicion": 33
+   },
+   {
+    "listado": "reus",
+    "posicion": 30
+   },
+   {
+    "listado": "vilanova",
+    "posicion": 7
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 31
    }
   ]
  },
@@ -744,8 +944,10 @@
   "tag": "barcelona",
   "titulo": "Barcelona Aquarium: Entry Ticket",
   "valoracion": 4.4,
-  "resenas": 18623,
-  "distintivos": [],
+  "resenas": 18637,
+  "distintivos": [
+   "Official ticket"
+  ],
   "texto": "Certified by GetYourGuide Barcelona Barcelona Aquarium: Entry Ticket 1 day 4.4 (18,623) From €30",
   "apariciones": [
    {
@@ -755,6 +957,18 @@
    {
     "listado": "catalonia",
     "posicion": 50
+   },
+   {
+    "listado": "sant-cugat",
+    "posicion": 35
+   },
+   {
+    "listado": "reus",
+    "posicion": 31
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 33
    }
   ]
  },
@@ -766,13 +980,25 @@
   "tag": "catalonia",
   "titulo": "Montserrat: Morning or Afternoon Half-Day Trip with Pickup",
   "valoracion": 4.7,
-  "resenas": 1580,
+  "resenas": 1581,
   "distintivos": [],
   "texto": "Barcelona Montserrat: Morning or Afternoon Half-Day Trip with Pickup 5 hours • Access by Foot • Private option available 4.7 (1,580) From €85",
   "apariciones": [
    {
     "listado": "catalonia",
     "posicion": 94
+   },
+   {
+    "listado": "reus",
+    "posicion": 53
+   },
+   {
+    "listado": "vilanova",
+    "posicion": 54
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 55
    }
   ]
  },
@@ -791,6 +1017,10 @@
    {
     "listado": "sitges",
     "posicion": 41
+   },
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 11
    }
   ]
  },
@@ -831,6 +1061,18 @@
    {
     "listado": "catalonia",
     "posicion": 119
+   },
+   {
+    "listado": "sant-cugat",
+    "posicion": 16
+   },
+   {
+    "listado": "reus",
+    "posicion": 15
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 15
    }
   ]
  },
@@ -954,13 +1196,29 @@
   "tag": "barcelona",
   "titulo": "Flamenco Show at the Theater \"City Hall\"",
   "valoracion": 4.6,
-  "resenas": 11925,
+  "resenas": 11934,
   "distintivos": [],
   "texto": "Barcelona Flamenco Show at the Theater \"City Hall\" 1 hour 4.6 (11,925) From €25",
   "apariciones": [
    {
     "listado": "barcelona",
     "posicion": 13
+   },
+   {
+    "listado": "sant-cugat",
+    "posicion": 48
+   },
+   {
+    "listado": "reus",
+    "posicion": 46
+   },
+   {
+    "listado": "vilanova",
+    "posicion": 30
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 47
    }
   ]
  },
@@ -1012,7 +1270,7 @@
   "tag": "barcelona",
   "titulo": "Park Güell & La Sagrada Familia Tickets and Tour",
   "valoracion": 4.7,
-  "resenas": 1467,
+  "resenas": 1469,
   "distintivos": [
    "Likely to sell out"
   ],
@@ -1021,6 +1279,18 @@
    {
     "listado": "barcelona",
     "posicion": 12
+   },
+   {
+    "listado": "sant-cugat",
+    "posicion": 26
+   },
+   {
+    "listado": "reus",
+    "posicion": 25
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 25
    }
   ]
  },
@@ -1104,13 +1374,25 @@
   "tag": "barcelona",
   "titulo": "2.5-Hour Bike or E-Bike Historical Tour",
   "valoracion": 4.4,
-  "resenas": 1836,
+  "resenas": 1843,
   "distintivos": [],
   "texto": "Barcelona 2.5-Hour Bike or E-Bike Historical Tour 2.5 hours • Private option available 4.4 (1,836) From €29 €23",
   "apariciones": [
    {
     "listado": "barcelona",
     "posicion": 15
+   },
+   {
+    "listado": "reus",
+    "posicion": 45
+   },
+   {
+    "listado": "vilanova",
+    "posicion": 45
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 46
    }
   ]
  },
@@ -1204,7 +1486,7 @@
   "tag": "catalonia",
   "titulo": "PortAventura and Ferrari Land 1, 2, or 3-Day Ticket",
   "valoracion": 4.3,
-  "resenas": 2449,
+  "resenas": 2452,
   "distintivos": [
    "Official ticket"
   ],
@@ -1221,6 +1503,22 @@
    {
     "listado": "lleida",
     "posicion": 17
+   },
+   {
+    "listado": "sant-cugat",
+    "posicion": 45
+   },
+   {
+    "listado": "reus",
+    "posicion": 42
+   },
+   {
+    "listado": "vilanova",
+    "posicion": 9
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 43
    }
   ]
  },
@@ -1232,7 +1530,7 @@
   "tag": "catalonia",
   "titulo": "PortAventura, Ferrari Land, and Caribe Aquatic Entry",
   "valoracion": 4.3,
-  "resenas": 621,
+  "resenas": 622,
   "distintivos": [
    "Official ticket"
   ],
@@ -1249,6 +1547,10 @@
    {
     "listado": "lleida",
     "posicion": 31
+   },
+   {
+    "listado": "vilanova",
+    "posicion": 16
    }
   ]
  },
@@ -1260,8 +1562,10 @@
   "tag": "barcelona",
   "titulo": "Costa Brava Tour: Kayak, Snorkel & Cliff Jump from Barcelona",
   "valoracion": 4.9,
-  "resenas": 2781,
-  "distintivos": [],
+  "resenas": 2790,
+  "distintivos": [
+   "Likely to sell out"
+  ],
   "texto": "Certified by GetYourGuide Barcelona Costa Brava Tour: Kayak, Snorkel & Cliff Jump from Barcelona 8 hours • Small group 4.9 (2,781) From €85",
   "apariciones": [
    {
@@ -1275,6 +1579,22 @@
    {
     "listado": "costabrava",
     "posicion": 22
+   },
+   {
+    "listado": "sant-cugat",
+    "posicion": 46
+   },
+   {
+    "listado": "reus",
+    "posicion": 44
+   },
+   {
+    "listado": "vilanova",
+    "posicion": 44
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 45
    }
   ]
  },
@@ -1402,7 +1722,7 @@
   "tag": "barcelona",
   "titulo": "Catamaran Party Cruise with BBQ Meal",
   "valoracion": 4.3,
-  "resenas": 1728,
+  "resenas": 1736,
   "distintivos": [
    "Likely to sell out"
   ],
@@ -1411,6 +1731,10 @@
    {
     "listado": "barcelona",
     "posicion": 33
+   },
+   {
+    "listado": "reus",
+    "posicion": 36
    }
   ]
  },
@@ -1489,6 +1813,10 @@
    {
     "listado": "costabrava",
     "posicion": 20
+   },
+   {
+    "listado": "sant-cugat",
+    "posicion": 49
    }
   ]
  },
@@ -1533,6 +1861,10 @@
    {
     "listado": "lleida",
     "posicion": 72
+   },
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 13
    }
   ]
  },
@@ -1586,8 +1918,10 @@
   "tag": "catalonia",
   "titulo": "Catamaran cruise with drinks, lunch and swimming",
   "valoracion": 4.5,
-  "resenas": 1935,
-  "distintivos": [],
+  "resenas": 1940,
+  "distintivos": [
+   "Top pick"
+  ],
   "texto": "Certified by GetYourGuide Cambrils Catamaran cruise with drinks, lunch and swimming 3 - 5 hours 4.5 (1,935) From €44 €35",
   "apariciones": [
    {
@@ -1605,6 +1939,26 @@
    {
     "listado": "lleida",
     "posicion": 11
+   },
+   {
+    "listado": "sant-cugat",
+    "posicion": 9
+   },
+   {
+    "listado": "reus",
+    "posicion": 6
+   },
+   {
+    "listado": "vilanova",
+    "posicion": 11
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 8
+   },
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 72
    }
   ]
  },
@@ -1647,6 +2001,10 @@
    {
     "listado": "salou",
     "posicion": 69
+   },
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 48
    }
   ]
  },
@@ -1865,6 +2223,18 @@
    {
     "listado": "barcelona",
     "posicion": 90
+   },
+   {
+    "listado": "sant-cugat",
+    "posicion": 40
+   },
+   {
+    "listado": "reus",
+    "posicion": 35
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 37
    }
   ]
  },
@@ -1961,6 +2331,10 @@
    {
     "listado": "cambrils",
     "posicion": 27
+   },
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 25
    }
   ]
  },
@@ -1972,7 +2346,7 @@
   "tag": "barcelona",
   "titulo": "Midday or Sunset Sailing with Open Bar and Snacks",
   "valoracion": 4.8,
-  "resenas": 2511,
+  "resenas": 2513,
   "distintivos": [],
   "texto": "Barcelona Midday or Sunset Sailing with Open Bar and Snacks 2 hours • Skip the line • Private option available 4.8 (2,511) From €44",
   "apariciones": [
@@ -1983,6 +2357,22 @@
    {
     "listado": "catalonia",
     "posicion": 87
+   },
+   {
+    "listado": "sant-cugat",
+    "posicion": 10
+   },
+   {
+    "listado": "reus",
+    "posicion": 7
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 9
+   },
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 73
    }
   ]
  },
@@ -2014,7 +2404,7 @@
   "tag": "barcelona",
   "titulo": "Catamaran Sailing Cruise with BBQ and Drinks",
   "valoracion": 4.5,
-  "resenas": 4300,
+  "resenas": 4310,
   "distintivos": [
    "Top pick"
   ],
@@ -2051,6 +2441,14 @@
    {
     "listado": "costabrava",
     "posicion": 2
+   },
+   {
+    "listado": "sant-cugat",
+    "posicion": 17
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 16
    }
   ]
  },
@@ -2376,6 +2774,10 @@
    {
     "listado": "cambrils",
     "posicion": 30
+   },
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 65
    }
   ]
  },
@@ -2398,6 +2800,10 @@
    {
     "listado": "cambrils",
     "posicion": 43
+   },
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 71
    }
   ]
  },
@@ -2445,7 +2851,7 @@
   "tag": "barcelona",
   "titulo": "Flamenco Show with Dinner at Tablao de Carmen",
   "valoracion": 4.8,
-  "resenas": 2233,
+  "resenas": 2236,
   "distintivos": [],
   "texto": "Barcelona Flamenco Show with Dinner at Tablao de Carmen 1 hour 4.8 (2,233) From €88",
   "apariciones": [
@@ -2456,6 +2862,18 @@
    {
     "listado": "catalonia",
     "posicion": 116
+   },
+   {
+    "listado": "sant-cugat",
+    "posicion": 23
+   },
+   {
+    "listado": "reus",
+    "posicion": 21
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 22
    }
   ]
  },
@@ -2895,13 +3313,25 @@
   "tag": "barcelona",
   "titulo": "Picasso Museum Skip-the-Line Guided Tour",
   "valoracion": 4.5,
-  "resenas": 3749,
+  "resenas": 3750,
   "distintivos": [],
   "texto": "Certified by GetYourGuide Barcelona Picasso Museum Skip-the-Line Guided Tour 1.5 hours • Skip the line 4.5 (3,749) From €37",
   "apariciones": [
    {
     "listado": "barcelona",
     "posicion": 70
+   },
+   {
+    "listado": "sant-cugat",
+    "posicion": 13
+   },
+   {
+    "listado": "reus",
+    "posicion": 12
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 12
    }
   ]
  },
@@ -2924,6 +3354,24 @@
   ]
  },
  {
+  "tid": "382639",
+  "loc": "barcelona-l45",
+  "slug": "barcelona-montserrat-tour-with-optional-winelunch-t382639",
+  "path": "/barcelona-l45/barcelona-montserrat-tour-with-optional-winelunch-t382639/",
+  "tag": "vilanova",
+  "titulo": "Montserrat, Cogwheel, Black Madonna & Winery Tour",
+  "valoracion": 4.8,
+  "resenas": 6555,
+  "distintivos": [],
+  "texto": "Certified by GetYourGuide Barcelona Montserrat, Cogwheel, Black Madonna & Winery Tour 6 - 9 hours • Skip the line 4.8 (6,555) From €39",
+  "apariciones": [
+   {
+    "listado": "vilanova",
+    "posicion": 28
+   }
+  ]
+ },
+ {
   "tid": "382854",
   "loc": "barcelona-l45",
   "slug": "from-barcelona-half-day-montserrat-small-group-guided-tour-t382854",
@@ -2938,6 +3386,24 @@
    {
     "listado": "barcelona",
     "posicion": 62
+   }
+  ]
+ },
+ {
+  "tid": "383745",
+  "loc": "barcelona-l45",
+  "slug": "tarragona-aqualeon-water-park-entry-ticket-t383745",
+  "path": "/barcelona-l45/tarragona-aqualeon-water-park-entry-ticket-t383745/",
+  "tag": "tarragona-ciudad",
+  "titulo": "Aqualeon Water Park Entry Ticket",
+  "valoracion": 4.4,
+  "resenas": 8,
+  "distintivos": [],
+  "texto": "Barcelona Aqualeon Water Park Entry Ticket 1 day • Skip the line 4.4 (8) From €33",
+  "apariciones": [
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 31
    }
   ]
  },
@@ -3002,6 +3468,10 @@
    {
     "listado": "lleida",
     "posicion": 60
+   },
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 7
    }
   ]
  },
@@ -3032,12 +3502,18 @@
   "titulo": "Roman Heritage Guided Walking Tour",
   "valoracion": 4.7,
   "resenas": 299,
-  "distintivos": [],
+  "distintivos": [
+   "Top pick"
+  ],
   "texto": "Tarragona Roman Heritage Guided Walking Tour 2 hours 4.7 (299) From €15",
   "apariciones": [
    {
     "listado": "lleida",
     "posicion": 44
+   },
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 1
    }
   ]
  },
@@ -3125,7 +3601,7 @@
   "tag": "barcelona",
   "titulo": "Sea Caves Kayaking and Snorkeling Tour",
   "valoracion": 4.8,
-  "resenas": 1204,
+  "resenas": 1208,
   "distintivos": [
    "Likely to sell out",
    "Top pick"
@@ -3159,6 +3635,10 @@
    {
     "listado": "costabrava",
     "posicion": 1
+   },
+   {
+    "listado": "sant-cugat",
+    "posicion": 30
    }
   ]
  },
@@ -3257,6 +3737,24 @@
    {
     "listado": "salou",
     "posicion": 52
+   }
+  ]
+ },
+ {
+  "tid": "397814",
+  "loc": "amposta-l2971",
+  "slug": "ebro-delta-boat-cruise-t397814",
+  "path": "/amposta-l2971/ebro-delta-boat-cruise-t397814/",
+  "tag": "tarragona-ciudad",
+  "titulo": "Ebro Delta Boat Cruise",
+  "valoracion": 4.4,
+  "resenas": 52,
+  "distintivos": [],
+  "texto": "Amposta Ebro Delta Boat Cruise 1.5 hours • Optional audio guide 4.4 (52) From €20",
+  "apariciones": [
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 38
    }
   ]
  },
@@ -3438,7 +3936,7 @@
   "tag": "barcelona",
   "titulo": "Casa Batlló Entry with Self-Audioguide Tour",
   "valoracion": 4.7,
-  "resenas": 30224,
+  "resenas": 30250,
   "distintivos": [],
   "texto": "Certified by GetYourGuide Barcelona Casa Batlló Entry with Self-Audioguide Tour 1 day • Optional audio guide 4.7 (30,224) From €29",
   "apariciones": [
@@ -3449,6 +3947,10 @@
    {
     "listado": "catalonia",
     "posicion": 108
+   },
+   {
+    "listado": "vilanova",
+    "posicion": 14
    }
   ]
  },
@@ -3565,6 +4067,26 @@
    {
     "listado": "lleida",
     "posicion": 16
+   },
+   {
+    "listado": "sant-cugat",
+    "posicion": 55
+   },
+   {
+    "listado": "reus",
+    "posicion": 51
+   },
+   {
+    "listado": "vilanova",
+    "posicion": 52
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 53
+   },
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 17
    }
   ]
  },
@@ -3576,8 +4098,10 @@
   "tag": "barcelona",
   "titulo": "Sunset or Day Catamaran Cruise with Tapa & Drink",
   "valoracion": 4.5,
-  "resenas": 3299,
-  "distintivos": [],
+  "resenas": 3303,
+  "distintivos": [
+   "Likely to sell out"
+  ],
   "texto": "Certified by GetYourGuide Barcelona Sunset or Day Catamaran Cruise with Tapa & Drink 2 hours 4.5 (3,299) From €27",
   "apariciones": [
    {
@@ -3587,6 +4111,18 @@
    {
     "listado": "catalonia",
     "posicion": 61
+   },
+   {
+    "listado": "sant-cugat",
+    "posicion": 12
+   },
+   {
+    "listado": "reus",
+    "posicion": 11
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 11
    }
   ]
  },
@@ -3693,6 +4229,10 @@
    {
     "listado": "lleida",
     "posicion": 48
+   },
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 20
    }
   ]
  },
@@ -3740,7 +4280,7 @@
   "tag": "barcelona",
   "titulo": "Flamenco Show at Palau Dalmases",
   "valoracion": 4.6,
-  "resenas": 1170,
+  "resenas": 1175,
   "distintivos": [],
   "texto": "Barcelona Flamenco Show at Palau Dalmases 50 - 55 minutes 4.6 (1,170) From €30",
   "apariciones": [
@@ -3751,6 +4291,22 @@
    {
     "listado": "catalonia",
     "posicion": 93
+   },
+   {
+    "listado": "sant-cugat",
+    "posicion": 54
+   },
+   {
+    "listado": "reus",
+    "posicion": 49
+   },
+   {
+    "listado": "vilanova",
+    "posicion": 34
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 52
    }
   ]
  },
@@ -3762,7 +4318,7 @@
   "tag": "barcelona",
   "titulo": "Costa Brava Kayak & Snorkel in S'Agaró Bay",
   "valoracion": 4.9,
-  "resenas": 569,
+  "resenas": 571,
   "distintivos": [],
   "texto": "Barcelona Costa Brava Kayak & Snorkel in S'Agaró Bay 10 hours • Small group 4.9 (569) From €79",
   "apariciones": [
@@ -3777,6 +4333,10 @@
    {
     "listado": "costabrava",
     "posicion": 47
+   },
+   {
+    "listado": "vilanova",
+    "posicion": 38
    }
   ]
  },
@@ -3810,7 +4370,7 @@
   "tag": "barcelona",
   "titulo": "Moco Museum Barcelona: Modern & Contemporary Art",
   "valoracion": 4.6,
-  "resenas": 3601,
+  "resenas": 3605,
   "distintivos": [],
   "texto": "Certified by GetYourGuide Barcelona Moco Museum Barcelona: Modern & Contemporary Art 1 day • Skip the line 4.6 (3,601) From €19 €15",
   "apariciones": [
@@ -3821,6 +4381,18 @@
    {
     "listado": "catalonia",
     "posicion": 78
+   },
+   {
+    "listado": "sant-cugat",
+    "posicion": 29
+   },
+   {
+    "listado": "reus",
+    "posicion": 28
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 28
    }
   ]
  },
@@ -3850,7 +4422,7 @@
   "tag": "catalonia",
   "titulo": "Montserrat Museum and Monastery Entry Ticket",
   "valoracion": 4.6,
-  "resenas": 2014,
+  "resenas": 2016,
   "distintivos": [
    "Official ticket"
   ],
@@ -3859,6 +4431,22 @@
    {
     "listado": "catalonia",
     "posicion": 80
+   },
+   {
+    "listado": "sant-cugat",
+    "posicion": 56
+   },
+   {
+    "listado": "reus",
+    "posicion": 52
+   },
+   {
+    "listado": "vilanova",
+    "posicion": 53
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 54
    }
   ]
  },
@@ -4255,6 +4843,64 @@
   ]
  },
  {
+  "tid": "417903",
+  "loc": "sant-cugat-del-valles-l154613",
+  "slug": "sant-cugat-del-valles-comic-and-illustration-museum-ticket-t417903",
+  "path": "/sant-cugat-del-valles-l154613/sant-cugat-del-valles-comic-and-illustration-museum-ticket-t417903/",
+  "tag": "sant-cugat",
+  "titulo": "Comic and Illustration Museum Ticket",
+  "valoracion": 5,
+  "resenas": 2,
+  "distintivos": [],
+  "texto": "Sant Cugat del Vallès Comic and Illustration Museum Ticket 1 day 5 (2) From €9",
+  "apariciones": [
+   {
+    "listado": "sant-cugat",
+    "posicion": 3
+   }
+  ]
+ },
+ {
+  "tid": "417914",
+  "loc": "sant-cugat-del-valles-l154613",
+  "slug": "sant-cugat-del-valles-cal-gerrer-house-museum-entry-ticket-t417914",
+  "path": "/sant-cugat-del-valles-l154613/sant-cugat-del-valles-cal-gerrer-house-museum-entry-ticket-t417914/",
+  "tag": "sant-cugat",
+  "titulo": "Cal Gerrer House Museum Entry Ticket",
+  "valoracion": null,
+  "resenas": null,
+  "distintivos": [
+   "New activity"
+  ],
+  "texto": "New activity Sant Cugat del Vallès Cal Gerrer House Museum Entry Ticket 1 day From €7",
+  "apariciones": [
+   {
+    "listado": "sant-cugat",
+    "posicion": 6
+   }
+  ]
+ },
+ {
+  "tid": "418067",
+  "loc": "sant-cugat-del-valles-l154613",
+  "slug": "sant-cugat-del-valles-monastery-admission-with-audioguide-t418067",
+  "path": "/sant-cugat-del-valles-l154613/sant-cugat-del-valles-monastery-admission-with-audioguide-t418067/",
+  "tag": "sant-cugat",
+  "titulo": "Sant Cugat del Valles: Monastery Admission with Audioguide",
+  "valoracion": 2.9,
+  "resenas": 5,
+  "distintivos": [
+   "Top pick"
+  ],
+  "texto": "Top pick Sant Cugat del Vallès Sant Cugat del Valles: Monastery Admission with Audioguide 1 day • Optional audio guide 2.9 (5) From €6",
+  "apariciones": [
+   {
+    "listado": "sant-cugat",
+    "posicion": 1
+   }
+  ]
+ },
+ {
   "tid": "419045",
   "loc": "barcelona-l45",
   "slug": "barcelona-park-guell-guided-tour-t419045",
@@ -4262,7 +4908,7 @@
   "tag": "barcelona",
   "titulo": "Park Guell Guided Tour with Skip The Line Entry",
   "valoracion": 4.7,
-  "resenas": 21194,
+  "resenas": 21210,
   "distintivos": [],
   "texto": "Certified by GetYourGuide Barcelona Park Guell Guided Tour with Skip The Line Entry 1 hour - 75 minutes • Skip the line • Private option available 4.7",
   "apariciones": [
@@ -4277,6 +4923,22 @@
    {
     "listado": "cambrils",
     "posicion": 58
+   },
+   {
+    "listado": "sant-cugat",
+    "posicion": 31
+   },
+   {
+    "listado": "reus",
+    "posicion": 29
+   },
+   {
+    "listado": "vilanova",
+    "posicion": 18
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 29
    }
   ]
  },
@@ -4337,6 +4999,18 @@
    {
     "listado": "tossa",
     "posicion": 40
+   },
+   {
+    "listado": "sant-cugat",
+    "posicion": 8
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 6
+   },
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 63
    }
   ]
  },
@@ -4355,6 +5029,10 @@
    {
     "listado": "sitges",
     "posicion": 22
+   },
+   {
+    "listado": "vilanova",
+    "posicion": 3
    }
   ]
  },
@@ -4761,6 +5439,10 @@
    {
     "listado": "catalonia",
     "posicion": 104
+   },
+   {
+    "listado": "vilanova",
+    "posicion": 15
    }
   ]
  },
@@ -4772,7 +5454,7 @@
   "tag": "catalonia",
   "titulo": "Catamaran Cruise with Drinks and BBQ Lunch",
   "valoracion": 4.6,
-  "resenas": 1178,
+  "resenas": 1181,
   "distintivos": [],
   "texto": "Cambrils Catamaran Cruise with Drinks and BBQ Lunch 3 hours • Small group 4.6 (1,178) From €49",
   "apariciones": [
@@ -4791,6 +5473,22 @@
    {
     "listado": "lleida",
     "posicion": 12
+   },
+   {
+    "listado": "sant-cugat",
+    "posicion": 43
+   },
+   {
+    "listado": "reus",
+    "posicion": 40
+   },
+   {
+    "listado": "vilanova",
+    "posicion": 17
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 41
    }
   ]
  },
@@ -4952,7 +5650,7 @@
   "tag": "barcelona",
   "titulo": "Guided Day Trip to Andorra, France and Spain",
   "valoracion": 4.6,
-  "resenas": 2607,
+  "resenas": 2612,
   "distintivos": [
    "Originals by GetYourGuide"
   ],
@@ -4961,6 +5659,10 @@
    {
     "listado": "barcelona",
     "posicion": 93
+   },
+   {
+    "listado": "vilanova",
+    "posicion": 24
    }
   ]
  },
@@ -4979,6 +5681,10 @@
    {
     "listado": "costabrava",
     "posicion": 111
+   },
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 62
    }
   ]
  },
@@ -5070,7 +5776,7 @@
   "tag": "catalonia",
   "titulo": "Sunset Cruise in a Premium Catamaran with Drinks",
   "valoracion": 4.4,
-  "resenas": 417,
+  "resenas": 418,
   "distintivos": [],
   "texto": "Cambrils Sunset Cruise in a Premium Catamaran with Drinks 2 hours • Small group 4.4 (417) From €34",
   "apariciones": [
@@ -5089,6 +5795,26 @@
    {
     "listado": "lleida",
     "posicion": 18
+   },
+   {
+    "listado": "sant-cugat",
+    "posicion": 51
+   },
+   {
+    "listado": "reus",
+    "posicion": 47
+   },
+   {
+    "listado": "vilanova",
+    "posicion": 35
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 49
+   },
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 8
    }
   ]
  },
@@ -5246,7 +5972,7 @@
   "tag": "barcelona",
   "titulo": "FC Barcelona Museum \"Barça Immersive Tour\" Ticket",
   "valoracion": 4.3,
-  "resenas": 13365,
+  "resenas": 13396,
   "distintivos": [
    "Official ticket"
   ],
@@ -5255,6 +5981,22 @@
    {
     "listado": "barcelona",
     "posicion": 23
+   },
+   {
+    "listado": "sant-cugat",
+    "posicion": 47
+   },
+   {
+    "listado": "reus",
+    "posicion": 43
+   },
+   {
+    "listado": "vilanova",
+    "posicion": 10
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 44
    }
   ]
  },
@@ -5266,13 +6008,25 @@
   "tag": "barcelona",
   "titulo": "Food Walking Tour with Tapas and Wine",
   "valoracion": 4.9,
-  "resenas": 2487,
+  "resenas": 2489,
   "distintivos": [],
   "texto": "Barcelona Food Walking Tour with Tapas and Wine 2.5 hours • Private option available 4.9 (2,487) From €85 €72",
   "apariciones": [
    {
     "listado": "barcelona",
     "posicion": 66
+   },
+   {
+    "listado": "sant-cugat",
+    "posicion": 15
+   },
+   {
+    "listado": "reus",
+    "posicion": 14
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 14
    }
   ]
  },
@@ -5284,7 +6038,7 @@
   "tag": "barcelona",
   "titulo": "Sagrada Familia Skip-the-Line Guided Tour",
   "valoracion": 4.8,
-  "resenas": 4490,
+  "resenas": 4493,
   "distintivos": [],
   "texto": "Certified by GetYourGuide Barcelona Sagrada Familia Skip-the-Line Guided Tour 1.5 hours • Skip the line • Optional audio guide 4.8 (4,490) From €47",
   "apariciones": [
@@ -5295,6 +6049,18 @@
    {
     "listado": "catalonia",
     "posicion": 85
+   },
+   {
+    "listado": "sant-cugat",
+    "posicion": 24
+   },
+   {
+    "listado": "reus",
+    "posicion": 23
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 23
    }
   ]
  },
@@ -5494,13 +6260,19 @@
   "tag": "barcelona",
   "titulo": "Sunrise Paddleboarding with Instructor and Photos",
   "valoracion": 4.9,
-  "resenas": 968,
-  "distintivos": [],
+  "resenas": 972,
+  "distintivos": [
+   "Likely to sell out"
+  ],
   "texto": "Barcelona Sunrise Paddleboarding with Instructor and Photos 2 hours 4.9 (968) From €30 €27",
   "apariciones": [
    {
     "listado": "barcelona",
     "posicion": 34
+   },
+   {
+    "listado": "vilanova",
+    "posicion": 31
    }
   ]
  },
@@ -5519,6 +6291,62 @@
    {
     "listado": "roses",
     "posicion": 30
+   }
+  ]
+ },
+ {
+  "tid": "462292",
+  "loc": "xabia-l149394",
+  "slug": "xabia-granadella-caves-beaches-kayak-and-snorkeling-tour-t462292",
+  "path": "/xabia-l149394/xabia-granadella-caves-beaches-kayak-and-snorkeling-tour-t462292/",
+  "tag": "tarragona-ciudad",
+  "titulo": "Cala Granadella: Cala en Caló Sea Cave Snorkel & Kayak Tour",
+  "valoracion": 4.7,
+  "resenas": 181,
+  "distintivos": [],
+  "texto": "Tarragona Cala Granadella: Cala en Caló Sea Cave Snorkel & Kayak Tour 2.5 hours 4.7 (181) From €50",
+  "apariciones": [
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 19
+   }
+  ]
+ },
+ {
+  "tid": "463119",
+  "loc": "xabia-l149394",
+  "slug": "paddle-board-tour-granadella-t463119",
+  "path": "/xabia-l149394/paddle-board-tour-granadella-t463119/",
+  "tag": "tarragona-ciudad",
+  "titulo": "Cala Tango: Marine Reserve Cave & Snorkel Paddle Board Tour",
+  "valoracion": 4.9,
+  "resenas": 8,
+  "distintivos": [],
+  "texto": "Xàbia Cala Tango: Marine Reserve Cave & Snorkel Paddle Board Tour 2.5 hours • Private group 4.9 (8) From €60",
+  "apariciones": [
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 57
+   }
+  ]
+ },
+ {
+  "tid": "463640",
+  "loc": "sant-cugat-del-valles-l154613",
+  "slug": "barcelona-visita-guiada-por-sant-cugat-t463640",
+  "path": "/sant-cugat-del-valles-l154613/barcelona-visita-guiada-por-sant-cugat-t463640/",
+  "tag": "sant-cugat",
+  "titulo": "Visita guiada por Sant Cugat",
+  "valoracion": null,
+  "resenas": null,
+  "distintivos": [
+   "New activity"
+  ],
+  "texto": "New activity Sant Cugat del Vallès Visita guiada por Sant Cugat 2 hours From €14",
+  "apariciones": [
+   {
+    "listado": "sant-cugat",
+    "posicion": 4
    }
   ]
  },
@@ -5572,13 +6400,17 @@
   "tag": "lleida",
   "titulo": "Ebro River Guided Kayaking Tour to Miravet",
   "valoracion": 4.7,
-  "resenas": 75,
+  "resenas": 76,
   "distintivos": [],
   "texto": "Tivissa Ebro River Guided Kayaking Tour to Miravet 2.5 hours 4.7 (75) From €35",
   "apariciones": [
    {
     "listado": "lleida",
     "posicion": 64
+   },
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 24
    }
   ]
  },
@@ -5654,13 +6486,17 @@
   "tag": "salou",
   "titulo": "Private Zodiac Boat Trip Through the Coves of Salou",
   "valoracion": 5,
-  "resenas": 38,
+  "resenas": 39,
   "distintivos": [],
   "texto": "Salou Private Zodiac Boat Trip Through the Coves of Salou 2 hours • Skip the line • Private group 5 (38) From €240 per group up to 6",
   "apariciones": [
    {
     "listado": "salou",
     "posicion": 45
+   },
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 53
    }
   ]
  },
@@ -5907,6 +6743,24 @@
   ]
  },
  {
+  "tid": "491706",
+  "loc": "tarragona-l1293",
+  "slug": "birdwatching-in-the-ebro-delta-t491706",
+  "path": "/tarragona-l1293/birdwatching-in-the-ebro-delta-t491706/",
+  "tag": "tarragona-ciudad",
+  "titulo": "Birdwatching in the Ebro Delta",
+  "valoracion": 4.8,
+  "resenas": 15,
+  "distintivos": [],
+  "texto": "L'Ampolla Birdwatching in the Ebro Delta 3 hours • Small group 4.8 (15) From €40",
+  "apariciones": [
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 50
+   }
+  ]
+ },
+ {
   "tid": "494758",
   "loc": "innsbruck-l164",
   "slug": "innsbruck-private-walking-tour-t494758",
@@ -6014,7 +6868,7 @@
   "tag": "barcelona",
   "titulo": "Sagrada Familia Guided Tour with Express Entry",
   "valoracion": 4.7,
-  "resenas": 1867,
+  "resenas": 1876,
   "distintivos": [
    "Likely to sell out"
   ],
@@ -6027,6 +6881,18 @@
    {
     "listado": "catalonia",
     "posicion": 71
+   },
+   {
+    "listado": "sant-cugat",
+    "posicion": 14
+   },
+   {
+    "listado": "reus",
+    "posicion": 13
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 13
    }
   ]
  },
@@ -6107,6 +6973,26 @@
   ]
  },
  {
+  "tid": "505838",
+  "loc": "benidorm-l2317",
+  "slug": "the-10-tasting-of-benidorm-walking-experience-t505838",
+  "path": "/benidorm-l2317/the-10-tasting-of-benidorm-walking-experience-t505838/",
+  "tag": "tarragona-ciudad",
+  "titulo": "The 10 tasting of Benidorm walking experience",
+  "valoracion": null,
+  "resenas": null,
+  "distintivos": [
+   "New activity"
+  ],
+  "texto": "New activity Benidorm The 10 tasting of Benidorm walking experience 3 hours From €140",
+  "apariciones": [
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 33
+   }
+  ]
+ },
+ {
   "tid": "513672",
   "loc": "girona-l550",
   "slug": "the-11-tastings-of-girona-t513672",
@@ -6179,6 +7065,24 @@
    {
     "listado": "girona",
     "posicion": 16
+   }
+  ]
+ },
+ {
+  "tid": "525106",
+  "loc": "tarragona-l1293",
+  "slug": "tarragona-gems-half-day-private-journey-t525106",
+  "path": "/tarragona-l1293/tarragona-gems-half-day-private-journey-t525106/",
+  "tag": "tarragona-ciudad",
+  "titulo": "Tarragona Gems Half-Day Private Journey",
+  "valoracion": 5,
+  "resenas": 1,
+  "distintivos": [],
+  "texto": "Tarragona Tarragona Gems Half-Day Private Journey 4 hours • Private group 5 (1) From €740 per group up to 4",
+  "apariciones": [
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 47
    }
   ]
  },
@@ -6319,6 +7223,24 @@
   ]
  },
  {
+  "tid": "554713",
+  "loc": "tarragona-l1293",
+  "slug": "flamingo-birdwatching-in-the-ebro-delta-at-sunset-t554713",
+  "path": "/tarragona-l1293/flamingo-birdwatching-in-the-ebro-delta-at-sunset-t554713/",
+  "tag": "tarragona-ciudad",
+  "titulo": "Flamingo-Birdwatching in the Ebro Delta at Sunset",
+  "valoracion": 4.5,
+  "resenas": 51,
+  "distintivos": [],
+  "texto": "Tarragona Flamingo-Birdwatching in the Ebro Delta at Sunset 2.5 hours 4.5 (51) From €40",
+  "apariciones": [
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 32
+   }
+  ]
+ },
+ {
   "tid": "556913",
   "loc": "zadar-l1328",
   "slug": "zadar-visit-islands-preko-osljak-kali-free-drinks-t556913",
@@ -6333,6 +7255,44 @@
    {
     "listado": "montserrat",
     "posicion": 70
+   }
+  ]
+ },
+ {
+  "tid": "557175",
+  "loc": "catalonia-l641",
+  "slug": "wild-walk-discover-the-local-wild-flora-t557175",
+  "path": "/catalonia-l641/wild-walk-discover-the-local-wild-flora-t557175/",
+  "tag": "tarragona-ciudad",
+  "titulo": "Wild walk: discover the local wild flora",
+  "valoracion": null,
+  "resenas": null,
+  "distintivos": [
+   "New activity"
+  ],
+  "texto": "New activity Font-rubí Wild walk: discover the local wild flora 1.5 hours • Private group From €250 per group up to 5",
+  "apariciones": [
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 61
+   }
+  ]
+ },
+ {
+  "tid": "557219",
+  "loc": "catalonia-l641",
+  "slug": "wild-experience-discover-cook-eat-the-local-wild-flora-t557219",
+  "path": "/catalonia-l641/wild-experience-discover-cook-eat-the-local-wild-flora-t557219/",
+  "tag": "tarragona-ciudad",
+  "titulo": "Wild experience: discover, cook & eat the local wild flora",
+  "valoracion": 5,
+  "resenas": 2,
+  "distintivos": [],
+  "texto": "Barcelona Wild experience: discover, cook & eat the local wild flora 3 hours • Private group 5 (2) From €350 per group up to 5",
+  "apariciones": [
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 69
    }
   ]
  },
@@ -6398,7 +7358,7 @@
   "tag": "salou",
   "titulo": "Kid's Buggy Driving Experience in Safe Environment",
   "valoracion": 4.9,
-  "resenas": 101,
+  "resenas": 102,
   "distintivos": [],
   "texto": "Salou Kid's Buggy Driving Experience in Safe Environment 20 minutes • Small group • Pickup available 4.9 (101) From €60 per group up to 2",
   "apariciones": [
@@ -6413,6 +7373,10 @@
    {
     "listado": "lleida",
     "posicion": 68
+   },
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 26
    }
   ]
  },
@@ -6528,7 +7492,7 @@
   "tag": "barcelona",
   "titulo": "Park Guell Guided Tour with Skip-the-Line Entry",
   "valoracion": 4.4,
-  "resenas": 2163,
+  "resenas": 2166,
   "distintivos": [
    "Likely to sell out"
   ],
@@ -6537,6 +7501,18 @@
    {
     "listado": "barcelona",
     "posicion": 54
+   },
+   {
+    "listado": "reus",
+    "posicion": 9
+   },
+   {
+    "listado": "vilanova",
+    "posicion": 32
+   },
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 75
    }
   ]
  },
@@ -6641,6 +7617,10 @@
    {
     "listado": "cambrils",
     "posicion": 48
+   },
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 59
    }
   ]
  },
@@ -6697,6 +7677,10 @@
    {
     "listado": "girona",
     "posicion": 28
+   },
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 29
    }
   ]
  },
@@ -7003,6 +7987,24 @@
   ]
  },
  {
+  "tid": "663233",
+  "loc": "tarragona-l1293",
+  "slug": "entry-ticket-fundacio-mas-miro-mont-roig-del-camp-t663233",
+  "path": "/tarragona-l1293/entry-ticket-fundacio-mas-miro-mont-roig-del-camp-t663233/",
+  "tag": "tarragona-ciudad",
+  "titulo": "Entry ticket | Fundació Mas Miró - Mont-roig del Camp",
+  "valoracion": 4.4,
+  "resenas": 13,
+  "distintivos": [],
+  "texto": "Tarragona Entry ticket | Fundació Mas Miró - Mont-roig del Camp 1 hour • Optional audio guide 4.4 (13) From €10",
+  "apariciones": [
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 41
+   }
+  ]
+ },
+ {
   "tid": "663776",
   "loc": "barcelona-l45",
   "slug": "gaudi-s-park-guell-guided-tour-with-fast-track-ticket-t663776",
@@ -7010,13 +8012,25 @@
   "tag": "barcelona",
   "titulo": "Gaudí’s Park Güell Tour with Fast-Track Ticket",
   "valoracion": 4.7,
-  "resenas": 6816,
+  "resenas": 6830,
   "distintivos": [],
   "texto": "Certified by GetYourGuide Barcelona Gaudí’s Park Güell Tour with Fast-Track Ticket 55 minutes • Skip the line • Private option available 4.7 (6,816) F",
   "apariciones": [
    {
     "listado": "barcelona",
     "posicion": 35
+   },
+   {
+    "listado": "sant-cugat",
+    "posicion": 41
+   },
+   {
+    "listado": "reus",
+    "posicion": 37
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 38
    }
   ]
  },
@@ -7028,13 +8042,25 @@
   "tag": "barcelona",
   "titulo": "Sagrada Familia Priority Access Guided Tour",
   "valoracion": 4.8,
-  "resenas": 6033,
+  "resenas": 6037,
   "distintivos": [],
   "texto": "Certified by GetYourGuide Barcelona Sagrada Familia Priority Access Guided Tour 1.5 hours • Skip the line • Small group 4.8 (6,033) From €103 €79",
   "apariciones": [
    {
     "listado": "barcelona",
     "posicion": 25
+   },
+   {
+    "listado": "sant-cugat",
+    "posicion": 20
+   },
+   {
+    "listado": "reus",
+    "posicion": 18
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 19
    }
   ]
  },
@@ -7400,13 +8426,17 @@
   "tag": "barcelona",
   "titulo": "FC Barcelona Museum Total Experience Pass",
   "valoracion": 4.1,
-  "resenas": 1144,
+  "resenas": 1150,
   "distintivos": [],
   "texto": "Certified by GetYourGuide Barcelona FC Barcelona Museum Total Experience Pass 1 day • Optional audio guide 4.1 (1,144) From €51",
   "apariciones": [
    {
     "listado": "barcelona",
     "posicion": 75
+   },
+   {
+    "listado": "vilanova",
+    "posicion": 20
    }
   ]
  },
@@ -7763,6 +8793,28 @@
    {
     "listado": "cambrils",
     "posicion": 35
+   },
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 39
+   }
+  ]
+ },
+ {
+  "tid": "740138",
+  "loc": "l-ampolla-l162850",
+  "slug": "ecoherbes-guided-visit-to-the-botanical-garden-t740138",
+  "path": "/l-ampolla-l162850/ecoherbes-guided-visit-to-the-botanical-garden-t740138/",
+  "tag": "tarragona-ciudad",
+  "titulo": "Ecoherbes - Guided Visit to the botanical garden",
+  "valoracion": 5,
+  "resenas": 1,
+  "distintivos": [],
+  "texto": "L'Ampolla Ecoherbes - Guided Visit to the botanical garden 1 day • Small group 5 (1) From €18",
+  "apariciones": [
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 42
    }
   ]
  },
@@ -7787,6 +8839,28 @@
   ]
  },
  {
+  "tid": "741095",
+  "loc": "tarragona-l1293",
+  "slug": "museu-casteller-de-catalunya-t741095",
+  "path": "/tarragona-l1293/museu-casteller-de-catalunya-t741095/",
+  "tag": "reus",
+  "titulo": "Museu Casteller de Catalunya",
+  "valoracion": 5,
+  "resenas": 1,
+  "distintivos": [],
+  "texto": "Valls Museu Casteller de Catalunya 1 day 5 (1) From €9",
+  "apariciones": [
+   {
+    "listado": "reus",
+    "posicion": 2
+   },
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 22
+   }
+  ]
+ },
+ {
   "tid": "741547",
   "loc": "barcelona-l45",
   "slug": "barcelona-jet-ski-ride-1-or-2-people-w-instructor-included-t741547",
@@ -7794,13 +8868,25 @@
   "tag": "barcelona",
   "titulo": "Jet Ski Adventure 2 people Instructor Included",
   "valoracion": 4.4,
-  "resenas": 324,
+  "resenas": 329,
   "distintivos": [],
   "texto": "Barcelona Jet Ski Adventure 2 people Instructor Included 20 minutes - 1 hour • Small group 4.4 (324) From €59 per group up to 2",
   "apariciones": [
    {
     "listado": "barcelona",
     "posicion": 18
+   },
+   {
+    "listado": "sant-cugat",
+    "posicion": 38
+   },
+   {
+    "listado": "reus",
+    "posicion": 33
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 35
    }
   ]
  },
@@ -7873,6 +8959,24 @@
    {
     "listado": "montserrat",
     "posicion": 43
+   }
+  ]
+ },
+ {
+  "tid": "752666",
+  "loc": "l-espluga-de-francoli-l190669",
+  "slug": "terra-museum-t752666",
+  "path": "/l-espluga-de-francoli-l190669/terra-museum-t752666/",
+  "tag": "tarragona-ciudad",
+  "titulo": "L’Espluga de Francolí – Visit to Terra Museum",
+  "valoracion": 5,
+  "resenas": 2,
+  "distintivos": [],
+  "texto": "L'Espluga de Francolí L’Espluga de Francolí – Visit to Terra Museum 1 day • Skip the line 5 (2) From €6",
+  "apariciones": [
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 28
    }
   ]
  },
@@ -8549,6 +9653,26 @@
   ]
  },
  {
+  "tid": "827786",
+  "loc": "cornudella-de-montsant-l2390",
+  "slug": "catalonia-unique-bespoke-wine-cellar-visits-t827786",
+  "path": "/cornudella-de-montsant-l2390/catalonia-unique-bespoke-wine-cellar-visits-t827786/",
+  "tag": "sant-cugat",
+  "titulo": "Unique, bespoke wine cellar visits",
+  "valoracion": null,
+  "resenas": null,
+  "distintivos": [
+   "New activity"
+  ],
+  "texto": "New activity Barcelona Unique, bespoke wine cellar visits 1 day • Skip the line • Private group From €200",
+  "apariciones": [
+   {
+    "listado": "sant-cugat",
+    "posicion": 7
+   }
+  ]
+ },
+ {
   "tid": "831886",
   "loc": "figueres-l4723",
   "slug": "figueres-dali-theatre-museum-entry-ticket-t831886",
@@ -8624,6 +9748,10 @@
    {
     "listado": "sitges",
     "posicion": 2
+   },
+   {
+    "listado": "vilanova",
+    "posicion": 22
    }
   ]
  },
@@ -8635,7 +9763,7 @@
   "tag": "catalonia",
   "titulo": "Sitges Boat Trips",
   "valoracion": 4.1,
-  "resenas": 101,
+  "resenas": 102,
   "distintivos": [
    "Top pick"
   ],
@@ -8648,6 +9776,10 @@
    {
     "listado": "sitges",
     "posicion": 1
+   },
+   {
+    "listado": "vilanova",
+    "posicion": 12
    }
   ]
  },
@@ -8666,6 +9798,24 @@
    {
     "listado": "tarragona",
     "posicion": 87
+   }
+  ]
+ },
+ {
+  "tid": "842906",
+  "loc": "barcelona-l45",
+  "slug": "barcelonapass-with-casa-battlo-casa-mila-teleferic-more-t842906",
+  "path": "/barcelona-l45/barcelonapass-with-casa-battlo-casa-mila-teleferic-more-t842906/",
+  "tag": "castelldefels",
+  "titulo": "Flex Pass Top Attractions & Sagrada Option",
+  "valoracion": 4.3,
+  "resenas": 60,
+  "distintivos": [],
+  "texto": "Barcelona Flex Pass Top Attractions & Sagrada Option 4.3 (60) From €80",
+  "apariciones": [
+   {
+    "listado": "castelldefels",
+    "posicion": 7
    }
   ]
  },
@@ -8912,6 +10062,26 @@
    {
     "listado": "tarragona",
     "posicion": 97
+   }
+  ]
+ },
+ {
+  "tid": "852400",
+  "loc": "andorra-la-vella-l7925",
+  "slug": "the-best-of-andorra-la-vella-private-walking-tour-t852400",
+  "path": "/andorra-la-vella-l7925/the-best-of-andorra-la-vella-private-walking-tour-t852400/",
+  "tag": "tarragona-ciudad",
+  "titulo": "Private Walking Tour in Andorra la Vella Old Town",
+  "valoracion": null,
+  "resenas": null,
+  "distintivos": [
+   "New activity"
+  ],
+  "texto": "New activity Andorra la Vella Private Walking Tour in Andorra la Vella Old Town 2 hours • Private group From €1,236 per group up to 4",
+  "apariciones": [
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 68
    }
   ]
  },
@@ -9264,6 +10434,10 @@
    {
     "listado": "cambrils",
     "posicion": 37
+   },
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 54
    }
   ]
  },
@@ -9308,6 +10482,10 @@
    {
     "listado": "cambrils",
     "posicion": 49
+   },
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 60
    }
   ]
  },
@@ -9376,6 +10554,10 @@
    {
     "listado": "cambrils",
     "posicion": 52
+   },
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 56
    }
   ]
  },
@@ -9400,6 +10582,10 @@
    {
     "listado": "cambrils",
     "posicion": 51
+   },
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 55
    }
   ]
  },
@@ -9544,6 +10730,26 @@
   ]
  },
  {
+  "tid": "903685",
+  "loc": "tarragona-l1293",
+  "slug": "tarragona-prades-mountains-forest-bathing-and-meditation-t903685",
+  "path": "/tarragona-l1293/tarragona-prades-mountains-forest-bathing-and-meditation-t903685/",
+  "tag": "tarragona-ciudad",
+  "titulo": "Prades Mountains Forest Bathing and Meditation",
+  "valoracion": null,
+  "resenas": null,
+  "distintivos": [
+   "New activity"
+  ],
+  "texto": "New activity Tarragona Prades Mountains Forest Bathing and Meditation 4 hours • Private group From €78",
+  "apariciones": [
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 23
+   }
+  ]
+ },
+ {
   "tid": "916362",
   "loc": "roses-spain-l92004",
   "slug": "cap-de-creus-explore-experience-at-water-world-t916362",
@@ -9616,6 +10822,26 @@
    {
     "listado": "tarragona",
     "posicion": 37
+   }
+  ]
+ },
+ {
+  "tid": "924584",
+  "loc": "sabadell-l156621",
+  "slug": "barcelona-visita-guiada-por-sabadell-t924584",
+  "path": "/sabadell-l156621/barcelona-visita-guiada-por-sabadell-t924584/",
+  "tag": "sant-cugat",
+  "titulo": "Visita guiada por Sabadell",
+  "valoracion": null,
+  "resenas": null,
+  "distintivos": [
+   "New activity"
+  ],
+  "texto": "New activity Sabadell Visita guiada por Sabadell 2 hours From €14",
+  "apariciones": [
+   {
+    "listado": "sant-cugat",
+    "posicion": 5
    }
   ]
  },
@@ -9794,6 +11020,26 @@
    {
     "listado": "lleida",
     "posicion": 82
+   }
+  ]
+ },
+ {
+  "tid": "954453",
+  "loc": "barcelona-l45",
+  "slug": "romantic-tour-wines-and-picnic-in-siurana-and-priorat-from-barcelona-t954453",
+  "path": "/barcelona-l45/romantic-tour-wines-and-picnic-in-siurana-and-priorat-from-barcelona-t954453/",
+  "tag": "tarragona-ciudad",
+  "titulo": "Romantic Tour, Wines and Picnic in Siurana and Priorat from Barcelona",
+  "valoracion": null,
+  "resenas": null,
+  "distintivos": [
+   "New activity"
+  ],
+  "texto": "New activity Barcelona Romantic Tour, Wines and Picnic in Siurana and Priorat from Barcelona 8 hours • Small group • Pickup available From €313",
+  "apariciones": [
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 67
    }
   ]
  },
@@ -10106,6 +11352,24 @@
   ]
  },
  {
+  "tid": "979210",
+  "loc": "deltebre-l169710",
+  "slug": "kayak-excursion-through-the-ebro-delta-7-routes-t979210",
+  "path": "/deltebre-l169710/kayak-excursion-through-the-ebro-delta-7-routes-t979210/",
+  "tag": "tarragona-ciudad",
+  "titulo": "Kayak excursion through the Ebro Delta - 7 magical routes through the Delta",
+  "valoracion": 4.1,
+  "resenas": 36,
+  "distintivos": [],
+  "texto": "Deltebre Kayak excursion through the Ebro Delta - 7 magical routes through the Delta 1 day 4.1 (36) From €28",
+  "apariciones": [
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 52
+   }
+  ]
+ },
+ {
   "tid": "987323",
   "loc": "cambrils-l91400",
   "slug": "guided-snorkeling-in-cambrils-with-an-explanation-of-the-marine-environment-t987323",
@@ -10142,6 +11406,26 @@
    {
     "listado": "barcelona",
     "posicion": 36
+   }
+  ]
+ },
+ {
+  "tid": "988809",
+  "loc": "tarragona-l1293",
+  "slug": "playa-del-trabucador-wingfoil-class-t988809",
+  "path": "/tarragona-l1293/playa-del-trabucador-wingfoil-class-t988809/",
+  "tag": "tarragona-ciudad",
+  "titulo": "Playa del Trabucador: Wingfoil Class",
+  "valoracion": null,
+  "resenas": null,
+  "distintivos": [
+   "New activity"
+  ],
+  "texto": "New activity Riumar Playa del Trabucador: Wingfoil Class 1 hour • Skip the line • Small group From €45",
+  "apariciones": [
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 30
    }
   ]
  },
@@ -10407,7 +11691,7 @@
   "tag": "barcelona",
   "titulo": "Jet Ski Rental without a License (Photos Included)",
   "valoracion": 4.7,
-  "resenas": 592,
+  "resenas": 601,
   "distintivos": [],
   "texto": "Barcelona Jet Ski Rental without a License (Photos Included) 1 hour 4.7 (592) From €89 €71 per group up to 2",
   "apariciones": [
@@ -10418,6 +11702,18 @@
    {
     "listado": "catalonia",
     "posicion": 82
+   },
+   {
+    "listado": "sant-cugat",
+    "posicion": 50
+   },
+   {
+    "listado": "vilanova",
+    "posicion": 27
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 48
    }
   ]
  },
@@ -10478,6 +11774,24 @@
    {
     "listado": "sitges",
     "posicion": 48
+   }
+  ]
+ },
+ {
+  "tid": "1016696",
+  "loc": "tarragona-l1293",
+  "slug": "catalonia-guided-motorcycle-tour-with-bikes-equipment-t1016696",
+  "path": "/tarragona-l1293/catalonia-guided-motorcycle-tour-with-bikes-equipment-t1016696/",
+  "tag": "tarragona-ciudad",
+  "titulo": "Guided Motorcycle Tour with bikes & equipment",
+  "valoracion": 5,
+  "resenas": 1,
+  "distintivos": [],
+  "texto": "Tarragona Guided Motorcycle Tour with bikes & equipment 4 hours • Private group 5 (1) From €120",
+  "apariciones": [
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 34
    }
   ]
  },
@@ -10637,7 +11951,7 @@
   "tag": "barcelona",
   "titulo": "Sagrada Familia Priority Entry & Expert Guided Tour",
   "valoracion": 4.8,
-  "resenas": 232,
+  "resenas": 236,
   "distintivos": [
    "Likely to sell out"
   ],
@@ -10650,6 +11964,10 @@
    {
     "listado": "catalonia",
     "posicion": 100
+   },
+   {
+    "listado": "vilanova",
+    "posicion": 37
    }
   ]
  },
@@ -10728,6 +12046,24 @@
    {
     "listado": "girona",
     "posicion": 39
+   }
+  ]
+ },
+ {
+  "tid": "1026074",
+  "loc": "tarragona-l1293",
+  "slug": "timeport-a-virtual-journey-to-understand-roman-tarraco-before-the-visit-t1026074",
+  "path": "/tarragona-l1293/timeport-a-virtual-journey-to-understand-roman-tarraco-before-the-visit-t1026074/",
+  "tag": "tarragona-ciudad",
+  "titulo": "TimePort, a virtual journey to understand Roman Tarraco before the visit",
+  "valoracion": 4.7,
+  "resenas": 8,
+  "distintivos": [],
+  "texto": "Tarragona TimePort, a virtual journey to understand Roman Tarraco before the visit 30 minutes • Skip the line 4.7 (8) From €15",
+  "apariciones": [
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 14
    }
   ]
  },
@@ -11157,7 +12493,7 @@
   "tag": "barcelona",
   "titulo": "Night Ticket for PortAventura Park",
   "valoracion": 4.3,
-  "resenas": 53,
+  "resenas": 54,
   "distintivos": [
    "Official ticket"
   ],
@@ -11170,6 +12506,18 @@
    {
     "listado": "lleida",
     "posicion": 13
+   },
+   {
+    "listado": "reus",
+    "posicion": 38
+   },
+   {
+    "listado": "vilanova",
+    "posicion": 36
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 39
    }
   ]
  },
@@ -11329,6 +12677,10 @@
    {
     "listado": "lleida",
     "posicion": 2
+   },
+   {
+    "listado": "reus",
+    "posicion": 10
    }
   ]
  },
@@ -11537,6 +12889,28 @@
    {
     "listado": "cambrils",
     "posicion": 36
+   },
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 45
+   }
+  ]
+ },
+ {
+  "tid": "1077299",
+  "loc": "priorat-l164997",
+  "slug": "priorat-wine-tour-in-gratallops-of-the-finest-natural-wines-t1077299",
+  "path": "/priorat-l164997/priorat-wine-tour-in-gratallops-of-the-finest-natural-wines-t1077299/",
+  "tag": "tarragona-ciudad",
+  "titulo": "Natural Wine Tour in Gratallops",
+  "valoracion": 4.5,
+  "resenas": 3,
+  "distintivos": [],
+  "texto": "Gratallops Natural Wine Tour in Gratallops 1.5 hours • Skip the line • Private group 4.5 (3) From €60",
+  "apariciones": [
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 66
    }
   ]
  },
@@ -11601,6 +12975,10 @@
    {
     "listado": "sitges",
     "posicion": 43
+   },
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 36
    }
   ]
  },
@@ -11625,6 +13003,18 @@
    {
     "listado": "lleida",
     "posicion": 9
+   },
+   {
+    "listado": "sant-cugat",
+    "posicion": 36
+   },
+   {
+    "listado": "reus",
+    "posicion": 32
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 34
    }
   ]
  },
@@ -11803,6 +13193,26 @@
    {
     "listado": "lloret",
     "posicion": 13
+   }
+  ]
+ },
+ {
+  "tid": "1102291",
+  "loc": "tarragona-l1293",
+  "slug": "new-art-centre-guided-tour-t1102291",
+  "path": "/tarragona-l1293/new-art-centre-guided-tour-t1102291/",
+  "tag": "tarragona-ciudad",
+  "titulo": "Guided tour of the New Art Centre",
+  "valoracion": null,
+  "resenas": null,
+  "distintivos": [
+   "New activity"
+  ],
+  "texto": "New activity Tarragona Guided tour of the New Art Centre 1.5 hours • Skip the line • Optional audio guide From €14",
+  "apariciones": [
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 10
    }
   ]
  },
@@ -12061,6 +13471,24 @@
   ]
  },
  {
+  "tid": "1144783",
+  "loc": "tarragona-l1293",
+  "slug": "ebro-delta-self-guided-route-to-the-torre-de-sant-joan-t1144783",
+  "path": "/tarragona-l1293/ebro-delta-self-guided-route-to-the-torre-de-sant-joan-t1144783/",
+  "tag": "tarragona-ciudad",
+  "titulo": "Ebro Delta: Self-Guided Route to the Torre de Sant Joan",
+  "valoracion": 4.3,
+  "resenas": 3,
+  "distintivos": [],
+  "texto": "Tarragona Ebro Delta: Self-Guided Route to the Torre de Sant Joan 1.5 hours • Skip the line 4.3 (3) From €16",
+  "apariciones": [
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 51
+   }
+  ]
+ },
+ {
   "tid": "1146015",
   "loc": "zurs-l182294",
   "slug": "sunday-arlberg-experience-on-piste-skiing-guided-tour-t1146015",
@@ -12077,6 +13505,26 @@
    {
     "listado": "tarragona",
     "posicion": 83
+   }
+  ]
+ },
+ {
+  "tid": "1147080",
+  "loc": "tarragona-l1293",
+  "slug": "tarragona-food-and-wine-tour-from-barcelona-t1147080",
+  "path": "/tarragona-l1293/tarragona-food-and-wine-tour-from-barcelona-t1147080/",
+  "tag": "tarragona-ciudad",
+  "titulo": "Discover Tarragona and its Ancient Olive Oil Traditions",
+  "valoracion": null,
+  "resenas": null,
+  "distintivos": [
+   "New activity"
+  ],
+  "texto": "New activity Barcelona Discover Tarragona and its Ancient Olive Oil Traditions 8 hours • Private group • Pickup available From €230",
+  "apariciones": [
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 18
    }
   ]
  },
@@ -12117,6 +13565,26 @@
    {
     "listado": "montserrat",
     "posicion": 4
+   }
+  ]
+ },
+ {
+  "tid": "1150982",
+  "loc": "la-rapita-l258320",
+  "slug": "ebro-delta-birding-and-bird-photography-in-a-van-t1150982",
+  "path": "/la-rapita-l258320/ebro-delta-birding-and-bird-photography-in-a-van-t1150982/",
+  "tag": "tarragona-ciudad",
+  "titulo": "Ebro Delta: Birding and Bird Photography in a Van",
+  "valoracion": null,
+  "resenas": null,
+  "distintivos": [
+   "New activity"
+  ],
+  "texto": "New activity La Rapita Ebro Delta: Birding and Bird Photography in a Van 4 hours • Small group From €85",
+  "apariciones": [
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 21
    }
   ]
  },
@@ -12345,6 +13813,24 @@
   ]
  },
  {
+  "tid": "1178149",
+  "loc": "tarragona-l1293",
+  "slug": "tarragona-bodegas-yzaguirre-guided-visit-with-vermouth-tasting-t1178149",
+  "path": "/tarragona-l1293/tarragona-bodegas-yzaguirre-guided-visit-with-vermouth-tasting-t1178149/",
+  "tag": "tarragona-ciudad",
+  "titulo": "Bodegas Yzaguirre guided visit with vermouth tasting",
+  "valoracion": 5,
+  "resenas": 3,
+  "distintivos": [],
+  "texto": "Tarragona Bodegas Yzaguirre guided visit with vermouth tasting 1.5 hours 5 (3) From €25",
+  "apariciones": [
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 35
+   }
+  ]
+ },
+ {
   "tid": "1178694",
   "loc": "cambrils-l91400",
   "slug": "cambrils-paintball-at-saltapark-t1178694",
@@ -12363,6 +13849,10 @@
    {
     "listado": "cambrils",
     "posicion": 50
+   },
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 64
    }
   ]
  },
@@ -12443,6 +13933,26 @@
   ]
  },
  {
+  "tid": "1196050",
+  "loc": "sant-cugat-del-valles-l154613",
+  "slug": "guided-visits-to-the-monastery-of-sant-cugat-t1196050",
+  "path": "/sant-cugat-del-valles-l154613/guided-visits-to-the-monastery-of-sant-cugat-t1196050/",
+  "tag": "sant-cugat",
+  "titulo": "Guided visits to the Monastery of Sant Cugat",
+  "valoracion": null,
+  "resenas": null,
+  "distintivos": [
+   "New activity"
+  ],
+  "texto": "New activity Sant Cugat del Vallès Guided visits to the Monastery of Sant Cugat 1.5 hours • Skip the line From €8",
+  "apariciones": [
+   {
+    "listado": "sant-cugat",
+    "posicion": 2
+   }
+  ]
+ },
+ {
   "tid": "1196174",
   "loc": "hvar-city-l176568",
   "slug": "hvar-honey-brandy-and-lavender-tour-with-tastings-t1196174",
@@ -12493,6 +14003,24 @@
    {
     "listado": "tossa",
     "posicion": 55
+   }
+  ]
+ },
+ {
+  "tid": "1199414",
+  "loc": "vilanova-i-la-geltru-l157323",
+  "slug": "bodega-jaume-serra-barcelona-the-cava-that-overlooks-the-sea-t1199414",
+  "path": "/vilanova-i-la-geltru-l157323/bodega-jaume-serra-barcelona-the-cava-that-overlooks-the-sea-t1199414/",
+  "tag": "vilanova",
+  "titulo": "Bodega Jaume Serra, Barcelona: the cava that overlooks the sea",
+  "valoracion": 4.8,
+  "resenas": 7,
+  "distintivos": [],
+  "texto": "Barcelona Bodega Jaume Serra, Barcelona: the cava that overlooks the sea 1 hour 4.8 (7) From €18",
+  "apariciones": [
+   {
+    "listado": "vilanova",
+    "posicion": 2
    }
   ]
  },
@@ -12585,6 +14113,26 @@
    {
     "listado": "costabrava",
     "posicion": 5
+   }
+  ]
+ },
+ {
+  "tid": "1206484",
+  "loc": "barcelona-l45",
+  "slug": "barcelona-private-old-town-and-marina-tour-and-boat-trip-t1206484",
+  "path": "/barcelona-l45/barcelona-private-old-town-and-marina-tour-and-boat-trip-t1206484/",
+  "tag": "tarragona-ciudad",
+  "titulo": "Private Old Town and Marina Tour and Boat Trip",
+  "valoracion": null,
+  "resenas": null,
+  "distintivos": [
+   "New activity"
+  ],
+  "texto": "New activity Barcelona Private Old Town and Marina Tour and Boat Trip 4 hours • Private group From €95",
+  "apariciones": [
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 40
    }
   ]
  },
@@ -12731,6 +14279,10 @@
    {
     "listado": "sitges",
     "posicion": 39
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 3
    }
   ]
  },
@@ -12991,6 +14543,24 @@
   ]
  },
  {
+  "tid": "1249458",
+  "loc": "tarragona-l1293",
+  "slug": "hello-tarragona-private-2-hour-city-walk-with-local-guide-t1249458",
+  "path": "/tarragona-l1293/hello-tarragona-private-2-hour-city-walk-with-local-guide-t1249458/",
+  "tag": "tarragona-ciudad",
+  "titulo": "Hello Tarragona: Private 2-Hour City Walk with Local Guide",
+  "valoracion": 4.9,
+  "resenas": 7,
+  "distintivos": [],
+  "texto": "Tarragona Hello Tarragona: Private 2-Hour City Walk with Local Guide 2 hours • Private group 4.9 (7) From €124",
+  "apariciones": [
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 27
+   }
+  ]
+ },
+ {
   "tid": "1250016",
   "loc": "tossa-de-mar-l90930",
   "slug": "costa-brava-snorkeling-scuba-diving-and-a-walk-along-the-walls-of-tossa-de-mar-t1250016",
@@ -13157,12 +14727,22 @@
   "titulo": "Boat rental without a license",
   "valoracion": 5,
   "resenas": 3,
-  "distintivos": [],
+  "distintivos": [
+   "Top pick"
+  ],
   "texto": "Sitges Boat rental without a license 2 hours • Small group 5 (3) From €200 per group up to 6",
   "apariciones": [
    {
     "listado": "sitges",
     "posicion": 29
+   },
+   {
+    "listado": "vilanova",
+    "posicion": 1
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 1
    }
   ]
  },
@@ -13295,6 +14875,14 @@
    {
     "listado": "sitges",
     "posicion": 16
+   },
+   {
+    "listado": "vilanova",
+    "posicion": 6
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 4
    }
   ]
  },
@@ -13485,6 +15073,26 @@
   ]
  },
  {
+  "tid": "1275164",
+  "loc": "castelldefels-l102102",
+  "slug": "castelldefels-beach-tapas-tour-with-full-dinner-drinks-t1275164",
+  "path": "/castelldefels-l102102/castelldefels-beach-tapas-tour-with-full-dinner-drinks-t1275164/",
+  "tag": "castelldefels",
+  "titulo": "Tapas Tour with a Local Guide",
+  "valoracion": null,
+  "resenas": null,
+  "distintivos": [
+   "New activity"
+  ],
+  "texto": "New activity Castelldefels Tapas Tour with a Local Guide 3 hours From €75",
+  "apariciones": [
+   {
+    "listado": "castelldefels",
+    "posicion": 2
+   }
+  ]
+ },
+ {
   "tid": "1275183",
   "loc": "barcelona-l45",
   "slug": "from-barcelona-girona-and-costa-brava-guided-tour-t1275183",
@@ -13572,7 +15180,7 @@
   "tag": "barcelona",
   "titulo": "Sagrada Família: Skip-the-Line Guided Visit",
   "valoracion": 4.5,
-  "resenas": 136,
+  "resenas": 138,
   "distintivos": [],
   "texto": "Barcelona Sagrada Família: Skip-the-Line Guided Visit 1.5 hours • Skip the line 4.5 (136) From €110",
   "apariciones": [
@@ -13583,6 +15191,22 @@
    {
     "listado": "catalonia",
     "posicion": 39
+   },
+   {
+    "listado": "sant-cugat",
+    "posicion": 53
+   },
+   {
+    "listado": "reus",
+    "posicion": 50
+   },
+   {
+    "listado": "vilanova",
+    "posicion": 51
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 51
    }
   ]
  },
@@ -13639,6 +15263,10 @@
    {
     "listado": "lleida",
     "posicion": 50
+   },
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 37
    }
   ]
  },
@@ -13782,8 +15410,10 @@
   "tag": "catalonia",
   "titulo": "Catamaran Excursion to Cap de Begur",
   "valoracion": 4.6,
-  "resenas": 64,
-  "distintivos": [],
+  "resenas": 68,
+  "distintivos": [
+   "Likely to sell out"
+  ],
   "texto": "Palamós Catamaran Excursion to Cap de Begur 5 hours 4.6 (64) From €56",
   "apariciones": [
    {
@@ -13793,6 +15423,10 @@
    {
     "listado": "costabrava",
     "posicion": 25
+   },
+   {
+    "listado": "sant-cugat",
+    "posicion": 37
    }
   ]
  },
@@ -13804,7 +15438,7 @@
   "tag": "catalonia",
   "titulo": "Catamaran Excursion to the Formigues Islands and Cap Roig",
   "valoracion": 4.4,
-  "resenas": 43,
+  "resenas": 44,
   "distintivos": [],
   "texto": "Palamós Catamaran Excursion to the Formigues Islands and Cap Roig 3.5 hours 4.4 (43) From €30",
   "apariciones": [
@@ -13815,6 +15449,10 @@
    {
     "listado": "costabrava",
     "posicion": 69
+   },
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 43
    }
   ]
  },
@@ -13927,6 +15565,10 @@
    {
     "listado": "lleida",
     "posicion": 78
+   },
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 16
    }
   ]
  },
@@ -14066,7 +15708,7 @@
   "tag": "barcelona",
   "titulo": "Barcelona Jetski: Jetski Rental without a License",
   "valoracion": 4.5,
-  "resenas": 93,
+  "resenas": 96,
   "distintivos": [
    "Top pick"
   ],
@@ -14103,6 +15745,14 @@
    {
     "listado": "costabrava",
     "posicion": 120
+   },
+   {
+    "listado": "sant-cugat",
+    "posicion": 34
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 32
    }
   ]
  },
@@ -14274,13 +15924,17 @@
   "tag": "lleida",
   "titulo": "Jet ski rental without license.",
   "valoracion": 4.9,
-  "resenas": 13,
+  "resenas": 14,
   "distintivos": [],
   "texto": "Tarragona Jet ski rental without license. 30 minutes - 1.5 hours • Skip the line • Private option available 4.9 (13) From €80 per group up to 2",
   "apariciones": [
    {
     "listado": "lleida",
     "posicion": 47
+   },
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 12
    }
   ]
  },
@@ -14485,6 +16139,10 @@
    {
     "listado": "sitges",
     "posicion": 47
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 5
    }
   ]
  },
@@ -14497,12 +16155,18 @@
   "titulo": "Boat no license needed",
   "valoracion": 5,
   "resenas": 1,
-  "distintivos": [],
+  "distintivos": [
+   "New activity"
+  ],
   "texto": "Tarragona Boat no license needed 1 hour • Skip the line • Private group 5 (1) From €95 per group up to 5",
   "apariciones": [
    {
     "listado": "lleida",
     "posicion": 40
+   },
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 6
    }
   ]
  },
@@ -14727,6 +16391,10 @@
    {
     "listado": "lleida",
     "posicion": 87
+   },
+   {
+    "listado": "reus",
+    "posicion": 1
    }
   ]
  },
@@ -14870,13 +16538,17 @@
   "tag": "cambrils",
   "titulo": "Guided Jet Ski Tours",
   "valoracion": 4.9,
-  "resenas": 9,
+  "resenas": 10,
   "distintivos": [],
   "texto": "Cambrils Guided Jet Ski Tours 20 minutes - 1 hour • Small group 4.9 (9) From €60 per group up to 2",
   "apariciones": [
    {
     "listado": "cambrils",
     "posicion": 11
+   },
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 58
    }
   ]
  },
@@ -15044,7 +16716,7 @@
   "tag": "catalonia",
   "titulo": "Kayak & Paddle on the Costa Brava Discover the coves of Tossa de Mar",
   "valoracion": 4.7,
-  "resenas": 224,
+  "resenas": 228,
   "distintivos": [],
   "texto": "Tossa de Mar Kayak & Paddle on the Costa Brava Discover the coves of Tossa de Mar 1.5 hours • Small group 4.7 (224) From €15",
   "apariciones": [
@@ -15063,6 +16735,14 @@
    {
     "listado": "costabrava",
     "posicion": 17
+   },
+   {
+    "listado": "sant-cugat",
+    "posicion": 32
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 30
    }
   ]
  },
@@ -15535,6 +17215,24 @@
   ]
  },
  {
+  "tid": "1376428",
+  "loc": "tarragona-l1293",
+  "slug": "villajoyosa-kayak-snorkel-cliff-jumping-tour-t1376428",
+  "path": "/tarragona-l1293/villajoyosa-kayak-snorkel-cliff-jumping-tour-t1376428/",
+  "tag": "tarragona-ciudad",
+  "titulo": "Kayak, Snorkel & Cliff Jumping Tour",
+  "valoracion": 4.6,
+  "resenas": 15,
+  "distintivos": [],
+  "texto": "Tarragona Kayak, Snorkel & Cliff Jumping Tour 2.5 hours 4.6 (15) From €50",
+  "apariciones": [
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 9
+   }
+  ]
+ },
+ {
   "tid": "1378033",
   "loc": "sitges-l1769",
   "slug": "from-barcelona-private-tour-tarragona-and-sitges-with-pickup-t1378033",
@@ -15551,6 +17249,10 @@
    {
     "listado": "sitges",
     "posicion": 6
+   },
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 15
    }
   ]
  },
@@ -15640,7 +17342,7 @@
   "tag": "barcelona",
   "titulo": "La Pedrera-Casa Milà Ticket & Audio Guide Option",
   "valoracion": 4.7,
-  "resenas": 29065,
+  "resenas": 29069,
   "distintivos": [],
   "texto": "Certified by GetYourGuide Barcelona La Pedrera-Casa Milà Ticket & Audio Guide Option 1 day • Skip the line • Optional audio guide 4.7 (29,065) From €2",
   "apariciones": [
@@ -15651,6 +17353,18 @@
    {
     "listado": "catalonia",
     "posicion": 22
+   },
+   {
+    "listado": "sant-cugat",
+    "posicion": 18
+   },
+   {
+    "listado": "reus",
+    "posicion": 16
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 17
    }
   ]
  },
@@ -15662,7 +17376,7 @@
   "tag": "salou",
   "titulo": "Outing on a Rocket Tube",
   "valoracion": 5,
-  "resenas": 2,
+  "resenas": 3,
   "distintivos": [],
   "texto": "Cambrils Outing on a Rocket Tube 20 minutes • Skip the line 5 (2) From €25 €20",
   "apariciones": [
@@ -15677,6 +17391,10 @@
    {
     "listado": "lleida",
     "posicion": 24
+   },
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 3
    }
   ]
  },
@@ -15970,7 +17688,7 @@
   "tag": "catalonia",
   "titulo": "Premium Catamaran with open bar, lunch & VIP area",
   "valoracion": 4.6,
-  "resenas": 13,
+  "resenas": 17,
   "distintivos": [],
   "texto": "Cambrils Premium Catamaran with open bar, lunch & VIP area 3 hours • Small group 4.6 (13) From €45",
   "apariciones": [
@@ -15989,6 +17707,22 @@
    {
     "listado": "lleida",
     "posicion": 15
+   },
+   {
+    "listado": "sant-cugat",
+    "posicion": 52
+   },
+   {
+    "listado": "reus",
+    "posicion": 48
+   },
+   {
+    "listado": "vilanova",
+    "posicion": 19
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 50
    }
   ]
  },
@@ -16013,6 +17747,26 @@
   ]
  },
  {
+  "tid": "1396415",
+  "loc": "vilanova-i-la-geltru-l157323",
+  "slug": "vilanova-i-la-geltru-sightseeing-and-swimming-by-boat-with-skipper-t1396415",
+  "path": "/vilanova-i-la-geltru-l157323/vilanova-i-la-geltru-sightseeing-and-swimming-by-boat-with-skipper-t1396415/",
+  "tag": "vilanova",
+  "titulo": "Barcelona (Vilanova i la Geltrú): Sightseeing and swimming by boat with skipper",
+  "valoracion": null,
+  "resenas": null,
+  "distintivos": [
+   "New activity"
+  ],
+  "texto": "New activity Vilanova i la Geltrú Barcelona (Vilanova i la Geltrú): Sightseeing and swimming by boat with skipper 1 - 4 hours • Private group From €17",
+  "apariciones": [
+   {
+    "listado": "vilanova",
+    "posicion": 5
+   }
+  ]
+ },
+ {
   "tid": "1396613",
   "loc": "figueres-l4723",
   "slug": "figueres-dali-theatre-museum-fast-track-ticket-audio-tour-t1396613",
@@ -16029,6 +17783,26 @@
    {
     "listado": "figueres",
     "posicion": 2
+   }
+  ]
+ },
+ {
+  "tid": "1396817",
+  "loc": "vilanova-i-la-geltru-l157323",
+  "slug": "bcn-vilanova-i-la-geltru-outing-swimming-mega-wing-sunset-t1396817",
+  "path": "/vilanova-i-la-geltru-l157323/bcn-vilanova-i-la-geltru-outing-swimming-mega-wing-sunset-t1396817/",
+  "tag": "vilanova",
+  "titulo": "Barcelona (Vilanova i la Geltrú): Sea excursion, swimming, sunset",
+  "valoracion": null,
+  "resenas": null,
+  "distintivos": [
+   "New activity"
+  ],
+  "texto": "New activity Vilanova i la Geltrú Barcelona (Vilanova i la Geltrú): Sea excursion, swimming, sunset 2 - 8 hours • Private group From €349 €297 per gro",
+  "apariciones": [
+   {
+    "listado": "vilanova",
+    "posicion": 4
    }
   ]
  },
@@ -16105,6 +17879,10 @@
    {
     "listado": "lleida",
     "posicion": 43
+   },
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 5
    }
   ]
  },
@@ -16233,6 +18011,10 @@
    {
     "listado": "catalonia",
     "posicion": 6
+   },
+   {
+    "listado": "reus",
+    "posicion": 22
    }
   ]
  },
@@ -16257,6 +18039,10 @@
    {
     "listado": "lleida",
     "posicion": 19
+   },
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 2
    }
   ]
  },
@@ -16549,6 +18335,22 @@
    {
     "listado": "lleida",
     "posicion": 29
+   },
+   {
+    "listado": "sant-cugat",
+    "posicion": 25
+   },
+   {
+    "listado": "reus",
+    "posicion": 24
+   },
+   {
+    "listado": "vilanova",
+    "posicion": 29
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 24
    }
   ]
  },
@@ -16573,6 +18375,26 @@
    {
     "listado": "lleida",
     "posicion": 30
+   },
+   {
+    "listado": "sant-cugat",
+    "posicion": 27
+   },
+   {
+    "listado": "reus",
+    "posicion": 26
+   },
+   {
+    "listado": "vilanova",
+    "posicion": 33
+   },
+   {
+    "listado": "castelldefels",
+    "posicion": 26
+   },
+   {
+    "listado": "tarragona-ciudad",
+    "posicion": 4
    }
   ]
  },
@@ -16641,6 +18463,26 @@
    {
     "listado": "catalonia",
     "posicion": 121
+   }
+  ]
+ },
+ {
+  "tid": "1417778",
+  "loc": "barcelona-l45",
+  "slug": "from-barcelona-total-solar-eclipse-2026-viewing-trip-t1417778",
+  "path": "/barcelona-l45/from-barcelona-total-solar-eclipse-2026-viewing-trip-t1417778/",
+  "tag": "reus",
+  "titulo": "Total Solar Eclipse 2026 Viewing Trip",
+  "valoracion": null,
+  "resenas": null,
+  "distintivos": [
+   "New activity"
+  ],
+  "texto": "New activity From Barcelona Total Solar Eclipse 2026 Viewing Trip 9 hours From €120",
+  "apariciones": [
+   {
+    "listado": "reus",
+    "posicion": 3
    }
   ]
  }

@@ -41,6 +41,11 @@ const LISTINGS = [
   { url: 'https://www.getyourguide.com/montserrat-l2452/', tag: 'montserrat' },
   { url: 'https://www.getyourguide.com/portaventura-park-l89907/', tag: 'portaventura' },
   { url: 'https://www.getyourguide.com/costa-daurada-l144442/', tag: 'costadaurada' },
+  { url: 'https://www.getyourguide.com/sant-cugat-del-valles-l154613/', tag: 'sant-cugat' },
+  { url: 'https://www.getyourguide.com/reus-l148575/', tag: 'reus' },
+  { url: 'https://www.getyourguide.com/vilanova-i-la-geltru-l157323/', tag: 'vilanova' },
+  { url: 'https://www.getyourguide.com/castelldefels-l102102/', tag: 'castelldefels' },
+  { url: 'https://www.getyourguide.com/tarragona-l1293/', tag: 'tarragona-ciudad' },
 ];
 
 const SOLO = (process.argv.find((a) => a.startsWith('--solo=')) || '').split('=')[1];

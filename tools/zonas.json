@@ -1,0 +1,46 @@
+{
+  "que_es": "Decision de negocio curada a mano, no algo que se scrapee. Dice, para cada municipio catalan de mas de 50.000 habitantes, de que sitios se le pueden ensenar actividades cuando su QR llega con ?zona=<slug>.",
+
+  "criterio": {
+    "regla": "Misma area metropolitana, o hasta ~40 minutos en transporte publico desde el centro de la ciudad hasta el punto de encuentro de la actividad.",
+    "por_que_40_minutos": "Es lo que un turista alojado en la ciudad acepta moverse para una actividad de medio dia. Mas lejos deja de ser 'lo que tienes al lado' y se convierte en una excursion, que ya cubren los planes.",
+    "como_se_aplica": "Se aplica igual a todas las ciudades. Primero se ofrece lo que GetYourGuide tiene EN la propia ciudad; solo si no llega a diez se completa con los hubs de esta lista, en el orden en que aparecen.",
+    "linea_que_no_se_cruza": "NUNCA se cambia el campo `city` de una actividad para que parezca de otra ciudad. Una actividad de Barcelona es de Barcelona aunque se la ensenemos a alguien de Cornella. El cliente paga y viaja: si la tarjeta miente sobre donde es, se planta en el sitio equivocado. Por eso los alrededores viven en la columna `zonas` de la actividad, no en su `city`.",
+    "si_no_llega_a_diez": "Se deja con menos y se dice. Un catalogo con datos inventados es peor que uno incompleto."
+  },
+
+  "notas_de_transporte": "Tiempos aproximados puerta a puerta desde el centro de cada ciudad, con Metro/FGC/Rodalies de Renfe. Se han redondeado al alza.",
+
+  "zonas": {
+    "barcelona": { "hubs": [], "nota": "Tiene 81 actividades propias: no necesita alrededores." },
+
+    "l-hospitalet-de-llobregat": { "hubs": ["barcelona"], "nota": "Metro L1/L5, 10-15 min al centro. Continuo urbano con Barcelona." },
+    "santa-coloma-de-gramenet": { "hubs": ["barcelona"], "nota": "Metro L1/L9, 15-20 min. Continuo urbano." },
+    "badalona": { "hubs": ["barcelona"], "nota": "Metro L2 / Rodalies R1, 20-25 min." },
+    "cornella-de-llobregat": { "hubs": ["barcelona"], "nota": "Metro L5 / FGC, 20 min." },
+    "sant-boi-de-llobregat": { "hubs": ["barcelona"], "nota": "FGC / Metro L8, 25 min." },
+    "el-prat-de-llobregat": { "hubs": ["barcelona"], "nota": "Rodalies R2 Sud, 15-20 min." },
+    "viladecans": { "hubs": ["barcelona"], "nota": "Rodalies R2 Sud, 25 min." },
+    "castelldefels": { "hubs": ["barcelona"], "nota": "Rodalies R2 Sud, 30 min. Tiene 1 actividad propia (playa)." },
+    "sant-cugat-del-valles": { "hubs": ["barcelona"], "nota": "FGC S1/S2, 25 min." },
+    "cerdanyola-del-valles": { "hubs": ["barcelona"], "nota": "Rodalies R4 / FGC S2, 25-30 min." },
+    "rubi": { "hubs": ["barcelona"], "nota": "FGC S1, 35 min." },
+    "mollet-del-valles": { "hubs": ["barcelona"], "nota": "Rodalies R2/R3, 25-30 min." },
+    "granollers": { "hubs": ["barcelona"], "nota": "Rodalies R2/R3, 35-40 min. En el limite del criterio." },
+    "sabadell": { "hubs": ["barcelona"], "nota": "FGC S2 / Rodalies R4, 35 min." },
+    "terrassa": { "hubs": ["barcelona"], "nota": "FGC S1 / Rodalies R4, 35-40 min. En el limite del criterio." },
+    "mataro": { "hubs": ["barcelona"], "nota": "Rodalies R1, 35-40 min. En el limite del criterio." },
+
+    "vilanova-i-la-geltru": { "hubs": ["sitges", "barcelona"], "nota": "Sitges a 10 min en Rodalies R2 Sud; Barcelona a 50-55 min, por encima del criterio, pero se admite como ultimo recurso porque es la unica salida real de la ciudad. Tiene 2 actividades propias." },
+
+    "tarragona": { "hubs": ["salou", "cambrils"], "nota": "Salou a 15 min y Cambrils a 25 min en Rodalies R16/bus. Tiene 11 actividades propias." },
+    "reus": { "hubs": ["salou", "tarragona", "cambrils"], "nota": "Salou a 15 min, Tarragona a 15 min, Cambrils a 25 min. Tiene 1 actividad propia." },
+
+    "girona": { "hubs": ["figueres", "lloret-de-mar", "tossa-de-mar"], "nota": "Figueres a 40 min en Rodalies R11; Lloret a 35 min y Tossa a 45 min en bus (Tossa queda algo por encima, se admite por continuidad con Lloret). Tiene 45 actividades propias." },
+
+    "lleida": { "hubs": [], "nota": "No hay ninguna otra localidad con oferta a menos de 40 min: Vielha y la Val d'Aran estan a 2,5 h. Se queda con lo suyo y se dice." },
+
+    "manresa": { "hubs": [], "nota": "Sin zona a proposito. Montserrat esta a 30 min en FGC, pero las actividades de Montserrat del catalogo SALEN DE BARCELONA (su punto de encuentro esta alli) y Barcelona esta a 70 min: ensenarselas seria mentir sobre donde empieza la actividad. Su QR se queda en el filtro de provincia." },
+    "vic": { "hubs": [], "nota": "Sin zona a proposito. Barcelona a 70 min en Rodalies R3, muy por encima del criterio, y no hay oferta propia ni cercana. Su QR se queda en el filtro de provincia." }
+  }
+}

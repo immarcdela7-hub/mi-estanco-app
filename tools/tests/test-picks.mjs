@@ -135,7 +135,7 @@ await salou2.close();
 for (const [zona, esperado] of [['lloret-de-mar', 'girona'], ['sitges', 'barcelona'], ['tossa-de-mar', 'girona']]) {
   const pz = await pageAt('2026-07-25T20:30:00');
   await pz.goto(BASE + `?ref=EST-Z&zona=${zona}`, { waitUntil: 'domcontentloaded' });
-  // Esperar a que el contexto tenga texto, no un tiempo fijo: con 125 tarjetas
+  // Esperar a que el contexto tenga texto, no un tiempo fijo: con 153 tarjetas
   // el render tarda mas y 1 s dejaba la primera vuelta en blanco.
   await pz.waitForFunction(() => {
     const e = document.getElementById('picksContext');
@@ -165,7 +165,7 @@ await pUnk.goto(BASE + '?ref=EST-Z&zona=cuenca', { waitUntil: 'domcontentloaded'
 await pUnk.waitForTimeout(1000);
 const unkVis = await pUnk.evaluate(() =>
   [...document.querySelectorAll('.experience-item:not(.ntl-own)')].filter((e) => e.offsetParent !== null).length);
-log('Ciudad desconocida no rompe nada', unkVis === 125 && unkErr.length === 0, `${unkVis} visibles, ${unkErr.length} errores`);
+log('Ciudad desconocida no rompe nada', unkVis === 153 && unkErr.length === 0, `${unkVis} visibles, ${unkErr.length} errores`);
 await pUnk.close();
 
 // ---------- 10. Movil ----------

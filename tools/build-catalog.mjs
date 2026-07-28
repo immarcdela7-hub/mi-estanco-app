@@ -28,6 +28,18 @@ const catalog = records.map((r, i) => {
   if (!r.url_getyourguide) warn.push(`row ${i + 1} "${r.titulo}": missing url_getyourguide`);
   if (!/partner_id=IBO5PAK/.test(r.url_getyourguide || '')) warn.push(`row ${i + 1} "${r.titulo}": url missing partner_id=IBO5PAK`);
   if (!r.imagen) warn.push(`row ${i + 1} "${r.titulo}": missing imagen (run scrape-gyg or paste URL)`);
+  // `zonas`: a que otras ciudades sirve esta actividad, ademas de la suya.
+  // Vacio = solo sirve a su propia ciudad. El `city` NO se repite dentro.
+  const zonas = (r.zonas || '').split('|').map((z) => z.trim().toLowerCase()).filter(Boolean);
+  for (const z of zonas) {
+    if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(z)) {
+      warn.push(`row ${i + 1} "${r.titulo}": zona con formato raro "${z}" (esperado: minusculas, sin acentos, con guiones)`);
+    }
+  }
+  const ciudadPropia = (r.city || '').trim().toLowerCase();
+  if (zonas.includes(ciudadPropia)) {
+    warn.push(`row ${i + 1} "${r.titulo}": la zona "${ciudadPropia}" es su propia ciudad y sobra en zonas`);
+  }
   const distintivo = (r.distintivo || '').trim().toLowerCase();
   if (distintivo && !DISTINTIVOS.includes(distintivo)) {
     warn.push(`row ${i + 1} "${r.titulo}": unknown distintivo "${distintivo}" (valid: ${DISTINTIVOS.join(', ')} or empty)`);
@@ -44,6 +56,7 @@ const catalog = records.map((r, i) => {
     precioDisplay: r.precio_display || '',
     rating: num(r.rating),
     distintivo: DISTINTIVOS.includes(distintivo) ? distintivo : '',
+    zonas,
     keywords: (r.keywords || r.titulo || '').toLowerCase(),
     etiquetaPie: r.etiqueta_pie || '',
     url: r.url_getyourguide || '',

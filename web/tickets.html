@@ -726,7 +726,7 @@
                     : '';
                 const tid = (String(a.url).match(/-t(\d+)/) || [])[1] || '';
                 return `
-            <div class="experience-item group bg-white rounded-2xl shadow-sm hover:shadow-xl transition border border-gray-100 overflow-hidden" data-province="${esc(a.provincia)}" data-city="${esc(a.city)}" data-category="${esc(a.categoria)}" data-name="${esc(a.keywords)}" data-price="${esc(a.precio)}" data-rating="${esc(a.rating)}" data-order="${esc(a.order)}">
+            <div class="experience-item group bg-white rounded-2xl shadow-sm hover:shadow-xl transition border border-gray-100 overflow-hidden" data-province="${esc(a.provincia)}" data-city="${esc(a.city)}" data-zonas="${esc((a.zonas || []).join('|'))}" data-category="${esc(a.categoria)}" data-name="${esc(a.keywords)}" data-price="${esc(a.precio)}" data-rating="${esc(a.rating)}" data-order="${esc(a.order)}">
               <a href="${esc(a.url)}" class="item-link">
                 <div class="item-wrapper flex">
                     <div class="item-image relative overflow-hidden shrink-0">
@@ -848,9 +848,12 @@
                     const matchesSearch = item.dataset.name.toLowerCase().includes(searchTerm);
                     const matchesCategory = activeCategory === 'all' || item.dataset.category === activeCategory;
                     const matchesProvince = activeProvince === 'all' || item.dataset.province === activeProvince;
+                    // Una actividad entra en una zona si ES de esa ciudad o si la
+                    // sirve (columna `zonas`). Lo de Costa Daurada ya no se
+                    // programa aqui: vive en los datos como una zona mas.
                     const matchesCity = cityFilter === 'all'
                         || item.dataset.city === cityFilter
-                        || (cityFilter === 'costadaurada' && (item.dataset.city === 'salou' || item.dataset.city === 'cambrils'));
+                        || (item.dataset.zonas || '').split('|').includes(cityFilter);
                     const matchesRating = !isTopRatedActive || parseFloat(item.dataset.rating) >= 4.8;
 
                     if (matchesSearch && matchesCategory && matchesProvince && matchesCity && matchesRating) {
@@ -865,6 +868,14 @@
                     const priceA = parseFloat(a.dataset.price), priceB = parseFloat(b.dataset.price);
                     if (sortOrder === 'low') return priceA - priceB;
                     if (sortOrder === 'high') return priceB - priceA;
+                    // Dentro de una zona, primero lo que es DE esa ciudad y
+                    // despues lo de los alrededores: quien escanea en Reus tiene
+                    // que ver Reus arriba.
+                    if (cityFilter !== 'all') {
+                        const propiaA = a.dataset.city === cityFilter ? 0 : 1;
+                        const propiaB = b.dataset.city === cityFilter ? 0 : 1;
+                        if (propiaA !== propiaB) return propiaA - propiaB;
+                    }
                     // default: group by province, then locality, then recommended order
                     const rpA = provRank[a.dataset.province] ?? 9, rpB = provRank[b.dataset.province] ?? 9;
                     if (rpA !== rpB) return rpA - rpB;
@@ -999,17 +1010,26 @@
             const zRaw = norm(params.get('zona') || params.get('zone')
                 || params.get('provincia') || params.get('province'));
 
-            if (zRaw === 'costadaurada' || zRaw === 'costadorada') {
-                activeProvince = 'tarragona';
-                cityFilter = 'costadaurada';
-            } else if (zRaw) {
-                const inCity = CATALOG.filter((a) => norm(a.city) === zRaw);
+            if (zRaw === 'costadorada') zRaw = 'costadaurada';
+            if (zRaw) {
+                // Cuenta lo que ES de la ciudad y tambien lo que la SIRVE
+                // (columna `zonas`), que es lo que permite que un QR de Cornella
+                // ensene cosas de Barcelona sin mentir sobre donde son.
+                const inCity = CATALOG.filter((a) => norm(a.city) === zRaw
+                    || (a.zonas || []).some((z) => norm(z) === zRaw));
                 if (inCity.length) {
-                    activeProvince = inCity[0].provincia;
-                    // En pueblos con poca oferta, filtrar por ciudad dejaria la
-                    // pagina casi vacia: nos quedamos en la provincia y que sea
-                    // el recomendador quien destaque lo que hay al lado.
-                    cityFilter = inCity.length >= 5 ? inCity[0].city : 'all';
+                    const propia = inCity.find((a) => norm(a.city) === zRaw);
+                    activeProvince = (propia || inCity[0]).provincia;
+                    // El filtro se compara luego contra data-city y data-zonas,
+                    // que llevan el slug CON guiones. zRaw viene normalizado (sin
+                    // ellos), asi que hay que recuperar el slug tal cual: con
+                    // zRaw a secas, "cornella-de-llobregat" no casaba con nada.
+                    const zonaReal = propia ? propia.city
+                        : (inCity.flatMap((a) => a.zonas || []).find((z) => norm(z) === zRaw) || zRaw);
+                    // En zonas con poca oferta, filtrar dejaria la pagina casi
+                    // vacia: nos quedamos en la provincia y que sea el
+                    // recomendador quien destaque lo que hay al lado.
+                    cityFilter = inCity.length >= 5 ? zonaReal : 'all';
                 } else {
                     const inProv = CATALOG.find((a) => norm(a.provincia) === zRaw);
                     if (inProv) activeProvince = inProv.provincia;

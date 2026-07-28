@@ -107,7 +107,7 @@ const propias = await page.locator('.experience-item.ntl-own').count();
 log('La actividad propia se pinta en el catalogo', propias === 1, `${propias} tarjetas propias`);
 
 const total = await page.locator('.experience-item').count();
-log('Convive con las 125 de GetYourGuide', total === 126, `${total} tarjetas en total`);
+log('Convive con las 153 de GetYourGuide', total === 154, `${total} tarjetas en total`);
 
 const distintivo = await page.evaluate(() => {
   const c = document.querySelector('.experience-item.ntl-own');
@@ -345,7 +345,10 @@ const err3 = [];
 p3.on('pageerror', (e) => err3.push(e.message));
 await simularCrm(p3);
 await p3.goto(BASE + '?ref=EST-00012', { waitUntil: 'domcontentloaded' });
-await p3.waitForTimeout(1500);
+// Esperar a que existan las tarjetas, no un tiempo fijo: con 153 el render tarda
+// mas y 1,5 s daba "0 tarjetas" como si el catalogo se hubiera roto.
+await p3.waitForSelector('.experience-item', { timeout: 20000 });
+await p3.waitForTimeout(500);
 const sinCrm = await p3.evaluate(() => {
   const as = [...document.querySelectorAll('a[href*="getyourguide."]')];
   return {
@@ -356,7 +359,7 @@ const sinCrm = await p3.evaluate(() => {
   };
 });
 log('Con el CRM caido el catalogo sigue completo',
-  sinCrm.tarjetas === 125 && sinCrm.propias === 0, JSON.stringify(sinCrm));
+  sinCrm.tarjetas === 153 && sinCrm.propias === 0, JSON.stringify(sinCrm));
 log('Y la atribucion tampoco se resiente',
   sinCrm.total > 0 && sinCrm.conCmp === sinCrm.total, `${sinCrm.conCmp}/${sinCrm.total}`);
 log('Sin errores de JS al fallar el CRM', err3.length === 0, err3.slice(0, 2).join(' | ') || 'ninguno');

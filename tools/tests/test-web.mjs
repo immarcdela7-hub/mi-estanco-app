@@ -18,7 +18,7 @@ await page.goto(BASE + '?ref=PRUEBA1', { waitUntil: 'domcontentloaded' });
 await page.waitForTimeout(1500);
 
 const nCards = await page.locator('.experience-item:not(.ntl-own)').count();
-log('Se renderizan 125 tarjetas', nCards === 125, `encontradas ${nCards}`);
+log('Se renderizan 153 tarjetas', nCards === 153, `encontradas ${nCards}`);
 
 // Atribucion: TODOS los enlaces GYG deben llevar cmp + partner_id
 const linkAudit = await page.evaluate(() => {
@@ -56,12 +56,12 @@ async function visibles() {
 await page.click('button.province-btn[data-province="lleida"]');
 await page.waitForTimeout(400);
 const vLleida = await visibles();
-log('Filtro provincia Lleida', vLleida > 0 && vLleida < 125, `${vLleida} visibles`);
+log('Filtro provincia Lleida', vLleida > 0 && vLleida < 153, `${vLleida} visibles`);
 
 await page.click('button.province-btn[data-province="barcelona"]');
 await page.waitForTimeout(400);
 const vBcn = await visibles();
-log('Filtro provincia Barcelona', vBcn > 0 && vBcn < 125, `${vBcn} visibles`);
+log('Filtro provincia Barcelona', vBcn > 0 && vBcn < 153, `${vBcn} visibles`);
 
 await page.click('[data-filter="culture"]');
 await page.waitForTimeout(400);
@@ -72,7 +72,7 @@ await page.click('button.province-btn[data-province="all"]');
 await page.click('[data-filter="all"]');
 await page.waitForTimeout(400);
 const vAll = await visibles();
-log('Reset a todo', vAll === 125, `${vAll} visibles`);
+log('Reset a todo', vAll === 153, `${vAll} visibles`);
 
 // Combinacion vacia (Lleida + una categoria que quiza no tenga)
 await page.click('button.province-btn[data-province="lleida"]');
@@ -92,7 +92,7 @@ await page.click('[data-filter="all"]');
 await page.fill('#searchInput', 'sagrada');
 await page.waitForTimeout(500);
 const vSearch = await visibles();
-log('Buscador funciona', vSearch > 0 && vSearch < 125, `${vSearch} resultados para "sagrada"`);
+log('Buscador funciona', vSearch > 0 && vSearch < 153, `${vSearch} resultados para "sagrada"`);
 
 // ---------- 5. Deep link ?zona= junto a ?ref= ----------
 await page.goto(BASE + '?ref=EST-TEST9&zona=salou', { waitUntil: 'domcontentloaded' });
@@ -110,7 +110,7 @@ const mob = await browser.newPage({ viewport: { width: 390, height: 844 }, isMob
 const mobErrors = [];
 mob.on('pageerror', (e) => mobErrors.push(e.message));
 await mob.goto(BASE + '?ref=PRUEBA1', { waitUntil: 'domcontentloaded' });
-// Esperar a que existan las tarjetas, no un tiempo fijo: con 125 el render
+// Esperar a que existan las tarjetas, no un tiempo fijo: con 153 el render
 // tarda mas y un sleep corto daba "0 tarjetas" sin que nada estuviera roto.
 await mob.waitForSelector('.experience-item', { timeout: 20000 });
 await mob.waitForTimeout(600);
@@ -124,7 +124,7 @@ log('Movil 390px sin desbordamiento horizontal',
   `scrollW=${overflow.scrollW} clientW=${overflow.clientW}`);
 
 const mobCards = await mob.locator('.experience-item:not(.ntl-own)').count();
-log('Movil renderiza las tarjetas', mobCards === 125, `${mobCards} tarjetas`);
+log('Movil renderiza las tarjetas', mobCards === 153, `${mobCards} tarjetas`);
 await mob.screenshot({ path: './capturas/movil.png' });
 await page.setViewportSize({ width: 1280, height: 900 });
 await page.goto(BASE, { waitUntil: 'domcontentloaded' });
@@ -137,7 +137,7 @@ await cp.goto(BASE + '?ref=EST-00012', { waitUntil: 'domcontentloaded' });
 await cp.waitForTimeout(1300);
 
 const nBotones = await cp.locator('.ntl-card-dates').count();
-log('Todas las tarjetas ofrecen ver fechas', nBotones === 125, `${nBotones} botones`);
+log('Todas las tarjetas ofrecen ver fechas', nBotones === 153, `${nBotones} botones`);
 log('La ventana empieza cerrada', await cp.locator('#availModal').isHidden());
 
 await cp.locator('.ntl-card-dates').first().click();
@@ -169,7 +169,7 @@ const tras = await cp.evaluate(() => {
   return { enlaces: as.length, cmp: as.filter((a) => a.href.includes('cmp=EST-00012')).length };
 });
 log('Cada tarjeta sigue enlazando con su atribucion',
-  tras.enlaces === 125 && tras.cmp === 125, `${tras.cmp}/${tras.enlaces}`);
+  tras.enlaces === 153 && tras.cmp === 153, `${tras.cmp}/${tras.enlaces}`);
 await cp.close();
 
 // ---------- 6b. Widget de ciudad: perezoso y por provincia ----------

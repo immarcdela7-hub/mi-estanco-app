@@ -1,0 +1,385 @@
+[
+ {
+  "ine": "080193",
+  "nombre": "Barcelona",
+  "nombre_idescat": "Barcelona",
+  "slug": "barcelona",
+  "provincia": "barcelona",
+  "poblacion": 1713247,
+  "gyg_loc": "barcelona-l45",
+  "actividades_cosechadas": 225,
+  "comprobado": "cosecha fase 1"
+ },
+ {
+  "ine": "081017",
+  "nombre": "l'Hospitalet de Llobregat",
+  "nombre_idescat": "Hospitalet de Llobregat, l'",
+  "slug": "l-hospitalet-de-llobregat",
+  "provincia": "barcelona",
+  "poblacion": 292161,
+  "gyg_loc": null,
+  "actividades_cosechadas": 0,
+  "comprobado": "busqueda en GYG",
+  "localidades_que_ofrece": [
+   "barcelona-l45 (8)",
+   "lloret-de-mar-l2322 (5)",
+   "tarragona-l1293 (3)",
+   "salou-l1884 (1)"
+  ],
+  "status": 200
+ },
+ {
+  "ine": "082798",
+  "nombre": "Terrassa",
+  "nombre_idescat": "Terrassa",
+  "slug": "terrassa",
+  "provincia": "barcelona",
+  "poblacion": 232676,
+  "gyg_loc": null,
+  "actividades_cosechadas": 0,
+  "comprobado": "busqueda en GYG",
+  "localidades_que_ofrece": [
+   "barcelona-l45 (7)",
+   "roses-spain-l92004 (3)",
+   "tarragona-l1293 (3)",
+   "catalonia-l641 (3)"
+  ],
+  "status": 200
+ },
+ {
+  "ine": "080155",
+  "nombre": "Badalona",
+  "nombre_idescat": "Badalona",
+  "slug": "badalona",
+  "provincia": "barcelona",
+  "poblacion": 230642,
+  "gyg_loc": null,
+  "actividades_cosechadas": 0,
+  "comprobado": "busqueda en GYG",
+  "localidades_que_ofrece": [
+   "barcelona-l45 (8)",
+   "cambrils-l91400 (4)",
+   "roses-spain-l92004 (3)",
+   "amposta-l2971 (2)"
+  ],
+  "status": 200
+ },
+ {
+  "ine": "081878",
+  "nombre": "Sabadell",
+  "nombre_idescat": "Sabadell",
+  "slug": "sabadell",
+  "provincia": "barcelona",
+  "poblacion": 224589,
+  "gyg_loc": null,
+  "actividades_cosechadas": 0,
+  "comprobado": "busqueda en GYG",
+  "localidades_que_ofrece": [
+   "barcelona-l45 (15)",
+   "roses-spain-l92004 (3)",
+   "salou-l1884 (1)",
+   "catalonia-l641 (1)"
+  ],
+  "status": 200
+ },
+ {
+  "ine": "251207",
+  "nombre": "Lleida",
+  "nombre_idescat": "Lleida",
+  "slug": "lleida",
+  "provincia": "lleida",
+  "poblacion": 147369,
+  "gyg_loc": "lleida-l100032",
+  "actividades_cosechadas": 5,
+  "comprobado": "cosecha fase 1"
+ },
+ {
+  "ine": "431482",
+  "nombre": "Tarragona",
+  "nombre_idescat": "Tarragona",
+  "slug": "tarragona",
+  "provincia": "tarragona",
+  "poblacion": 143260,
+  "gyg_loc": "tarragona-l1293",
+  "actividades_cosechadas": 11,
+  "comprobado": "cosecha fase 1"
+ },
+ {
+  "ine": "081213",
+  "nombre": "Mataró",
+  "nombre_idescat": "Mataró",
+  "slug": "mataro",
+  "provincia": "barcelona",
+  "poblacion": 131370,
+  "gyg_loc": null,
+  "actividades_cosechadas": 0,
+  "comprobado": "busqueda en GYG",
+  "localidades_que_ofrece": [
+   "barcelona-l45 (11)",
+   "roses-spain-l92004 (2)",
+   "tarragona-l1293 (2)",
+   "catalonia-l641 (2)"
+  ],
+  "status": 200
+ },
+ {
+  "ine": "082457",
+  "nombre": "Santa Coloma de Gramenet",
+  "nombre_idescat": "Santa Coloma de Gramenet",
+  "slug": "santa-coloma-de-gramenet",
+  "provincia": "barcelona",
+  "poblacion": 123250,
+  "gyg_loc": null,
+  "actividades_cosechadas": 0,
+  "comprobado": "busqueda en GYG",
+  "localidades_que_ofrece": [
+   "barcelona-l45 (10)",
+   "roses-spain-l92004 (2)",
+   "tarragona-l1293 (2)",
+   "catalonia-l641 (2)"
+  ],
+  "status": 200
+ },
+ {
+  "ine": "431233",
+  "nombre": "Reus",
+  "nombre_idescat": "Reus",
+  "slug": "reus",
+  "provincia": "tarragona",
+  "poblacion": 111911,
+  "gyg_loc": "reus-l148575",
+  "actividades_cosechadas": 1,
+  "comprobado": "cosecha fase 1"
+ },
+ {
+  "ine": "170792",
+  "nombre": "Girona",
+  "nombre_idescat": "Girona",
+  "slug": "girona",
+  "provincia": "girona",
+  "poblacion": 108352,
+  "gyg_loc": "girona-l550",
+  "actividades_cosechadas": 45,
+  "comprobado": "cosecha fase 1"
+ },
+ {
+  "ine": "082055",
+  "nombre": "Sant Cugat del Vallès",
+  "nombre_idescat": "Sant Cugat del Vallès",
+  "slug": "sant-cugat-del-valles",
+  "provincia": "barcelona",
+  "poblacion": 97959,
+  "gyg_loc": "sant-cugat-del-valles-l154613",
+  "actividades_cosechadas": 0,
+  "comprobado": "busqueda en GYG",
+  "localidades_que_ofrece": [
+   "barcelona-l45 (7)",
+   "roses-spain-l92004 (3)",
+   "tarragona-l1293 (2)",
+   "sant-feliu-de-guixols-l98145 (2)"
+  ],
+  "status": 200
+ },
+ {
+  "ine": "080734",
+  "nombre": "Cornellà de Llobregat",
+  "nombre_idescat": "Cornellà de Llobregat",
+  "slug": "cornella-de-llobregat",
+  "provincia": "barcelona",
+  "poblacion": 92255,
+  "gyg_loc": null,
+  "actividades_cosechadas": 0,
+  "comprobado": "busqueda en GYG",
+  "localidades_que_ofrece": [
+   "barcelona-l45 (6)",
+   "lloret-de-mar-l2322 (3)",
+   "roses-spain-l92004 (2)",
+   "tarragona-l1293 (2)"
+  ],
+  "status": 200
+ },
+ {
+  "ine": "082009",
+  "nombre": "Sant Boi de Llobregat",
+  "nombre_idescat": "Sant Boi de Llobregat",
+  "slug": "sant-boi-de-llobregat",
+  "provincia": "barcelona",
+  "poblacion": 85317,
+  "gyg_loc": null,
+  "actividades_cosechadas": 0,
+  "comprobado": "busqueda en GYG",
+  "localidades_que_ofrece": [
+   "barcelona-l45 (5)",
+   "roses-spain-l92004 (3)",
+   "lloret-de-mar-l2322 (3)",
+   "tarragona-l1293 (2)"
+  ],
+  "status": 200
+ },
+ {
+  "ine": "081846",
+  "nombre": "Rubí",
+  "nombre_idescat": "Rubí",
+  "slug": "rubi",
+  "provincia": "barcelona",
+  "poblacion": 82825,
+  "gyg_loc": null,
+  "actividades_cosechadas": 0,
+  "comprobado": "busqueda en GYG",
+  "localidades_que_ofrece": [
+   "roses-spain-l92004 (5)",
+   "barcelona-l45 (5)",
+   "tarragona-l1293 (2)",
+   "cambrils-l91400 (2)"
+  ],
+  "status": 200
+ },
+ {
+  "ine": "081136",
+  "nombre": "Manresa",
+  "nombre_idescat": "Manresa",
+  "slug": "manresa",
+  "provincia": "barcelona",
+  "poblacion": 80692,
+  "gyg_loc": null,
+  "actividades_cosechadas": 0,
+  "comprobado": "busqueda en GYG",
+  "localidades_que_ofrece": [
+   "barcelona-l45 (10)",
+   "roses-spain-l92004 (4)",
+   "salou-l1884 (1)",
+   "la-pineda-l185770 (1)"
+  ],
+  "status": 200
+ },
+ {
+  "ine": "083073",
+  "nombre": "Vilanova i la Geltrú",
+  "nombre_idescat": "Vilanova i la Geltrú",
+  "slug": "vilanova-i-la-geltru",
+  "provincia": "barcelona",
+  "poblacion": 71305,
+  "gyg_loc": "vilanova-i-la-geltru-l157323",
+  "actividades_cosechadas": 2,
+  "comprobado": "cosecha fase 1"
+ },
+ {
+  "ine": "080569",
+  "nombre": "Castelldefels",
+  "nombre_idescat": "Castelldefels",
+  "slug": "castelldefels",
+  "provincia": "barcelona",
+  "poblacion": 69689,
+  "gyg_loc": "castelldefels-l102102",
+  "actividades_cosechadas": 1,
+  "comprobado": "cosecha fase 1"
+ },
+ {
+  "ine": "083015",
+  "nombre": "Viladecans",
+  "nombre_idescat": "Viladecans",
+  "slug": "viladecans",
+  "provincia": "barcelona",
+  "poblacion": 67536,
+  "gyg_loc": null,
+  "actividades_cosechadas": 0,
+  "comprobado": "busqueda en GYG",
+  "localidades_que_ofrece": [
+   "barcelona-l45 (10)",
+   "tarragona-l1293 (3)",
+   "girona-l550 (2)",
+   "vilanova-i-la-geltru-l157323 (2)"
+  ],
+  "status": 200
+ },
+ {
+  "ine": "081691",
+  "nombre": "el Prat de Llobregat",
+  "nombre_idescat": "Prat de Llobregat, el",
+  "slug": "el-prat-de-llobregat",
+  "provincia": "barcelona",
+  "poblacion": 66251,
+  "gyg_loc": null,
+  "actividades_cosechadas": 0,
+  "comprobado": "busqueda en GYG",
+  "localidades_que_ofrece": [
+   "barcelona-l45 (8)",
+   "lloret-de-mar-l2322 (4)",
+   "roses-spain-l92004 (2)",
+   "cambrils-l91400 (2)"
+  ],
+  "status": 200
+ },
+ {
+  "ine": "080961",
+  "nombre": "Granollers",
+  "nombre_idescat": "Granollers",
+  "slug": "granollers",
+  "provincia": "barcelona",
+  "poblacion": 65123,
+  "gyg_loc": null,
+  "actividades_cosechadas": 0,
+  "comprobado": "busqueda en GYG",
+  "localidades_que_ofrece": [
+   "barcelona-l45 (14)",
+   "catalonia-l641 (2)",
+   "salou-l1884 (1)",
+   "amposta-l2971 (1)"
+  ],
+  "status": 200
+ },
+ {
+  "ine": "082665",
+  "nombre": "Cerdanyola del Vallès",
+  "nombre_idescat": "Cerdanyola del Vallès",
+  "slug": "cerdanyola-del-valles",
+  "provincia": "barcelona",
+  "poblacion": 58264,
+  "gyg_loc": null,
+  "actividades_cosechadas": 0,
+  "comprobado": "busqueda en GYG",
+  "localidades_que_ofrece": [
+   "barcelona-l45 (8)",
+   "roses-spain-l92004 (3)",
+   "catalonia-l641 (3)",
+   "tarragona-l1293 (2)"
+  ],
+  "status": 200
+ },
+ {
+  "ine": "081249",
+  "nombre": "Mollet del Vallès",
+  "nombre_idescat": "Mollet del Vallès",
+  "slug": "mollet-del-valles",
+  "provincia": "barcelona",
+  "poblacion": 52759,
+  "gyg_loc": null,
+  "actividades_cosechadas": 0,
+  "comprobado": "busqueda en GYG",
+  "localidades_que_ofrece": [
+   "barcelona-l45 (10)",
+   "roses-spain-l92004 (3)",
+   "catalonia-l641 (3)",
+   "girona-l550 (1)"
+  ],
+  "status": 200
+ },
+ {
+  "ine": "082981",
+  "nombre": "Vic",
+  "nombre_idescat": "Vic",
+  "slug": "vic",
+  "provincia": "barcelona",
+  "poblacion": 50405,
+  "gyg_loc": null,
+  "actividades_cosechadas": 0,
+  "comprobado": "busqueda en GYG",
+  "localidades_que_ofrece": [
+   "barcelona-l45 (13)",
+   "roses-spain-l92004 (2)",
+   "tarragona-l1293 (2)",
+   "salou-l1884 (1)"
+  ],
+  "status": 200
+ }
+]

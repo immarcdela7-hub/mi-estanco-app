@@ -18,6 +18,7 @@ node tests/test-gyg-widgets.mjs           # widgets de GYG inyectados por JS
 node tests/test-reservas.mjs              # reserva propia, de punta a punta
 node tests/test-disponibilidad.mjs        # motor de cupo del CRM (sin navegador)
 node tests/test-distintivos.mjs           # pastillas de las tarjetas y su atribucion
+node tests/test-zonas.mjs                 # ?zona= por ciudad y la regla del city
 ```
 
 Cada una imprime `=== N/N pruebas OK ===`. Las capturas van a `tools/capturas/`.
@@ -49,6 +50,12 @@ verde sin perder su pie azul, y que **cada actividad del top 50 salga con su
 `cmp`** — las recién añadidas son justo las que más fácil se quedan fuera de la
 atribución. Lee el top 50 de `tools/top50.json`, así que si se regenera ese
 fichero la prueba se ajusta sola.
+
+`test-zonas.mjs` vigila la regla de negocio de la fase 3: que **ninguna actividad
+haya cambiado su `city`** para encajar en una zona (lo compara contra el CSV del
+commit anterior con `git show`), que `?zona=<ciudad>` deje al menos diez tarjetas
+y que las **de** esa ciudad salgan primero, y que `zona=costadaurada` siga
+funcionando ahora que el apaño se ha quitado del código y vive en los datos.
 
 **La prueba que nunca debe fallar** es la de atribución: si un cambio deja
 enlaces sin `cmp=EST-XXXXX`, las ventas dejan de poder repartirse al
