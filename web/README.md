@@ -247,6 +247,41 @@ catalog.js    (generado; lo carga tickets.html y pinta las tarjetas)
 | `imagen` | URL de la foto (hotlink a `cdn.getyourguide.com`) |
 | `imagen_old` | (histórico) ruta de la imagen local anterior; no se usa |
 
+## El top 50 de Cataluña
+
+El catálogo contiene, como mínimo, las **50 actividades más vendidas de
+Cataluña** en GetYourGuide.
+
+### Cómo se decide
+
+GYG **no publica ventas**, así que se combinan las señales que sí publica:
+
+1. **nº de reseñas** — el mejor proxy de volumen. Se usa `log10(reseñas+1)`
+   porque van de decenas a cientos de miles y en lineal una sola actividad
+   aplastaría al resto.
+2. **posición en el listado** — su orden por defecto es por popularidad; hasta
+   +0,5 por la mejor posición conseguida.
+3. **distintivos de GYG** — Bestseller +0,40, Likely to sell out +0,25,
+   Top pick +0,25.
+
+```
+node harvest-listings.mjs   # cosecha 16 listados -> tools/harvest.json
+node rank-top50.mjs         # ranking auditable   -> tools/top50.json
+node curate-top50.mjs       # las que faltan      -> tools/new-activities.json
+node add-activities.mjs     # las da de alta en catalog.csv
+node build-catalog.mjs
+```
+
+`tools/top50.json` es la **prueba** de por qué cada actividad está en el top 50:
+guarda reseñas, valoración, posición, distintivos y de qué listados salió.
+
+> **Ojo con la concentración.** El top 50 real de Cataluña sale 42 de Barcelona,
+> 5 de Girona, 3 de Tarragona y **0 de Lleida**: la primera de Girona está en el
+> puesto 13 y la de Tarragona en el 28. Un top global es, en la práctica, un top
+> de Barcelona, y no le sirve al turista que escanea un QR en Salou o Lloret.
+> Pendiente de decidir: top por zona además del global, o subir en el orden las
+> de la provincia del cartel (`?zona=`).
+
 ## Fotos
 
 Se sacan de la **ficha de cada actividad en GetYourGuide** (`og:image`) con un

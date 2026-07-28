@@ -135,7 +135,12 @@ await salou2.close();
 for (const [zona, esperado] of [['lloret-de-mar', 'girona'], ['sitges', 'barcelona'], ['tossa-de-mar', 'girona']]) {
   const pz = await pageAt('2026-07-25T20:30:00');
   await pz.goto(BASE + `?ref=EST-Z&zona=${zona}`, { waitUntil: 'domcontentloaded' });
-  await pz.waitForTimeout(1000);
+  // Esperar a que el contexto tenga texto, no un tiempo fijo: con 125 tarjetas
+  // el render tarda mas y 1 s dejaba la primera vuelta en blanco.
+  await pz.waitForFunction(() => {
+    const e = document.getElementById('picksContext');
+    return e && e.textContent.trim().length > 0;
+  }, { timeout: 15000 }).catch(() => {});
   const txt = await pz.textContent('#picksContext');
   const prov = await pz.evaluate(() => {
     const b = document.querySelector('.province-btn.active');
@@ -159,8 +164,8 @@ pUnk.on('pageerror', (e) => unkErr.push(e.message));
 await pUnk.goto(BASE + '?ref=EST-Z&zona=cuenca', { waitUntil: 'domcontentloaded' });
 await pUnk.waitForTimeout(1000);
 const unkVis = await pUnk.evaluate(() =>
-  [...document.querySelectorAll('.experience-item')].filter((e) => e.offsetParent !== null).length);
-log('Ciudad desconocida no rompe nada', unkVis === 101 && unkErr.length === 0, `${unkVis} visibles, ${unkErr.length} errores`);
+  [...document.querySelectorAll('.experience-item:not(.ntl-own)')].filter((e) => e.offsetParent !== null).length);
+log('Ciudad desconocida no rompe nada', unkVis === 125 && unkErr.length === 0, `${unkVis} visibles, ${unkErr.length} errores`);
 await pUnk.close();
 
 // ---------- 10. Movil ----------
@@ -193,13 +198,19 @@ await noCat.close();
 
 log('Sin errores de JS', errs.length === 0, errs.slice(0, 2).join(' | ') || 'ninguno');
 
-// Capturas
-const shot = await pageAt('2026-07-25T20:30:00');
-await shot.goto(BASE + '?ref=PRUEBA1&zona=salou', { waitUntil: 'domcontentloaded' });
-await shot.waitForTimeout(1000);
-await shot.screenshot({ path: './capturas/plegado.png' });
-await shot.locator('#ntlHelper').screenshot({ path: './capturas/picks.png' });
-await shot.close();
+// Capturas. Son un producto secundario: si fallan (esta es la pagina numero 15
+// que abre la bateria y a veces se atraganta), no pueden tumbar el resultado de
+// unas pruebas que ya han pasado.
+try {
+  const shot = await pageAt('2026-07-25T20:30:00');
+  await shot.goto(BASE + '?ref=PRUEBA1&zona=salou', { waitUntil: 'domcontentloaded', timeout: 60000 });
+  await shot.waitForSelector('#ntlHelper', { timeout: 20000 });
+  await shot.screenshot({ path: './capturas/plegado.png' });
+  await shot.locator('#ntlHelper').screenshot({ path: './capturas/picks.png' });
+  await shot.close();
+} catch (e) {
+  console.log('  (aviso: no se pudieron hacer las capturas -- ' + String(e.message).split('\n')[0] + ')');
+}
 
 await browser.close();
 const bad = results.filter((r) => !r.p);

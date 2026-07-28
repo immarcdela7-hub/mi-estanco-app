@@ -1,0 +1,959 @@
+{
+ "generado": "node tools/rank-top50.mjs",
+ "criterio": {
+  "resenas": "log10(reseñas+1). Proxy de volumen; GYG no publica ventas.",
+  "posicion": "hasta +0.5 por la mejor posicion en los listados (su orden por defecto es por popularidad)",
+  "distintivos": {
+   "Bestseller": 0.4,
+   "Likely to sell out": 0.25,
+   "Top pick": 0.25
+  },
+  "excluidas": "sin reseñas, o fuera de Cataluña"
+ },
+ "candidatasValoradas": 453,
+ "top": [
+  {
+   "rank": 1,
+   "tid": "50027",
+   "titulo": "Sagrada Familia Entry Ticket with Audio Guide",
+   "provincia": "barcelona",
+   "loc": "barcelona-l45",
+   "url": "https://www.getyourguide.com/barcelona-l45/sagrada-familia-skip-the-line-ticket-t50027/",
+   "resenas": 116278,
+   "valoracion": 4.6,
+   "mejorPosicion": 5,
+   "distintivosGyg": [
+    "Official ticket",
+    "Likely to sell out"
+   ],
+   "listados": [
+    "barcelona#5",
+    "catalonia#45"
+   ],
+   "puntos": 5.791,
+   "yaEnCatalogo": true
+  },
+  {
+   "rank": 2,
+   "tid": "53791",
+   "titulo": "Park Güell Admission Ticket",
+   "provincia": "barcelona",
+   "loc": "barcelona-l45",
+   "url": "https://www.getyourguide.com/barcelona-l45/skip-the-line-park-guell-entrance-ticket-t53791/",
+   "resenas": 86010,
+   "valoracion": 4.4,
+   "mejorPosicion": 7,
+   "distintivosGyg": [],
+   "listados": [
+    "barcelona#7",
+    "catalonia#54"
+   ],
+   "puntos": 5.4,
+   "yaEnCatalogo": true
+  },
+  {
+   "rank": 3,
+   "tid": "398519",
+   "titulo": "Casa Batlló Entry with Self-Audioguide Tour",
+   "provincia": "barcelona",
+   "loc": "barcelona-l45",
+   "url": "https://www.getyourguide.com/barcelona-l45/barcelona-casa-batllo-10d-experience-t398519/",
+   "resenas": 30224,
+   "valoracion": 4.7,
+   "mejorPosicion": 10,
+   "distintivosGyg": [],
+   "listados": [
+    "barcelona#10",
+    "catalonia#108"
+   ],
+   "puntos": 4.93,
+   "yaEnCatalogo": true
+  },
+  {
+   "rank": 4,
+   "tid": "1381568",
+   "titulo": "La Pedrera-Casa Milà Ticket & Audio Guide Option",
+   "provincia": "barcelona",
+   "loc": "barcelona-l45",
+   "url": "https://www.getyourguide.com/barcelona-l45/barcelona-la-pedrera-casa-mila-ticket-audio-guide-option-t1381568/",
+   "resenas": 29065,
+   "valoracion": 4.7,
+   "mejorPosicion": 22,
+   "distintivosGyg": [],
+   "listados": [
+    "barcelona#41",
+    "catalonia#22"
+   ],
+   "puntos": 4.853,
+   "yaEnCatalogo": false
+  },
+  {
+   "rank": 5,
+   "tid": "1225",
+   "titulo": "Barcelona City Tour Hop-On Hop-Off Bus Tour",
+   "provincia": "barcelona",
+   "loc": "barcelona-l45",
+   "url": "https://www.getyourguide.com/barcelona-l45/barcelona-24-or-48-hour-hop-on-hop-off-bus-tour-t1225/",
+   "resenas": 23385,
+   "valoracion": 4.4,
+   "mejorPosicion": 8,
+   "distintivosGyg": [],
+   "listados": [
+    "barcelona#8"
+   ],
+   "puntos": 4.829,
+   "yaEnCatalogo": true
+  },
+  {
+   "rank": 6,
+   "tid": "419045",
+   "titulo": "Park Guell Guided Tour with Skip The Line Entry",
+   "provincia": "barcelona",
+   "loc": "barcelona-l45",
+   "url": "https://www.getyourguide.com/barcelona-l45/barcelona-park-guell-guided-tour-t419045/",
+   "resenas": 21194,
+   "valoracion": 4.7,
+   "mejorPosicion": 19,
+   "distintivosGyg": [],
+   "listados": [
+    "barcelona#19",
+    "salou#88",
+    "cambrils#58"
+   ],
+   "puntos": 4.731,
+   "yaEnCatalogo": true
+  },
+  {
+   "rank": 7,
+   "tid": "61515",
+   "titulo": "Barcelona Aquarium: Entry Ticket",
+   "provincia": "barcelona",
+   "loc": "barcelona-l45",
+   "url": "https://www.getyourguide.com/barcelona-l45/barcelona-aquarium-entry-ticket-t61515/",
+   "resenas": 18623,
+   "valoracion": 4.4,
+   "mejorPosicion": 24,
+   "distintivosGyg": [],
+   "listados": [
+    "barcelona#24",
+    "catalonia#50"
+   ],
+   "puntos": 4.65,
+   "yaEnCatalogo": true
+  },
+  {
+   "rank": 8,
+   "tid": "288805",
+   "titulo": "Sagrada Familia Skip-the-Line Entry Ticket & Tour",
+   "provincia": "barcelona",
+   "loc": "barcelona-l45",
+   "url": "https://www.getyourguide.com/barcelona-l45/barcelona-sagrada-familia-skip-the-line-entry-ticket-tour-t288805/",
+   "resenas": 14479,
+   "valoracion": 4.8,
+   "mejorPosicion": 14,
+   "distintivosGyg": [],
+   "listados": [
+    "barcelona#14"
+   ],
+   "puntos": 4.591,
+   "yaEnCatalogo": true
+  },
+  {
+   "rank": 9,
+   "tid": "76003",
+   "titulo": "Flamenco Show at the Theater \"City Hall\"",
+   "provincia": "barcelona",
+   "loc": "barcelona-l45",
+   "url": "https://www.getyourguide.com/barcelona-l45/barcelona-flamenco-show-at-the-theater-city-hall--t76003/",
+   "resenas": 11925,
+   "valoracion": 4.6,
+   "mejorPosicion": 13,
+   "distintivosGyg": [],
+   "listados": [
+    "barcelona#13"
+   ],
+   "puntos": 4.511,
+   "yaEnCatalogo": true
+  },
+  {
+   "rank": 10,
+   "tid": "449261",
+   "titulo": "FC Barcelona Museum \"Barça Immersive Tour\" Ticket",
+   "provincia": "barcelona",
+   "loc": "barcelona-l45",
+   "url": "https://www.getyourguide.com/barcelona-l45/barcelona-barca-immersive-exhibition-ticket-t449261/",
+   "resenas": 13365,
+   "valoracion": 4.3,
+   "mejorPosicion": 23,
+   "distintivosGyg": [
+    "Official ticket"
+   ],
+   "listados": [
+    "barcelona#23"
+   ],
+   "puntos": 4.511,
+   "yaEnCatalogo": true
+  },
+  {
+   "rank": 11,
+   "tid": "29293",
+   "titulo": "Sagrada Familia Skip-the-Line Guided Tour",
+   "provincia": "barcelona",
+   "loc": "barcelona-l45",
+   "url": "https://www.getyourguide.com/barcelona-l45/sagrada-familia-skip-the-line-t29293/",
+   "resenas": 6295,
+   "valoracion": 4.4,
+   "mejorPosicion": 9,
+   "distintivosGyg": [
+    "Likely to sell out"
+   ],
+   "listados": [
+    "barcelona#9",
+    "catalonia#109",
+    "salou#89"
+   ],
+   "puntos": 4.504,
+   "yaEnCatalogo": false
+  },
+  {
+   "rank": 12,
+   "tid": "4241",
+   "titulo": "City Sightseeing Hop-On Hop-Off Bus Tour",
+   "provincia": "barcelona",
+   "loc": "barcelona-l45",
+   "url": "https://www.getyourguide.com/barcelona-l45/barcelona-hop-on-hop-off-tour-1-or-2-day-ticket-t4241/",
+   "resenas": 11199,
+   "valoracion": 4.4,
+   "mejorPosicion": 27,
+   "distintivosGyg": [],
+   "listados": [
+    "barcelona#27"
+   ],
+   "puntos": 4.414,
+   "yaEnCatalogo": true
+  },
+  {
+   "rank": 13,
+   "tid": "215928",
+   "titulo": "Catamaran Sailing Cruise with BBQ and Drinks",
+   "provincia": "girona",
+   "loc": "lloret-de-mar-l2322",
+   "url": "https://www.getyourguide.com/lloret-de-mar-l2322/lloret-de-mar-catamaran-sailing-cruise-with-bbq-and-drinks-t215928/",
+   "resenas": 4300,
+   "valoracion": 4.5,
+   "mejorPosicion": 1,
+   "distintivosGyg": [
+    "Top pick"
+   ],
+   "listados": [
+    "barcelona#120",
+    "catalonia#3",
+    "girona#121",
+    "lloret#1",
+    "tossa#64",
+    "figueres#54",
+    "roses#37",
+    "costabrava#2"
+   ],
+   "puntos": 4.379,
+   "yaEnCatalogo": true
+  },
+  {
+   "rank": 14,
+   "tid": "629660",
+   "titulo": "Intimate Flamenco Show El Duende Bar & Cocktails Barcelona",
+   "provincia": "barcelona",
+   "loc": "barcelona-l45",
+   "url": "https://www.getyourguide.com/barcelona-l45/barcelona-flamenco-show-with-drink-at-la-rambla-t629660/",
+   "resenas": 4190,
+   "valoracion": 4.7,
+   "mejorPosicion": 1,
+   "distintivosGyg": [
+    "Top pick"
+   ],
+   "listados": [
+    "barcelona#1",
+    "catalonia#11",
+    "girona#11",
+    "salou#86",
+    "cambrils#57",
+    "sitges#63"
+   ],
+   "puntos": 4.367,
+   "yaEnCatalogo": true
+  },
+  {
+   "rank": 15,
+   "tid": "826796",
+   "titulo": "Park Güell and Gaudí House Museum Entry Ticket",
+   "provincia": "barcelona",
+   "loc": "barcelona-l45",
+   "url": "https://www.getyourguide.com/barcelona-l45/barcelona-park-guell-and-gaudi-house-museum-entry-ticket-t826796/",
+   "resenas": 8641,
+   "valoracion": 4.5,
+   "mejorPosicion": 16,
+   "distintivosGyg": [],
+   "listados": [
+    "barcelona#16"
+   ],
+   "puntos": 4.357,
+   "yaEnCatalogo": false
+  },
+  {
+   "rank": 16,
+   "tid": "663776",
+   "titulo": "Gaudí’s Park Güell Tour with Fast-Track Ticket",
+   "provincia": "barcelona",
+   "loc": "barcelona-l45",
+   "url": "https://www.getyourguide.com/barcelona-l45/gaudi-s-park-guell-guided-tour-with-fast-track-ticket-t663776/",
+   "resenas": 6816,
+   "valoracion": 4.7,
+   "mejorPosicion": 35,
+   "distintivosGyg": [],
+   "listados": [
+    "barcelona#35"
+   ],
+   "puntos": 4.159,
+   "yaEnCatalogo": true
+  },
+  {
+   "rank": 17,
+   "tid": "668448",
+   "titulo": "Sagrada Familia Priority Access Guided Tour",
+   "provincia": "barcelona",
+   "loc": "barcelona-l45",
+   "url": "https://www.getyourguide.com/barcelona-l45/gaudi-s-sagrada-familia-priority-access-guided-tour-t668448/",
+   "resenas": 6033,
+   "valoracion": 4.8,
+   "mejorPosicion": 25,
+   "distintivosGyg": [],
+   "listados": [
+    "barcelona#25"
+   ],
+   "puntos": 4.156,
+   "yaEnCatalogo": false
+  },
+  {
+   "rank": 18,
+   "tid": "1177",
+   "titulo": "Montserrat Tour with Cog-Wheel & Black Madonna",
+   "provincia": "barcelona",
+   "loc": "barcelona-l45",
+   "url": "https://www.getyourguide.com/barcelona-l45/montserrat-royal-basilica-cog-wheel-train-from-barcelona-t1177/",
+   "resenas": 8409,
+   "valoracion": 4.6,
+   "mejorPosicion": 55,
+   "distintivosGyg": [],
+   "listados": [
+    "barcelona#55"
+   ],
+   "puntos": 4.15,
+   "yaEnCatalogo": true
+  },
+  {
+   "rank": 19,
+   "tid": "220695",
+   "titulo": "From L’Estartit: Snorkeling Trip to the Medes Islands",
+   "provincia": "girona",
+   "loc": "l-estartit-l91403",
+   "url": "https://www.getyourguide.com/l-estartit-l91403/from-l-estartit-3-hour-snorkeling-trip-to-the-medes-islands-t220695/",
+   "resenas": 1352,
+   "valoracion": 4.5,
+   "mejorPosicion": 3,
+   "distintivosGyg": [
+    "Likely to sell out",
+    "Top pick"
+   ],
+   "listados": [
+    "catalonia#7",
+    "girona#120",
+    "lloret#32",
+    "tossa#63",
+    "figueres#55",
+    "roses#38",
+    "costabrava#3"
+   ],
+   "puntos": 4.116,
+   "yaEnCatalogo": true
+  },
+  {
+   "rank": 20,
+   "tid": "396079",
+   "titulo": "Sea Caves Kayaking and Snorkeling Tour",
+   "provincia": "girona",
+   "loc": "sant-feliu-de-guixols-l98145",
+   "url": "https://www.getyourguide.com/sant-feliu-de-guixols-l98145/costa-brava-sea-caves-kayaking-and-snorkeling-tour-t396079/",
+   "resenas": 1204,
+   "valoracion": 4.8,
+   "mejorPosicion": 1,
+   "distintivosGyg": [
+    "Likely to sell out",
+    "Top pick"
+   ],
+   "listados": [
+    "barcelona#121",
+    "catalonia#2",
+    "girona#123",
+    "lloret#34",
+    "tossa#66",
+    "roses#39",
+    "costabrava#1"
+   ],
+   "puntos": 4.076,
+   "yaEnCatalogo": true
+  },
+  {
+   "rank": 21,
+   "tid": "67263",
+   "titulo": "Top Awarded Flamenco Show Tablao Cordobes with dinner option",
+   "provincia": "barcelona",
+   "loc": "barcelona-l45",
+   "url": "https://www.getyourguide.com/barcelona-l45/barcelona-tablao-flamenco-cordobes-with-fooddrink-options-t67263/",
+   "resenas": 4964,
+   "valoracion": 4.7,
+   "mejorPosicion": 31,
+   "distintivosGyg": [],
+   "listados": [
+    "barcelona#31",
+    "catalonia#119"
+   ],
+   "puntos": 4.041,
+   "yaEnCatalogo": false
+  },
+  {
+   "rank": 22,
+   "tid": "303593",
+   "titulo": "Tapas Walking Tour with Food, Wine, and History",
+   "provincia": "barcelona",
+   "loc": "barcelona-l45",
+   "url": "https://www.getyourguide.com/barcelona-l45/barcelona-food-tasting-tour-tapas-wine-and-vermouth-t303593/",
+   "resenas": 5055,
+   "valoracion": 4.7,
+   "mejorPosicion": 40,
+   "distintivosGyg": [],
+   "listados": [
+    "barcelona#40"
+   ],
+   "puntos": 4.004,
+   "yaEnCatalogo": true
+  },
+  {
+   "rank": 23,
+   "tid": "51441",
+   "titulo": "Sagrada Familia Guided Tour with Tower Access",
+   "provincia": "barcelona",
+   "loc": "barcelona-l45",
+   "url": "https://www.getyourguide.com/barcelona-l45/barcelona-fast-track-sagrada-familia-and-towers-guided-tour-t51441/",
+   "resenas": 5680,
+   "valoracion": 4.3,
+   "mejorPosicion": 61,
+   "distintivosGyg": [],
+   "listados": [
+    "barcelona#61"
+   ],
+   "puntos": 3.949,
+   "yaEnCatalogo": false
+  },
+  {
+   "rank": 24,
+   "tid": "451750",
+   "titulo": "Sagrada Familia Skip-the-Line Guided Tour",
+   "provincia": "barcelona",
+   "loc": "barcelona-l45",
+   "url": "https://www.getyourguide.com/barcelona-l45/sagrada-familia-skip-the-line-tour-t451750/",
+   "resenas": 4490,
+   "valoracion": 4.8,
+   "mejorPosicion": 42,
+   "distintivosGyg": [],
+   "listados": [
+    "barcelona#42",
+    "catalonia#85"
+   ],
+   "puntos": 3.942,
+   "yaEnCatalogo": false
+  },
+  {
+   "rank": 25,
+   "tid": "400210",
+   "titulo": "Sunset or Day Catamaran Cruise with Tapa & Drink",
+   "provincia": "barcelona",
+   "loc": "barcelona-l45",
+   "url": "https://www.getyourguide.com/barcelona-l45/barcelona-sunset-or-day-catamaran-cruise-with-tapa-drink-t400210/",
+   "resenas": 3299,
+   "valoracion": 4.5,
+   "mejorPosicion": 17,
+   "distintivosGyg": [],
+   "listados": [
+    "barcelona#17",
+    "catalonia#61"
+   ],
+   "puntos": 3.934,
+   "yaEnCatalogo": false
+  },
+  {
+   "rank": 26,
+   "tid": "72879",
+   "titulo": "Sagrada Familia Tour & Optional Tower Visit",
+   "provincia": "barcelona",
+   "loc": "barcelona-l45",
+   "url": "https://www.getyourguide.com/barcelona-l45/barcelona-sagrada-familia-tour-optional-tower-visit-t72879/",
+   "resenas": 5659,
+   "valoracion": 4.3,
+   "mejorPosicion": 71,
+   "distintivosGyg": [],
+   "listados": [
+    "barcelona#71"
+   ],
+   "puntos": 3.898,
+   "yaEnCatalogo": true
+  },
+  {
+   "rank": 27,
+   "tid": "44533",
+   "titulo": "Paella Cooking Experience & Boqueria Market Tour",
+   "provincia": "barcelona",
+   "loc": "barcelona-l45",
+   "url": "https://www.getyourguide.com/barcelona-l45/paella-cooking-experience-with-boqueria-market-tour-t44533/",
+   "resenas": 4121,
+   "valoracion": 4.8,
+   "mejorPosicion": 47,
+   "distintivosGyg": [],
+   "listados": [
+    "barcelona#47"
+   ],
+   "puntos": 3.88,
+   "yaEnCatalogo": true
+  },
+  {
+   "rank": 28,
+   "tid": "115174",
+   "titulo": "PortAventura and Ferrari Land 1, 2, or 3-Day Ticket",
+   "provincia": "tarragona",
+   "loc": "salou-l1884",
+   "url": "https://www.getyourguide.com/salou-l1884/portaventura-ferrari-land-tickets-1-2-or-3-day-entry-t115174/",
+   "resenas": 2449,
+   "valoracion": 4.3,
+   "mejorPosicion": 4,
+   "distintivosGyg": [
+    "Official ticket"
+   ],
+   "listados": [
+    "catalonia#55",
+    "salou#4",
+    "lleida#17"
+   ],
+   "puntos": 3.869,
+   "yaEnCatalogo": true
+  },
+  {
+   "rank": 29,
+   "tid": "87947",
+   "titulo": "Park Güell & La Sagrada Familia Tickets and Tour",
+   "provincia": "barcelona",
+   "loc": "barcelona-l45",
+   "url": "https://www.getyourguide.com/barcelona-l45/barcelona-park-guell-la-sagrada-familia-tickets-and-tour-t87947/",
+   "resenas": 1467,
+   "valoracion": 4.7,
+   "mejorPosicion": 12,
+   "distintivosGyg": [
+    "Likely to sell out"
+   ],
+   "listados": [
+    "barcelona#12"
+   ],
+   "puntos": 3.857,
+   "yaEnCatalogo": false
+  },
+  {
+   "rank": 30,
+   "tid": "119389",
+   "titulo": "Costa Brava Tour: Kayak, Snorkel & Cliff Jump from Barcelona",
+   "provincia": "barcelona",
+   "loc": "barcelona-l45",
+   "url": "https://www.getyourguide.com/barcelona-l45/from-barcelona-kayaking-snorkeling-in-la-costa-brava-t119389/",
+   "resenas": 2781,
+   "valoracion": 4.9,
+   "mejorPosicion": 22,
+   "distintivosGyg": [],
+   "listados": [
+    "barcelona#30",
+    "catalonia#96",
+    "costabrava#22"
+   ],
+   "puntos": 3.834,
+   "yaEnCatalogo": true
+  },
+  {
+   "rank": 31,
+   "tid": "497900",
+   "titulo": "Sagrada Familia Guided Tour with Express Entry",
+   "provincia": "barcelona",
+   "loc": "barcelona-l45",
+   "url": "https://www.getyourguide.com/barcelona-l45/sagrada-familia-revealed-express-entry-guided-tour-t497900/",
+   "resenas": 1867,
+   "valoracion": 4.7,
+   "mejorPosicion": 38,
+   "distintivosGyg": [
+    "Likely to sell out"
+   ],
+   "listados": [
+    "barcelona#38",
+    "catalonia#71"
+   ],
+   "puntos": 3.831,
+   "yaEnCatalogo": false
+  },
+  {
+   "rank": 32,
+   "tid": "147204",
+   "titulo": "Catamaran Party Cruise with BBQ Meal",
+   "provincia": "barcelona",
+   "loc": "barcelona-l45",
+   "url": "https://www.getyourguide.com/barcelona-l45/barcelona-catamaran-party-cruise-with-bbq-meal-t147204/",
+   "resenas": 1728,
+   "valoracion": 4.3,
+   "mejorPosicion": 33,
+   "distintivosGyg": [
+    "Likely to sell out"
+   ],
+   "listados": [
+    "barcelona#33"
+   ],
+   "puntos": 3.823,
+   "yaEnCatalogo": true
+  },
+  {
+   "rank": 33,
+   "tid": "597287",
+   "titulo": "Park Guell Guided Tour with Skip-the-Line Entry",
+   "provincia": "barcelona",
+   "loc": "barcelona-l45",
+   "url": "https://www.getyourguide.com/barcelona-l45/barcelona-park-guell-guided-tour-with-skip-the-line-entry-t597287/",
+   "resenas": 2163,
+   "valoracion": 4.4,
+   "mejorPosicion": 54,
+   "distintivosGyg": [
+    "Likely to sell out"
+   ],
+   "listados": [
+    "barcelona#54"
+   ],
+   "puntos": 3.815,
+   "yaEnCatalogo": false
+  },
+  {
+   "rank": 34,
+   "tid": "406467",
+   "titulo": "Moco Museum Barcelona: Modern & Contemporary Art",
+   "provincia": "barcelona",
+   "loc": "barcelona-l45",
+   "url": "https://www.getyourguide.com/barcelona-l45/moco-museum-barcelona-modern-contemporary-art-t406467/",
+   "resenas": 3601,
+   "valoracion": 4.6,
+   "mejorPosicion": 49,
+   "distintivosGyg": [],
+   "listados": [
+    "barcelona#49",
+    "catalonia#78"
+   ],
+   "puntos": 3.812,
+   "yaEnCatalogo": false
+  },
+  {
+   "rank": 35,
+   "tid": "212973",
+   "titulo": "Midday or Sunset Sailing with Open Bar and Snacks",
+   "provincia": "barcelona",
+   "loc": "barcelona-l45",
+   "url": "https://www.getyourguide.com/barcelona-l45/barcelona-midday-or-sunset-sailing-with-open-bar-and-snacks-t212973/",
+   "resenas": 2511,
+   "valoracion": 4.8,
+   "mejorPosicion": 22,
+   "distintivosGyg": [],
+   "listados": [
+    "barcelona#22",
+    "catalonia#87"
+   ],
+   "puntos": 3.79,
+   "yaEnCatalogo": false
+  },
+  {
+   "rank": 36,
+   "tid": "831886",
+   "titulo": "Dalí Theatre-Museum Entry Ticket",
+   "provincia": "girona",
+   "loc": "figueres-l4723",
+   "url": "https://www.getyourguide.com/figueres-l4723/figueres-dali-theatre-museum-entry-ticket-t831886/",
+   "resenas": 1106,
+   "valoracion": 4.7,
+   "mejorPosicion": 1,
+   "distintivosGyg": [
+    "Official ticket",
+    "Top pick"
+   ],
+   "listados": [
+    "catalonia#16",
+    "lloret#35",
+    "figueres#1",
+    "roses#40",
+    "costabrava#8"
+   ],
+   "puntos": 3.789,
+   "yaEnCatalogo": true
+  },
+  {
+   "rank": 37,
+   "tid": "243607",
+   "titulo": "Girona&Dalí Museum Day Trip with Small Group",
+   "provincia": "barcelona",
+   "loc": "barcelona-l45",
+   "url": "https://www.getyourguide.com/barcelona-l45/from-barcelona-gironadali-museum-day-trip-with-small-group-t243607/",
+   "resenas": 2104,
+   "valoracion": 4.7,
+   "mejorPosicion": 12,
+   "distintivosGyg": [],
+   "listados": [
+    "barcelona#105",
+    "girona#79",
+    "figueres#12"
+   ],
+   "puntos": 3.763,
+   "yaEnCatalogo": false
+  },
+  {
+   "rank": 38,
+   "tid": "165677",
+   "titulo": "Catamaran cruise with drinks, lunch and swimming",
+   "provincia": "tarragona",
+   "loc": "salou-l1884",
+   "url": "https://www.getyourguide.com/salou-l1884/costa-daurada-catamaran-tour-and-snorkeling-t165677/",
+   "resenas": 1935,
+   "valoracion": 4.5,
+   "mejorPosicion": 5,
+   "distintivosGyg": [],
+   "listados": [
+    "catalonia#76",
+    "salou#17",
+    "cambrils#5",
+    "lleida#11"
+   ],
+   "puntos": 3.762,
+   "yaEnCatalogo": false
+  },
+  {
+   "rank": 39,
+   "tid": "417349",
+   "titulo": "Girona, Figueres, Dalí Museum, and Cadaqués",
+   "provincia": "barcelona",
+   "loc": "barcelona-l45",
+   "url": "https://www.getyourguide.com/barcelona-l45/from-barcelona-girona-figueres-dali-museum-and-cadaques-t417349/",
+   "resenas": 2214,
+   "valoracion": 4.7,
+   "mejorPosicion": 17,
+   "distintivosGyg": [],
+   "listados": [
+    "girona#75",
+    "figueres#17"
+   ],
+   "puntos": 3.76,
+   "yaEnCatalogo": false
+  },
+  {
+   "rank": 40,
+   "tid": "381019",
+   "titulo": "Picasso Museum Skip-the-Line Guided Tour",
+   "provincia": "barcelona",
+   "loc": "barcelona-l45",
+   "url": "https://www.getyourguide.com/barcelona-l45/barcelona-skip-the-line-guided-tour-of-picasso-museum-t381019/",
+   "resenas": 3749,
+   "valoracion": 4.5,
+   "mejorPosicion": 70,
+   "distintivosGyg": [],
+   "listados": [
+    "barcelona#70"
+   ],
+   "puntos": 3.724,
+   "yaEnCatalogo": false
+  },
+  {
+   "rank": 41,
+   "tid": "682388",
+   "titulo": "Casa Batlló Night Visit with Welcome Drink",
+   "provincia": "barcelona",
+   "loc": "barcelona-l45",
+   "url": "https://www.getyourguide.com/barcelona-l45/barcelona-casa-batllo-intimate-night-visit-w-welcome-drink-t682388/",
+   "resenas": 2277,
+   "valoracion": 4.5,
+   "mejorPosicion": 29,
+   "distintivosGyg": [
+    "Official ticket"
+   ],
+   "listados": [
+    "barcelona#29"
+   ],
+   "puntos": 3.713,
+   "yaEnCatalogo": false
+  },
+  {
+   "rank": 42,
+   "tid": "99678",
+   "titulo": "2.5-Hour Bike or E-Bike Historical Tour",
+   "provincia": "barcelona",
+   "loc": "barcelona-l45",
+   "url": "https://www.getyourguide.com/barcelona-l45/barcelona-25-hour-bike-or-e-bike-historical-tour-t99678/",
+   "resenas": 1836,
+   "valoracion": 4.4,
+   "mejorPosicion": 15,
+   "distintivosGyg": [],
+   "listados": [
+    "barcelona#15"
+   ],
+   "puntos": 3.689,
+   "yaEnCatalogo": true
+  },
+  {
+   "rank": 43,
+   "tid": "415748",
+   "titulo": "Private City Tour by Eco Tuk Tuk",
+   "provincia": "barcelona",
+   "loc": "barcelona-l45",
+   "url": "https://www.getyourguide.com/barcelona-l45/barcelona-city-tour-by-electric-tuk-tuk-t415748/",
+   "resenas": 1685,
+   "valoracion": 4.9,
+   "mejorPosicion": 11,
+   "distintivosGyg": [],
+   "listados": [
+    "barcelona#11",
+    "girona#93"
+   ],
+   "puntos": 3.672,
+   "yaEnCatalogo": true
+  },
+  {
+   "rank": 44,
+   "tid": "195065",
+   "titulo": "Sagrada Família Skip the Line Tour & Entry Ticket",
+   "provincia": "barcelona",
+   "loc": "barcelona-l45",
+   "url": "https://www.getyourguide.com/barcelona-l45/sagrada-familia-skip-the-line-guided-tour-t195065/",
+   "resenas": 4037,
+   "valoracion": 4.7,
+   "mejorPosicion": 90,
+   "distintivosGyg": [],
+   "listados": [
+    "barcelona#90"
+   ],
+   "puntos": 3.656,
+   "yaEnCatalogo": false
+  },
+  {
+   "rank": 45,
+   "tid": "231887",
+   "titulo": "Flamenco Show with Dinner at Tablao de Carmen",
+   "provincia": "barcelona",
+   "loc": "barcelona-l45",
+   "url": "https://www.getyourguide.com/barcelona-l45/barcelona-flamenco-show-with-tapas-dinner-t231887/",
+   "resenas": 2233,
+   "valoracion": 4.8,
+   "mejorPosicion": 43,
+   "distintivosGyg": [],
+   "listados": [
+    "barcelona#43",
+    "catalonia#116"
+   ],
+   "puntos": 3.634,
+   "yaEnCatalogo": false
+  },
+  {
+   "rank": 46,
+   "tid": "33815",
+   "titulo": "PortAventura Caribe Aquatic Park 1-Day Ticket",
+   "provincia": "tarragona",
+   "loc": "salou-l1884",
+   "url": "https://www.getyourguide.com/salou-l1884/salou-portaventura-costa-caribe-aquatic-park-ticket-t33815/",
+   "resenas": 1414,
+   "valoracion": 3.9,
+   "mejorPosicion": 5,
+   "distintivosGyg": [],
+   "listados": [
+    "catalonia#27",
+    "salou#5",
+    "lleida#14"
+   ],
+   "puntos": 3.626,
+   "yaEnCatalogo": true
+  },
+  {
+   "rank": 47,
+   "tid": "51590",
+   "titulo": "Sagrada Familia and Park Güell Tour",
+   "provincia": "barcelona",
+   "loc": "barcelona-l45",
+   "url": "https://www.getyourguide.com/barcelona-l45/sagrada-familia-and-parc-guell-tickets-t51590/",
+   "resenas": 3390,
+   "valoracion": 4.2,
+   "mejorPosicion": 81,
+   "distintivosGyg": [],
+   "listados": [
+    "barcelona#81",
+    "catalonia#90"
+   ],
+   "puntos": 3.625,
+   "yaEnCatalogo": false
+  },
+  {
+   "rank": 48,
+   "tid": "165695",
+   "titulo": "From Roses: Catamaran Cruise Cap Norfeu - Cadaqués",
+   "provincia": "girona",
+   "loc": "roses-spain-l92004",
+   "url": "https://www.getyourguide.com/roses-spain-l92004/catamaran-cruise-from-roses-to-cadaques-t165695/",
+   "resenas": 785,
+   "valoracion": 4.6,
+   "mejorPosicion": 9,
+   "distintivosGyg": [
+    "Likely to sell out"
+   ],
+   "listados": [
+    "roses#9",
+    "costabrava#90"
+   ],
+   "puntos": 3.6,
+   "yaEnCatalogo": false
+  },
+  {
+   "rank": 49,
+   "tid": "49576",
+   "titulo": "3 Countries in One Day — Spain, France & Andorra",
+   "provincia": "barcelona",
+   "loc": "barcelona-l45",
+   "url": "https://www.getyourguide.com/barcelona-l45/barcelona-the-original-andorra-france-and-spain-day-tour-t49576/",
+   "resenas": 2903,
+   "valoracion": 4.7,
+   "mejorPosicion": 79,
+   "distintivosGyg": [],
+   "listados": [
+    "barcelona#79"
+   ],
+   "puntos": 3.568,
+   "yaEnCatalogo": false
+  },
+  {
+   "rank": 50,
+   "tid": "449545",
+   "titulo": "Food Walking Tour with Tapas and Wine",
+   "provincia": "barcelona",
+   "loc": "barcelona-l45",
+   "url": "https://www.getyourguide.com/barcelona-l45/barcelona-food-walking-tour-with-tapas-and-wine-t449545/",
+   "resenas": 2487,
+   "valoracion": 4.9,
+   "mejorPosicion": 66,
+   "distintivosGyg": [],
+   "listados": [
+    "barcelona#66"
+   ],
+   "puntos": 3.566,
+   "yaEnCatalogo": false
+  }
+ ]
+}

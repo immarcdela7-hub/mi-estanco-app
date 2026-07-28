@@ -27,6 +27,12 @@ function cleanTitle(t) {
     .replace(/\s*\(Verified Reviews\)\s*$/i, '')
     .replace(/\s+/g, ' ').trim();
 }
+/* og:image viene con el preset /53.jpg, que son 180x180 y en la tarjeta se ve
+   borroso. El catalogo va todo en /99.jpg (1585x792). */
+function altaResolucion(url) {
+  return String(url).split('?')[0].replace(/\/\d+\.jpg$/i, '/99.jpg');
+}
+
 function trimDesc(d, n = 165) {
   d = String(d || '').replace(/\s+/g, ' ').trim();
   if (d.length <= n) return d;
@@ -90,13 +96,14 @@ for (let i = 0; i < candidates.length; i++) {
       titulo,
       descripcion: c.descripcion || trimDesc(d.ogDesc),
       precio,
-      precio_display: c.precio_display || (precio ? `From ${precio}€` : ''),
+      // Mismo formato que el resto del catalogo (lo fija apply-prices.mjs).
+      precio_display: c.precio_display || (precio ? `from ${precio}€` : ''),
       rating,
       trending: c.trending ? 'si' : 'no',
       keywords: (c.keywords || `${titulo} ${c.city} ${c.categoria}`).toLowerCase(),
       etiqueta_pie: c.etiqueta_pie || '',
       url_getyourguide: clean + PARTNER,
-      imagen: d.ogImage.split('?')[0],
+      imagen: altaResolucion(d.ogImage),
       imagen_old: '',
     };
     records.push(row);

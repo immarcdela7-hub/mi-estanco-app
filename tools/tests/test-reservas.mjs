@@ -107,7 +107,7 @@ const propias = await page.locator('.experience-item.ntl-own').count();
 log('La actividad propia se pinta en el catalogo', propias === 1, `${propias} tarjetas propias`);
 
 const total = await page.locator('.experience-item').count();
-log('Convive con las 101 de GetYourGuide', total === 102, `${total} tarjetas en total`);
+log('Convive con las 125 de GetYourGuide', total === 126, `${total} tarjetas en total`);
 
 const distintivo = await page.evaluate(() => {
   const c = document.querySelector('.experience-item.ntl-own');
@@ -356,7 +356,7 @@ const sinCrm = await p3.evaluate(() => {
   };
 });
 log('Con el CRM caido el catalogo sigue completo',
-  sinCrm.tarjetas === 101 && sinCrm.propias === 0, JSON.stringify(sinCrm));
+  sinCrm.tarjetas === 125 && sinCrm.propias === 0, JSON.stringify(sinCrm));
 log('Y la atribucion tampoco se resiente',
   sinCrm.total > 0 && sinCrm.conCmp === sinCrm.total, `${sinCrm.conCmp}/${sinCrm.total}`);
 log('Sin errores de JS al fallar el CRM', err3.length === 0, err3.slice(0, 2).join(' | ') || 'ninguno');

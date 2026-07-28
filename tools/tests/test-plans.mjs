@@ -236,17 +236,22 @@ await noP.close();
 
 log('Sin errores de JS', errs.length === 0, errs.slice(0, 2).join(' | ') || 'ninguno');
 
-// Capturas
-const shot = await pageAt('2026-07-25T20:30:00');
-await shot.goto(BASE + '?ref=PRUEBA1&zona=salou', { waitUntil: 'domcontentloaded' });
-await shot.waitForTimeout(1000);
-await shot.click('#btnPlans');
-await shot.waitForTimeout(600);
-await shot.screenshot({ path: './capturas/plans.png' });
-await shot.locator('.ntl-pcard').first().click();
-await shot.waitForTimeout(500);
-await shot.screenshot({ path: './capturas/plan-detalle.png' });
-await shot.close();
+// Capturas. Producto secundario: si fallan (es la ultima de muchas paginas y a
+// veces se atraganta) no pueden tumbar unas pruebas que ya han pasado.
+try {
+  const shot = await pageAt('2026-07-25T20:30:00');
+  await shot.goto(BASE + '?ref=PRUEBA1&zona=salou', { waitUntil: 'domcontentloaded', timeout: 60000 });
+  await shot.waitForSelector('#btnPlans', { timeout: 20000 });
+  await shot.click('#btnPlans');
+  await shot.waitForSelector('.ntl-pcard', { timeout: 20000 });
+  await shot.screenshot({ path: './capturas/plans.png' });
+  await shot.locator('.ntl-pcard').first().click();
+  await shot.waitForSelector('.ntl-step', { timeout: 20000 });
+  await shot.screenshot({ path: './capturas/plan-detalle.png' });
+  await shot.close();
+} catch (e) {
+  console.log('  (aviso: no se pudieron hacer las capturas -- ' + String(e.message).split('\n')[0] + ')');
+}
 
 await browser.close();
 const bad = results.filter((r) => !r.p);

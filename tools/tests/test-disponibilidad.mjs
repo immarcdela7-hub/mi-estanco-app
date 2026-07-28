@@ -9,20 +9,25 @@ import { execFileSync } from 'node:child_process';
 import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const raiz = join(fileURLToPath(new URL('.', import.meta.url)), '..', '..');
 const fuente = join(raiz, 'crm-web', 'src', 'lib', 'booking.ts');
 const salida = mkdtempSync(join(tmpdir(), 'ntl-booking-'));
 
+// Se llama al compilador con node en vez de con npx: npx es un .cmd en Windows y
+// Node ya no deja lanzar .cmd sin shell (spawnSync da EINVAL). Asi funciona igual
+// en cualquier sistema y no depende del PATH.
+const tsc = join(raiz, 'crm-web', 'node_modules', 'typescript', 'bin', 'tsc');
 execFileSync(
-  'npx',
-  ['tsc', fuente, '--outDir', salida, '--module', 'esnext', '--target', 'es2022',
+  process.execPath,
+  [tsc, fuente, '--outDir', salida, '--module', 'esnext', '--target', 'es2022',
     '--moduleResolution', 'bundler', '--skipLibCheck'],
   { cwd: join(raiz, 'crm-web'), stdio: 'pipe' }
 );
 
-const B = await import(join(salida, 'booking.js'));
+// En Windows una ruta como C:\... no es una URL valida para import().
+const B = await import(pathToFileURL(join(salida, 'booking.js')).href);
 
 const results = [];
 function log(name, pass, detail) {
