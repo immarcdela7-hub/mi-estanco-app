@@ -31,8 +31,15 @@ abre una **vista aparte** que oculta el catálogo (todo lo marcado con
 
 Elige 3 actividades **sin preguntar nada**, a partir de:
 
+- **Qué está abierto dentro de dos horas.** Es un filtro, no un peso: si a esa
+  hora está cerrado, no se recomienda y punto. Nadie sale de casa en el momento
+  de mirar el móvil, así que se planifica con dos horas de margen. Si a esa hora
+  no quedan al menos tres cosas abiertas —de madrugada no quedan—, se pasa a
+  mañana por la mañana **y se dice en el texto**, en vez de proponer un museo
+  cerrado. De ahí salen las columnas `horario` y `franja` del catálogo.
 - **La hora**: mañana → cultura y excursiones; tarde → mar y aventura;
-  noche → gastronomía, flamenco, atardeceres y fiesta.
+  noche → gastronomía, flamenco, atardeceres y fiesta. Los cortes están puestos
+  sobre la hora *objetivo*, no la actual.
 - **La zona del cartel QR**: el CRM graba la ciudad del establecimiento en el
   propio QR (`?zona=lloret-de-mar`), así que prioriza lo que hay cerca y lo dice
   ("Right here in Lloret de Mar").
@@ -200,7 +207,7 @@ El origen del CRM se fija en `tickets.html` (`window.NTL_CRM`), no dentro de
 
 ## Pruebas
 
-En `tools/tests/` hay seis baterías con navegador real. Ejecútalas ante
+En `tools/tests/` hay nueve baterías con navegador real. Ejecútalas ante
 cualquier cambio en `web/` — sobre todo por la atribución, que es un fallo
 silencioso: si un enlace pierde el `cmp`, la web *parece* seguir bien pero las
 ventas ya no se pueden repartir. Ver `tools/tests/README.md`.
@@ -221,11 +228,20 @@ catalog.js    (generado; lo carga tickets.html y pinta las tarjetas)
 ### Añadir una actividad
 
 1. Añade una fila a `catalog.csv` (Excel/Sheets sirve; se guarda como CSV UTF-8).
-2. Consigue la **foto**: se scrapea sola (ver abajo) o pega a mano la URL de la
+2. **Clasifica su horario. Es obligatorio.** Rellena `horario` con la ventana en
+   la que la actividad puede **empezar** (`09:00-18:00`) y `franja` con
+   `dia`, `tarde`, `noche` o `flexible`. Si cruza medianoche, la hora de cierre
+   va antes que la de apertura (`23:00-03:00`).
+3. Consigue la **foto**: se scrapea sola (ver abajo) o pega a mano la URL de la
    imagen de GetYourGuide (clic derecho sobre la foto → Copiar dirección de la
    imagen) en la columna `imagen`.
-3. Regenera: `node tools/build-catalog.mjs`.
-4. Despliega (sincroniza `web/` → `/var/www/ntl`; no hace falta reiniciar nginx).
+4. Regenera: `node tools/build-catalog.mjs`.
+5. Despliega (sincroniza `web/` → `/var/www/ntl`; no hace falta reiniciar nginx).
+
+> `build-catalog.mjs` **se niega a generar** si alguna fila se queda sin horario,
+> y `add-activities.mjs` lo comprueba antes de abrir el navegador. No es una
+> molestia: sin ventana horaria el recomendador vuelve a proponer la Sagrada
+> Familia a las 23:33, que es de donde viene esta regla.
 
 ### Columnas de `catalog.csv`
 
@@ -241,6 +257,8 @@ catalog.js    (generado; lo carga tickets.html y pinta las tarjetas)
 | `precio_display` | texto de precio, `from N€` (precio real "desde" de GYG) |
 | `rating` | nota (p. ej. 4.8) |
 | `distintivo` | `travelers-choice`, `top-pick` o vacío (ver abajo) |
+| `horario` | **obligatorio.** Ventana en la que puede *empezar*: `09:00-18:00`. Si cierra antes de abrir, cruza medianoche (`23:00-03:00`) |
+| `franja` | `dia` \| `tarde` \| `noche` \| `flexible` |
 | `zonas` | ciudades a las que **también** sirve, separadas por `\|`. Vacío = solo la suya |
 | `keywords` | palabras para el buscador (`data-name`) |
 | `etiqueta_pie` | etiqueta pequeña del pie (p. ej. "Open Bar") |

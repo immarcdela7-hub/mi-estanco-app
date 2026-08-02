@@ -17,8 +17,26 @@ const DISTINTIVOS = ['travelers-choice', 'top-pick'];
 
 const { records } = parseCsv(readFileSync(CSV, 'utf8'));
 
+const FRANJAS = ['dia', 'tarde', 'noche', 'flexible'];
 const num = (v, d = 0) => { const n = parseFloat(String(v).replace(',', '.')); return Number.isFinite(n) ? n : d; };
+
+/** "9:30" -> 570 minutos, o null si no es una hora valida. */
+const hhmm = (v) => {
+  const m = /^(\d{1,2}):(\d{2})$/.exec(String(v).trim());
+  if (!m) return null;
+  const h = parseInt(m[1], 10), mi = parseInt(m[2], 10);
+  return h > 23 || mi > 59 ? null : h * 60 + mi;
+};
+const pad = (v) => {
+  const [h, m] = String(v).trim().split(':');
+  return String(parseInt(h, 10)).padStart(2, '0') + ':' + m;
+};
+
 const warn = [];
+// Errores que paran la generacion. Solo hay una clase: quedarse sin horario.
+// Una actividad sin ventana no se puede recomendar por hora, y colarla en el
+// catalogo significa volver a proponer la Sagrada Familia a las 23:33.
+const grave = [];
 
 const catalog = records.map((r, i) => {
   const provincia = (r.provincia || '').trim().toLowerCase();
@@ -44,12 +62,36 @@ const catalog = records.map((r, i) => {
   if (distintivo && !DISTINTIVOS.includes(distintivo)) {
     warn.push(`row ${i + 1} "${r.titulo}": unknown distintivo "${distintivo}" (valid: ${DISTINTIVOS.join(', ')} or empty)`);
   }
+  // Ventana en la que la actividad puede EMPEZAR ("09:00-18:00"). Si la hora de
+  // cierre es menor que la de apertura, cruza medianoche (discotecas). Sin esto
+  // el recomendador propone la Sagrada Familia a las 23:33.
+  const horario = String(r.horario || '').trim();
+  let abre = '', cierra = '';
+  if (horario) {
+    const m = horario.match(/^(\d{1,2}:\d{2})\s*-\s*(\d{1,2}:\d{2})$/);
+    if (m && hhmm(m[1]) !== null && hhmm(m[2]) !== null) {
+      abre = pad(m[1]);
+      cierra = pad(m[2]);
+    } else {
+      grave.push(`row ${i + 1} "${r.titulo}": horario mal formado "${horario}" (se espera HH:MM-HH:MM)`);
+    }
+  } else {
+    grave.push(`row ${i + 1} "${r.titulo}": SIN HORARIO`);
+  }
+  const franja = String(r.franja || '').trim().toLowerCase();
+  if (franja && !FRANJAS.includes(franja)) {
+    warn.push(`row ${i + 1} "${r.titulo}": franja desconocida "${franja}" (validas: ${FRANJAS.join(', ')})`);
+  }
+
   return {
     order: r.order ? parseInt(r.order, 10) : i + 1,
     provincia,
     city: (r.city || provincia).trim().toLowerCase(),
     categoria,
     categoriaLabel: r.categoria_label || '',
+    abre,
+    cierra,
+    franja: FRANJAS.includes(franja) ? franja : '',
     titulo: r.titulo || '',
     descripcion: r.descripcion || '',
     precio: num(r.precio),
@@ -63,6 +105,18 @@ const catalog = records.map((r, i) => {
     imagen: r.imagen || '',
   };
 }).sort((a, b) => a.order - b.order);
+
+// REGLA: toda actividad nueva se clasifica en su horario antes de entrar. Si
+// falta uno, no se genera nada: es preferible un catalogo sin actualizar a uno
+// que recomiende sitios cerrados.
+if (grave.length) {
+  console.error(`\nNo se ha generado nada. ${grave.length} actividad(es) sin horario valido:`);
+  grave.slice(0, 40).forEach((g) => console.error('  -', g));
+  if (grave.length > 40) console.error(`  ... y ${grave.length - 40} mas`);
+  console.error('\nAñade la columna "horario" (HH:MM-HH:MM, hora de INICIO) y "franja"');
+  console.error('(dia|tarde|noche|flexible) a esas filas de catalog.csv y vuelve a ejecutar.');
+  process.exit(1);
+}
 
 const banner = '/* AUTO-GENERATED from catalog.csv by tools/build-catalog.mjs — DO NOT EDIT BY HAND.\n' +
   `   ${catalog.length} activities. Regenerate with: node tools/build-catalog.mjs */\n`;

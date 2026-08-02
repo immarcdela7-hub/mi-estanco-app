@@ -56,7 +56,7 @@ log('El banner azul del hero desaparece', await page.locator('.ntl-hero').isHidd
 
 // ---------- Las tarjetas: fotos y descripcion, no una lista ----------
 const nCards = await page.locator('.ntl-pcard').count();
-log('Pinta los 6 planes como tarjetas', nCards === 6, `${nCards}`);
+log('Pinta los 12 planes como tarjetas', nCards === 12, `${nCards}`);
 const card = await page.evaluate(() => {
   const c = document.querySelector('.ntl-pcard');
   return {

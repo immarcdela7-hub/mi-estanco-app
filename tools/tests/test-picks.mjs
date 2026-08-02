@@ -85,7 +85,7 @@ log('Texto de contexto por la manana', /this morning/i.test((await morning.textC
 await morning.close();
 
 // ---------- 7. Zona del cartel QR ----------
-const salou = await pageAt('2026-07-25T20:30:00');
+const salou = await pageAt('2026-07-25T11:00:00');
 await salou.goto(BASE + '?ref=EST-TEST&zona=salou', { waitUntil: 'domcontentloaded' });
 await salou.waitForTimeout(1200);
 const sCtx = await salou.textContent('#picksContext');
@@ -96,6 +96,15 @@ const nearby = await salou.evaluate(() => {
   return urls.map((u) => { const m = byUrl.get(u.split('?')[0]); return m ? m.city : '?'; });
 });
 log('Prioriza actividades de la zona', nearby.filter((c) => c === 'salou' || c === 'cambrils').length >= 2, nearby.join(', '));
+
+// De noche la zona sigue mandando, pero dentro de lo que este abierto: en Salou
+// a las 22:30 solo queda una cosa, y exigir dos seria pedir lo imposible.
+const salouNoche = await pageAt('2026-07-25T20:30:00');
+await salouNoche.goto(BASE + '?ref=EST-TEST&zona=salou', { waitUntil: 'domcontentloaded' });
+await salouNoche.waitForTimeout(1200);
+const nCtx = await salouNoche.textContent('#picksContext');
+log('De noche sigue nombrando la zona', /salou/i.test(nCtx || ''), JSON.stringify(nCtx));
+await salouNoche.close();
 await salou.close();
 
 // ---------- 8. Sin repetir sitio ni motivo ----------

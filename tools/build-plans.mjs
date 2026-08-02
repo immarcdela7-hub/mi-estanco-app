@@ -40,9 +40,11 @@ for (const r of rows) {
   }
 
   const pasos = [];
+  const ventanas = [];
   for (let i = 0; i < tids.length; i++) {
     const a = byTid.get(tids[i]);
     if (!a) { problemas.push(`${r.id}: la actividad t${tids[i]} no esta en el catalogo`); continue; }
+    ventanas.push({ horario: a.horario || '', titulo: a.titulo });
     pasos.push({
       titulo: a.titulo,
       categoriaLabel: a.categoria_label,
@@ -55,6 +57,25 @@ for (const r of rows) {
     });
   }
   if (!pasos.length) { problemas.push(`${r.id}: sin actividades validas, se descarta`); continue; }
+
+  // ¿Se puede hacer de verdad, en ese orden? Cada parada tiene que poder
+  // empezar despues de la anterior. Los planes con "each" en la duracion son
+  // excursiones alternativas, no una cadena: ahi no aplica.
+  if (!/each/i.test(String(r.duracion || ''))) {
+    const min = (s) => { const [h, m] = s.split(':'); return parseInt(h, 10) * 60 + parseInt(m, 10); };
+    let tope = 0;
+    for (const v of ventanas) {
+      const m = v.horario.match(/^(\d{1,2}:\d{2})-(\d{1,2}:\d{2})$/);
+      if (!m) continue;
+      let abre = min(m[1]), cierra = min(m[2]);
+      if (cierra < abre) cierra += 1440;          // cruza medianoche
+      if (cierra < tope) {
+        problemas.push(`${r.id}: "${v.titulo}" cierra a las ${m[2]} y va despues de algo que empieza mas tarde`);
+        break;
+      }
+      tope = Math.max(tope, abre);
+    }
+  }
 
   plans.push({
     id: r.id,

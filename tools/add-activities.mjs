@@ -47,6 +47,26 @@ let order = Math.max(0, ...records.map((r) => parseInt(r.order) || 0));
 const candidates = JSON.parse(readFileSync(NEW, 'utf8'));
 console.log(`existing: ${records.length} rows; candidates: ${candidates.length}`);
 
+// REGLA: toda actividad nueva se clasifica en su horario. Se comprueba ANTES de
+// abrir el navegador: no tiene sentido scrapear media hora para que luego
+// build-catalog.mjs se niegue a generar. `horario` es la ventana en la que la
+// actividad puede EMPEZAR (HH:MM-HH:MM; si cierra < abre, cruza medianoche).
+const FRANJAS = ['dia', 'tarde', 'noche', 'flexible'];
+const sinHorario = candidates.filter(
+  (c) => !/^\d{1,2}:\d{2}\s*-\s*\d{1,2}:\d{2}$/.test(String(c.horario || '').trim())
+);
+const franjaMala = candidates.filter((c) => c.franja && !FRANJAS.includes(String(c.franja).trim()));
+if (sinHorario.length || franjaMala.length) {
+  console.error('\nNo se ha añadido nada. Cada actividad necesita su horario:');
+  sinHorario.slice(0, 20).forEach((c) =>
+    console.error(`  - sin horario valido: ${c.titulo || c.url || c.path}`));
+  franjaMala.slice(0, 20).forEach((c) =>
+    console.error(`  - franja "${c.franja}" desconocida (${FRANJAS.join('|')}): ${c.titulo || c.url || c.path}`));
+  console.error('\nEjemplo:  "horario": "09:00-18:00",  "franja": "dia"');
+  console.error('Una discoteca cruza medianoche:  "horario": "23:00-03:00",  "franja": "noche"');
+  process.exit(1);
+}
+
 const ctx = await chromium.launchPersistentContext(PROFILE, {
   channel: 'chrome', headless: false, viewport: { width: 1366, height: 900 }, locale: 'en-US',
   args: ['--disable-blink-features=AutomationControlled'],
@@ -100,6 +120,9 @@ for (let i = 0; i < candidates.length; i++) {
       precio_display: c.precio_display || (precio ? `from ${precio}€` : ''),
       rating,
       distintivo: c.distintivo || '',
+      // Obligatorio: sin ventana horaria build-catalog.mjs se niega a generar.
+      horario: c.horario || '',
+      franja: c.franja || '',
       keywords: (c.keywords || `${titulo} ${c.city} ${c.categoria}`).toLowerCase(),
       etiqueta_pie: c.etiqueta_pie || '',
       url_getyourguide: clean + PARTNER,

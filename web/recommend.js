@@ -10,22 +10,25 @@
   'use strict';
 
   // ---------- Contexto: franja horaria ----------
-  // Cada franja prioriza unas categorias y unas palabras clave.
+  // Cada franja prioriza unas categorias y unas palabras clave. Los cortes
+  // estan puestos sobre la hora OBJETIVO (dentro de dos horas), no sobre la
+  // hora actual: si "la manana" acabase a las 11:00, a las 09:00 la web diria
+  // "esto es lo que hariamos esta tarde", que suena a error aunque no lo sea.
   var SLOTS = [
     {
-      id: 'morning', from: 5, to: 11,
+      id: 'morning', from: 5, to: 12,
       label: 'this morning',
       cats: { culture: 3, tours: 3, sea: 1, food: 0 },
       words: ['skip-the-line', 'ticket', 'museum', 'guided', 'montserrat', 'day trip', 'breakfast', 'market'],
     },
     {
-      id: 'afternoon', from: 11, to: 16,
+      id: 'afternoon', from: 12, to: 17,
       label: 'this afternoon',
       cats: { sea: 3, tours: 3, culture: 2, food: 1 },
       words: ['kayak', 'snorkel', 'jet ski', 'beach', 'boat', 'bike', 'cable car', 'park'],
     },
     {
-      id: 'evening', from: 16, to: 21,
+      id: 'evening', from: 17, to: 21,
       label: 'tonight',
       cats: { food: 3, sea: 2, culture: 1, tours: 1 },
       words: ['sunset', 'tapas', 'flamenco', 'dinner', 'wine', 'vermouth', 'catamaran', 'concert', 'show'],
@@ -38,14 +41,60 @@
     },
   ];
 
-  function currentSlot(d) {
-    var h = d.getHours();
+  function slotDeHora(h) {
     for (var i = 0; i < SLOTS.length; i++) {
       var s = SLOTS[i];
       if (s.to > 24) { if (h >= s.from || h < s.to - 24) return s; }
       else if (h >= s.from && h < s.to) return s;
     }
     return SLOTS[0];
+  }
+
+  // ---------- Contexto: a que hora se puede empezar de verdad ----------
+  // Nadie sale de casa en el momento de mirar el movil: hay que reservar,
+  // llegar y aparcar. Se recomienda para dentro de dos horas, no para ahora.
+  var ANTELACION_MIN = 120;
+  // Si ya no da tiempo a nada hoy, se apunta a manana a esta hora.
+  var HORA_MANANA = 10 * 60;
+
+  function minutosDe(v) {
+    var m = /^(\d{1,2}):(\d{2})$/.exec(String(v == null ? '' : v).trim());
+    if (!m) return null;
+    var h = parseInt(m[1], 10), mi = parseInt(m[2], 10);
+    return h > 23 || mi > 59 ? null : h * 60 + mi;
+  }
+
+  /**
+   * ¿Se puede EMPEZAR esta actividad a los `t` minutos del dia?
+   * Devuelve null si no sabemos su horario, para poder distinguir "cerrado"
+   * de "sin datos": lo primero se descarta, lo segundo solo se deja el ultimo.
+   */
+  function abiertoA(a, t) {
+    var abre = minutosDe(a.abre), cierra = minutosDe(a.cierra);
+    if (abre === null || cierra === null) return null;
+    if (cierra > abre) return t >= abre && t <= cierra;
+    return t >= abre || t <= cierra;   // cruza medianoche (discotecas)
+  }
+
+  /**
+   * Que se puede hacer, y cuando. Si a la hora objetivo no hay al menos tres
+   * cosas abiertas —a las 23:33 no las hay— se pasa a manana por la manana en
+   * vez de proponer un museo cerrado.
+   */
+  function planificar(catalog, now) {
+    var t = (now.getHours() * 60 + now.getMinutes() + ANTELACION_MIN) % 1440;
+    var abiertas = catalog.filter(function (a) { return abiertoA(a, t) === true; });
+    if (abiertas.length >= 3) {
+      return { objetivo: t, lista: abiertas, manana: false };
+    }
+    var manana = catalog.filter(function (a) { return abiertoA(a, HORA_MANANA) === true; });
+    // Sin horarios en el catalogo no podemos filtrar: mejor recomendar algo
+    // que dejar la barra vacia, pero se nota en el aviso del generador.
+    return {
+      objetivo: HORA_MANANA,
+      lista: manana.length >= 3 ? manana : catalog,
+      manana: true,
+    };
   }
 
   // ---------- Contexto: zona del cartel QR ----------
@@ -232,11 +281,15 @@
     return opts[0];
   }
 
-  function contextLine(slot, place, now) {
+  function contextLine(slot, place, now, manana) {
     var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     var hh = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
     var where = place ? ' in ' + place.name : ' in Catalunya';
-    return days[now.getDay()] + ', ' + hh + where + ' — here is what we would do ' + slot.label + '.';
+    var cabeza = days[now.getDay()] + ', ' + hh + where + ' — ';
+    // Decirlo en vez de disimularlo: si ya no da tiempo, se propone manana.
+    return manana
+      ? cabeza + 'too late to start anything now. Here is what we would do tomorrow.'
+      : cabeza + 'here is what we would do ' + slot.label + '.';
   }
 
   // ---------- Arranque ----------
@@ -252,13 +305,17 @@
     if (!catalog.length) return; // sin datos no mostramos el bloque
 
     var now = new Date();
-    var slot = currentSlot(now);
+    // Primero QUE esta abierto dentro de dos horas, y solo despues cual de
+    // esas encaja mejor. Antes era al reves y por eso salia la Sagrada Familia
+    // a las 23:33: la puntuacion por franja era un peso, no un filtro.
+    var plan = planificar(catalog, now);
+    var slot = plan.manana ? SLOTS[0] : slotDeHora(Math.floor(plan.objetivo / 60));
     var place = readZone(catalog);
 
-    if (ctx) ctx.textContent = contextLine(slot, place, now);
+    if (ctx) ctx.textContent = contextLine(slot, place, now, plan.manana);
 
     function render(jitter) {
-      var ranked = catalog
+      var ranked = plan.lista
         .map(function (a) { return { a: a, s: score(a, slot, place, jitter) }; })
         .sort(function (x, y) { return y.s - x.s; })
         .map(function (o) { return o.a; });

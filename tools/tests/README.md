@@ -1,6 +1,6 @@
 # Pruebas de la web (navegador real)
 
-Siete baterías sobre `web/` y el motor de reservas del CRM, con Playwright.
+Nueve baterías sobre `web/` y el motor de reservas del CRM, con Playwright.
 Cubren lo que no se puede ver leyendo el código: que la **atribución**
 sobreviva a cada cambio, que los filtros y las vistas funcionen, que se pueda
 reservar de principio a fin sin salir de la web, y que nada desborde en móvil.
@@ -17,6 +17,7 @@ node tests/test-plans.mjs                 # planes, detalle y disponibilidad
 node tests/test-gyg-widgets.mjs           # widgets de GYG inyectados por JS
 node tests/test-reservas.mjs              # reserva propia, de punta a punta
 node tests/test-disponibilidad.mjs        # motor de cupo del CRM (sin navegador)
+node tests/test-horarios.mjs              # que nunca se recomiende algo cerrado
 node tests/test-distintivos.mjs           # pastillas de las tarjetas y su atribucion
 node tests/test-zonas.mjs                 # ?zona= por ciudad y la regla del city
 ```
@@ -36,6 +37,13 @@ base de datos ni red. Comprueba además tres cosas que son de negocio, no de
 pantalla: que la reserva viaja con el código del QR (si no, la venta no se
 puede repartir), que el precio lo pone el CRM y no el navegador, y que si el
 CRM se cae el catálogo de GetYourGuide sigue entero y con su atribución.
+
+`test-horarios.mjs` congela el reloj del navegador y recorre el dia entero. La
+regla que vigila es una sola y no admite excepciones: **nada de lo que se
+recomienda puede estar cerrado a la hora en que se propone empezar**, ni de
+madrugada ni tras seis tiradas de "Surprise me". Y comprueba que el texto y las
+tarjetas cuenten lo mismo: decir "esto es lo que haríamos esta noche" y enseñar
+un museo es el fallo del que nació esta batería.
 
 `test-disponibilidad.mjs` no abre navegador: compila
 `crm-web/src/lib/booking.ts` y prueba el motor que decide qué se ofrece y qué
@@ -60,14 +68,14 @@ funcionando ahora que el apaño se ha quitado del código y vive en los datos.
 **La prueba que nunca debe fallar** es la de atribución: si un cambio deja
 enlaces sin `cmp=EST-XXXXX`, las ventas dejan de poder repartirse al
 establecimiento y la web *parece* seguir bien. Es un fallo silencioso, por eso
-se comprueba en las cuatro baterías.
+se comprueba en todas las baterías.
 
 ## Dos cosas que dan falsos negativos
 
 **Sin salida a `widget.getyourguide.com`**, `test-gyg-widgets.mjs` se queda en
 7/15: el script de GYG no carga y todo lo que depende de él cae en cascada. Se
 reconoce porque el primer fallo es `El script de GYG carga y expone su API --
-GYG.refresh=undefined`; los demás son consecuencia. Las otras tres baterías sí
+GYG.refresh=undefined`; los demás son consecuencia. Las demás baterías sí
 pasan enteras sin red. Si necesitas verificar los widgets, hazlo desde una
 máquina con internet abierto.
 
