@@ -3,7 +3,7 @@ import { getSession } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { getSetting } from "@/lib/settings";
 import { buildTrackingUrl } from "@/lib/qr";
-import { stampFlyers } from "@/lib/flyer";
+import { getFormato, stampFlyers } from "@/lib/flyer";
 
 export const maxDuration = 60;
 
@@ -39,16 +39,20 @@ export async function GET(
     return new NextResponse("No autorizado", { status: 403 });
   }
 
-  const copias = Math.min(20, Math.max(1, parseInt(req.nextUrl.searchParams.get("copias") ?? "1", 10) || 1));
+  const formato = getFormato(req.nextUrl.searchParams.get("formato"));
+  const copias = Math.min(50, Math.max(1, parseInt(req.nextUrl.searchParams.get("copias") ?? "1", 10) || 1));
   const baseUrl = await getSetting("base_url");
   const url = buildTrackingUrl(baseUrl, code, est.city);
 
-  const pdf = await stampFlyers(Array.from({ length: copias }, () => [code, url] as [string, string]));
+  const pdf = await stampFlyers(
+    Array.from({ length: copias }, () => [code, url] as [string, string]),
+    formato.id
+  );
 
   return new NextResponse(new Uint8Array(pdf), {
     headers: {
       "Content-Type": "application/pdf",
-      "Content-Disposition": `attachment; filename="cartel_${code}.pdf"`,
+      "Content-Disposition": `attachment; filename="${formato.id}_${code}.pdf"`,
       "Cache-Control": "private, no-store",
     },
   });

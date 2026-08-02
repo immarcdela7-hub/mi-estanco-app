@@ -1,5 +1,5 @@
-/* eslint-disable @next/next/no-img-element */
-import { EmptyState, PageHeader, Panel, btnGreen, btnSecondary } from "@/components/ui";
+import { EmptyState, PageHeader, Panel } from "@/components/ui";
+import { CartelesPanel } from "@/components/CartelesPanel";
 import { requirePartner } from "@/lib/auth";
 import { pct } from "@/lib/format";
 import { buildTrackingUrl } from "@/lib/qr";
@@ -20,40 +20,8 @@ export default async function PartnerQrPage() {
       />
 
       <div className="grid grid-cols-1 gap-4 xl:grid-cols-[1fr_1.4fr]">
-        <Panel title="Tu cartel">
-          <div className="flex flex-col items-center gap-3">
-            <img
-              src={`/api/qr/${establishment.code}`}
-              alt={`QR ${establishment.code}`}
-              width={230}
-              height={230}
-              className="rounded-lg border border-line"
-            />
-            <a href={`/api/descargas/cartel/${establishment.code}`} className={`${btnGreen} w-full`}>
-              Descargar cartel A6 (PDF)
-            </a>
-            <div className="flex w-full items-center justify-center gap-3 text-[13px] text-muted">
-              <span>¿Varias mesas?</span>
-              <a
-                href={`/api/descargas/cartel/${establishment.code}?copias=5`}
-                className="font-semibold text-brand-blue-dark hover:underline"
-              >
-                5 copias
-              </a>
-              <a
-                href={`/api/descargas/cartel/${establishment.code}?copias=10`}
-                className="font-semibold text-brand-blue-dark hover:underline"
-              >
-                10 copias
-              </a>
-            </div>
-            <a
-              href={`/api/qr/${establishment.code}?download=1`}
-              className={`${btnSecondary} w-full`}
-            >
-              Solo el QR (PNG)
-            </a>
-          </div>
+        <Panel title="Tus carteles">
+          <CartelesPanel code={establishment.code} qrSize={210} />
         </Panel>
 
         <Panel title="Cómo usarlo">

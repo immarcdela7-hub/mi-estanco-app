@@ -1,12 +1,11 @@
-/* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ActionForm } from "@/components/ActionForm";
+import { CartelesPanel } from "@/components/CartelesPanel";
 import {
   Badge,
   PageHeader,
   Panel,
-  btnGreen,
   btnSecondary,
   inputCls,
   labelCls,
@@ -64,42 +63,14 @@ export default async function EstablishmentDetail({
           {/* Lo que se cuelga en el local es el cartel entero, no un QR suelto:
               por eso el PDF va primero y el PNG queda para quien quiera
               montárselo aparte (una pegatina, la carta, un expositor). */}
-          <Panel title="Cartel para imprimir">
-            <div className="flex flex-col items-center gap-3">
-              <img
-                src={`/api/qr/${est.code}`}
-                alt={`QR ${est.code}`}
-                width={190}
-                height={190}
-                className="rounded-lg border border-line"
-              />
-              <a href={`/api/descargas/cartel/${est.code}`} className={`${btnGreen} w-full`}>
-                Descargar cartel A6 (PDF)
-              </a>
-              <div className="flex w-full items-center justify-center gap-3 text-[13px] text-muted">
-                <span>¿Varias mesas?</span>
-                <a
-                  href={`/api/descargas/cartel/${est.code}?copias=5`}
-                  className="font-semibold text-brand-blue-dark hover:underline"
-                >
-                  5 copias
-                </a>
-                <a
-                  href={`/api/descargas/cartel/${est.code}?copias=10`}
-                  className="font-semibold text-brand-blue-dark hover:underline"
-                >
-                  10 copias
-                </a>
-              </div>
-              <a href={`/api/qr/${est.code}?download=1`} className={`${btnSecondary} w-full`}>
-                Solo el QR (PNG)
-              </a>
+          <Panel title="Carteles para imprimir">
+            <CartelesPanel code={est.code}>
               <code className="w-full overflow-x-auto rounded-lg bg-slate-100 px-3 py-2 text-xs text-slate-700">
                 {url}
               </code>
               {extraCodes.length > 0 && (
                 <div className="w-full text-sm">
-                  <span className="font-semibold text-slate-700">Carteles adicionales: </span>
+                  <span className="font-semibold text-slate-700">Códigos adicionales: </span>
                   {extraCodes.map((c) => (
                     <span key={c.code} className="mr-1 inline-flex items-center gap-1">
                       <Badge color="blue">{c.code}</Badge>
@@ -115,11 +86,11 @@ export default async function EstablishmentDetail({
               )}
               {!est.city && (
                 <p className="w-full rounded-lg bg-amber-50 px-3 py-2 text-[13px] text-amber-900">
-                  Este local no tiene ciudad. El cartel funcionará, pero la web no
+                  Este local no tiene ciudad. Los carteles funcionarán, pero la web no
                   podrá enseñar primero lo que hay cerca. Rellénala antes de imprimir.
                 </p>
               )}
-            </div>
+            </CartelesPanel>
           </Panel>
 
           <Panel title="Acceso al portal">
