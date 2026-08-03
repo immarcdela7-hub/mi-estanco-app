@@ -115,9 +115,9 @@ export default async function SalesPage({
 
         <Panel title="Importar CSV">
           <p className="mb-3 text-sm text-muted">
-            Una fila por venta con columnas: <code className="text-xs">fecha, codigo_establecimiento,
-            referencia_reserva, actividad, entradas, importe_total, comision_gyg</code>. Las
-            reservas ya registradas se descartan para no duplicar.
+            Sube el <b>export de GetYourGuide</b> (Dashboard → Bookings → Export) tal cual, sin
+            retocar sus cabeceras, o la plantilla de abajo. El formato se detecta solo. Las
+            reservas ya registradas y las anuladas se descartan.
           </p>
           <a
             className={`${btnSecondary} mb-4`}
@@ -133,6 +133,20 @@ export default async function SalesPage({
               accept=".csv,text/csv"
               className="block w-full text-sm text-slate-600 file:mr-3 file:rounded-lg file:border-0 file:bg-slate-100 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-slate-700 hover:file:bg-slate-200"
             />
+            {/* Una venta sin campaña no dice de qué QR viene, así que no se
+                puede repartir. Descartarla es lo reversible: siempre se puede
+                volver a importar eligiendo destino. */}
+            <div className="mt-3">
+              <label className={labelCls}>Ventas sin campaña (sin código de QR)</label>
+              <select name="sinCampana" className={inputCls} defaultValue="">
+                <option value="">Descartarlas y avisarme</option>
+                {establishments.map((e) => (
+                  <option key={e.id} value={e.id}>
+                    Cargarlas a {e.name} ({e.code})
+                  </option>
+                ))}
+              </select>
+            </div>
           </ActionForm>
         </Panel>
       </div>

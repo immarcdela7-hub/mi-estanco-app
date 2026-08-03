@@ -7,6 +7,7 @@ import { Prisma } from "@prisma/client";
 import { requireAdmin } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { euros, plural } from "@/lib/format";
+import { detectarFormato, normalizar } from "@/lib/gygCsv";
 import type { FormState } from "./auth";
 
 function share(gyg: number, pctVal: Prisma.Decimal): number {
@@ -52,34 +53,16 @@ export async function addSaleAction(_prev: FormState, formData: FormData): Promi
   );
 }
 
-function toNumberEs(value: string): number {
-  let s = value.trim().replace("€", "").replace(/\s/g, "");
-  if (!s) return 0;
-  if (s.includes(",") && s.includes(".")) s = s.replace(/\./g, "").replace(",", ".");
-  else if (s.includes(",")) s = s.replace(",", ".");
-  const n = parseFloat(s);
-  return Number.isNaN(n) ? 0 : n;
-}
-
-function toIsoDate(value: string): string | null {
-  const s = value.trim().slice(0, 10);
-  let m = s.match(/^(\d{4})[-/](\d{2})[-/](\d{2})$/);
-  if (m) return `${m[1]}-${m[2]}-${m[3]}`;
-  m = s.match(/^(\d{2})[-/](\d{2})[-/](\d{4})$/);
-  if (m) return `${m[3]}-${m[2]}-${m[1]}`;
-  return null;
-}
-
-const CSV_COLUMNS = [
-  "fecha",
-  "codigo_establecimiento",
-  "referencia_reserva",
-  "actividad",
-  "entradas",
-  "importe_total",
-  "comision_gyg",
-];
-
+/**
+ * Importa ventas desde el CSV propio **o desde el export de GetYourGuide tal
+ * cual** (Dashboard → Bookings → Export). El formato se detecta por las
+ * cabeceras: nadie tiene que decir cuál está subiendo.
+ *
+ * Las ventas sin campaña no se pueden repartir —no traen de qué QR vienen— y
+ * qué hacer con ellas lo decide quien importa: descartarlas o cargarlas a un
+ * establecimiento concreto. Por omisión se descartan, que es lo que no se
+ * puede deshacer sin borrar a mano.
+ */
 export async function importCsvAction(_prev: FormState, formData: FormData): Promise<FormState> {
   await requireAdmin();
 
@@ -103,62 +86,94 @@ export async function importCsvAction(_prev: FormState, formData: FormData): Pro
     return { error: "El CSV supera el máximo de 5000 filas. Divídelo en varios archivos." };
   }
 
-  const headers = Object.keys(rows[0]);
-  const missing = CSV_COLUMNS.filter((c) => !headers.includes(c));
-  if (missing.length > 0) {
-    return { error: `Faltan columnas en el CSV: ${missing.join(", ")}` };
+  const formato = detectarFormato(Object.keys(rows[0]));
+  if (!formato) {
+    return {
+      error:
+        "No reconozco las columnas. Sube la plantilla de ventas o el export de " +
+        "GetYourGuide (Dashboard → Bookings → Export), sin retocar sus cabeceras.",
+    };
   }
 
+  // A dónde van las ventas sin campaña: "" las descarta.
+  const destinoSinCampana = parseInt(String(formData.get("sinCampana") ?? ""), 10);
+  const refugio = Number.isNaN(destinoSinCampana)
+    ? null
+    : await prisma.establishment.findUnique({ where: { id: destinoSinCampana } });
+
+  const { filas, descartes, anuladas } = normalizar(rows, formato);
+  const issues = [...descartes];
   let imported = 0;
-  const issues: string[] = [];
-  for (const [i, row] of rows.entries()) {
-    const line = i + 2;
-    const code = (row["codigo_establecimiento"] ?? "").trim();
-    const est = await findEstablishmentByCode(code);
+  let sinCampana = 0;
+
+  for (const fila of filas) {
+    let est = fila.codigo ? await findEstablishmentByCode(fila.codigo) : null;
+    if (!est && !fila.codigo) {
+      // Sin campaña: la venta es nuestra, pero no sabemos de qué QR viene.
+      if (!refugio) { sinCampana++; continue; }
+      est = refugio;
+    }
     if (!est) {
-      issues.push(`Línea ${line}: código ${code} no existe.`);
+      issues.push(`Línea ${fila.linea}: código ${fila.codigo} no existe.`);
       continue;
     }
-    const iso = toIsoDate(row["fecha"] ?? "");
-    if (!iso) {
-      issues.push(`Línea ${line}: fecha «${row["fecha"]}» no reconocida (AAAA-MM-DD o DD/MM/AAAA).`);
-      continue;
-    }
-    const bookingRef = (row["referencia_reserva"] ?? "").trim();
-    if (bookingRef) {
+    if (fila.referencia) {
+      // El localizador identifica una reserva en todo GetYourGuide, así que se
+      // busca en todo el CRM y no solo en ese establecimiento: importar dos
+      // veces el mismo export con distinta campaña pagaría la venta dos veces.
       const dup = await prisma.sale.findFirst({
-        where: { establishmentId: est.id, bookingRef },
-        select: { id: true },
+        where: { bookingRef: fila.referencia },
+        select: { id: true, establishment: { select: { name: true } } },
       });
       if (dup) {
-        issues.push(`Línea ${line}: la reserva ${bookingRef} ya estaba registrada para ${est.name} — no se ha duplicado.`);
+        issues.push(
+          `Línea ${fila.linea}: la reserva ${fila.referencia} ya estaba registrada ` +
+            `(${dup.establishment.name}) — no se ha duplicado.`
+        );
         continue;
       }
     }
-    const gyg = toNumberEs(row["comision_gyg"] ?? "0");
     await prisma.sale.create({
       data: {
         establishmentId: est.id,
-        saleDate: new Date(iso),
-        activity: (row["actividad"] ?? "").trim(),
-        bookingRef,
-        tickets: Math.max(1, Math.round(toNumberEs(row["entradas"] ?? "1")) || 1),
-        amountTotal: toNumberEs(row["importe_total"] ?? "0"),
-        gygCommission: gyg,
-        partnerShare: share(gyg, est.commissionPct),
-        source: "csv",
+        saleDate: new Date(fila.fecha),
+        activity: fila.actividad,
+        bookingRef: fila.referencia,
+        tickets: fila.entradas,
+        amountTotal: fila.importeTotal,
+        gygCommission: fila.comision,
+        partnerShare: share(fila.comision, est.commissionPct),
+        source: formato === "gyg" ? "gyg" : "csv",
       },
     });
     imported++;
   }
 
   revalidateAll();
-  const summary = imported > 0 ? `${plural(imported, "venta importada", "ventas importadas")} como pendientes.` : "No se importó ninguna venta.";
-  if (issues.length > 0) {
-    if (imported > 0) return ok(`${summary} Incidencias: ${issues.join(" · ")}`);
-    return { error: `${summary} ${issues.join(" · ")}` };
+
+  const notas: string[] = [];
+  if (anuladas > 0) {
+    notas.push(`${plural(anuladas, "reserva anulada", "reservas anuladas")} sin importar.`);
   }
-  return ok(summary);
+  if (sinCampana > 0) {
+    notas.push(
+      `${plural(sinCampana, "venta sin campaña", "ventas sin campaña")} sin importar: no ` +
+        `traen de qué QR vienen. Si son tuyas, vuelve a importar eligiendo dónde cargarlas.`
+    );
+  }
+  if (formato === "gyg" && imported > 0) {
+    notas.push("Su export no trae el importe que pagó el cliente, así que queda en 0€; el reparto se calcula sobre la comisión y no se ve afectado.");
+  }
+
+  const summary =
+    imported > 0
+      ? `${plural(imported, "venta importada", "ventas importadas")} como pendientes.`
+      : "No se importó ninguna venta.";
+  const cola = [...notas, ...(issues.length ? [`Incidencias: ${issues.join(" · ")}`] : [])].join(" ");
+  if (imported === 0 && (issues.length > 0 || sinCampana > 0)) {
+    return { error: `${summary} ${cola}`.trim() };
+  }
+  return ok(`${summary} ${cola}`.trim());
 }
 
 async function findEstablishmentByCode(code: string) {

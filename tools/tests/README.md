@@ -1,6 +1,6 @@
 # Pruebas de la web (navegador real)
 
-Once baterías sobre `web/` y el motor de reservas del CRM, con Playwright.
+Doce baterías sobre `web/` y el motor de reservas del CRM, con Playwright.
 Cubren lo que no se puede ver leyendo el código: que la **atribución**
 sobreviva a cada cambio, que los filtros y las vistas funcionen, que se pueda
 reservar de principio a fin sin salir de la web, y que nada desborde en móvil.
@@ -22,6 +22,7 @@ node tests/test-distintivos.mjs           # pastillas de las tarjetas y su atrib
 node tests/test-zonas.mjs                 # ?zona= por ciudad y la regla del city
 node tests/test-cesta.mjs                 # la cesta de los planes, su dia y su memoria
 node tests/test-plan-propio.mjs           # reservar un plan entero de una vez
+node tests/test-import-gyg.mjs            # leer el export de ventas de GetYourGuide
 ```
 
 Cada una imprime `=== N/N pruebas OK ===`. Las capturas van a `tools/capturas/`.
@@ -89,6 +90,16 @@ curl -s -X POST $CRM/api/publico/reservas -H 'Content-Type: application/json' \
   {"slug":"b","fecha":"…","hora":"23:00","personas":2}],"nombre":"X","email":"x@y.z"}'
 # -> 409 con la parada que falla, y CERO reservas creadas
 ```
+
+`test-import-gyg.mjs` tampoco abre navegador: compila `crm-web/src/lib/gygCsv.ts`
+y prueba la lectura del **export de ventas de GetYourGuide**, con los casos
+sacados de su fichero real. Aquí un fallo no se ve —una comisión mal leída se
+paga al establecimiento y ya no vuelve—, así que vigila las tres trampas de su
+formato: que la **fila de totales** del final no entre como venta fantasma (que
+además cuadraría con la suma, y por eso nadie la buscaría), que se use la fecha
+de **compra** y no la de la visita, y que una reserva **cancelada** no se
+convierta en dinero a repartir. Un estado que no conozcamos sí entra: que GYG
+invente una etiqueta nueva no puede hacer desaparecer una venta en silencio.
 
 `test-zonas.mjs` vigila la regla de negocio de la fase 3: que **ninguna actividad
 haya cambiado su `city`** para encajar en una zona (lo compara contra el CSV del

@@ -92,9 +92,23 @@ Esperado: `HTTP 200 · tipo=application/javascript` y la línea del `<script>`.
 ## Notas importantes
 
 - El `cmp` debe coincidir con el **código del establecimiento del CRM**
-  (`EST-XXXXX`); es lo que casa al importar el CSV en **Ventas → Importar CSV**
-  (columna `codigo_establecimiento`). Los QR del CRM ya usan ese código en el
+  (`EST-XXXXX`); es lo que casa al importar en **Ventas → Importar CSV**. En el
+  export de GetYourGuide esa columna se llama **`Campaign`**; en nuestra
+  plantilla, `codigo_establecimiento`. Los QR del CRM ya usan ese código en el
   `?ref=`, así que sale automático.
+- **Una venta con `Campaign` vacío no se puede repartir.** Es dinero nuestro,
+  pero sin saber de qué QR viene. Comprobado con la primera venta real (Prado,
+  29/07/2026): salió sin campaña. Lo que hay que descartar antes de dar por
+  buena la atribución:
+  1. que se entrara a `notaxlost.com/tickets` **sin** `?ref=` (lo más probable
+     y lo esperable: entonces no hay fallo que arreglar);
+  2. que el `cmp` no sobreviva a navegar **dentro** de GetYourGuide hasta otra
+     actividad distinta de la que se pinchó. El `partner_id` sí sobrevive —esa
+     venta se nos pagó—, pero eso no prueba que el `cmp` lo haga.
+
+  Se distingue con una compra de prueba: entrar con `?ref=`, pinchar una
+  actividad **del catálogo** y comprar esa misma. Si sale con campaña, el
+  sistema está bien y lo de antes fue el caso 1.
 - Si el cliente escanea en un móvil pero compra en otro dispositivo, la campaña
   se pierde (límite del modelo de afiliación de GYG).
 - El script actúa sobre los `<a href>` presentes al cargar la página. Si algún
