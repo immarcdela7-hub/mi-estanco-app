@@ -168,15 +168,23 @@ plantilla puede tener varias caras: la tarjeta de mesa a dos caras son dos
 páginas, y el PDF sale con las dos seguidas, que es como la quiere la imprenta.
 Si rehaces un diseño, vuelve a medir: las coordenadas no se deducen solas.
 
-**En la web** hace falta subir dos archivos: el módulo nuevo y la página que lo
+**En la web** hay que subir los módulos que hayan cambiado y la página que los
 carga. Se copian sueltos a propósito — un `rsync --delete` sobre `/var/www/ntl`
 borraría cualquier cosa que esté en el servidor y no en el repositorio.
 
 ```bash
 cd /opt/ntl-crm && git pull
 cp /var/www/ntl/tickets.html /var/www/ntl/tickets.html.bak   # por si acaso
-cp web/own.js web/tickets.html /var/www/ntl/
-chown www-data:www-data /var/www/ntl/own.js /var/www/ntl/tickets.html
+cp web/*.js web/*.csv web/tickets.html /var/www/ntl/
+chown www-data:www-data /var/www/ntl/*.js /var/www/ntl/*.csv /var/www/ntl/tickets.html
+```
+
+`tickets.html` va **siempre**, aunque solo cambie un `.js`: los scripts se piden
+con `?v=N` y si no sube el número el navegador sirve el viejo de caché. Para ver
+qué ha cambiado antes de copiar:
+
+```bash
+git diff --name-only HEAD@{1} HEAD -- web/
 ```
 
 La web llama a tres rutas públicas del CRM (`/api/publico/actividades`,
