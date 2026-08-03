@@ -1,6 +1,6 @@
 # Pruebas de la web (navegador real)
 
-Diez baterías sobre `web/` y el motor de reservas del CRM, con Playwright.
+Once baterías sobre `web/` y el motor de reservas del CRM, con Playwright.
 Cubren lo que no se puede ver leyendo el código: que la **atribución**
 sobreviva a cada cambio, que los filtros y las vistas funcionen, que se pueda
 reservar de principio a fin sin salir de la web, y que nada desborde en móvil.
@@ -21,6 +21,7 @@ node tests/test-horarios.mjs              # que nunca se recomiende algo cerrado
 node tests/test-distintivos.mjs           # pastillas de las tarjetas y su atribucion
 node tests/test-zonas.mjs                 # ?zona= por ciudad y la regla del city
 node tests/test-cesta.mjs                 # la cesta de los planes y su memoria
+node tests/test-plan-propio.mjs           # reservar un plan entero de una vez
 ```
 
 Cada una imprime `=== N/N pruebas OK ===`. Las capturas van a `tools/capturas/`.
@@ -67,6 +68,22 @@ GetYourGuide y volver, que el cliente pueda desdecirse, y dos cosas que ya
 fallaron una vez: que abrir el mismo plan dos veces no cuente doble (el oyente
 se engancha una sola vez) y que marcar una parada no le cierre el calendario de
 otra al cliente. Va en su propia batería porque toca `localStorage`.
+
+`test-plan-propio.mjs` cubre lo que con GetYourGuide no se puede hacer:
+**reservar varias paradas de una vez**. Vigila que sea de verdad una sola
+operación (una petición con `items[]`, no una por parada), que el total y el
+localizador único cuadren, que el contador de arriba cuente las dos clases de
+parada, y que si el CRM rechaza se diga *cuál* falla sin dar el plan por hecho.
+La atomicidad de servidor —que un plan a medias no deje reservas sueltas— vive
+en la transacción serializable y se comprueba contra un Postgres real:
+
+```bash
+# con el CRM levantado y sembrado con dos actividades propias
+curl -s -X POST $CRM/api/publico/reservas -H 'Content-Type: application/json' \
+  -H "Origin: $WEB" -d '{"items":[{"slug":"a","fecha":"…","hora":"11:00","personas":2},
+  {"slug":"b","fecha":"…","hora":"23:00","personas":2}],"nombre":"X","email":"x@y.z"}'
+# -> 409 con la parada que falla, y CERO reservas creadas
+```
 
 `test-zonas.mjs` vigila la regla de negocio de la fase 3: que **ninguna actividad
 haya cambiado su `city`** para encajar en una zona (lo compara contra el CSV del

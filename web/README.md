@@ -93,7 +93,23 @@ la zona sale primero.
 
 El precio "from X€" del plan se calcula solo sumando los mínimos de sus paradas.
 
-### La cesta del plan
+### Reservar el plan entero (solo lo nuestro)
+
+Una parada de un plan puede ser **nuestra**: en `plans.csv` se escribe
+`ntl:<slug>` en vez del id de GetYourGuide. Esas no están en `catalog.csv` —viven
+en el CRM— así que `build-plans.mjs` las deja apuntadas y `plans-ui.js` las
+resuelve en el navegador con lo que trae `own.js`.
+
+Y son las únicas que se pueden meter en una cesta de verdad: **se reservan
+juntas, en una sola operación, todo o nada**. Un envío, un localizador, un
+total. Si la segunda parada se ha llenado por el camino, no se crea ninguna:
+nadie se queda con la cata pagada y sin la visita. Eso lo garantiza la
+transacción serializable de `POST /api/publico/reservas`, que acepta `items[]`.
+
+En un plan mixto se dice sin rodeos: *"2 of the 3 stops are ours, so they book
+here together. The rest are on GetYourGuide and go one at a time."*
+
+### La cesta del plan (paradas de GetYourGuide)
 
 **GetYourGuide no tiene cesta para afiliados**: cada enlace vende una actividad
 y no hay URL que acepte varios `tour_id`. La Partner API sí lo permitiría, pero

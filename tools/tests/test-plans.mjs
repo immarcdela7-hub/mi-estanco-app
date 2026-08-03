@@ -56,7 +56,10 @@ log('El banner azul del hero desaparece', await page.locator('.ntl-hero').isHidd
 
 // ---------- Las tarjetas: fotos y descripcion, no una lista ----------
 const nCards = await page.locator('.ntl-pcard').count();
-log('Pinta los 12 planes como tarjetas', nCards === 12, `${nCards}`);
+// El numero de planes crece: lo que importa es que se pinten TODOS los que
+// hay, no que sean N. Se compara contra los datos, no contra una constante.
+const nPlanes = await page.evaluate(() => (window.NTL_PLANS || []).length);
+log('Pinta todos los planes como tarjetas', nCards === nPlanes && nCards > 0, `${nCards}/${nPlanes}`);
 const card = await page.evaluate(() => {
   const c = document.querySelector('.ntl-pcard');
   return {

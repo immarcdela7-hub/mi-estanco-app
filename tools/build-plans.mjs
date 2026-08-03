@@ -42,6 +42,14 @@ for (const r of rows) {
   const pasos = [];
   const ventanas = [];
   for (let i = 0; i < tids.length; i++) {
+    // Una parada puede ser NUESTRA: `ntl:cata-vinos-penedes`. Esas no estan en
+    // catalog.csv —viven en el CRM— asi que se dejan apuntadas y las resuelve
+    // plans-ui.js en el navegador con lo que trae own.js. Son las unicas que
+    // se pueden reservar junto al resto del plan.
+    if (/^ntl:/i.test(tids[i])) {
+      pasos.push({ propia: true, slug: tids[i].slice(4), nota: notas[i] || '' });
+      continue;
+    }
     const a = byTid.get(tids[i]);
     if (!a) { problemas.push(`${r.id}: la actividad t${tids[i]} no esta en el catalogo`); continue; }
     ventanas.push({ horario: a.horario || '', titulo: a.titulo });
@@ -85,7 +93,8 @@ for (const r of rows) {
     city: r.city,
     momento: String(r.momento || 'any').split(',').map((s) => s.trim()).filter(Boolean),
     duracion: r.duracion,
-    desde: pasos.reduce((n, p) => n + p.precio, 0), // "desde X€" sumando los minimos
+    desde: pasos.reduce((n, p) => n + (p.precio || 0), 0), // "desde X€" sumando los minimos
+    propias: pasos.filter((p) => p.propia).length,
     pasos,
   });
 }

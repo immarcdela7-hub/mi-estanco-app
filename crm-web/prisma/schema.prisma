@@ -138,6 +138,12 @@ model OwnActivity {
 model Booking {
   id              Int            @id @default(autoincrement())
   reference       String         @unique
+  /// Localizador comun cuando el cliente reserva un plan entero de una vez.
+  /// Vacio si reservo una sola actividad. Todas las del grupo se crean o
+  /// fallan juntas: nadie se queda con la cata y sin la visita.
+  groupRef        String         @default("")
+  /// Posicion dentro del plan, para enseñarlo en el orden en que se hace.
+  groupOrder      Int            @default(0)
   activity        OwnActivity    @relation(fields: [activityId], references: [id])
   activityId      Int
   /// Establecimiento del QR por el que llegó el cliente, si venía con `ref`.
@@ -162,6 +168,7 @@ model Booking {
   @@index([activityId, bookingDate])
   @@index([status])
   @@index([establishmentId])
+  @@index([groupRef])
 }
 
 model Payout {

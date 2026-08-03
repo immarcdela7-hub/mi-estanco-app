@@ -487,12 +487,51 @@
     if (pedida && actividades.some(function (a) { return a.slug === pedida; })) abrir(pedida);
   }
 
+  /* Lo que hay aqui dentro tambien lo necesitan los planes: una parada de un
+     plan puede ser una actividad nuestra, y entonces se reserva junto con las
+     demas. Se exponen las tres piezas —catalogo, disponibilidad y alta— para
+     no duplicar ni la URL del CRM ni el manejo de errores. */
+  window.ntlOwn = {
+    /** Actividades propias ya cargadas (vacio si el CRM no respondio). */
+    catalogo: function () { return CARGADAS; },
+    /** Promesa con dias y horas libres de una actividad. */
+    disponibilidad: function (slug) {
+      return fetch(CRM + '/api/publico/disponibilidad?slug=' + encodeURIComponent(slug))
+        .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); });
+    },
+    /** Alta de reserva: una actividad o un plan entero (con `items`). */
+    reservar: function (payload) {
+      return fetch(CRM + '/api/publico/reservas', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      }).then(function (r) {
+        return r.json().then(function (j) {
+          if (!r.ok) throw new Error((j && j.error) || 'We could not save your booking.');
+          return j;
+        });
+      });
+    },
+    ref: ref,
+    eur: eur,
+    fechaLarga: fechaLarga,
+  };
+
+  var CARGADAS = [];
+
   function arrancar() {
     fetch(CRM + '/api/publico/actividades')
       .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
-      .then(function (d) { montar((d && d.actividades) || []); })
+      .then(function (d) {
+        CARGADAS = (d && d.actividades) || [];
+        montar(CARGADAS);
+        // Los planes se pintan antes que esto: hay que avisarles de que ya
+        // pueden resolver sus paradas propias.
+        document.dispatchEvent(new CustomEvent('ntl:own-listo', { detail: CARGADAS }));
+      })
       .catch(function () {
         // Sin CRM la web sigue entera: solo faltan nuestras actividades.
+        document.dispatchEvent(new CustomEvent('ntl:own-listo', { detail: [] }));
       });
   }
 

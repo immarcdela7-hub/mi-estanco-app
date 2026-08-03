@@ -7,27 +7,44 @@ import { clientIp, corsHeaders, jsonResponse, rateLimit } from "@/lib/publicApi"
 
 export const dynamic = "force-dynamic";
 
-const Reserva = z.object({
+const Parada = z.object({
   slug: z.string().min(1).max(120),
   fecha: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
   hora: z.string().regex(/^\d{2}:\d{2}$/),
   personas: z.coerce.number().int().min(1).max(50),
+});
+
+const Cliente = z.object({
   nombre: z.string().trim().min(2).max(120),
   email: z.email().max(160),
   telefono: z.string().trim().max(40).default(""),
   notas: z.string().trim().max(500).default(""),
   ref: z.string().trim().max(40).default(""),
   idioma: z.enum(["es", "en"]).default("es"),
-  // Campo trampa: los formularios reales lo dejan vacío, los robots lo rellenan.
+  // Campo trampa: los formularios reales lo dejan vacio, los robots lo rellenan.
   web: z.string().max(0).optional(),
 });
 
+/** Una actividad suelta, o un plan entero con varias paradas. */
+const Reserva = z.union([
+  Cliente.extend({ items: z.array(Parada).min(1).max(8) }),
+  Cliente.merge(Parada),
+]);
+
+class NoDisponible extends Error {
+  constructor(public detalle: string, public indice: number) {
+    super(detalle);
+  }
+}
+
 /**
- * Alta de una reserva de actividad propia.
+ * Alta de reservas de actividades propias.
  *
- * Aquí termina el recorrido que antes se iba a GetYourGuide: el cliente elige
- * día, hora y personas en notaxlost.com y la reserva entra directa en el CRM,
- * ya atada al establecimiento del QR por el que llegó.
+ * Acepta una sola actividad o **un plan entero**. Con GetYourGuide eso no se
+ * puede: cada enlace suyo vende una actividad y no hay cesta para afiliados.
+ * Con las nuestras si, y ademas de verdad: las paradas de un plan se crean
+ * todas o ninguna dentro de la misma transaccion. Nadie se queda con la cata
+ * pagada y sin la visita porque la segunda se llenara por el camino.
  */
 export async function POST(req: NextRequest) {
   const headers = await corsHeaders(req, "restringido");
@@ -54,17 +71,24 @@ export async function POST(req: NextRequest) {
     return jsonResponse({ error: "Revisa los datos del formulario." }, 400, headers);
   }
   const datos = parsed.data;
+  const paradas = "items" in datos ? datos.items : [datos];
+  const enGrupo = paradas.length > 1;
 
-  const activity = await prisma.ownActivity.findUnique({ where: { slug: datos.slug } });
-  if (!activity || !activity.active) {
-    return jsonResponse({ error: "Esta actividad ya no está disponible." }, 404, headers);
-  }
-  if (datos.personas > activity.capacity) {
-    return jsonResponse(
-      { error: `El grupo máximo es de ${activity.capacity} personas.` },
-      409,
-      headers
-    );
+  const slugs = [...new Set(paradas.map((p) => p.slug))];
+  const actividades = await prisma.ownActivity.findMany({ where: { slug: { in: slugs } } });
+  const porSlug = new Map(actividades.map((a) => [a.slug, a]));
+  for (const p of paradas) {
+    const a = porSlug.get(p.slug);
+    if (!a || !a.active) {
+      return jsonResponse({ error: "Alguna actividad del plan ya no está disponible." }, 404, headers);
+    }
+    if (p.personas > a.capacity) {
+      return jsonResponse(
+        { error: `"${a.title}" admite como máximo ${a.capacity} personas.` },
+        409,
+        headers
+      );
+    }
   }
 
   // El establecimiento sale del código del QR, no de lo que diga el cliente:
@@ -79,71 +103,98 @@ export async function POST(req: NextRequest) {
     establishmentId = est?.id ?? qr?.establishmentId ?? null;
   }
 
-  const total = money(activity.pricePerPerson.toNumber(), datos.personas, 0, 0).total;
+  const groupRef = enGrupo ? bookingReference() : "";
 
   // Serializable para que dos clientes no puedan quedarse con la última plaza
   // a la vez: la comprobación de cupo y el alta van en la misma transacción.
   for (let intento = 0; intento < 3; intento++) {
     try {
-      const reserva = await prisma.$transaction(
+      const creadas = await prisma.$transaction(
         async (tx) => {
+          const desde = new Date(`${localDay(new Date())}T00:00:00.000Z`);
           const ocupadas = await tx.booking.findMany({
             where: {
-              activityId: activity.id,
+              activityId: { in: actividades.map((a) => a.id) },
               status: { not: "CANCELADA" },
-              bookingDate: { gte: new Date(`${localDay(new Date())}T00:00:00.000Z`) },
+              bookingDate: { gte: desde },
             },
-            select: { bookingDate: true, slot: true, people: true },
+            select: { activityId: true, bookingDate: true, slot: true, people: true },
           });
 
-          const problema = validateRequest(
-            activity,
-            ocupadas,
-            new Date(),
-            datos.fecha,
-            datos.hora,
-            datos.personas
-          );
-          if (problema) throw new NoDisponible(problema);
+          const salida = [];
+          for (let i = 0; i < paradas.length; i++) {
+            const p = paradas[i];
+            const act = porSlug.get(p.slug)!;
 
-          return tx.booking.create({
-            data: {
-              reference: bookingReference(),
-              activityId: activity.id,
-              establishmentId,
-              refCode,
-              bookingDate: new Date(`${datos.fecha}T00:00:00.000Z`),
-              slot: datos.hora,
-              people: datos.personas,
-              amountTotal: total,
-              customerName: datos.nombre,
-              customerEmail: datos.email,
-              customerPhone: datos.telefono,
-              notes: datos.notas,
-              locale: datos.idioma,
-            },
-          });
+            // Cuentan también las paradas anteriores de este mismo plan: si el
+            // cliente repite actividad y hora, la segunda no puede ignorar a la
+            // primera.
+            const problema = validateRequest(
+              act,
+              ocupadas.filter((o) => o.activityId === act.id),
+              new Date(),
+              p.fecha,
+              p.hora,
+              p.personas
+            );
+            if (problema) throw new NoDisponible(`${act.title}: ${problema}`, i);
+
+            const total = money(act.pricePerPerson.toNumber(), p.personas, 0, 0).total;
+            const creada = await tx.booking.create({
+              data: {
+                reference: bookingReference(),
+                groupRef,
+                groupOrder: i,
+                activityId: act.id,
+                establishmentId,
+                refCode,
+                bookingDate: new Date(`${p.fecha}T00:00:00.000Z`),
+                slot: p.hora,
+                people: p.personas,
+                amountTotal: total,
+                customerName: datos.nombre,
+                customerEmail: datos.email,
+                customerPhone: datos.telefono,
+                notes: datos.notas,
+                locale: datos.idioma,
+              },
+            });
+
+            ocupadas.push({
+              activityId: act.id,
+              bookingDate: creada.bookingDate,
+              slot: p.hora,
+              people: p.personas,
+            });
+            salida.push({
+              referencia: creada.reference,
+              actividad: act.title,
+              fecha: p.fecha,
+              hora: p.hora,
+              personas: p.personas,
+              total,
+              punto_encuentro: act.meetingPoint,
+            });
+          }
+          return salida;
         },
         { isolationLevel: Prisma.TransactionIsolationLevel.Serializable }
       );
 
+      const total = creadas.reduce((n, r) => n + r.total, 0);
+      const primera = creadas[0];
+
       return jsonResponse(
-        {
-          ok: true,
-          referencia: reserva.reference,
-          actividad: activity.title,
-          fecha: datos.fecha,
-          hora: datos.hora,
-          personas: datos.personas,
-          total,
-          punto_encuentro: activity.meetingPoint,
-        },
+        enGrupo
+          ? { ok: true, referencia: groupRef, paradas: creadas.length, total, items: creadas }
+          : { ok: true, ...primera, referencia: primera.referencia },
         201,
         headers
       );
     } catch (e) {
       if (e instanceof NoDisponible) {
-        return jsonResponse({ error: e.message }, 409, headers);
+        // Se dice CUAL parada falla: si no, el cliente no sabe que cambiar.
+        return jsonResponse({ error: e.detalle, parada: e.indice }, 409, headers);
       }
       // Choque entre transacciones o localizador repetido: se reintenta.
       const code = (e as { code?: string })?.code;
@@ -159,8 +210,6 @@ export async function POST(req: NextRequest) {
     headers
   );
 }
-
-class NoDisponible extends Error {}
 
 export async function OPTIONS(req: NextRequest) {
   const headers = await corsHeaders(req, "restringido");

@@ -11,6 +11,7 @@ window.NTL_PLANS = [
   ],
   "duracion": "1 day",
   "desde": 80,
+  "propias": 0,
   "pasos": [
    {
     "titulo": "Sagrada Familia: Skip-the-Line Ticket",
@@ -55,6 +56,7 @@ window.NTL_PLANS = [
   ],
   "duracion": "1 day",
   "desde": 110,
+  "propias": 0,
   "pasos": [
    {
     "titulo": "Sagrada Familia: Skip-the-Line Ticket",
@@ -110,6 +112,7 @@ window.NTL_PLANS = [
   ],
   "duracion": "1 night",
   "desde": 111,
+  "propias": 0,
   "pasos": [
    {
     "titulo": "Barcelona Gotic Tour with BEST BARS and KISSING WALL",
@@ -154,6 +157,7 @@ window.NTL_PLANS = [
   ],
   "duracion": "1 evening",
   "desde": 144,
+  "propias": 0,
   "pasos": [
    {
     "titulo": "Sunset Sailboat Trip with Open Bar & Snacks",
@@ -198,6 +202,7 @@ window.NTL_PLANS = [
   ],
   "duracion": "2 days",
   "desde": 112,
+  "propias": 0,
   "pasos": [
    {
     "titulo": "PortAventura & Ferrari Land: 1–3 Day Ticket",
@@ -242,6 +247,7 @@ window.NTL_PLANS = [
   ],
   "duracion": "1 day each",
   "desde": 189,
+  "propias": 0,
   "pasos": [
    {
     "titulo": "Montserrat, Cogwheel & Winery Tour",
@@ -286,6 +292,7 @@ window.NTL_PLANS = [
   ],
   "duracion": "1 day",
   "desde": 134,
+  "propias": 0,
   "pasos": [
    {
     "titulo": "Girona: Small Group Walking Tour",
@@ -330,6 +337,7 @@ window.NTL_PLANS = [
   ],
   "duracion": "1 day",
   "desde": 113,
+  "propias": 0,
   "pasos": [
    {
     "titulo": "From Lloret de Mar: Roundtrip Ferry to Tossa de Mar",
@@ -374,6 +382,7 @@ window.NTL_PLANS = [
   ],
   "duracion": "1 day",
   "desde": 140,
+  "propias": 0,
   "pasos": [
    {
     "titulo": "From Roses: Cruise on Costa Brava to Cadaqués",
@@ -418,6 +427,7 @@ window.NTL_PLANS = [
   ],
   "duracion": "1 day",
   "desde": 68,
+  "propias": 0,
   "pasos": [
    {
     "titulo": "Tarragona: Roman Heritage Guided Walking Tour",
@@ -462,6 +472,7 @@ window.NTL_PLANS = [
   ],
   "duracion": "1 day",
   "desde": 73,
+  "propias": 0,
   "pasos": [
    {
     "titulo": "Casa Batlló: 10D Experience",
@@ -506,6 +517,7 @@ window.NTL_PLANS = [
   ],
   "duracion": "1 day",
   "desde": 48,
+  "propias": 0,
   "pasos": [
    {
     "titulo": "Bosc Aventura Salou: Explorer Pack",
@@ -536,6 +548,41 @@ window.NTL_PLANS = [
     "imagen": "https://cdn.getyourguide.com/img/tour/f0ad294cd196fcd599e4c53ec74f02994b4bf5306749fceda184735462ef4202.jpg/99.jpg",
     "url": "https://www.getyourguide.com/salou-l1884/salou-minigolf-pass-with-gear-t937964/?partner_id=IBO5PAK&utm_medium=local_partners",
     "nota": "Finish with minigolf. It stays open until 22:00, which is exactly when nobody wants to go back to the hotel."
+   }
+  ]
+ },
+ {
+  "id": "penedes-wine-day",
+  "titulo": "A day of wine in the Penedès",
+  "subtitulo": "Two tastings that are ours, plus the monastery on the way.",
+  "provincia": "barcelona",
+  "city": "barcelona",
+  "momento": [
+   "morning"
+  ],
+  "duracion": "1 day",
+  "desde": 39,
+  "propias": 2,
+  "pasos": [
+   {
+    "titulo": "Montserrat, Cogwheel & Winery Tour",
+    "categoriaLabel": "Day Trip",
+    "precio": 39,
+    "precioDisplay": "from 39€",
+    "rating": 4.8,
+    "imagen": "https://cdn.getyourguide.com/img/tour/3be29c404103f00b.jpeg/99.jpg",
+    "url": "https://www.getyourguide.com/barcelona-l45/barcelona-montserrat-tour-with-optional-winelunch-t382639/?partner_id=IBO5PAK&utm_medium=local_partners",
+    "nota": "Leave early: the cog-wheel train up is half the experience."
+   },
+   {
+    "propia": true,
+    "slug": "cata-vinos-penedes",
+    "nota": "Ours, and the only way to see this cellar without a group of forty."
+   },
+   {
+    "propia": true,
+    "slug": "vermut-vilafranca",
+    "nota": "Ours too. Vermouth and olives on the square, when the light goes soft."
    }
   ]
  }

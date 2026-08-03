@@ -298,6 +298,92 @@
            la descripcion y la etiqueta de pie. */
         .view-list .ntl-badge { display:none; }
 
+        /* ----- Paradas nuestras dentro de un plan -----
+           Estas si se reservan juntas, porque las vendemos nosotros. Se ven
+           distintas de las de GetYourGuide a proposito: el cliente tiene que
+           saber cuales entran en la cesta y cuales no. */
+        .ntl-step-propia { border-color:#cfe9d8; background:#fbfffc; }
+        .ntl-step-propia.is-listo { border-color:rgba(0,200,83,.45); }
+        .ntl-step-propia.is-listo .ntl-step-n { background:rgb(0 200 83); }
+        .ntl-step-propia.is-listo .ntl-step-n svg { width:1rem; height:1rem; }
+        .ntl-badge-inline { position:static; display:inline-block; margin-bottom:.3rem; }
+        .ntl-step-elegido { color:rgb(0 150 62); font-weight:700; }
+        .ntl-step-pendiente { color:#94a3b8; }
+        .ntl-step-elegir { flex-shrink:0; border:1px solid rgb(0 43 91); background:#fff;
+            color:rgb(0 43 91); border-radius:9999px; padding:.55rem 1.1rem; font-family:inherit;
+            font-size:.8rem; font-weight:800; cursor:pointer; transition:.15s; }
+        .ntl-step-elegir:hover { background:rgb(0 43 91); color:#fff; }
+        .ntl-step.is-ausente { opacity:.5; }
+
+        .ntl-sel-caja { padding:0 .85rem .85rem; }
+        .ntl-sel-cargando, .ntl-sel-vacio { margin:0; padding:.9rem; text-align:center;
+            font-size:.82rem; color:#94a3b8; }
+        .ntl-sel { border-top:1px solid #eef4f0; padding-top:.85rem; }
+        .ntl-sel-rot { margin:0 0 .4rem; font-size:.65rem; font-weight:800; text-transform:uppercase;
+            letter-spacing:.09em; color:#94a3b8; }
+        .ntl-sel-rot:not(:first-child) { margin-top:.9rem; }
+        .ntl-sel-dias { display:flex; gap:.4rem; overflow-x:auto; padding-bottom:.2rem;
+            scrollbar-width:none; }
+        .ntl-sel-dias::-webkit-scrollbar { display:none; }
+        .ntl-sel-dia { flex:0 0 auto; width:3.1rem; padding:.4rem .2rem; border:1px solid #e2e8f0;
+            border-radius:.6rem; background:#fff; font-family:inherit; cursor:pointer;
+            display:flex; flex-direction:column; align-items:center; transition:.15s; }
+        .ntl-sel-dia span { font-size:.55rem; font-weight:700; text-transform:uppercase; color:#94a3b8; }
+        .ntl-sel-dia b { font-size:.95rem; font-weight:800; color:inherit; }
+        .ntl-sel-dia:hover { border-color:rgb(0 123 190); }
+        .ntl-sel-dia.is-on { background:rgb(0 43 91); border-color:rgb(0 43 91); color:#fff; }
+        .ntl-sel-dia.is-on span { color:rgba(255,255,255,.7); }
+        .ntl-sel-horas { display:flex; flex-wrap:wrap; gap:.4rem; }
+        .ntl-sel-hora { border:1px solid #e2e8f0; border-radius:9999px; background:#fff;
+            font-family:inherit; font-size:.82rem; font-weight:700; color:rgb(0 43 91);
+            padding:.4rem .85rem; cursor:pointer; display:inline-flex; align-items:baseline; gap:.35rem; }
+        .ntl-sel-hora small { font-size:.58rem; font-weight:600; color:#94a3b8; }
+        .ntl-sel-hora:hover { border-color:rgb(0 123 190); }
+        .ntl-sel-hora.is-on { background:rgb(0 43 91); border-color:rgb(0 43 91); color:#fff; }
+        .ntl-sel-hora.is-on small { color:rgba(255,255,255,.7); }
+        .ntl-sel-pie { display:flex; align-items:center; justify-content:space-between; gap:1rem;
+            margin-top:1rem; }
+        .ntl-sel-pers { display:inline-flex; align-items:center; gap:.2rem; }
+        .ntl-sel-n { min-width:2rem; text-align:center; font-size:1rem; font-weight:800; color:rgb(0 43 91); }
+        .ntl-sel-ok { border:0; border-radius:9999px; background:rgb(0 200 83); color:#fff;
+            font-family:inherit; font-size:.82rem; font-weight:800; padding:.6rem 1.3rem; cursor:pointer; }
+        .ntl-sel-ok:hover { background:rgb(0 43 91); }
+
+        /* ----- El pago conjunto de lo nuestro ----- */
+        .ntl-co { margin-top:1.5rem; border:1px solid #cfe9d8; background:#fbfffc;
+            border-radius:1.15rem; padding:1.25rem 1.35rem; }
+        .ntl-co.is-hecho { border-color:rgba(0,200,83,.45); }
+        .ntl-co-cab h3 { margin:0 0 .3rem; font-size:1.1rem; font-weight:800; color:rgb(0 43 91); }
+        .ntl-co-cab p { margin:0; font-size:.85rem; color:#64748b; line-height:1.5; }
+        .ntl-co-falta { margin:1rem 0 0; font-size:.85rem; color:#94a3b8; }
+        .ntl-co-lineas { margin-top:1rem; border:1px solid #eef4f0; border-radius:.8rem;
+            background:#fff; overflow:hidden; }
+        .ntl-co-linea { display:flex; align-items:baseline; gap:.75rem; padding:.6rem .85rem;
+            border-bottom:1px solid #f1f5f4; font-size:.85rem; }
+        .ntl-co-linea:last-child { border-bottom:0; }
+        .ntl-co-linea span { flex:1; min-width:0; color:#0f172a; font-weight:600; }
+        .ntl-co-linea i { font-style:normal; font-size:.75rem; color:#64748b; }
+        .ntl-co-linea b { color:rgb(0 43 91); font-weight:800; }
+        .ntl-co-total { background:#f8fdfa; }
+        .ntl-co-total span { font-weight:800; }
+        .ntl-co-total b { font-size:1.05rem; }
+        .ntl-co-campos { display:grid; grid-template-columns:1fr 1fr; gap:.7rem; margin-top:1rem; }
+        .ntl-co-go { width:100%; margin-top:1rem; border:0; border-radius:9999px;
+            background:rgb(0 43 91); color:#fff; font-family:inherit; font-size:.92rem;
+            font-weight:800; padding:.85rem 1rem; cursor:pointer; transition:.15s; }
+        .ntl-co-go:hover:not(:disabled) { background:rgb(0 200 83); }
+        .ntl-co-go:disabled { background:#e2e8f0; color:#94a3b8; cursor:default; }
+        .ntl-co-legal { margin:.7rem 0 0; font-size:.7rem; color:#94a3b8; text-align:center; }
+        .ntl-co-error { margin:.9rem 0 0; border-radius:.65rem; background:#fef2f2; color:#b91c1c;
+            padding:.65rem .85rem; font-size:.82rem; font-weight:600; text-align:center; }
+        .ntl-co-done { text-align:center; }
+        .ntl-co-done h4 { margin:0; font-size:1.2rem; font-weight:800; color:rgb(0 43 91); }
+        @media (max-width:640px) {
+            .ntl-co { padding:1rem; }
+            .ntl-co-campos { grid-template-columns:1fr; }
+            .ntl-co-linea { flex-wrap:wrap; gap:.25rem .75rem; }
+        }
+
         /* ----- La cesta del plan -----
            GetYourGuide no deja pagar tres actividades de una vez, asi que esto
            no cobra: lleva la cuenta. El problema real no era pagar tres veces,
@@ -1093,12 +1179,12 @@
        reaplica la atribucion tras pintar). Sube ?v=N al modificarlo. -->
   <script src="/recommend.js?v=3"></script>
   <!-- Planes curados. Sube ?v=N al modificarlo. -->
-  <script src="/plans-ui.js?v=7"></script>
+  <script src="/plans-ui.js?v=8"></script>
   <!-- Actividades propias: las trae del CRM y las reserva aqui mismo, sin
        salir de notaxlost.com. Si el CRM no responde, la web sigue igual.
        NTL_CRM se puede cambiar sin tocar own.js. Sube ?v=N al modificarlo. -->
   <script>window.NTL_CRM = 'https://crm.notaxlost.com';</script>
-  <script src="/own.js?v=2"></script>
+  <script src="/own.js?v=3"></script>
 
   <!-- Cambio entre las dos vistas (catalogo / planes) y visibilidad de la barra
        de ayuda. Va aqui, despues de los dos renderizadores, para saber ya si

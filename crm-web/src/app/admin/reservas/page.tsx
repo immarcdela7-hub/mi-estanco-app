@@ -38,7 +38,7 @@ export default async function BookingsPage({
   const [bookings, pendientes] = await Promise.all([
     prisma.booking.findMany({
       where,
-      orderBy: [{ bookingDate: "asc" }, { slot: "asc" }],
+      orderBy: [{ groupRef: "asc" }, { groupOrder: "asc" }, { bookingDate: "asc" }, { slot: "asc" }],
       take: 300,
       include: {
         activity: { select: { title: true, meetingPoint: true } },
@@ -47,6 +47,12 @@ export default async function BookingsPage({
     }),
     prisma.booking.count({ where: { status: "SOLICITADA" } }),
   ]);
+
+  // Cuantas paradas tiene cada plan, para poder decir "parada 2 de 3".
+  const grupos = new Map<string, number>();
+  for (const b of bookings) {
+    if (b.groupRef) grupos.set(b.groupRef, (grupos.get(b.groupRef) ?? 0) + 1);
+  }
 
   const vivas = bookings.filter((b) => b.status !== "CANCELADA");
   const personas = vivas.reduce((a, b) => a + b.people, 0);
@@ -101,6 +107,12 @@ export default async function BookingsPage({
                 <Td>
                   <div className="font-semibold">{b.activity.title}</div>
                   <div className="font-mono text-xs text-muted">{b.reference}</div>
+                  {b.groupRef && (
+                    <div className="mt-0.5 text-xs font-semibold text-brand-blue-dark">
+                      Parada {b.groupOrder + 1} de {grupos.get(b.groupRef) ?? 1} ·{" "}
+                      <span className="font-mono">{b.groupRef}</span>
+                    </div>
+                  )}
                 </Td>
                 <Td>
                   <div>{b.customerName}</div>
@@ -130,7 +142,7 @@ export default async function BookingsPage({
                     <div className="flex flex-wrap gap-2">
                       <ActionForm
                         action={confirmBookingAction}
-                        submitLabel="Confirmar"
+                        submitLabel={b.groupRef ? "Confirmar plan" : "Confirmar"}
                         submitClassName={btnGreen}
                         compact
                         className="contents"
@@ -139,7 +151,7 @@ export default async function BookingsPage({
                       </ActionForm>
                       <ActionForm
                         action={cancelBookingAction}
-                        submitLabel="Cancelar"
+                        submitLabel={b.groupRef ? "Cancelar plan" : "Cancelar"}
                         submitClassName={btnDanger}
                         compact
                         className="contents"
@@ -151,7 +163,7 @@ export default async function BookingsPage({
                   {b.status === "CONFIRMADA" && (
                     <ActionForm
                       action={cancelBookingAction}
-                      submitLabel="Cancelar"
+                      submitLabel={b.groupRef ? "Cancelar plan" : "Cancelar"}
                       submitClassName={btnDanger}
                       compact
                       className="contents"
@@ -167,7 +179,8 @@ export default async function BookingsPage({
         <p className="mt-3 text-xs text-muted">
           Al confirmar se avisa al cliente por correo desde tu gestor habitual: la reserva trae su
           dirección y el punto de encuentro de la actividad. Cancelar libera las plazas y retira la
-          venta, salvo que ya se hubiera liquidado.
+          venta, salvo que ya se hubiera liquidado. Las reservas de un mismo plan van juntas: se
+          confirman y se cancelan todas a la vez, como se pidieron.
           {pendientes > 0 && ` Tienes ${plural(pendientes, "reserva", "reservas")} esperando.`}
         </p>
       </Panel>

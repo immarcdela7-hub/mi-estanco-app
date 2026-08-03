@@ -144,15 +144,109 @@
   var CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">' +
     '<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>';
 
+  // ---------- Paradas nuestras: estas SI se reservan juntas ----------
+  /* Una parada `ntl:` es una actividad de NoTaxLost. No esta en catalog.csv,
+     viene del CRM por own.js, y es la unica que se puede meter de verdad en una
+     cesta: la reserva la hacemos nosotros, asi que varias caben en la misma
+     operacion. Las de GetYourGuide no, y por eso conviven los dos modos. */
+  function propiaHtml(p, i, elegido) {
+    var a = p.act;
+    if (!a) {
+      // El CRM no respondio o la actividad ya no esta publicada.
+      return '<div class="ntl-step is-ausente"><div class="ntl-step-main">' +
+        '<div class="ntl-step-n">' + (i + 1) + '</div>' +
+        '<div class="ntl-step-body"><h3 class="ntl-step-title">' +
+        esc(p.slug.replace(/-/g, ' ')) + '</h3>' +
+        '<p class="ntl-step-note">Not available right now.</p></div>' +
+        '</div></div>';
+    }
+    var listo = elegido && elegido.fecha && elegido.hora;
+    return '' +
+      '<div class="ntl-step ntl-step-propia' + (listo ? ' is-listo' : '') +
+        '" data-propia="' + esc(a.slug) + '">' +
+        '<div class="ntl-step-main">' +
+          '<div class="ntl-step-n">' + (listo ? CHECK : (i + 1)) + '</div>' +
+          '<div class="ntl-step-img">' +
+            (a.imagen ? '<img src="' + esc(a.imagen) + '" alt="" loading="lazy">'
+                      : '<div class="ntl-own-nopic"></div>') + '</div>' +
+          '<div class="ntl-step-body">' +
+            '<span class="ntl-badge ntl-badge-own ntl-badge-inline">NTL EXPERIENCE</span>' +
+            '<h3 class="ntl-step-title">' + esc(a.titulo) + '</h3>' +
+            (p.nota ? '<p class="ntl-step-note">' + esc(p.nota) + '</p>' : '') +
+            '<div class="ntl-step-meta">' +
+              '<b>' + esc(window.ntlOwn.eur(a.precio)) + ' pp</b>' +
+              (listo
+                ? '<span class="ntl-step-elegido">' +
+                    esc(window.ntlOwn.fechaLarga(elegido.fecha)) + ' · ' + esc(elegido.hora) +
+                    ' · ' + elegido.personas + (elegido.personas === 1 ? ' person' : ' people') +
+                  '</span>'
+                : '<span class="ntl-step-pendiente">Pick a date to add it</span>') +
+            '</div>' +
+          '</div>' +
+          '<button type="button" class="ntl-step-elegir" data-elegir="' + esc(a.slug) + '">' +
+            (listo ? 'Change' : 'Pick a date') + '</button>' +
+        '</div>' +
+      '</div>';
+  }
+
+  /** Selector compacto de dia y hora para una parada nuestra. */
+  function selectorHtml(a, dias, elegido) {
+    if (!dias.length) {
+      return '<p class="ntl-sel-vacio">No dates open right now.</p>';
+    }
+    var fecha = (elegido && elegido.fecha) || dias[0].date;
+    var dia = null;
+    for (var i = 0; i < dias.length; i++) if (dias[i].date === fecha) dia = dias[i];
+    if (!dia) { dia = dias[0]; fecha = dia.date; }
+    var hora = (elegido && elegido.hora) || (dia.slots[0] && dia.slots[0].time) || '';
+    var personas = (elegido && elegido.personas) || Math.max(1, a.min_personas || 1);
+
+    return '<div class="ntl-sel">' +
+      '<div class="ntl-sel-rot">Date</div>' +
+      '<div class="ntl-sel-dias">' + dias.map(function (d) {
+        var p = fechaCorta(d.date);
+        return '<button type="button" class="ntl-sel-dia' + (d.date === fecha ? ' is-on' : '') +
+          '" data-fecha="' + esc(d.date) + '"><span>' + p.dow + '</span><b>' + p.d + '</b><span>' +
+          p.m + '</span></button>';
+      }).join('') + '</div>' +
+      '<div class="ntl-sel-rot">Time</div>' +
+      '<div class="ntl-sel-horas">' + dia.slots.map(function (s) {
+        return '<button type="button" class="ntl-sel-hora' + (s.time === hora ? ' is-on' : '') +
+          '" data-hora="' + esc(s.time) + '">' + esc(s.time) +
+          '<small>' + s.free + ' left</small></button>';
+      }).join('') + '</div>' +
+      '<div class="ntl-sel-pie">' +
+        '<div class="ntl-sel-pers">' +
+          '<button type="button" class="ntl-bk-pm" data-pers="-1">&minus;</button>' +
+          '<span class="ntl-sel-n">' + personas + '</span>' +
+          '<button type="button" class="ntl-bk-pm" data-pers="1">+</button>' +
+        '</div>' +
+        '<button type="button" class="ntl-sel-ok" data-confirmar>Add to the plan</button>' +
+      '</div></div>';
+  }
+
+  var DIAS_C = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  var MESES_C = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  function fechaCorta(iso) {
+    var d = new Date(iso + 'T12:00:00Z');
+    return { dow: DIAS_C[d.getUTCDay()], d: String(d.getUTCDate()), m: MESES_C[d.getUTCMonth()] };
+  }
+
   /** La barra de la cesta: cuantas paradas llevas y cual toca ahora. */
-  function cestaHtml(pl, hechos) {
+  function cestaHtml(pl, hechos, propiasHechas) {
+    // Cuenta las dos clases de parada. Si solo contase las de GetYourGuide,
+    // diria "0 de 3" con dos de las nuestras ya reservadas, que es peor que no
+    // poner nada.
+    var listo = function (p) {
+      return p.propia
+        ? propiasHechas.indexOf(p.slug) !== -1
+        : hechos.indexOf(tourIdOf(p.url)) !== -1;
+    };
     var total = pl.pasos.length;
-    var n = pl.pasos.filter(function (p) {
-      return hechos.indexOf(tourIdOf(p.url)) !== -1;
-    }).length;
+    var n = pl.pasos.filter(listo).length;
     var siguiente = null;
     for (var i = 0; i < pl.pasos.length; i++) {
-      if (hechos.indexOf(tourIdOf(pl.pasos[i].url)) === -1) { siguiente = i; break; }
+      if (!listo(pl.pasos[i])) { siguiente = i; break; }
     }
     var completo = n === total;
 
@@ -216,7 +310,7 @@
   // La navegacion hacia atras vive en la cabecera (ntlSetBack), no aqui.
   // El detalle no lleva el hero azul del catalogo: su portada son las fotos del
   // propio plan, que es lo que de verdad lo vende.
-  function detailHtml(pl, hechos) {
+  function detailHtml(pl, hechos, elegidos, propiasHechas) {
     var fotos = pl.pasos.map(function (p) { return p.imagen; }).slice(0, 3);
     var banner = fotos.map(function (src, i) {
       return '<span class="ntl-pd-cell' + (i === 0 ? ' ntl-pd-cell-main' : '') + '">' +
@@ -231,10 +325,74 @@
         '<h2 class="ntl-pv-title">' + esc(pl.titulo) + '</h2>' +
         '<p class="ntl-pv-sub">' + esc(pl.subtitulo) + '</p>' +
       '</div>' +
-      cestaHtml(pl, hechos) +
+      cestaHtml(pl, hechos, propiasHechas) +
       '<div class="ntl-pv-steps">' + pl.pasos.map(function (p, i) {
-        return stepHtml(p, i, hechos);
-      }).join('') + '</div>';
+        return p.propia ? propiaHtml(p, i, elegidos[p.slug]) : stepHtml(p, i, hechos);
+      }).join('') + '</div>' +
+      checkoutHtml(pl, elegidos);
+  }
+
+  /**
+   * El pago conjunto de las paradas nuestras.
+   *
+   * Aqui si hay cesta de verdad: una sola operacion, un solo localizador y
+   * todo o nada. Las paradas de GetYourGuide siguen reservandose una a una
+   * arriba, y se dice claramente para que nadie se lleve la sorpresa.
+   */
+  function checkoutHtml(pl, elegidos) {
+    var propias = pl.pasos.filter(function (p) { return p.propia && p.act; });
+    if (!propias.length) return '';
+
+    var listas = propias.filter(function (p) {
+      var e = elegidos[p.slug];
+      return e && e.fecha && e.hora;
+    });
+    var total = listas.reduce(function (n, p) {
+      return n + p.act.precio * elegidos[p.slug].personas;
+    }, 0);
+    var faltan = propias.length - listas.length;
+    var conGyg = pl.pasos.some(function (p) { return !p.propia; });
+
+    return '<section class="ntl-co">' +
+      '<div class="ntl-co-cab">' +
+        '<h3>Book ' + (propias.length === pl.pasos.length ? 'the whole plan' : 'our stops') +
+          ' in one go</h3>' +
+        '<p>' + (conGyg
+          ? propias.length + ' of the ' + pl.pasos.length + ' stops are ours, so they book here ' +
+            'together — one confirmation, one reference. The rest are on GetYourGuide and go one ' +
+            'at a time.'
+          : 'One confirmation, one reference. All of them or none: nobody ends up with the ' +
+            'tasting and without the tour.') + '</p>' +
+      '</div>' +
+      (faltan
+        ? '<p class="ntl-co-falta">Pick a date for ' +
+            (faltan === propias.length ? 'the stops above' : faltan + ' more') + ' to continue.</p>'
+        : '<form class="ntl-co-form" novalidate>' +
+            '<div class="ntl-co-lineas">' +
+              listas.map(function (p) {
+                var e = elegidos[p.slug];
+                return '<div class="ntl-co-linea"><span>' + esc(p.act.titulo) + '</span>' +
+                  '<i>' + esc(window.ntlOwn.fechaLarga(e.fecha)) + ' · ' + esc(e.hora) +
+                  ' · ' + e.personas + '</i>' +
+                  '<b>' + esc(window.ntlOwn.eur(p.act.precio * e.personas)) + '</b></div>';
+              }).join('') +
+              '<div class="ntl-co-linea ntl-co-total"><span>Total</span><b>' +
+                esc(window.ntlOwn.eur(total)) + '</b></div>' +
+            '</div>' +
+            '<div class="ntl-co-campos">' +
+              '<label class="ntl-bk-field"><span>Your name</span>' +
+                '<input name="nombre" required autocomplete="name"></label>' +
+              '<label class="ntl-bk-field"><span>Email</span>' +
+                '<input name="email" type="email" required autocomplete="email"></label>' +
+            '</div>' +
+            '<input type="text" name="web" class="ntl-bk-trap" tabindex="-1" aria-hidden="true">' +
+            '<button type="submit" class="ntl-co-go">Confirm ' +
+              (listas.length === 1 ? '1 stop' : listas.length + ' stops') + ' · ' +
+              esc(window.ntlOwn.eur(total)) + '</button>' +
+            '<p class="ntl-co-legal">No payment now. We confirm by email and you pay at each ' +
+              'meeting point.</p>' +
+          '</form>') +
+      '</section>';
   }
 
   function init() {
@@ -267,7 +425,21 @@
     // dentro de showDetail para que el oyente de la cesta se enganche una sola
     // vez: si se enganchase en cada apertura, a la segunda cada clic contaria
     // por dos.
-    var abierto = null;   // { pl, hechos }
+    var abierto = null;   // { pl, hechos, elegidos }
+
+    /* Resuelve las paradas `ntl:` contra lo que trajo own.js del CRM. Se hace
+       aqui y no al generar plans.js porque las actividades propias viven en la
+       base de datos: precio y cupo cambian sin tocar el repositorio. */
+    function resolverPropias(pl) {
+      var propias = (window.ntlOwn && window.ntlOwn.catalogo()) || [];
+      pl.pasos.forEach(function (p) {
+        if (!p.propia) return;
+        p.act = null;
+        for (var i = 0; i < propias.length; i++) {
+          if (propias[i].slug === p.slug) { p.act = propias[i]; break; }
+        }
+      });
+    }
 
     /* Se actualizan los trozos afectados en vez de repintar el detalle entero:
        si el cliente tiene abierto el widget de disponibilidad de una parada, un
@@ -276,8 +448,32 @@
       var vieja = detail.querySelector('.ntl-cesta');
       if (!vieja || !abierto) return;
       var tmp = document.createElement('div');
-      tmp.innerHTML = cestaHtml(abierto.pl, abierto.hechos);
+      tmp.innerHTML = cestaHtml(abierto.pl, abierto.hechos, abierto.propiasHechas);
       vieja.replaceWith(tmp.firstChild);
+    }
+
+    /* "Check dates": despliega el widget de GYG de esa parada. Uno cada vez:
+       son iframes de ~600 KB y no conviene cargar tres a la vez. Se vuelve a
+       enganchar tras cada repintado porque los botones son nuevos. */
+    function conectarDisponibilidad() {
+      detail.querySelectorAll('.ntl-step-dates').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var box = btn.closest('.ntl-step').querySelector('.ntl-step-avail');
+          if (!box.hidden) { box.hidden = true; box.innerHTML = ''; btn.classList.remove('is-open'); return; }
+          detail.querySelectorAll('.ntl-step-avail').forEach(function (b) { b.hidden = true; b.innerHTML = ''; });
+          detail.querySelectorAll('.ntl-step-dates').forEach(function (b) { b.classList.remove('is-open'); });
+          box.hidden = false;
+          btn.classList.add('is-open');
+          mountAvailability(box, btn.dataset.tour, btn.dataset.url);
+        });
+      });
+    }
+
+    function repintar() {
+      if (!abierto) return;
+      detail.innerHTML = detailHtml(abierto.pl, abierto.hechos, abierto.elegidos, abierto.propiasHechas);
+      if (typeof window.ntlApplyAttribution === 'function') window.ntlApplyAttribution();
+      conectarDisponibilidad();
     }
 
     function marcar(tid, hecho) {
@@ -323,15 +519,196 @@
 
       if (t.closest('[data-reset]')) {
         abierto.hechos.slice().forEach(function (tid) { marcar(tid, false); });
+        return;
+      }
+
+      // ---- Paradas nuestras: elegir dia y hora ----
+      var elegir = t.closest('[data-elegir]');
+      if (elegir) { abrirSelector(elegir.dataset.elegir); return; }
+
+      var sel = t.closest('.ntl-sel');
+      if (!sel) return;
+      var slug = sel.closest('[data-propia]').dataset.propia;
+
+      var dia = t.closest('[data-fecha]');
+      if (dia) { borrador[slug].fecha = dia.dataset.fecha; borrador[slug].hora = ''; pintarSelector(slug); return; }
+
+      var hora = t.closest('[data-hora]');
+      if (hora) { borrador[slug].hora = hora.dataset.hora; pintarSelector(slug); return; }
+
+      var pm = t.closest('[data-pers]');
+      if (pm) {
+        var act = actividadDe(slug);
+        var min = Math.max(1, (act && act.min_personas) || 1);
+        var libres = plazasLibres(slug);
+        borrador[slug].personas = Math.min(libres,
+          Math.max(min, borrador[slug].personas + parseInt(pm.dataset.pers, 10)));
+        pintarSelector(slug);
+        return;
+      }
+
+      if (t.closest('[data-confirmar]')) {
+        var b = borrador[slug];
+        if (!b || !b.fecha || !b.hora) return;
+        abierto.elegidos[slug] = { fecha: b.fecha, hora: b.hora, personas: b.personas };
+        delete borrador[slug];
+        repintar();
       }
     });
+
+    // ---- Selector de dia/hora de una parada nuestra ----
+    var borrador = {};     // slug -> lo que se esta eligiendo ahora
+    var disponibles = {};  // slug -> dias que devolvio el CRM
+
+    function actividadDe(slug) {
+      var pasos = (abierto && abierto.pl.pasos) || [];
+      for (var i = 0; i < pasos.length; i++) if (pasos[i].slug === slug) return pasos[i].act;
+      return null;
+    }
+
+    function plazasLibres(slug) {
+      var b = borrador[slug], dias = disponibles[slug] || [];
+      if (!b) return 1;
+      for (var i = 0; i < dias.length; i++) {
+        if (dias[i].date !== b.fecha) continue;
+        for (var j = 0; j < dias[i].slots.length; j++) {
+          if (dias[i].slots[j].time === b.hora) return dias[i].slots[j].free;
+        }
+      }
+      var act = actividadDe(slug);
+      return (act && act.max_personas) || 10;
+    }
+
+    function cajaDe(slug) {
+      var paso = detail.querySelector('[data-propia="' + slug + '"]');
+      if (!paso) return null;
+      var caja = paso.querySelector('.ntl-sel-caja');
+      if (!caja) {
+        caja = document.createElement('div');
+        caja.className = 'ntl-sel-caja';
+        paso.appendChild(caja);
+      }
+      return caja;
+    }
+
+    function pintarSelector(slug) {
+      var caja = cajaDe(slug);
+      if (!caja) return;
+      caja.innerHTML = selectorHtml(actividadDe(slug), disponibles[slug] || [], borrador[slug]);
+    }
+
+    function abrirSelector(slug) {
+      var paso = detail.querySelector('[data-propia="' + slug + '"]');
+      if (!paso) return;
+      var abierta = paso.querySelector('.ntl-sel-caja');
+      if (abierta) { abierta.remove(); delete borrador[slug]; return; }   // segundo clic: cerrar
+      // Uno cada vez, como los widgets de GYG.
+      detail.querySelectorAll('.ntl-sel-caja').forEach(function (c) { c.remove(); });
+
+      var caja = cajaDe(slug);
+      caja.innerHTML = '<p class="ntl-sel-cargando">Checking availability…</p>';
+
+      var previo = abierto.elegidos[slug];
+      var pintar = function (dias) {
+        disponibles[slug] = dias;
+        var act = actividadDe(slug);
+        borrador[slug] = previo
+          ? { fecha: previo.fecha, hora: previo.hora, personas: previo.personas }
+          : {
+              fecha: dias[0] ? dias[0].date : '',
+              hora: (dias[0] && dias[0].slots[0]) ? dias[0].slots[0].time : '',
+              personas: Math.max(1, (act && act.min_personas) || 1),
+            };
+        pintarSelector(slug);
+      };
+
+      if (disponibles[slug]) { pintar(disponibles[slug]); return; }
+      window.ntlOwn.disponibilidad(slug)
+        .then(function (d) { pintar(d.dias || []); })
+        .catch(function () {
+          caja.innerHTML = '<p class="ntl-sel-vacio">We could not load the dates. Try again.</p>';
+        });
+    }
+
+    // ---- El envio conjunto ----
+    detail.addEventListener('submit', function (ev) {
+      var form = ev.target.closest('.ntl-co-form');
+      if (!form || !abierto) return;
+      ev.preventDefault();
+      if (!form.nombre.value.trim()) { form.nombre.focus(); return; }
+      if (!form.email.value.trim()) { form.email.focus(); return; }
+
+      var items = abierto.pl.pasos.filter(function (p) {
+        return p.propia && p.act && abierto.elegidos[p.slug];
+      }).map(function (p) {
+        var e = abierto.elegidos[p.slug];
+        return { slug: p.slug, fecha: e.fecha, hora: e.hora, personas: e.personas };
+      });
+      if (!items.length) return;
+
+      var boton = form.querySelector('.ntl-co-go');
+      var previo = boton.textContent;
+      boton.disabled = true;
+      boton.textContent = 'Sending…';
+      var viejo = form.querySelector('.ntl-co-error');
+      if (viejo) viejo.remove();
+
+      window.ntlOwn.reservar({
+        items: items,
+        nombre: form.nombre.value.trim(),
+        email: form.email.value.trim(),
+        telefono: '',
+        notas: 'Plan: ' + abierto.pl.titulo,
+        ref: window.ntlOwn.ref(),
+        idioma: 'en',
+        web: form.web.value,
+      }).then(function (r) {
+        hecho(r);
+      }).catch(function (e) {
+        boton.disabled = false;
+        boton.textContent = previo;
+        var p = document.createElement('p');
+        p.className = 'ntl-co-error';
+        p.textContent = e.message || 'Something went wrong. Please try again.';
+        form.insertBefore(p, boton);
+      });
+    });
+
+    function hecho(r) {
+      var co = detail.querySelector('.ntl-co');
+      if (!co) return;
+      abierto.pl.pasos.forEach(function (p) {
+        if (p.propia && abierto.elegidos[p.slug] && abierto.propiasHechas.indexOf(p.slug) === -1) {
+          abierto.propiasHechas.push(p.slug);
+        }
+      });
+      refrescarCesta();
+      co.classList.add('is-hecho');
+      co.innerHTML = '<div class="ntl-co-done">' +
+        '<div class="ntl-bk-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"' +
+        ' stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>' +
+        '</svg></div>' +
+        '<h4>' + (r.paradas > 1 ? 'All ' + r.paradas + ' stops are booked' : 'You are booked') + '</h4>' +
+        '<p class="ntl-bk-refn">' + esc(r.referencia) + '</p>' +
+        '<dl class="ntl-bk-recap">' +
+        (r.items || []).map(function (it) {
+          return '<div><dt>' + esc(it.actividad) + '</dt><dd>' +
+            esc(window.ntlOwn.fechaLarga(it.fecha)) + ' · ' + esc(it.hora) + '</dd></div>';
+        }).join('') +
+        '<div><dt>Total</dt><dd>' + esc(window.ntlOwn.eur(r.total)) + '</dd></div>' +
+        '</dl>' +
+        '<p class="ntl-co-legal">One reference for the whole plan. We will email you the ' +
+        'confirmation.</p></div>';
+      co.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
 
     function showDetail(id) {
       var pl = byId[id];
       if (!pl) return;
-      abierto = { pl: pl, hechos: leerCesta(id) };
+      abierto = { pl: pl, hechos: leerCesta(id), elegidos: {}, propiasHechas: [] };
 
-      detail.innerHTML = detailHtml(pl, abierto.hechos);
+      resolverPropias(pl);
+      detail.innerHTML = detailHtml(pl, abierto.hechos, abierto.elegidos, abierto.propiasHechas);
       grid.hidden = true;
       if (intro) intro.hidden = true;
       detail.hidden = false;
@@ -339,19 +716,7 @@
       // CRITICO: los enlaces de los pasos acaban de crearse.
       if (typeof window.ntlApplyAttribution === 'function') window.ntlApplyAttribution();
 
-      // "Check dates": despliega el widget de disponibilidad de esa parada.
-      // Uno cada vez: son iframes y no conviene cargar tres a la vez.
-      detail.querySelectorAll('.ntl-step-dates').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          var box = btn.closest('.ntl-step').querySelector('.ntl-step-avail');
-          if (!box.hidden) { box.hidden = true; box.innerHTML = ''; btn.classList.remove('is-open'); return; }
-          detail.querySelectorAll('.ntl-step-avail').forEach(function (b) { b.hidden = true; b.innerHTML = ''; });
-          detail.querySelectorAll('.ntl-step-dates').forEach(function (b) { b.classList.remove('is-open'); });
-          box.hidden = false;
-          btn.classList.add('is-open');
-          mountAvailability(box, btn.dataset.tour, btn.dataset.url);
-        });
-      });
+      conectarDisponibilidad();
 
       // Desde el detalle, la flecha vuelve a la lista de planes.
       if (typeof window.ntlSetBack === 'function') window.ntlSetBack('detail', showGrid);
