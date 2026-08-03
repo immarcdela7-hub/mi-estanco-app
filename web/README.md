@@ -112,9 +112,25 @@ here together. The rest are on GetYourGuide and go one at a time."*
 ### La cesta del plan (paradas de GetYourGuide)
 
 **GetYourGuide no tiene cesta para afiliados**: cada enlace vende una actividad
-y no hay URL que acepte varios `tour_id`. La Partner API sí lo permitiría, pero
-pide 100.000 visitas/mes. Un plan de tres paradas son tres reservas, y eso no lo
-podemos cambiar.
+y no hay URL que acepte varios `tour_id` (comprobado uno por uno: `?tour_ids=`,
+`?bundle=`, `?add_to_cart=1`, `/cart/?tour_ids=`, `/shopping-cart/` — los ignora
+todos). Su página `/cart/` existe y guarda la selección 30 minutos, pero solo se
+llena navegando por su web; no hay forma de rellenarla desde fuera. Un plan de
+tres paradas son tres reservas, y eso no lo podemos cambiar.
+
+Reservar por API **no es cuestión de tráfico**, que es lo que parecía. Los
+niveles de la Partner API son tres y solo el último reserva:
+
+| Nivel | Requisito | ¿Reserva? |
+|-------|-----------|-----------|
+| Basic | 100.000 visitas/mes | No: solo textos, imágenes y precios |
+| Reading | 1.000.000 visitas + 300 reservas/mes | No |
+| Masterbill | Contrato con depósito, vía partner manager | Sí |
+
+O sea: llegar a 100.000 visitas no daría cesta. Haría falta negociar Masterbill,
+y con él **nosotros pasamos a ser el vendedor** (merchant of record): cobramos,
+respondemos de la reserva y asumimos las cancelaciones. Es una decisión de
+negocio, no un desbloqueo técnico que llegue solo con crecer.
 
 Lo que sí se puede arreglar es el problema de verdad: que al volver de la
 segunda parada ya no sabes por dónde ibas. La cesta lleva la cuenta —"1 de 3
@@ -130,6 +146,26 @@ Detalles que ya costaron un fallo:
   se le cerraría el calendario de otra parada justo mientras elige día.
 - `localStorage` puede lanzar en modo privado. Todo va envuelto en `try`: sin
   memoria la cesta no recuerda, pero el plan funciona igual.
+
+### El día del plan (`date_from`)
+
+De todo lo que se probó, **`date_from=YYYY-MM-DD` es lo único que GetYourGuide
+acepta desde fuera**: su página abre con el calendario ya en ese día. No es una
+cesta, pero quita el paso que más se repetía —un plan son tres reservas y el
+cliente elegía la misma fecha tres veces—.
+
+La barra "When are you going?" va encima de la cesta, guarda el día en
+`ntl_fecha_<id>` y lo mete en **todos** los enlaces de cada parada, no solo en
+el botón Book: quien entra por la foto o por el título lo perdería. También es
+el día por defecto de nuestras paradas; si esa actividad no abre ese día, el
+selector cae al primero libre en vez de enseñar un día sin horas.
+
+Cambiar el día **sí** repinta el detalle entero: la fecha viaja dentro de cada
+URL, así que hay que rehacerlas todas. Es la única excepción a la regla de
+repintar solo la barra.
+
+> `date_from` está verificado. `_pc=1,2` (personas) aparece en sus URLs pero no
+> se ha comprobado que respete el valor, así que no se usa.
 
 > Al modificar `plans-ui.js`, sube el `?v=N` de su `<script>` en `tickets.html`.
 
@@ -181,8 +217,9 @@ así que la atribución y la red de seguridad son idénticas.
 
 > **La reserva se cierra siempre en GetYourGuide.** Su botón "Check availability"
 > navega a su web; es así por diseño y está documentado. Reservar sin salir
-> requeriría la Partner API (mínimo 100.000 visitas/mes). El valor del widget es
-> ver fecha y precio real **antes** de salir, y llegar a GYG ya decidido.
+> requeriría el nivel Masterbill de la Partner API —contrato con depósito, no una
+> cifra de visitas—. El valor del widget es ver fecha y precio real **antes** de
+> salir, y llegar a GYG ya decidido.
 
 - **Bajo demanda y uno cada vez** (`plans-ui.js` → `mountAvailability`): son
   iframes de ~600 KB; abrir uno cierra el anterior.
@@ -194,8 +231,9 @@ así que la atribución y la red de seguridad son idénticas.
 ## Actividades propias (`own.js`) — aquí sí se reserva
 
 Lo de arriba tiene un techo: mientras vendamos producto de GetYourGuide, la
-reserva es suya y termina en su dominio. Sus widgets no permiten cobrar fuera,
-y la única alternativa (Partner API) pide 100.000 visitas/mes.
+reserva es suya y termina en su dominio. Sus widgets no permiten cobrar fuera, y
+la única alternativa —el nivel Masterbill de la Partner API— es un contrato con
+depósito que nos convertiría en el vendedor. No se desbloquea creciendo.
 
 Las **actividades propias** son el camino que sí llega hasta el final. Son
 nuestras — catas, visitas guiadas, lo que acordemos directamente con el

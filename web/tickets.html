@@ -408,6 +408,28 @@
         .ntl-cesta-reset { background:#fff; color:rgb(0 43 91); border:1px solid #dbe7f3; }
         .ntl-cesta-reset:hover { border-color:rgb(0 123 190); color:rgb(0 123 190); }
 
+        /* ----- El dia del plan -----
+           Va justo encima de la cesta porque es la decision que manda: elegido
+           el dia, los tres enlaces de GetYourGuide salen ya con ese calendario
+           (date_from) y nuestras paradas lo proponen por defecto. */
+        .ntl-fecha { display:flex; align-items:center; gap:.9rem; flex-wrap:wrap;
+            margin:1.5rem 0 0; padding:.85rem 1.15rem; border:1px dashed #c8dcee;
+            background:#fff; border-radius:1rem; }
+        .ntl-fecha.is-puesta { border-style:solid; border-color:rgba(0,123,190,.35);
+            background:#f5faff; }
+        .ntl-fecha + .ntl-cesta { margin-top:.6rem; }
+        .ntl-fecha-txt { flex:1 1 12rem; min-width:0; }
+        .ntl-fecha-txt b { display:block; font-size:.95rem; font-weight:800; color:rgb(0 43 91); }
+        .ntl-fecha-txt span { display:block; margin-top:.1rem; font-size:.8rem; color:#64748b; }
+        .ntl-fecha-in { flex-shrink:0; font-family:inherit; font-size:.85rem; font-weight:700;
+            color:rgb(0 43 91); padding:.5rem .7rem; border:1px solid #dbe7f3; border-radius:.7rem;
+            background:#fff; cursor:pointer; }
+        .ntl-fecha-in:focus { outline:2px solid rgb(0 123 190); outline-offset:1px; }
+        .ntl-fecha-quitar { flex-shrink:0; border:0; background:none; padding:0; cursor:pointer;
+            font-family:inherit; font-size:.75rem; font-weight:700; color:#94a3b8;
+            text-decoration:underline; }
+        .ntl-fecha-quitar:hover { color:rgb(0 43 91); }
+
         /* Parada ya reservada: se queda, pero deja de pedir atencion. */
         .ntl-step.is-hecho { border-color:rgba(0,200,83,.35); background:#fbfffc; }
         .ntl-step.is-hecho .ntl-step-n { background:rgb(0 200 83); }
@@ -422,6 +444,8 @@
         @media (max-width:640px) {
             .ntl-cesta { gap:.7rem; padding:.8rem .9rem; }
             .ntl-cesta-barra { flex:1 1 100%; order:3; }
+            .ntl-fecha { gap:.6rem; padding:.75rem .9rem; }
+            .ntl-fecha-in { flex:1 1 8rem; }
         }
 
         /* ----- Actividades propias -----
@@ -1179,7 +1203,7 @@
        reaplica la atribucion tras pintar). Sube ?v=N al modificarlo. -->
   <script src="/recommend.js?v=3"></script>
   <!-- Planes curados. Sube ?v=N al modificarlo. -->
-  <script src="/plans-ui.js?v=8"></script>
+  <script src="/plans-ui.js?v=9"></script>
   <!-- Actividades propias: las trae del CRM y las reserva aqui mismo, sin
        salir de notaxlost.com. Si el CRM no responde, la web sigue igual.
        NTL_CRM se puede cambiar sin tocar own.js. Sube ?v=N al modificarlo. -->

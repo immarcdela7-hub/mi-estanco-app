@@ -183,7 +183,79 @@ log('Marcar una parada no cierra el calendario de otra',
 await page.close();
 await ctx.close();
 
-// ---------- 10. Sin localStorage no se rompe ----------
+// ---------- 10. El dia del plan viaja a GetYourGuide ----------
+/* Lo unico que GYG acepta desde fuera es date_from. No es una cesta, pero es la
+   diferencia entre elegir la misma fecha tres veces y elegirla una. Se vigila
+   que llegue a TODOS los enlaces de la parada (foto, titulo y boton): con la
+   fecha solo en el boton, el que entra por la foto la pierde. */
+{
+  const ctx3 = await browser.newContext({ viewport: { width: 1280, height: 950 } });
+  const errs3 = [];
+  ctx3.on('page', (p) => p.on('pageerror', (e) => errs3.push(e.message)));
+  const p3 = await abrirPlan(ctx3);
+
+  const d = new Date();
+  d.setDate(d.getDate() + 10);
+  const DIA = d.toISOString().slice(0, 10);
+
+  const enlaces = () => p3.evaluate(() => {
+    const paso = document.querySelector('.ntl-step:not(.ntl-step-propia)');
+    if (!paso) return [];
+    return ['.ntl-step-img', '.ntl-step-title', '.ntl-step-book']
+      .map((s) => paso.querySelector(s)?.getAttribute('href') || '');
+  });
+
+  const sinFecha = await enlaces();
+  log('Sin dia elegido, los enlaces salen como siempre',
+    sinFecha.length === 3 && sinFecha.every((h) => h && !/date_from=/.test(h)),
+    sinFecha[2]?.slice(-45));
+
+  await p3.fill('.ntl-fecha-in', DIA);
+  await p3.waitForTimeout(400);
+
+  const conFecha = await enlaces();
+  log('Elegido el dia, lo llevan los tres enlaces de la parada',
+    conFecha.length === 3 && conFecha.every((h) => h.includes('date_from=' + DIA)),
+    conFecha.map((h) => (/date_from=/.test(h) ? 'si' : 'NO')).join(','));
+  log('Y no se pierde la atribucion al ponerlo',
+    conFecha.every((h) => /cmp=EST-00012/.test(h) && /partner_id=IBO5PAK/.test(h)),
+    conFecha[2]?.slice(-70));
+
+  const cabecera = await p3.locator('.ntl-fecha-txt b').textContent();
+  log('La barra dice que dia es', /going on/i.test(cabecera || ''), cabecera);
+
+  // Sobrevive a irse a GetYourGuide y volver, igual que la cesta: si no, el
+  // cliente vuelve de la primera parada y tiene que volver a decir cuando va.
+  await p3.reload({ waitUntil: 'domcontentloaded' });
+  await entrarEnPlanes(p3);
+  const tras3 = await enlaces();
+  log('El dia sobrevive a volver de GetYourGuide',
+    tras3.every((h) => h.includes('date_from=' + DIA)), tras3[2]?.slice(-45));
+
+  // Y se puede desdecir, como todo lo demas de la cesta.
+  await p3.click('.ntl-fecha-quitar');
+  await p3.waitForTimeout(300);
+  const limpio = await enlaces();
+  log('"Clear" quita el dia y los enlaces vuelven a salir sin el',
+    limpio.every((h) => h && !/date_from=/.test(h)) &&
+    (await p3.locator('.ntl-fecha-quitar').count()) === 0, limpio[2]?.slice(-45));
+
+  // Cada plan lleva su dia, como lleva su cuenta.
+  await p3.fill('.ntl-fecha-in', DIA);
+  await p3.waitForTimeout(300);
+  await p3.evaluate(() => window.ntlPlansReset && window.ntlPlansReset());
+  await p3.waitForTimeout(200);
+  await p3.locator('.ntl-pcard').nth(1).click();
+  await p3.waitForSelector('.ntl-step');
+  await p3.waitForTimeout(250);
+  const otroDia = await p3.locator('.ntl-fecha-in').inputValue();
+  log('Otro plan empieza sin dia', otroDia === '', otroDia || 'vacio');
+
+  log('El dia del plan no rompe nada', errs3.length === 0, errs3.slice(0, 2).join(' | ') || 'ninguno');
+  await ctx3.close();
+}
+
+// ---------- 11. Sin localStorage no se rompe ----------
 {
   const ctx2 = await browser.newContext({ viewport: { width: 1280, height: 950 } });
   const errs = [];

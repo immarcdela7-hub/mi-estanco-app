@@ -20,7 +20,7 @@ node tests/test-disponibilidad.mjs        # motor de cupo del CRM (sin navegador
 node tests/test-horarios.mjs              # que nunca se recomiende algo cerrado
 node tests/test-distintivos.mjs           # pastillas de las tarjetas y su atribucion
 node tests/test-zonas.mjs                 # ?zona= por ciudad y la regla del city
-node tests/test-cesta.mjs                 # la cesta de los planes y su memoria
+node tests/test-cesta.mjs                 # la cesta de los planes, su dia y su memoria
 node tests/test-plan-propio.mjs           # reservar un plan entero de una vez
 ```
 
@@ -68,6 +68,11 @@ GetYourGuide y volver, que el cliente pueda desdecirse, y dos cosas que ya
 fallaron una vez: que abrir el mismo plan dos veces no cuente doble (el oyente
 se engancha una sola vez) y que marcar una parada no le cierre el calendario de
 otra al cliente. Va en su propia batería porque toca `localStorage`.
+
+También cubre el **día del plan**: que `date_from` llegue a los **tres** enlaces
+de cada parada (foto, título y botón) y no solo al botón, que no desplace al
+`cmp` —ese es el fallo silencioso de siempre—, que sobreviva a volver de GYG y
+que cada plan lleve el suyo.
 
 `test-plan-propio.mjs` cubre lo que con GetYourGuide no se puede hacer:
 **reservar varias paradas de una vez**. Vigila que sea de verdad una sola

@@ -84,8 +84,10 @@
 
   // ---------- La cesta del plan ----------
   /* GetYourGuide no tiene cesta para afiliados: cada enlace vende UNA actividad
-     y no hay URL que acepte varios tour_id. La Partner API si lo permitiria,
-     pero pide 100.000 visitas al mes. Asi que no se puede pagar el plan de una
+     y no hay URL que acepte varios tour_id (probados ?tour_ids=, ?bundle=,
+     ?add_to_cart=1, /cart/?tour_ids=; los ignora todos). Por API solo reserva el
+     nivel Masterbill, que es un contrato con deposito y nos haria vendedores;
+     no es cosa de llegar a X visitas. Asi que no se puede pagar el plan de una
      vez.
 
      Lo que si se puede arreglar es el problema de verdad: que al ir a la
@@ -105,36 +107,90 @@
     try { window.localStorage.setItem(CESTA_KEY + id, JSON.stringify(tids)); } catch (e) {}
   }
 
+  // ---------- El dia del plan ----------
+  /* Lo unico que GetYourGuide si acepta desde fuera: date_from=YYYY-MM-DD abre
+     su pagina con el calendario ya en ese dia (comprobado). No es una cesta,
+     pero quita el paso que mas se repite: un plan son tres reservas y hasta
+     ahora el cliente elegia la misma fecha tres veces. La elige una y viaja en
+     los tres enlaces. Tambien es el dia por defecto de nuestras paradas. */
+  var FECHA_KEY = 'ntl_fecha_';
+  var ES_FECHA = /^\d{4}-\d{2}-\d{2}$/;
+
+  function leerFecha(id) {
+    try {
+      var v = window.localStorage.getItem(FECHA_KEY + id) || '';
+      return ES_FECHA.test(v) && v >= hoyIso() ? v : '';   // una fecha pasada no sirve
+    } catch (e) { return ''; }
+  }
+
+  function guardarFecha(id, f) {
+    try {
+      if (f) window.localStorage.setItem(FECHA_KEY + id, f);
+      else window.localStorage.removeItem(FECHA_KEY + id);
+    } catch (e) {}
+  }
+
+  function hoyIso() {
+    var d = new Date();
+    var p = function (n) { return (n < 10 ? '0' : '') + n; };
+    return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate());
+  }
+
+  /** Anade date_from a un enlace de GetYourGuide. Sin fecha, lo deja igual. */
+  function conFecha(url, fecha) {
+    if (!url || !fecha || !ES_FECHA.test(fecha)) return url;
+    if (url.indexOf('date_from=') !== -1) return url;
+    return url + (url.indexOf('?') === -1 ? '?' : '&') + 'date_from=' + fecha;
+  }
+
+  function fechaHtml(fecha) {
+    return '<div class="ntl-fecha' + (fecha ? ' is-puesta' : '') + '">' +
+      '<div class="ntl-fecha-txt">' +
+        '<b>' + (fecha ? 'Going on ' + esc(fechaMedia(fecha)) : 'When are you going?') + '</b>' +
+        '<span>' + (fecha
+          ? 'Every stop opens on this day.'
+          : 'Pick it once and every stop opens on that day.') + '</span>' +
+      '</div>' +
+      '<input type="date" class="ntl-fecha-in" value="' + esc(fecha) + '" min="' + hoyIso() +
+        '" aria-label="Date for this plan">' +
+      (fecha ? '<button type="button" class="ntl-fecha-quitar" data-quitar-fecha>Clear</button>' : '') +
+      '</div>';
+  }
+
   // ---------- Detalle de un plan ----------
   var tourIdOf = function (u) { return (String(u).match(/-t(\d+)/) || [])[1] || ''; };
 
   // El paso ya no es un <a> entero: dentro hay un boton para desplegar el
   // widget de disponibilidad, y no se pueden anidar elementos interactivos.
-  function stepHtml(p, i, hechos) {
+  function stepHtml(p, i, hechos, fecha) {
     var tid = tourIdOf(p.url);
     var hecho = tid && hechos.indexOf(tid) !== -1;
+    // Todos los enlaces de la parada llevan el dia del plan, no solo el boton:
+    // el cliente entra por donde quiere, y llegar a GYG sin fecha en la foto y
+    // con fecha en el boton seria peor que no ponerla.
+    var url = conFecha(p.url, fecha);
     // Los enlaces del plan abren en otra pestaña a proposito: el plan es el
     // sitio de trabajo y no se puede perder al ir a reservar la primera parada.
     return '' +
       '<div class="ntl-step' + (hecho ? ' is-hecho' : '') + '" data-tour="' + esc(tid) + '">' +
         '<div class="ntl-step-main">' +
           '<div class="ntl-step-n">' + (hecho ? CHECK : (i + 1)) + '</div>' +
-          '<a class="ntl-step-img" href="' + esc(p.url) + '" target="_blank" rel="noopener"' +
+          '<a class="ntl-step-img" href="' + esc(url) + '" target="_blank" rel="noopener"' +
             ' tabindex="-1" aria-hidden="true">' +
             '<img src="' + esc(p.imagen) + '" alt="" loading="lazy"></a>' +
           '<div class="ntl-step-body">' +
-            '<a class="ntl-step-title" href="' + esc(p.url) + '" target="_blank" rel="noopener">' +
+            '<a class="ntl-step-title" href="' + esc(url) + '" target="_blank" rel="noopener">' +
               esc(p.titulo) + '</a>' +
             (p.nota ? '<p class="ntl-step-note">' + esc(p.nota) + '</p>' : '') +
             '<div class="ntl-step-meta">' +
               (p.rating ? '<b>' + STAR + ' ' + esc(p.rating) + '</b>' : '') +
               '<b>' + esc(p.precioDisplay) + '</b>' +
               (tid ? '<button type="button" class="ntl-step-dates" data-tour="' + esc(tid) +
-                     '" data-url="' + esc(p.url) + '">Check dates &amp; live price</button>' : '') +
+                     '" data-url="' + esc(url) + '">Check dates &amp; live price</button>' : '') +
               '<button type="button" class="ntl-step-deshacer" data-desmarcar>Not booked yet</button>' +
             '</div>' +
           '</div>' +
-          '<a class="ntl-step-book" href="' + esc(p.url) + '" target="_blank" rel="noopener"' +
+          '<a class="ntl-step-book" href="' + esc(url) + '" target="_blank" rel="noopener"' +
             ' data-marcar>Book</a>' +
         '</div>' +
         '<div class="ntl-step-avail" hidden></div>' +
@@ -232,6 +288,14 @@
     return { dow: DIAS_C[d.getUTCDay()], d: String(d.getUTCDate()), m: MESES_C[d.getUTCMonth()] };
   }
 
+  /* No usa window.ntlOwn.fechaLarga a proposito: la barra del dia sale en todos
+     los planes, tambien en los que no tienen ninguna parada nuestra, y ahi
+     own.js puede no haber cargado. */
+  function fechaMedia(iso) {
+    var p = fechaCorta(iso);
+    return p.dow + ' ' + p.d + ' ' + p.m;
+  }
+
   /** La barra de la cesta: cuantas paradas llevas y cual toca ahora. */
   function cestaHtml(pl, hechos, propiasHechas) {
     // Cuenta las dos clases de parada. Si solo contase las de GetYourGuide,
@@ -310,7 +374,7 @@
   // La navegacion hacia atras vive en la cabecera (ntlSetBack), no aqui.
   // El detalle no lleva el hero azul del catalogo: su portada son las fotos del
   // propio plan, que es lo que de verdad lo vende.
-  function detailHtml(pl, hechos, elegidos, propiasHechas) {
+  function detailHtml(pl, hechos, elegidos, propiasHechas, fecha) {
     var fotos = pl.pasos.map(function (p) { return p.imagen; }).slice(0, 3);
     var banner = fotos.map(function (src, i) {
       return '<span class="ntl-pd-cell' + (i === 0 ? ' ntl-pd-cell-main' : '') + '">' +
@@ -325,9 +389,10 @@
         '<h2 class="ntl-pv-title">' + esc(pl.titulo) + '</h2>' +
         '<p class="ntl-pv-sub">' + esc(pl.subtitulo) + '</p>' +
       '</div>' +
+      fechaHtml(fecha) +
       cestaHtml(pl, hechos, propiasHechas) +
       '<div class="ntl-pv-steps">' + pl.pasos.map(function (p, i) {
-        return p.propia ? propiaHtml(p, i, elegidos[p.slug]) : stepHtml(p, i, hechos);
+        return p.propia ? propiaHtml(p, i, elegidos[p.slug]) : stepHtml(p, i, hechos, fecha);
       }).join('') + '</div>' +
       checkoutHtml(pl, elegidos);
   }
@@ -425,7 +490,7 @@
     // dentro de showDetail para que el oyente de la cesta se enganche una sola
     // vez: si se enganchase en cada apertura, a la segunda cada clic contaria
     // por dos.
-    var abierto = null;   // { pl, hechos, elegidos }
+    var abierto = null;   // { pl, hechos, elegidos, propiasHechas, fecha }
 
     /* Resuelve las paradas `ntl:` contra lo que trajo own.js del CRM. Se hace
        aqui y no al generar plans.js porque las actividades propias viven en la
@@ -471,9 +536,22 @@
 
     function repintar() {
       if (!abierto) return;
-      detail.innerHTML = detailHtml(abierto.pl, abierto.hechos, abierto.elegidos, abierto.propiasHechas);
+      detail.innerHTML = detailHtml(abierto.pl, abierto.hechos, abierto.elegidos,
+        abierto.propiasHechas, abierto.fecha);
       if (typeof window.ntlApplyAttribution === 'function') window.ntlApplyAttribution();
       conectarDisponibilidad();
+    }
+
+    /* Cambiar el dia repinta el detalle entero, y aqui si hace falta: la fecha
+       viaja dentro de cada enlace de GetYourGuide, asi que hay que rehacerlos
+       todos. Se cierra cualquier selector abierto para no dejar a la vista un
+       calendario de otro dia. */
+    function ponerFecha(f) {
+      if (!abierto) return;
+      abierto.fecha = ES_FECHA.test(f) ? f : '';
+      guardarFecha(abierto.pl.id, abierto.fecha);
+      borrador = {};
+      repintar();
     }
 
     function marcar(tid, hecho) {
@@ -522,6 +600,8 @@
         return;
       }
 
+      if (t.closest('[data-quitar-fecha]')) { ponerFecha(''); return; }
+
       // ---- Paradas nuestras: elegir dia y hora ----
       var elegir = t.closest('[data-elegir]');
       if (elegir) { abrirSelector(elegir.dataset.elegir); return; }
@@ -552,8 +632,18 @@
         if (!b || !b.fecha || !b.hora) return;
         abierto.elegidos[slug] = { fecha: b.fecha, hora: b.hora, personas: b.personas };
         delete borrador[slug];
+        // Si el plan aun no tenia dia, lo pone esta primera parada: el cliente
+        // ya ha dicho cuando va, no tiene sentido volver a preguntarselo.
+        if (!abierto.fecha) { ponerFecha(b.fecha); return; }
         repintar();
       }
+    });
+
+    // El dia del plan. `change` y no `input`: el selector nativo dispara
+    // `input` mientras se navega por el calendario y repintaria a cada tecla.
+    detail.addEventListener('change', function (ev) {
+      var inp = ev.target.closest ? ev.target.closest('.ntl-fecha-in') : null;
+      if (inp && abierto) ponerFecha(inp.value);
     });
 
     // ---- Selector de dia/hora de una parada nuestra ----
@@ -612,11 +702,19 @@
       var pintar = function (dias) {
         disponibles[slug] = dias;
         var act = actividadDe(slug);
+        // Si el plan ya tiene dia y esa parada abre ese dia, se marca solo. Si
+        // ese dia esta lleno o cerrado no se fuerza: se cae al primero libre y
+        // el cliente ve las plazas de verdad, no un dia sin horas.
+        var dia = null;
+        for (var i = 0; i < dias.length; i++) {
+          if (dias[i].date === abierto.fecha) { dia = dias[i]; break; }
+        }
+        if (!dia) dia = dias[0];
         borrador[slug] = previo
           ? { fecha: previo.fecha, hora: previo.hora, personas: previo.personas }
           : {
-              fecha: dias[0] ? dias[0].date : '',
-              hora: (dias[0] && dias[0].slots[0]) ? dias[0].slots[0].time : '',
+              fecha: dia ? dia.date : '',
+              hora: (dia && dia.slots[0]) ? dia.slots[0].time : '',
               personas: Math.max(1, (act && act.min_personas) || 1),
             };
         pintarSelector(slug);
@@ -705,10 +803,13 @@
     function showDetail(id) {
       var pl = byId[id];
       if (!pl) return;
-      abierto = { pl: pl, hechos: leerCesta(id), elegidos: {}, propiasHechas: [] };
+      abierto = {
+        pl: pl, hechos: leerCesta(id), elegidos: {}, propiasHechas: [], fecha: leerFecha(id),
+      };
 
       resolverPropias(pl);
-      detail.innerHTML = detailHtml(pl, abierto.hechos, abierto.elegidos, abierto.propiasHechas);
+      detail.innerHTML = detailHtml(pl, abierto.hechos, abierto.elegidos,
+        abierto.propiasHechas, abierto.fecha);
       grid.hidden = true;
       if (intro) intro.hidden = true;
       detail.hidden = false;
