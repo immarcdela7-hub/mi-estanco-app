@@ -93,6 +93,28 @@ la zona sale primero.
 
 El precio "from X€" del plan se calcula solo sumando los mínimos de sus paradas.
 
+### La cesta del plan
+
+**GetYourGuide no tiene cesta para afiliados**: cada enlace vende una actividad
+y no hay URL que acepte varios `tour_id`. La Partner API sí lo permitiría, pero
+pide 100.000 visitas/mes. Un plan de tres paradas son tres reservas, y eso no lo
+podemos cambiar.
+
+Lo que sí se puede arreglar es el problema de verdad: que al volver de la
+segunda parada ya no sabes por dónde ibas. La cesta lleva la cuenta —"1 de 3
+reservadas"—, marca cada parada al pulsar Book, y **sobrevive a irse a GYG y
+volver** (`localStorage`, una clave por plan: `ntl_cesta_<id>`). Los enlaces del
+plan abren en otra pestaña a propósito: el plan es el sitio de trabajo.
+
+Detalles que ya costaron un fallo:
+
+- El oyente de la cesta se engancha **una sola vez**, fuera de `showDetail`. Si
+  se enganchara en cada apertura, al segundo plan cada clic contaría por dos.
+- Al marcar una parada se repinta **solo la barra**, no el detalle entero: si no,
+  se le cerraría el calendario de otra parada justo mientras elige día.
+- `localStorage` puede lanzar en modo privado. Todo va envuelto en `try`: sin
+  memoria la cesta no recuerda, pero el plan funciona igual.
+
 > Al modificar `plans-ui.js`, sube el `?v=N` de su `<script>` en `tickets.html`.
 
 ## Widget de ciudad de GetYourGuide ("Discover more")

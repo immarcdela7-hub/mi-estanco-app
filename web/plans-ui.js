@@ -82,32 +82,95 @@
       '</button>';
   }
 
+  // ---------- La cesta del plan ----------
+  /* GetYourGuide no tiene cesta para afiliados: cada enlace vende UNA actividad
+     y no hay URL que acepte varios tour_id. La Partner API si lo permitiria,
+     pero pide 100.000 visitas al mes. Asi que no se puede pagar el plan de una
+     vez.
+
+     Lo que si se puede arreglar es el problema de verdad: que al ir a la
+     segunda parada ya no sabes por donde ibas. La cesta vive aqui, guarda que
+     paradas llevas reservadas y sobrevive a irse a GYG y volver. Las reservas
+     siguen siendo tres, pero el plan deja de perderse. */
+  var CESTA_KEY = 'ntl_cesta_';
+
+  function leerCesta(id) {
+    try {
+      var v = JSON.parse(window.localStorage.getItem(CESTA_KEY + id) || '[]');
+      return Array.isArray(v) ? v : [];
+    } catch (e) { return []; }   // modo privado o almacenamiento lleno
+  }
+
+  function guardarCesta(id, tids) {
+    try { window.localStorage.setItem(CESTA_KEY + id, JSON.stringify(tids)); } catch (e) {}
+  }
+
   // ---------- Detalle de un plan ----------
   var tourIdOf = function (u) { return (String(u).match(/-t(\d+)/) || [])[1] || ''; };
 
   // El paso ya no es un <a> entero: dentro hay un boton para desplegar el
   // widget de disponibilidad, y no se pueden anidar elementos interactivos.
-  function stepHtml(p, i) {
+  function stepHtml(p, i, hechos) {
     var tid = tourIdOf(p.url);
+    var hecho = tid && hechos.indexOf(tid) !== -1;
+    // Los enlaces del plan abren en otra pestaña a proposito: el plan es el
+    // sitio de trabajo y no se puede perder al ir a reservar la primera parada.
     return '' +
-      '<div class="ntl-step">' +
+      '<div class="ntl-step' + (hecho ? ' is-hecho' : '') + '" data-tour="' + esc(tid) + '">' +
         '<div class="ntl-step-main">' +
-          '<div class="ntl-step-n">' + (i + 1) + '</div>' +
-          '<a class="ntl-step-img" href="' + esc(p.url) + '" tabindex="-1" aria-hidden="true">' +
+          '<div class="ntl-step-n">' + (hecho ? CHECK : (i + 1)) + '</div>' +
+          '<a class="ntl-step-img" href="' + esc(p.url) + '" target="_blank" rel="noopener"' +
+            ' tabindex="-1" aria-hidden="true">' +
             '<img src="' + esc(p.imagen) + '" alt="" loading="lazy"></a>' +
           '<div class="ntl-step-body">' +
-            '<a class="ntl-step-title" href="' + esc(p.url) + '">' + esc(p.titulo) + '</a>' +
+            '<a class="ntl-step-title" href="' + esc(p.url) + '" target="_blank" rel="noopener">' +
+              esc(p.titulo) + '</a>' +
             (p.nota ? '<p class="ntl-step-note">' + esc(p.nota) + '</p>' : '') +
             '<div class="ntl-step-meta">' +
               (p.rating ? '<b>' + STAR + ' ' + esc(p.rating) + '</b>' : '') +
               '<b>' + esc(p.precioDisplay) + '</b>' +
               (tid ? '<button type="button" class="ntl-step-dates" data-tour="' + esc(tid) +
                      '" data-url="' + esc(p.url) + '">Check dates &amp; live price</button>' : '') +
+              '<button type="button" class="ntl-step-deshacer" data-desmarcar>Not booked yet</button>' +
             '</div>' +
           '</div>' +
-          '<a class="ntl-step-book" href="' + esc(p.url) + '">Book</a>' +
+          '<a class="ntl-step-book" href="' + esc(p.url) + '" target="_blank" rel="noopener"' +
+            ' data-marcar>Book</a>' +
         '</div>' +
         '<div class="ntl-step-avail" hidden></div>' +
+      '</div>';
+  }
+
+  var CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">' +
+    '<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>';
+
+  /** La barra de la cesta: cuantas paradas llevas y cual toca ahora. */
+  function cestaHtml(pl, hechos) {
+    var total = pl.pasos.length;
+    var n = pl.pasos.filter(function (p) {
+      return hechos.indexOf(tourIdOf(p.url)) !== -1;
+    }).length;
+    var siguiente = null;
+    for (var i = 0; i < pl.pasos.length; i++) {
+      if (hechos.indexOf(tourIdOf(pl.pasos[i].url)) === -1) { siguiente = i; break; }
+    }
+    var completo = n === total;
+
+    return '<div class="ntl-cesta' + (completo ? ' is-completo' : '') + '">' +
+      '<div class="ntl-cesta-txt">' +
+        '<b>' + (completo ? 'Your day is booked' : n + ' of ' + total + ' stops booked') + '</b>' +
+        '<span>' + (completo
+          ? 'Keep this page: your plan stays here.'
+          : 'Book them one at a time — we keep your place.') + '</span>' +
+      '</div>' +
+      '<div class="ntl-cesta-barra" role="progressbar" aria-valuenow="' + n +
+        '" aria-valuemin="0" aria-valuemax="' + total + '">' +
+        '<i style="width:' + Math.round((n / total) * 100) + '%"></i>' +
+      '</div>' +
+      (completo
+        ? '<button type="button" class="ntl-cesta-reset" data-reset>Start over</button>'
+        : '<button type="button" class="ntl-cesta-go" data-siguiente="' + siguiente + '">' +
+            'Book stop ' + (siguiente + 1) + '</button>') +
       '</div>';
   }
 
@@ -153,7 +216,7 @@
   // La navegacion hacia atras vive en la cabecera (ntlSetBack), no aqui.
   // El detalle no lleva el hero azul del catalogo: su portada son las fotos del
   // propio plan, que es lo que de verdad lo vende.
-  function detailHtml(pl) {
+  function detailHtml(pl, hechos) {
     var fotos = pl.pasos.map(function (p) { return p.imagen; }).slice(0, 3);
     var banner = fotos.map(function (src, i) {
       return '<span class="ntl-pd-cell' + (i === 0 ? ' ntl-pd-cell-main' : '') + '">' +
@@ -168,7 +231,10 @@
         '<h2 class="ntl-pv-title">' + esc(pl.titulo) + '</h2>' +
         '<p class="ntl-pv-sub">' + esc(pl.subtitulo) + '</p>' +
       '</div>' +
-      '<div class="ntl-pv-steps">' + pl.pasos.map(stepHtml).join('') + '</div>';
+      cestaHtml(pl, hechos) +
+      '<div class="ntl-pv-steps">' + pl.pasos.map(function (p, i) {
+        return stepHtml(p, i, hechos);
+      }).join('') + '</div>';
   }
 
   function init() {
@@ -188,6 +254,7 @@
     grid.innerHTML = ordered.map(cardHtml).join('');
 
     function showGrid() {
+      abierto = null;
       detail.hidden = true;
       detail.innerHTML = '';
       grid.hidden = false;
@@ -196,10 +263,75 @@
       if (typeof window.ntlSetBack === 'function') window.ntlSetBack('plans');
     }
 
+    // Plan abierto ahora mismo y sus paradas ya reservadas. Vive aqui y no
+    // dentro de showDetail para que el oyente de la cesta se enganche una sola
+    // vez: si se enganchase en cada apertura, a la segunda cada clic contaria
+    // por dos.
+    var abierto = null;   // { pl, hechos }
+
+    /* Se actualizan los trozos afectados en vez de repintar el detalle entero:
+       si el cliente tiene abierto el widget de disponibilidad de una parada, un
+       repintado se lo cerraria justo cuando esta eligiendo dia. */
+    function refrescarCesta() {
+      var vieja = detail.querySelector('.ntl-cesta');
+      if (!vieja || !abierto) return;
+      var tmp = document.createElement('div');
+      tmp.innerHTML = cestaHtml(abierto.pl, abierto.hechos);
+      vieja.replaceWith(tmp.firstChild);
+    }
+
+    function marcar(tid, hecho) {
+      if (!tid || !abierto) return;
+      var i = abierto.hechos.indexOf(tid);
+      if (hecho && i === -1) abierto.hechos.push(tid);
+      if (!hecho && i !== -1) abierto.hechos.splice(i, 1);
+      guardarCesta(abierto.pl.id, abierto.hechos);
+
+      var paso = detail.querySelector('.ntl-step[data-tour="' + tid + '"]');
+      if (paso) {
+        paso.classList.toggle('is-hecho', hecho);
+        var n = paso.querySelector('.ntl-step-n');
+        var pos = Array.prototype.indexOf.call(detail.querySelectorAll('.ntl-step'), paso);
+        if (n) n.innerHTML = hecho ? CHECK : String(pos + 1);
+      }
+      refrescarCesta();
+    }
+
+    /* La cesta. Pulsar "Book" abre GetYourGuide en otra pestaña y da la parada
+       por reservada: es lo que acaba de hacer el cliente. Si se arrepiente,
+       "Not booked yet" lo deshace — el estado es suyo. */
+    detail.addEventListener('click', function (ev) {
+      var t = ev.target;
+      if (!t.closest || !abierto) return;
+
+      var book = t.closest('[data-marcar]');
+      if (book) { marcar(book.closest('.ntl-step').dataset.tour, true); return; }
+
+      var undo = t.closest('[data-desmarcar]');
+      if (undo) { marcar(undo.closest('.ntl-step').dataset.tour, false); return; }
+
+      var go = t.closest('[data-siguiente]');
+      if (go) {
+        var paso = detail.querySelectorAll('.ntl-step')[parseInt(go.dataset.siguiente, 10)];
+        if (!paso) return;
+        paso.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        paso.classList.remove('ntl-pop');
+        void paso.offsetWidth;
+        paso.classList.add('ntl-pop');
+        return;
+      }
+
+      if (t.closest('[data-reset]')) {
+        abierto.hechos.slice().forEach(function (tid) { marcar(tid, false); });
+      }
+    });
+
     function showDetail(id) {
       var pl = byId[id];
       if (!pl) return;
-      detail.innerHTML = detailHtml(pl);
+      abierto = { pl: pl, hechos: leerCesta(id) };
+
+      detail.innerHTML = detailHtml(pl, abierto.hechos);
       grid.hidden = true;
       if (intro) intro.hidden = true;
       detail.hidden = false;

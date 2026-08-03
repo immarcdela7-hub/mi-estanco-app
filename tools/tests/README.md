@@ -1,6 +1,6 @@
 # Pruebas de la web (navegador real)
 
-Nueve baterías sobre `web/` y el motor de reservas del CRM, con Playwright.
+Diez baterías sobre `web/` y el motor de reservas del CRM, con Playwright.
 Cubren lo que no se puede ver leyendo el código: que la **atribución**
 sobreviva a cada cambio, que los filtros y las vistas funcionen, que se pueda
 reservar de principio a fin sin salir de la web, y que nada desborde en móvil.
@@ -20,6 +20,7 @@ node tests/test-disponibilidad.mjs        # motor de cupo del CRM (sin navegador
 node tests/test-horarios.mjs              # que nunca se recomiende algo cerrado
 node tests/test-distintivos.mjs           # pastillas de las tarjetas y su atribucion
 node tests/test-zonas.mjs                 # ?zona= por ciudad y la regla del city
+node tests/test-cesta.mjs                 # la cesta de los planes y su memoria
 ```
 
 Cada una imprime `=== N/N pruebas OK ===`. Las capturas van a `tools/capturas/`.
@@ -58,6 +59,14 @@ verde sin perder su pie azul, y que **cada actividad del top 50 salga con su
 `cmp`** — las recién añadidas son justo las que más fácil se quedan fuera de la
 atribución. Lee el top 50 de `tools/top50.json`, así que si se regenera ese
 fichero la prueba se ajusta sola.
+
+`test-cesta.mjs` cubre la cesta de los planes. No cobra —GetYourGuide no deja
+pagar tres actividades de una vez—, así que lo que vigila no es un carrito sino
+que **el plan no se pierda**: que la cuenta sea correcta, que sobreviva a irse a
+GetYourGuide y volver, que el cliente pueda desdecirse, y dos cosas que ya
+fallaron una vez: que abrir el mismo plan dos veces no cuente doble (el oyente
+se engancha una sola vez) y que marcar una parada no le cierre el calendario de
+otra al cliente. Va en su propia batería porque toca `localStorage`.
 
 `test-zonas.mjs` vigila la regla de negocio de la fase 3: que **ninguna actividad
 haya cambiado su `city`** para encajar en una zona (lo compara contra el CSV del
