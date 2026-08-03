@@ -161,6 +161,13 @@ funcione hacen falta dos piezas, una a cada lado.
 tablas y aparecen los menús *Actividades propias* y *Reservas*. Crea una
 actividad y quedará publicada al momento.
 
+Los formatos de cartel viven en `src/lib/flyer.ts` (`FORMATOS`): cada uno con
+su plantilla en `public/` y las coordenadas del hueco del QR **medidas sobre el
+PDF original**, en milímetros y con el origen abajo a la izquierda. Una
+plantilla puede tener varias caras: la tarjeta de mesa a dos caras son dos
+páginas, y el PDF sale con las dos seguidas, que es como la quiere la imprenta.
+Si rehaces un diseño, vuelve a medir: las coordenadas no se deducen solas.
+
 **En la web** hace falta subir dos archivos: el módulo nuevo y la página que lo
 carga. Se copian sueltos a propósito — un `rsync --delete` sobre `/var/www/ntl`
 borraría cualquier cosa que esté en el servidor y no en el repositorio.
