@@ -101,6 +101,20 @@ de **compra** y no la de la visita, y que una reserva **cancelada** no se
 convierta en dinero a repartir. Un estado que no conozcamos sí entra: que GYG
 invente una etiqueta nueva no puede hacer desaparecer una venta en silencio.
 
+Lo que **no** cubre, porque es de base de datos, es la **venta directa** (la que
+llega sin campaña: ingreso nuestro, sin nadie a quien liquidar). Sus cinco
+garantías se comprueban contra un Postgres real y hay que rehacerlo si se toca
+`queries.ts` o el esquema:
+
+1. se guarda con `establishmentId` nulo y `partnerShare` a cero;
+2. **no** aparece en lo pendiente de liquidar (si apareciera, sería una fila sin
+   nombre reclamando un pago, y esa fila alguien acaba pagándola);
+3. sí suma en nuestros ingresos totales;
+4. el establecimiento no la ve en su portal ni puede entrar en su liquidación;
+5. borrar un establecimiento con ventas **sigue estando prohibido**: que el
+   campo admita nulos no puede convertirse en que borrar un bar pase sus ventas
+   a directas y borre en silencio lo que le debemos.
+
 `test-zonas.mjs` vigila la regla de negocio de la fase 3: que **ninguna actividad
 haya cambiado su `city`** para encajar en una zona (lo compara contra el CSV del
 commit anterior con `git show`), que `?zona=<ciudad>` deje al menos diez tarjetas

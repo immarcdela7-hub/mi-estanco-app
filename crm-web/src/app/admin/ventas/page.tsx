@@ -22,6 +22,14 @@ import type { Prisma } from "@prisma/client";
 
 export const dynamic = "force-dynamic";
 
+/* Una venta sin establecimiento entro por la web sin QR: es nuestra entera.
+   Se enseña con nombre propio y no con un guion, porque un guion se lee como
+   "falta el dato" y esto no es un dato que falte. */
+function Origen({ est }: { est: { name: string } | null }) {
+  if (est) return <>{est.name}</>;
+  return <span className="font-semibold text-slate-500">Venta directa</span>;
+}
+
 const CSV_TEMPLATE =
   "fecha,codigo_establecimiento,referencia_reserva,actividad,entradas,importe_total,comision_gyg\n" +
   "2026-07-15,EST-XXXXX,GYG-ABC123,Sagrada Família — entrada general,2,52.00,6.24\n";
@@ -32,10 +40,13 @@ export default async function SalesPage({
   searchParams: Promise<Record<string, string | undefined>>;
 }) {
   const sp = await searchParams;
-  const estFilter = sp.est ? parseInt(sp.est, 10) : undefined;
+  // "directas" = las que no tienen establecimiento; un id = ese establecimiento.
+  const soloDirectas = sp.est === "directas";
+  const estFilter = sp.est && !soloDirectas ? parseInt(sp.est, 10) : undefined;
   const statusFilter = sp.estado as "PENDIENTE" | "VALIDADA" | "PAGADA" | undefined;
 
   const where: Prisma.SaleWhereInput = {
+    ...(soloDirectas ? { establishmentId: null } : {}),
     ...(estFilter ? { establishmentId: estFilter } : {}),
     ...(statusFilter ? { status: statusFilter } : {}),
     ...(sp.desde ? { saleDate: { gte: new Date(sp.desde) } } : {}),
@@ -82,6 +93,8 @@ export default async function SalesPage({
                         {e.name} ({e.code})
                       </option>
                     ))}
+                    {/* Sin QR de por medio: ingreso nuestro, sin reparto. */}
+                    <option value="">Venta directa (sin QR, no se reparte)</option>
                   </select>
                 </div>
                 <div>
@@ -133,13 +146,13 @@ export default async function SalesPage({
               accept=".csv,text/csv"
               className="block w-full text-sm text-slate-600 file:mr-3 file:rounded-lg file:border-0 file:bg-slate-100 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-slate-700 hover:file:bg-slate-200"
             />
-            {/* Una venta sin campaña no dice de qué QR viene, así que no se
-                puede repartir. Descartarla es lo reversible: siempre se puede
-                volver a importar eligiendo destino. */}
+            {/* Una venta sin campaña no dice de qué QR viene, pero sigue siendo
+                ingreso: entra como directa salvo que se diga otra cosa. */}
             <div className="mt-3">
               <label className={labelCls}>Ventas sin campaña (sin código de QR)</label>
-              <select name="sinCampana" className={inputCls} defaultValue="">
-                <option value="">Descartarlas y avisarme</option>
+              <select name="sinCampana" className={inputCls} defaultValue="directa">
+                <option value="directa">Registrarlas como venta directa</option>
+                <option value="descartar">Descartarlas</option>
                 {establishments.map((e) => (
                   <option key={e.id} value={e.id}>
                     Cargarlas a {e.name} ({e.code})
@@ -157,6 +170,7 @@ export default async function SalesPage({
             <label className={labelCls}>Establecimiento</label>
             <select name="est" defaultValue={sp.est ?? ""} className={inputCls}>
               <option value="">Todos</option>
+              <option value="directas">Solo ventas directas</option>
               {establishments.map((e) => (
                 <option key={e.id} value={e.id}>
                   {e.name}
@@ -197,7 +211,7 @@ export default async function SalesPage({
               {sales.map((s) => (
                 <tr key={s.id}>
                   <Td className="whitespace-nowrap">{fmtDate(s.saleDate)}</Td>
-                  <Td>{s.establishment.name}</Td>
+                  <Td><Origen est={s.establishment} /></Td>
                   <Td className="max-w-[200px] truncate">{s.activity || "—"}</Td>
                   <Td className="font-mono text-[12px]">{s.bookingRef || "—"}</Td>
                   <Td right>{s.tickets}</Td>
@@ -232,7 +246,7 @@ export default async function SalesPage({
                 >
                   <input type="checkbox" name="saleId" value={s.id} defaultChecked className="h-4 w-4 accent-blue-600" />
                   <span className="whitespace-nowrap">{fmtDate(s.saleDate)}</span>
-                  <span className="font-semibold">{s.establishment.name}</span>
+                  <span className="font-semibold"><Origen est={s.establishment} /></span>
                   <span className="ml-auto tabular-nums">{euros(s.gygCommission)}</span>
                 </label>
               ))}
@@ -256,7 +270,7 @@ export default async function SalesPage({
                   >
                     <input type="checkbox" name="saleId" value={s.id} className="h-4 w-4 accent-red-600" />
                     <span className="whitespace-nowrap">{fmtDate(s.saleDate)}</span>
-                    <span className="font-semibold">{s.establishment.name}</span>
+                    <span className="font-semibold"><Origen est={s.establishment} /></span>
                     <span className="text-muted">{s.activity || "—"}</span>
                     <span className="ml-auto tabular-nums">{euros(s.gygCommission)}</span>
                   </label>

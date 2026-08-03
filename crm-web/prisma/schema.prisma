@@ -74,26 +74,33 @@ model QrCode {
 }
 
 model Sale {
-  id              Int           @id @default(autoincrement())
-  establishment   Establishment @relation(fields: [establishmentId], references: [id])
-  establishmentId Int
-  saleDate        DateTime      @db.Date
-  activity        String        @default("")
-  bookingRef      String        @default("")
-  tickets         Int           @default(1)
-  amountTotal     Decimal       @default(0) @db.Decimal(10, 2)
+  id              Int            @id @default(autoincrement())
+  /// Sin establecimiento = venta directa: entró por notaxlost.com sin QR, así
+  /// que es nuestra entera y no se liquida a nadie. Se registra igual porque
+  /// también es ingreso, y sin ella la contabilidad no cuadra.
+  ///
+  /// `Restrict` a propósito: que el campo admita nulos no puede convertirse en
+  /// que borrar un establecimiento pase sus ventas a directas. Eso borraría en
+  /// silencio lo que le debemos.
+  establishment   Establishment? @relation(fields: [establishmentId], references: [id], onDelete: Restrict)
+  establishmentId Int?
+  saleDate        DateTime       @db.Date
+  activity        String         @default("")
+  bookingRef      String         @default("")
+  tickets         Int            @default(1)
+  amountTotal     Decimal        @default(0) @db.Decimal(10, 2)
   // Lo que ingresa NoTaxLost por esta venta. En las de GetYourGuide es la
   // comisión que paga GYG; en las actividades propias, nuestro margen. El
   // reparto al establecimiento se calcula igual en los dos casos, así que
   // liquidaciones no distingue: mira `source` para saber de dónde viene.
-  gygCommission   Decimal       @default(0) @db.Decimal(10, 2)
-  partnerShare    Decimal       @default(0) @db.Decimal(10, 2)
-  status          SaleStatus    @default(PENDIENTE)
-  payout          Payout?       @relation(fields: [payoutId], references: [id])
+  gygCommission   Decimal        @default(0) @db.Decimal(10, 2)
+  partnerShare    Decimal        @default(0) @db.Decimal(10, 2)
+  status          SaleStatus     @default(PENDIENTE)
+  payout          Payout?        @relation(fields: [payoutId], references: [id])
   payoutId        Int?
-  source          String        @default("manual")
+  source          String         @default("manual")
   booking         Booking?
-  createdAt       DateTime      @default(now())
+  createdAt       DateTime       @default(now())
 
   @@index([establishmentId, status])
   @@index([saleDate])
@@ -103,34 +110,34 @@ model Sale {
 /// diferencia de las de GetYourGuide, la reserva se completa en notaxlost.com
 /// y aterriza aquí: nosotros controlamos precio, cupo y confirmación.
 model OwnActivity {
-  id            Int       @id @default(autoincrement())
-  slug          String    @unique
-  title         String
-  summary       String    @default("")
-  description   String    @default("")
-  province      String    @default("")
-  city          String    @default("")
-  category      String    @default("culture")
-  imageUrl      String    @default("")
-  pricePerPerson Decimal  @default(0) @db.Decimal(10, 2)
+  id             Int       @id @default(autoincrement())
+  slug           String    @unique
+  title          String
+  summary        String    @default("")
+  description    String    @default("")
+  province       String    @default("")
+  city           String    @default("")
+  category       String    @default("culture")
+  imageUrl       String    @default("")
+  pricePerPerson Decimal   @default(0) @db.Decimal(10, 2)
   // Porcentaje del importe que se queda NoTaxLost; el resto es del proveedor.
-  ntlMarginPct  Decimal   @default(20) @db.Decimal(5, 2)
-  durationMin   Int       @default(90)
-  minPeople     Int       @default(1)
-  capacity      Int       @default(10)
+  ntlMarginPct   Decimal   @default(20) @db.Decimal(5, 2)
+  durationMin    Int       @default(90)
+  minPeople      Int       @default(1)
+  capacity       Int       @default(10)
   /// Horas de inicio separadas por "|", por ejemplo "10:00|12:30|17:00".
-  slots         String    @default("")
+  slots          String    @default("")
   /// Días con actividad, 0=domingo … 6=sábado, separados por comas.
-  weekdays      String    @default("0,1,2,3,4,5,6")
+  weekdays       String    @default("0,1,2,3,4,5,6")
   /// Antelación mínima para reservar y hasta cuántos días vista se abre.
-  leadHours     Int       @default(24)
-  horizonDays   Int       @default(60)
-  meetingPoint  String    @default("")
-  supplierName  String    @default("")
-  supplierEmail String    @default("")
-  active        Boolean   @default(true)
-  createdAt     DateTime  @default(now())
-  bookings      Booking[]
+  leadHours      Int       @default(24)
+  horizonDays    Int       @default(60)
+  meetingPoint   String    @default("")
+  supplierName   String    @default("")
+  supplierEmail  String    @default("")
+  active         Boolean   @default(true)
+  createdAt      DateTime  @default(now())
+  bookings       Booking[]
 
   @@index([active])
 }

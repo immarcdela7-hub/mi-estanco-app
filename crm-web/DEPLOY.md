@@ -151,7 +151,30 @@ Verificación rápida: abre `https://notaxlost.com/tickets?ref=PRUEBA1` en incó
 y comprueba que los enlaces de GetYourGuide conservan `partner_id=...` y llevan
 `cmp=PRUEBA1`.
 
-## 9. Actividades propias (reserva dentro de notaxlost.com)
+## 9. Registrar las ventas de GetYourGuide
+
+En **Ventas → Importar CSV** se sube el export de su panel (Dashboard →
+Bookings → Export) **tal cual**, sin renombrar columnas: el formato se detecta
+por las cabeceras. Se descartan solas la fila de totales del final, las
+reservas anuladas y las que ya estuvieran registradas.
+
+Dos cosas de su fichero que conviene saber antes de mirar los números:
+
+- **No trae lo que pagó el cliente**, solo lo que cobramos nosotros. La columna
+  «Importe» queda en 0 €. El reparto se calcula sobre la comisión, así que
+  ninguna liquidación sale mal por eso.
+- Las que vienen **sin campaña** (`Campaign` vacío) no dicen de qué QR salieron,
+  así que no se reparten a nadie: entran como **venta directa**. Cuentan en
+  nuestros ingresos y nunca aparecen en lo pendiente de liquidar ni en el portal
+  de ningún establecimiento. Al importar se puede elegir otra cosa: descartarlas,
+  o cargarlas a un establecimiento concreto si se sabe de dónde venían.
+
+Todas entran como **pendientes**. Validarlas es lo que confirma que GYG las ha
+abonado; hasta entonces no se pueden liquidar. No te saltes ese paso: una
+cancelación posterior revierte la comisión, y una venta liquidada ya no se
+recupera.
+
+## 10. Actividades propias (reserva dentro de notaxlost.com)
 
 Las de GetYourGuide se reservan siempre en su web. Las **nuestras** no: el
 cliente elige día y hora y confirma sin salir de `notaxlost.com`. Para que

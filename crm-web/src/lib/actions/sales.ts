@@ -20,9 +20,14 @@ const revalidateAll = () => REVALIDATE.forEach((p) => revalidatePath(p));
 export async function addSaleAction(_prev: FormState, formData: FormData): Promise<FormState> {
   await requireAdmin();
 
-  const establishmentId = parseInt(String(formData.get("establishmentId")), 10);
-  const est = await prisma.establishment.findUnique({ where: { id: establishmentId } });
-  if (!est) return { error: "Establecimiento no válido." };
+  // Vacío = venta directa: entró sin QR, es nuestra entera y no se liquida.
+  const crudo = String(formData.get("establishmentId") ?? "").trim();
+  const establishmentId = crudo === "" ? null : parseInt(crudo, 10);
+  const est =
+    establishmentId === null
+      ? null
+      : await prisma.establishment.findUnique({ where: { id: establishmentId } });
+  if (establishmentId !== null && !est) return { error: "Establecimiento no válido." };
 
   const saleDate = String(formData.get("saleDate") ?? "");
   if (!/^\d{4}-\d{2}-\d{2}$/.test(saleDate)) return { error: "La fecha no es válida." };
@@ -32,7 +37,8 @@ export async function addSaleAction(_prev: FormState, formData: FormData): Promi
   const gyg = parseFloat(String(formData.get("gygCommission") ?? "0")) || 0;
   if (gyg < 0 || amountTotal < 0) return { error: "Los importes no pueden ser negativos." };
 
-  const partnerShare = share(gyg, est.commissionPct);
+  // Sin establecimiento no hay reparto: el cero es el dato, no un hueco.
+  const partnerShare = est ? share(gyg, est.commissionPct) : 0;
   await prisma.sale.create({
     data: {
       establishmentId,
@@ -48,6 +54,11 @@ export async function addSaleAction(_prev: FormState, formData: FormData): Promi
   });
 
   revalidateAll();
+  if (!est) {
+    return ok(
+      `Venta directa registrada como pendiente: ${euros(gyg)} nuestros, sin reparto. Valídala para que cuente en los totales.`
+    );
+  }
   return ok(
     `Venta registrada como pendiente. Al establecimiento le corresponden ${euros(partnerShare)}. Valídala para poder liquidarla.`
   );
@@ -58,10 +69,11 @@ export async function addSaleAction(_prev: FormState, formData: FormData): Promi
  * cual** (Dashboard → Bookings → Export). El formato se detecta por las
  * cabeceras: nadie tiene que decir cuál está subiendo.
  *
- * Las ventas sin campaña no se pueden repartir —no traen de qué QR vienen— y
- * qué hacer con ellas lo decide quien importa: descartarlas o cargarlas a un
- * establecimiento concreto. Por omisión se descartan, que es lo que no se
- * puede deshacer sin borrar a mano.
+ * Las ventas sin campaña **entran igual**, como ventas directas: no traen de
+ * qué QR vienen, así que no se reparten, pero son ingreso nuestro y sin ellas
+ * la contabilidad no cuadra con lo que paga GetYourGuide. Quien importa puede
+ * cargarlas a un establecimiento concreto si sabe de dónde venían, o
+ * descartarlas.
  */
 export async function importCsvAction(_prev: FormState, formData: FormData): Promise<FormState> {
   await requireAdmin();
@@ -95,25 +107,31 @@ export async function importCsvAction(_prev: FormState, formData: FormData): Pro
     };
   }
 
-  // A dónde van las ventas sin campaña: "" las descarta.
-  const destinoSinCampana = parseInt(String(formData.get("sinCampana") ?? ""), 10);
-  const refugio = Number.isNaN(destinoSinCampana)
+  // Qué hacer con las que no traen campaña: "directa" (lo normal), "descartar",
+  // o el id de un establecimiento al que cargárselas.
+  const destino = String(formData.get("sinCampana") ?? "directa").trim();
+  const idRefugio = parseInt(destino, 10);
+  const refugio = Number.isNaN(idRefugio)
     ? null
-    : await prisma.establishment.findUnique({ where: { id: destinoSinCampana } });
+    : await prisma.establishment.findUnique({ where: { id: idRefugio } });
+  if (!Number.isNaN(idRefugio) && !refugio) {
+    return { error: "El establecimiento elegido para las ventas sin campaña no existe." };
+  }
 
   const { filas, descartes, anuladas } = normalizar(rows, formato);
   const issues = [...descartes];
   let imported = 0;
-  let sinCampana = 0;
+  let directas = 0;
+  let descartadas = 0;
 
   for (const fila of filas) {
     let est = fila.codigo ? await findEstablishmentByCode(fila.codigo) : null;
     if (!est && !fila.codigo) {
-      // Sin campaña: la venta es nuestra, pero no sabemos de qué QR viene.
-      if (!refugio) { sinCampana++; continue; }
-      est = refugio;
+      if (destino === "descartar") { descartadas++; continue; }
+      est = refugio;              // null = se registra como venta directa
+      if (!est) directas++;
     }
-    if (!est) {
+    if (!est && fila.codigo) {
       issues.push(`Línea ${fila.linea}: código ${fila.codigo} no existe.`);
       continue;
     }
@@ -128,21 +146,22 @@ export async function importCsvAction(_prev: FormState, formData: FormData): Pro
       if (dup) {
         issues.push(
           `Línea ${fila.linea}: la reserva ${fila.referencia} ya estaba registrada ` +
-            `(${dup.establishment.name}) — no se ha duplicado.`
+            `(${dup.establishment?.name ?? "venta directa"}) — no se ha duplicado.`
         );
         continue;
       }
     }
     await prisma.sale.create({
       data: {
-        establishmentId: est.id,
+        establishmentId: est?.id ?? null,
         saleDate: new Date(fila.fecha),
         activity: fila.actividad,
         bookingRef: fila.referencia,
         tickets: fila.entradas,
         amountTotal: fila.importeTotal,
         gygCommission: fila.comision,
-        partnerShare: share(fila.comision, est.commissionPct),
+        // Sin establecimiento no hay a quién repartir.
+        partnerShare: est ? share(fila.comision, est.commissionPct) : 0,
         source: formato === "gyg" ? "gyg" : "csv",
       },
     });
@@ -155,10 +174,15 @@ export async function importCsvAction(_prev: FormState, formData: FormData): Pro
   if (anuladas > 0) {
     notas.push(`${plural(anuladas, "reserva anulada", "reservas anuladas")} sin importar.`);
   }
-  if (sinCampana > 0) {
+  if (directas > 0) {
     notas.push(
-      `${plural(sinCampana, "venta sin campaña", "ventas sin campaña")} sin importar: no ` +
-        `traen de qué QR vienen. Si son tuyas, vuelve a importar eligiendo dónde cargarlas.`
+      `De ellas, ${plural(directas, "1 es venta directa", "son ventas directas")} ` +
+        `(sin campaña): ingreso nuestro, sin reparto.`
+    );
+  }
+  if (descartadas > 0) {
+    notas.push(
+      `${plural(descartadas, "venta sin campaña descartada", "ventas sin campaña descartadas")}.`
     );
   }
   if (formato === "gyg" && imported > 0) {
@@ -170,7 +194,7 @@ export async function importCsvAction(_prev: FormState, formData: FormData): Pro
       ? `${plural(imported, "venta importada", "ventas importadas")} como pendientes.`
       : "No se importó ninguna venta.";
   const cola = [...notas, ...(issues.length ? [`Incidencias: ${issues.join(" · ")}`] : [])].join(" ");
-  if (imported === 0 && (issues.length > 0 || sinCampana > 0)) {
+  if (imported === 0 && (issues.length > 0 || descartadas > 0)) {
     return { error: `${summary} ${cola}`.trim() };
   }
   return ok(`${summary} ${cola}`.trim());

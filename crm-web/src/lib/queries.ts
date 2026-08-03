@@ -87,26 +87,45 @@ export async function recentSales(limit = 8) {
   });
 }
 
+/**
+ * Lo que se debe a cada establecimiento y aún no se ha liquidado.
+ *
+ * Las ventas directas quedan fuera **explícitamente**: no tienen a quién
+ * pagarse. Sin ese filtro saldría una fila sin nombre reclamando un pago que
+ * no existe, y es el tipo de fila que alguien acaba pagando.
+ */
 export async function pendingByEstablishment() {
   const rows = await prisma.sale.groupBy({
     by: ["establishmentId"],
-    where: { status: "VALIDADA", payoutId: null },
+    where: { status: "VALIDADA", payoutId: null, establishmentId: { not: null } },
     _count: { id: true },
     _sum: { partnerShare: true },
   });
   if (rows.length === 0) return [];
+  const ids = rows.map((r) => r.establishmentId).filter((id): id is number => id !== null);
   const ests = await prisma.establishment.findMany({
-    where: { id: { in: rows.map((r) => r.establishmentId) } },
+    where: { id: { in: ids } },
     select: { id: true, name: true, code: true },
   });
   const byId = new Map(ests.map((e) => [e.id, e]));
   return rows
+    .filter((r) => r.establishmentId !== null)
     .map((r) => ({
-      establishmentId: r.establishmentId,
-      name: byId.get(r.establishmentId)?.name ?? "?",
-      code: byId.get(r.establishmentId)?.code ?? "?",
+      establishmentId: r.establishmentId as number,
+      name: byId.get(r.establishmentId as number)?.name ?? "?",
+      code: byId.get(r.establishmentId as number)?.code ?? "?",
       ventas: r._count.id,
       pendiente: num(r._sum.partnerShare),
     }))
     .sort((a, b) => b.pendiente - a.pendiente);
+}
+
+/** Resumen de lo que entra sin QR: es ingreso nuestro y no se reparte. */
+export async function directSalesSummary() {
+  const agg = await prisma.sale.aggregate({
+    where: { establishmentId: null, status: { in: ["VALIDADA", "PAGADA"] } },
+    _count: { id: true },
+    _sum: { gygCommission: true },
+  });
+  return { nVentas: agg._count.id, nuestro: num(agg._sum.gygCommission) };
 }

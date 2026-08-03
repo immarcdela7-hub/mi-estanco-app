@@ -174,7 +174,14 @@ export default async function AdminDashboard() {
               {recent.map((s) => (
                 <tr key={s.id}>
                   <Td className="whitespace-nowrap">{fmtDate(s.saleDate)}</Td>
-                  <Td>{s.establishment.name}</Td>
+                  {/* Sin establecimiento = entro por la web sin QR. */}
+                  <Td>
+                    {s.establishment ? (
+                      s.establishment.name
+                    ) : (
+                      <span className="font-semibold text-slate-500">Venta directa</span>
+                    )}
+                  </Td>
                   <Td className="max-w-[220px] truncate">{s.activity || "—"}</Td>
                   <Td right>{euros(s.gygCommission)}</Td>
                   <Td>
