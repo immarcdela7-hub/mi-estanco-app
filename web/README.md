@@ -132,6 +132,10 @@ y con él **nosotros pasamos a ser el vendedor** (merchant of record): cobramos,
 respondemos de la reserva y asumimos las cancelaciones. Es una decisión de
 negocio, no un desbloqueo técnico que llegue solo con crecer.
 
+La investigación entera —qué se probó, qué se verificó en navegador y qué se
+leyó en su documentación— está en **`tools/gyg-cesta.md`**. Antes de volver a
+intentarlo, léelo: ahí están las seis variantes de URL que ya no funcionan.
+
 Lo que sí se puede arreglar es el problema de verdad: que al volver de la
 segunda parada ya no sabes por dónde ibas. La cesta lleva la cuenta —"1 de 3
 reservadas"—, marca cada parada al pulsar Book, y **sobrevive a irse a GYG y
