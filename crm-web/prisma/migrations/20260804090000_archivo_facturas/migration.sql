@@ -8,11 +8,7 @@ CREATE TABLE "Invoice" (
     "number" TEXT NOT NULL DEFAULT '',
     "issueDate" DATE NOT NULL,
     "counterparty" TEXT NOT NULL DEFAULT '',
-    "selfBilled" BOOLEAN NOT NULL DEFAULT false,
     "concept" TEXT NOT NULL DEFAULT '',
-    "base" DECIMAL(10,2) NOT NULL DEFAULT 0,
-    "vatPct" DECIMAL(5,2) NOT NULL DEFAULT 0,
-    "vatAmount" DECIMAL(10,2) NOT NULL DEFAULT 0,
     "total" DECIMAL(10,2) NOT NULL DEFAULT 0,
     "fileName" TEXT NOT NULL,
     "fileMime" TEXT NOT NULL DEFAULT 'application/pdf',
@@ -39,6 +35,9 @@ CREATE INDEX "Invoice_establishmentId_idx" ON "Invoice"("establishmentId");
 
 -- CreateIndex
 CREATE INDEX "Invoice_sha256_idx" ON "Invoice"("sha256");
+
+-- CreateIndex
+CREATE INDEX "Invoice_saleId_idx" ON "Invoice"("saleId");
 
 -- AddForeignKey
 ALTER TABLE "Invoice" ADD CONSTRAINT "Invoice_establishmentId_fkey" FOREIGN KEY ("establishmentId") REFERENCES "Establishment"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

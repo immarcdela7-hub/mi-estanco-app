@@ -116,20 +116,28 @@ garantías se comprueban contra un Postgres real y hay que rehacerlo si se toca
    campo admita nulos no puede convertirse en que borrar un bar pase sus ventas
    a directas y borre en silencio lo que le debemos.
 
-`test-facturas.mjs` cubre el guardado de las facturas, que es la única parte
-del CRM donde entra un **archivo** que manda alguien de fuera. Los tres fallos
-que vigila no se ven mirando la pantalla: que se cuele algo que no es un PDF y
-se sirva de vuelta (un HTML subido como `factura.pdf` sería un XSS con la sesión
-de administrador delante, así que el tipo se decide por los primeros bytes y no
-por lo que diga el navegador); que un nombre como `../../etc/passwd` acabe
-siendo una ruta; y que un salto de línea en el nombre parta la cabecera
-`Content-Disposition` al descargar.
+`test-facturas.mjs` cubre el archivo de facturas, que tiene dos partes donde un
+fallo no se ve mirando la pantalla.
+
+La primera es **la puerta por donde entra un fichero de fuera** —la única del
+CRM—: que no se cuele algo que no es un PDF y se sirva de vuelta (un HTML subido
+como `factura.pdf` sería un XSS con la sesión de administrador delante, así que
+el tipo se decide por los primeros bytes y no por lo que diga el navegador); que
+un nombre como `../../etc/passwd` no acabe siendo una ruta; y que un salto de
+línea en el nombre no parta la cabecera `Content-Disposition` al descargar.
+
+La segunda es el **enlazado por nombre**, y es la que de verdad puede costar
+dinero. De la venta enlazada salen la fecha y el importe de la factura, así que
+enlazar mal es peor que no enlazar: no da ningún error, sólo deja una factura
+con el dinero de otra. Por eso se comprueba sobre todo que **no** enlace cuando
+no debe — un localizador corto que aparece por casualidad dentro de una fecha,
+uno que no conocemos, o un nombre que vale para dos ventas a la vez.
 
 La otra mitad —**quién puede descargar qué**— se comprueba contra el servidor
 levantado, firmando sesiones válidas y pidiendo la URL a pelo, que es lo que
 haría alguien probando ids desde su portal. Lo que tiene que salir: el
-administrador descarga cualquiera; un establecimiento descarga **la suya**;
-la de otro establecimiento y las de ingreso dan **404 y no 403**, porque un 403
+administrador descarga cualquiera; un establecimiento descarga **la suya**; la
+de otro establecimiento y las de ingreso dan **404 y no 403**, porque un 403
 confirmaría que esa factura existe.
 
 `test-zonas.mjs` vigila la regla de negocio de la fase 3: que **ninguna actividad

@@ -214,25 +214,31 @@ model Payout {
 /// y aquí queda su ficha. Meter PDFs en Postgres hincha las copias de
 /// seguridad hasta que dejan de hacerse, y estos papeles hay que conservarlos
 /// años.
+/// Una factura archivada, con su PDF.
+///
+/// No se teclea NADA de su contenido. Todo lo que hay que saber de ella ya
+/// esta en el CRM: el importe de una factura de GetYourGuide es la comision
+/// que ya importamos de su propio export, y el de una que emitimos nosotros es
+/// la liquidacion que calculamos nosotros. Los campos de abajo se rellenan
+/// solos desde la venta o la liquidacion con la que se enlaza.
+///
+/// El fichero NO vive en la base de datos: se guarda en disco (`FACTURAS_DIR`)
+/// y aqui queda su ficha. Meter PDFs en Postgres hincha las copias de
+/// seguridad hasta que dejan de hacerse, y estos papeles hay que conservarlos
+/// anos.
 model Invoice {
   id           Int         @id @default(autoincrement())
   kind         InvoiceKind
-  /// Número tal y como viene en el documento. No lo generamos nosotros.
+  /// Numero del documento. En las de gasto lo ponemos nosotros (serie propia).
   number       String      @default("")
   issueDate    DateTime    @db.Date
-  /// La otra parte: "GetYourGuide" en las de ingreso, el establecimiento en
-  /// las de gasto.
+  /// La otra parte. Sale del enlace, no se escribe.
   counterparty String      @default("")
-  /// La escribimos nosotros por cuenta de la otra parte (autofactura), que es
-  /// como funciona este negocio en los dos sentidos.
-  selfBilled   Boolean     @default(false)
   concept      String      @default("")
-  base         Decimal     @default(0) @db.Decimal(10, 2)
-  vatPct       Decimal     @default(0) @db.Decimal(5, 2)
-  vatAmount    Decimal     @default(0) @db.Decimal(10, 2)
+  /// Importe. Sale de la venta o de la liquidacion enlazada.
   total        Decimal     @default(0) @db.Decimal(10, 2)
 
-  /// Nombre con el que la subió el usuario; solo para enseñarlo y descargarla.
+  /// Nombre con el que la subio el usuario; solo para ensenarlo y descargarla.
   fileName   String
   fileMime   String @default("application/pdf")
   fileSize   Int    @default(0)
@@ -242,7 +248,7 @@ model Invoice {
   /// Huella del contenido, para no archivar dos veces el mismo papel.
   sha256     String @default("")
 
-  /// A qué se refiere. Todo opcional: una factura de gastos no cuelga de nada.
+  /// A que se refiere. De aqui salen los datos de arriba.
   establishment   Establishment? @relation(fields: [establishmentId], references: [id], onDelete: Restrict)
   establishmentId Int?
   sale            Sale?          @relation(fields: [saleId], references: [id], onDelete: Restrict)
@@ -256,6 +262,7 @@ model Invoice {
   @@index([kind, issueDate])
   @@index([establishmentId])
   @@index([sha256])
+  @@index([saleId])
 }
 
 model Setting {

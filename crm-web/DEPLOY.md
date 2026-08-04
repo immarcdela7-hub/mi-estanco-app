@@ -177,8 +177,24 @@ recupera.
 ## 10. El archivo de facturas
 
 Todo el papeleo en el mismo sitio: lo que nos paga GetYourGuide y lo que le
-devolvemos a cada establecimiento. Se sube el PDF en **Facturas** y queda
-archivado con su fecha, número, importe y a quién corresponde.
+devolvemos a cada establecimiento. Se sube el PDF en **Facturas** y ya está.
+
+**No se teclea nada del contenido de la factura.** Ese fue el punto de partida y
+conviene no perderlo: cuando llega el PDF, el CRM ya sabe todo lo que pone
+dentro. El importe de una factura de GetYourGuide es la comisión que ya
+importamos de su propio export, y el de una que emitimos nosotros es la
+liquidación que calculó el CRM. Pedir esos números a mano sería teclear algo que
+el sistema ya tiene, y abriría la puerta a que lo tecleado y lo calculado no
+coincidan.
+
+Así que sólo entran dos cosas: **el fichero y a qué corresponde**. Lo demás
+—fecha, importe, quién, concepto— se copia de la venta o de la liquidación.
+
+Las de GetYourGuide se enlazan solas: sus PDF llevan el localizador en el
+nombre, así que se sueltan todos los del mes de golpe. El que no se pueda
+enlazar se guarda igual y se enlaza a mano desde el propio listado; nunca
+adivina, porque enlazar una factura con la venta equivocada no da ningún error,
+sólo pone el dinero de otro.
 
 Se clasifican por **dónde va el dinero**, no por quién escribe el papel. Parece
 un matiz y no lo es: GetYourGuide expide la factura de lo que *nos paga*, y
@@ -191,7 +207,7 @@ rompen sin avisar, y estos papeles hay que conservarlos años.
 
 Eso obliga a dos cosas al desplegar. La primera, **crear la carpeta con el
 dueño correcto**: el contenedor no corre como root, corre como el usuario 1001,
-y si la carpeta es de root la subida falla con «permiso denegado» y solo se ve
+y si la carpeta es de root la subida falla con «permiso denegado» y sólo se ve
 en producción.
 
 ```bash
@@ -217,6 +233,9 @@ listado. Si da error de permisos, es el `chown` de arriba.
 > sube, hay que subir también `serverActions.bodySizeLimit` en `next.config.ts`
 > y `client_max_body_size` en `deploy/nginx-crm.conf`: los tres límites tienen
 > que ir a la vez o el fallo aparece a mitad de camino y sin explicación.
+
+> Las facturas de las **actividades propias** (las de fuera de GetYourGuide) son
+> otro caso y todavía no hay ninguna. Se hará cuando las haya.
 
 ## 11. Actividades propias (reserva dentro de notaxlost.com)
 
