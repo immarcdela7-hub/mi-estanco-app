@@ -8,6 +8,7 @@ import {
   IconSettings,
   IconStore,
   IconWallet,
+  IconArchive,
 } from "@/components/icons";
 import { requireAdmin } from "@/lib/auth";
 import { getSetting } from "@/lib/settings";
@@ -32,6 +33,7 @@ export default async function AdminLayout({
     { href: "/admin/reservas", label: "Reservas", icon: <IconCalendar /> },
     { href: "/admin/ventas", label: "Ventas", icon: <IconReceipt /> },
     { href: "/admin/liquidaciones", label: "Liquidaciones", icon: <IconWallet /> },
+    { href: "/admin/facturas", label: "Facturas", icon: <IconArchive /> },
     { href: "/admin/integracion-web", label: "Integración web", icon: <IconGlobe /> },
     { href: "/admin/ajustes", label: "Ajustes", icon: <IconSettings /> },
   ];

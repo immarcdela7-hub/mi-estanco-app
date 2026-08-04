@@ -4,6 +4,7 @@ import {
   IconQr,
   IconReceipt,
   IconWallet,
+  IconArchive,
 } from "@/components/icons";
 import { requirePartner } from "@/lib/auth";
 import { getSetting } from "@/lib/settings";
@@ -22,6 +23,7 @@ export default async function PortalLayout({
     { href: "/portal", label: "Mi panel", icon: <IconDashboard /> },
     { href: "/portal/ventas", label: "Mis ventas", icon: <IconReceipt /> },
     { href: "/portal/liquidaciones", label: "Mis liquidaciones", icon: <IconWallet /> },
+    { href: "/portal/facturas", label: "Mis facturas", icon: <IconArchive /> },
     { href: "/portal/qr", label: "Mi código QR", icon: <IconQr /> },
   ];
 

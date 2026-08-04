@@ -1,6 +1,6 @@
 # Pruebas de la web (navegador real)
 
-Doce baterías sobre `web/` y el motor de reservas del CRM, con Playwright.
+Trece baterías sobre `web/` y el motor de reservas del CRM, con Playwright.
 Cubren lo que no se puede ver leyendo el código: que la **atribución**
 sobreviva a cada cambio, que los filtros y las vistas funcionen, que se pueda
 reservar de principio a fin sin salir de la web, y que nada desborde en móvil.
@@ -23,6 +23,7 @@ node tests/test-zonas.mjs                 # ?zona= por ciudad y la regla del cit
 node tests/test-cesta.mjs                 # la cesta de los planes, su dia y su memoria
 node tests/test-plan-propio.mjs           # reservar un plan entero de una vez
 node tests/test-import-gyg.mjs            # leer el export de ventas de GetYourGuide
+node tests/test-facturas.mjs              # la puerta por donde entran los PDF
 ```
 
 Cada una imprime `=== N/N pruebas OK ===`. Las capturas van a `tools/capturas/`.
@@ -114,6 +115,22 @@ garantías se comprueban contra un Postgres real y hay que rehacerlo si se toca
 5. borrar un establecimiento con ventas **sigue estando prohibido**: que el
    campo admita nulos no puede convertirse en que borrar un bar pase sus ventas
    a directas y borre en silencio lo que le debemos.
+
+`test-facturas.mjs` cubre el guardado de las facturas, que es la única parte
+del CRM donde entra un **archivo** que manda alguien de fuera. Los tres fallos
+que vigila no se ven mirando la pantalla: que se cuele algo que no es un PDF y
+se sirva de vuelta (un HTML subido como `factura.pdf` sería un XSS con la sesión
+de administrador delante, así que el tipo se decide por los primeros bytes y no
+por lo que diga el navegador); que un nombre como `../../etc/passwd` acabe
+siendo una ruta; y que un salto de línea en el nombre parta la cabecera
+`Content-Disposition` al descargar.
+
+La otra mitad —**quién puede descargar qué**— se comprueba contra el servidor
+levantado, firmando sesiones válidas y pidiendo la URL a pelo, que es lo que
+haría alguien probando ids desde su portal. Lo que tiene que salir: el
+administrador descarga cualquiera; un establecimiento descarga **la suya**;
+la de otro establecimiento y las de ingreso dan **404 y no 403**, porque un 403
+confirmaría que esa factura existe.
 
 `test-zonas.mjs` vigila la regla de negocio de la fase 3: que **ninguna actividad
 haya cambiado su `city`** para encajar en una zona (lo compara contra el CSV del

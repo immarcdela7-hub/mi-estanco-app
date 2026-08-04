@@ -202,3 +202,13 @@ export const IconDownload = (p: IconProps = {}) =>
     </>,
     p
   );
+
+export const IconArchive = (p: IconProps = {}) =>
+  base(
+    <>
+      <rect x="3" y="3" width="18" height="5" rx="1" />
+      <path d="M5 8v11a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8" />
+      <line x1="10" y1="13" x2="14" y2="13" />
+    </>,
+    p
+  );

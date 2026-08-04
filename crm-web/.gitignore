@@ -45,3 +45,7 @@ next-env.d.ts
 # Copias de seguridad locales (no versionar su contenido)
 backups/*
 !backups/.gitkeep
+
+# Los PDF de las facturas viven en el servidor, nunca en el repositorio.
+facturas/*
+!facturas/.gitkeep

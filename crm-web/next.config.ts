@@ -31,6 +31,13 @@ const SECURITY_HEADERS = [
 const nextConfig: NextConfig = {
   // Servidor autónomo mínimo para la imagen Docker (server.js).
   output: "standalone",
+  experimental: {
+    // Las Server Actions vienen capadas a 1 MB, y por ahí no pasa ni un PDF
+    // escaneado. El tope real de una factura son 12 MB (`MAX_BYTES` en
+    // src/lib/facturas.ts); esto deja sitio para eso más lo que ocupa el
+    // propio formulario. nginx tiene su propio límite, `client_max_body_size`.
+    serverActions: { bodySizeLimit: "16mb" },
+  },
   // Sin optimización on-the-fly: los pocos assets de marca se sirven como
   // estáticos, evitando la dependencia de sharp en el contenedor.
   images: { unoptimized: true },

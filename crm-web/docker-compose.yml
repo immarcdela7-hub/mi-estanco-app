@@ -50,7 +50,13 @@ services:
       # propias, separados por comas. El de la web ya sale de la URL base de
       # los QR; esto es solo para pruebas o dominios adicionales.
       PUBLIC_WEB_ORIGINS: ${PUBLIC_WEB_ORIGINS:-}
+      # Donde se guardan los PDF de las facturas. Es un montaje del host, no
+      # un volumen opaco: son papeles que hay que conservar años y que el
+      # gestor puede necesitar copiar en cualquier momento.
+      FACTURAS_DIR: /data/facturas
       NODE_ENV: production
+    volumes:
+      - ./facturas:/data/facturas
     # Solo accesible desde el propio servidor; el proxy inverso (nginx/apache) lo publica.
     ports:
       - "127.0.0.1:${APP_PORT:-8090}:3000"
@@ -71,6 +77,8 @@ services:
       RETENTION_DAYS: ${BACKUP_RETENTION_DAYS:-14}
     volumes:
       - ./backups:/backups
+      # Solo lectura: este servicio copia, no toca.
+      - ./facturas:/facturas:ro
     entrypoint: ["/bin/sh", "-c"]
     command:
       - |
@@ -85,7 +93,18 @@ services:
             echo "$$(date -Iseconds) ERROR al crear la copia"
             rm -f "$${out}"
           fi
+          # Las facturas viven en disco, no en la base de datos: un pg_dump
+          # solo se lleva sus fichas. Sin esto, restaurar una copia dejaria el
+          # archivo lleno de enlaces a PDF que ya no estan.
+          fac="/backups/facturas_$${ts}.tar.gz"
+          if tar -czf "$${fac}" -C /facturas . 2>/dev/null; then
+            echo "$$(date -Iseconds) facturas copiadas: $${fac}"
+          else
+            echo "$$(date -Iseconds) ERROR al copiar las facturas"
+            rm -f "$${fac}"
+          fi
           find /backups -name 'crm_*.sql.gz' -mtime +$${RETENTION_DAYS} -delete
+          find /backups -name 'facturas_*.tar.gz' -mtime +$${RETENTION_DAYS} -delete
           sleep 86400
         done
     networks:

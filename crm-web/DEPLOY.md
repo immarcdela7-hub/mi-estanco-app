@@ -174,7 +174,51 @@ abonado; hasta entonces no se pueden liquidar. No te saltes ese paso: una
 cancelación posterior revierte la comisión, y una venta liquidada ya no se
 recupera.
 
-## 10. Actividades propias (reserva dentro de notaxlost.com)
+## 10. El archivo de facturas
+
+Todo el papeleo en el mismo sitio: lo que nos paga GetYourGuide y lo que le
+devolvemos a cada establecimiento. Se sube el PDF en **Facturas** y queda
+archivado con su fecha, número, importe y a quién corresponde.
+
+Se clasifican por **dónde va el dinero**, no por quién escribe el papel. Parece
+un matiz y no lo es: GetYourGuide expide la factura de lo que *nos paga*, y
+nosotros expedimos la de lo que *le pagamos* al bar. Clasificándolas por el
+emisor, las dos acabarían en el libro contrario al que les toca.
+
+**Los PDF no van en la base de datos**, van a disco. Unos cientos dentro de
+Postgres hinchan el `pg_dump` diario hasta que un día no cabe y las copias se
+rompen sin avisar, y estos papeles hay que conservarlos años.
+
+Eso obliga a dos cosas al desplegar. La primera, **crear la carpeta con el
+dueño correcto**: el contenedor no corre como root, corre como el usuario 1001,
+y si la carpeta es de root la subida falla con «permiso denegado» y solo se ve
+en producción.
+
+```bash
+cd /opt/ntl-crm/crm-web
+mkdir -p facturas && chown -R 1001:1001 facturas
+```
+
+La segunda, que la copia de seguridad se las lleve. El servicio `backup` ya lo
+hace: además del `crm_*.sql.gz` deja un `facturas_*.tar.gz` cada día, con la
+misma retención. **Al restaurar hay que restaurar los dos**, o quedará una base
+de datos llena de fichas que apuntan a PDF que ya no están:
+
+```bash
+gunzip -c backups/crm_FECHA.sql.gz | docker compose exec -T db psql -U crm -d crm
+tar -xzf backups/facturas_FECHA.tar.gz -C facturas/
+chown -R 1001:1001 facturas
+```
+
+Comprobación: sube una factura cualquiera en **Facturas** y descárgala desde el
+listado. Si da error de permisos, es el `chown` de arriba.
+
+> El tope por archivo son 12 MB (`MAX_BYTES` en `src/lib/facturas.ts`). Si se
+> sube, hay que subir también `serverActions.bodySizeLimit` en `next.config.ts`
+> y `client_max_body_size` en `deploy/nginx-crm.conf`: los tres límites tienen
+> que ir a la vez o el fallo aparece a mitad de camino y sin explicación.
+
+## 11. Actividades propias (reserva dentro de notaxlost.com)
 
 Las de GetYourGuide se reservan siempre en su web. Las **nuestras** no: el
 cliente elige día y hora y confirma sin salir de `notaxlost.com`. Para que
