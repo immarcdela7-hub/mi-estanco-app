@@ -6,6 +6,15 @@
 import { chromium } from 'playwright';
 
 const BASE = 'http://127.0.0.1:8099/tickets.html';
+
+// Consentimiento ya dado: estas baterias prueban la atribucion, no el aviso de
+// cookies (eso vive en test-consentimiento.mjs). Sin esto, el aviso tapa la
+// parte baja de la pagina y los clics fallan.
+const CONSENT_ACEPTADO = [{
+  name: 'ntl_consent', value: 'v1%3Aafiliacion%3D1%3Ats%3D1',
+  domain: '127.0.0.1', path: '/',
+}];
+
 const CRM = 'https://crm.notaxlost.com';
 
 const results = [];
@@ -97,6 +106,7 @@ const browser = await chromium.launch();
 
 // ---------- 1. La actividad propia entra en el catalogo ----------
 const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+await page.context().addCookies(CONSENT_ACEPTADO);
 const errores = [];
 page.on('pageerror', (e) => errores.push(e.message));
 await simularCrm(page);
@@ -308,6 +318,7 @@ log('Lleva relleno el campo trampa vacio', ultimaReserva && ultimaReserva.web ==
 
 // ---------- 6. Errores del CRM: se ven, no se tragan ----------
 const p2 = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+await p2.context().addCookies(CONSENT_ACEPTADO);
 await simularCrm(p2);
 await p2.goto(BASE, { waitUntil: 'domcontentloaded' });
 await p2.waitForSelector('.ntl-own-dates', { timeout: 5000 });
@@ -341,6 +352,7 @@ await p2.close();
 // ---------- 7. Sin CRM la web sigue entera ----------
 fallarCatalogo = true;
 const p3 = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+await p3.context().addCookies(CONSENT_ACEPTADO);
 const err3 = [];
 p3.on('pageerror', (e) => err3.push(e.message));
 await simularCrm(p3);
@@ -368,6 +380,7 @@ fallarCatalogo = false;
 
 // ---------- 8. Movil ----------
 const mob = await browser.newPage({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+await mob.context().addCookies(CONSENT_ACEPTADO);
 await simularCrm(mob);
 await mob.goto(BASE, { waitUntil: 'domcontentloaded' });
 await mob.waitForSelector('.ntl-own-dates', { timeout: 5000 });

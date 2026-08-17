@@ -1,6 +1,15 @@
 import { chromium } from 'playwright';
 
 const BASE = 'http://127.0.0.1:8099/tickets.html';
+
+// Consentimiento ya dado: estas baterias prueban la atribucion, no el aviso de
+// cookies (eso vive en test-consentimiento.mjs). Sin esto, el aviso tapa la
+// parte baja de la pagina y los clics fallan.
+const CONSENT_ACEPTADO = [{
+  name: 'ntl_consent', value: 'v1%3Aafiliacion%3D1%3Ats%3D1',
+  domain: '127.0.0.1', path: '/',
+}];
+
 const browser = await chromium.launch();
 const results = [];
 function log(name, pass, detail) {
@@ -10,6 +19,7 @@ function log(name, pass, detail) {
 
 // ---------- 1. Desktop: render + atribucion ----------
 const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+await page.context().addCookies(CONSENT_ACEPTADO);
 const consoleErrors = [];
 page.on('console', (m) => { if (m.type() === 'error') consoleErrors.push(m.text()); });
 page.on('pageerror', (e) => consoleErrors.push('PAGEERROR: ' + e.message));
@@ -45,7 +55,7 @@ const cookieCmp = await page.evaluate(() => {
   const as = [...document.querySelectorAll('a[href*="getyourguide."]')];
   return { total: as.length, conCmp: as.filter((a) => a.href.includes('cmp=PRUEBA1')).length };
 });
-log('Cookie persiste sin ?ref= (2a visita)', cookieCmp.total > 0 && cookieCmp.conCmp === cookieCmp.total,
+log('Con permiso, la cookie recuerda el local sin ?ref= (2a visita)', cookieCmp.total > 0 && cookieCmp.conCmp === cookieCmp.total,
   `${cookieCmp.conCmp}/${cookieCmp.total}`);
 
 // ---------- 3. Filtros ----------

@@ -3,26 +3,14 @@ import { getSetting } from "@/lib/settings";
 
 export const dynamic = "force-dynamic";
 
-const SNIPPET = `<script>
-(function () {
-  var ref = new URLSearchParams(location.search).get("ref");
-  if (ref) {
-    document.cookie = "ntl_ref=" + encodeURIComponent(ref) +
-      "; max-age=" + 30 * 24 * 3600 + "; path=/";
-  } else {
-    var m = document.cookie.match(/(?:^|; )ntl_ref=([^;]*)/);
-    if (m) ref = decodeURIComponent(m[1]);
-  }
-  if (!ref) return;
-  document.querySelectorAll('a[href*="getyourguide."]').forEach(function (a) {
-    try {
-      var u = new URL(a.href);
-      u.searchParams.set("cmp", ref);
-      a.href = u.toString();
-    } catch (e) {}
-  });
-})();
-</script>`;
+// El fragmento ya NO se pega tal cual: la atribucion vive en dos ficheros
+// (ntl-consent.js y ntl-attrib.js) porque necesita consentimiento previo. Aqui
+// solo se enseña como incluirlos y en que orden, que es lo que se equivoca.
+const SNIPPET = `<!-- Al final de la pagina, justo antes de </body>.
+     El orden importa: el consentimiento tiene que cargarse ANTES que la
+     atribucion, o en la primera carga no encontrara el permiso. -->
+<script src="/ntl-consent.js?v=1"></script>
+<script src="/ntl-attrib.js?v=3"></script>`;
 
 export default async function WebIntegrationPage() {
   const baseUrl = await getSetting("base_url");
@@ -43,8 +31,10 @@ export default async function WebIntegrationPage() {
                 <code className="text-xs">{baseUrl}?ref=EST-XXXXX</code>.
               </li>
               <li>
-                La web guarda el <code className="text-xs">ref</code> en una cookie de 30 días
-                y lo añade como <b>cmp=EST-XXXXX</b> a todos los enlaces hacia GetYourGuide.
+                La web añade <b>cmp=EST-XXXXX</b> a todos los enlaces hacia GetYourGuide.
+                Esa visita se atribuye <b>siempre</b>, acepte o no las cookies: el código va
+                en la propia dirección. Si acepta, además se guarda 30 días en una cookie
+                para que el local siga cobrando aunque vuelva otro día sin el QR.
               </li>
               <li>GYG registra la reserva con vuestra cuenta de partner y con esa campaña.</li>
               <li>

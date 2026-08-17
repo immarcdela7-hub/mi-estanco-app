@@ -495,7 +495,8 @@ Reglas:
 
 ## Atribución (crítico — no romper)
 
-`ntl-attrib.js` guarda `?ref=EST-XXXXX` en una cookie de 30 días y añade
+`ntl-attrib.js` añade `cmp=EST-XXXXX` a los enlaces de GetYourGuide siempre, y
+sólo con consentimiento guarda además `?ref=EST-XXXXX` en una cookie de 30 días. Añade
 `cmp=EST-XXXXX` a **todos** los enlaces de GetYourGuide (sin tocar `partner_id`).
 Como las tarjetas se pintan por JS, **hay que reejecutar la atribución después de
 renderizar**: `tickets.html` llama a `window.ntlApplyAttribution()` tras pintar, y

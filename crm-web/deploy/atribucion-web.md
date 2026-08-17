@@ -10,52 +10,66 @@ la página de tickets.
 
 Cuando alguien llega desde un QR (`https://notaxlost.com/tickets?ref=EST-XXXXX`):
 
-1. Guarda ese `ref` en una cookie `ntl_ref` de 30 días.
-2. Añade `cmp=EST-XXXXX` a todos los enlaces hacia GetYourGuide, **sin tocar el
+1. Añade `cmp=EST-XXXXX` a todos los enlaces hacia GetYourGuide, **sin tocar el
    `partner_id`** que ya llevan.
+2. Si el visitante ha aceptado las cookies, guarda además ese `ref` en la cookie
+   `ntl_ref` durante 30 días.
 
 Así cada reserva queda atribuida a la cuenta de partner de NoTaxLost
 (`partner_id`) y, dentro de ella, al establecimiento concreto (`cmp`), que es la
 columna de campaña que aparece en el Partner Portal de GYG.
 
+### Lo que hay que entender antes de tocar nada
+
+**Rechazar las cookies NO le quita la venta al establecimiento.** El código del
+local viaja en la propia dirección (`?ref=`), así que esa visita se atribuye
+igual sin guardar nada en el móvil. Lo único que se pierde al rechazar es la
+**memoria entre visitas**: que el turista vuelva semanas después, ya sin el QR, y
+el local siga cobrando.
+
+Esto es lo que permite cumplir el artículo 22.2 de la LSSI sin dejar de pagar a
+los estancos, y conviene decírselo a ellos con esas palabras. Si alguien
+«simplifica» el script metiendo toda la atribución detrás del consentimiento, la
+web seguirá pareciendo correcta y los estancos empezarán a cobrar de menos sin
+que salte ningún error. `tools/tests/test-consentimiento.mjs` existe para
+impedirlo.
+
 ## Cómo está instalada (estado actual)
 
-- **Archivo JS:** `/var/www/ntl/ntl-attrib.js`
-- **Incluido en:** `/var/www/ntl/tickets.html`, con esta línea justo antes de
-  `</body>`:
+- **Archivos JS:** `/var/www/ntl/ntl-consent.js` y `/var/www/ntl/ntl-attrib.js`
+- **Incluidos en:** `/var/www/ntl/tickets.html`, en este orden y no al revés:
   ```html
-  <script src="/ntl-attrib.js"></script>
+  <script src="/ntl-consent.js?v=1"></script>
+  <script src="/ntl-attrib.js?v=3"></script>
   ```
-- **Por qué solo en `tickets.html`:** es la única página con enlaces a
-  GetYourGuide y es donde aterriza el QR (`base_url` del CRM = `.../tickets`).
-- nginx sirve `/ntl-attrib.js` como `application/javascript` (HTTP 200).
+  El consentimiento primero: si se carga después, en la primera carga la
+  atribución no encuentra el permiso y no guarda nada aunque el usuario ya
+  hubiera aceptado en otra visita.
+- `ntl-consent.js` va además en **todas** las páginas (`home`, `index`,
+  `merchants`, `how-it-works`, `ecosystem`, `404`, `coming-soon`), porque el
+  aviso y el pie legal tienen que estar en toda la web.
+- **Páginas legales:** `/aviso-legal`, `/privacidad` y `/cookies`.
 - No hace falta reiniciar nginx al cambiar archivos estáticos.
 
-## Contenido de `/var/www/ntl/ntl-attrib.js`
+## El plazo de la cookie está escrito en varios sitios
 
-```js
-/* NoTaxLost: atribución de QR.
-   Guarda ?ref= en una cookie de 30 días y añade cmp=<ref>
-   a todos los enlaces de GetYourGuide (sin tocar partner_id). */
-(function () {
-  var ref = new URLSearchParams(location.search).get("ref");
-  if (ref) {
-    document.cookie = "ntl_ref=" + encodeURIComponent(ref) +
-      "; max-age=" + 30 * 24 * 3600 + "; path=/";
-  } else {
-    var m = document.cookie.match(/(?:^|; )ntl_ref=([^;]*)/);
-    if (m) ref = decodeURIComponent(m[1]);
-  }
-  if (!ref) return;
-  document.querySelectorAll('a[href*="getyourguide."]').forEach(function (a) {
-    try {
-      var u = new URL(a.href);
-      u.searchParams.set("cmp", ref);
-      a.href = u.toString();
-    } catch (e) {}
-  });
-})();
-```
+Si se cambia, hay que cambiarlo en todos o quedarán contradiciéndose:
+
+| Dónde | Qué dice |
+|---|---|
+| `web/ntl-attrib.js` | `var DIAS = 30;` — el valor real |
+| `web/cookies.html` | la tabla de la política de cookies |
+| `web/README.md` | la descripción del mecanismo |
+| `crm-web/src/app/admin/integracion-web/page.tsx` | el texto del panel |
+| `crm-web/deploy/atribucion-web.md` | este archivo |
+
+`tools/tests/test-consentimiento.mjs` comprueba el valor real contra los 30 días,
+así que si se cambia el código sin cambiar la prueba, salta.
+
+> **Ojo con Safari.** Las cookies escritas por JavaScript se borran a los 7 días
+> en iPhone, sea cual sea el `max-age`. Subir el plazo no cambia nada ahí: para
+> eso habría que emitir la cookie desde nginx, y sólo se puede hacer respetando
+> el consentimiento.
 
 ## Reinstalar o añadir a otra página
 

@@ -1065,11 +1065,11 @@
 
             // El cmp va en el propio div (fuera del iframe): asi lo que se
             // reserve desde el widget tambien queda atribuido al local.
+            // Fuente unica: ntl-attrib.js decide si se puede usar la cookie
+            // (necesita consentimiento) o solo el ?ref= de la direccion.
             function refActual() {
-                const r = new URLSearchParams(location.search).get('ref');
-                if (r) return r;
-                const m = document.cookie.match(/(?:^|; )ntl_ref=([^;]*)/);
-                return m ? decodeURIComponent(m[1]) : '';
+                if (window.ntlRef) return window.ntlRef();
+                return new URLSearchParams(location.search).get('ref') || '';
             }
 
             function montarCiudad(prov) {
@@ -1198,7 +1198,8 @@
     </script>
   <!-- Cache-busting: sube el número de ?v=N cada vez que modifiques ntl-attrib.js
        para forzar a los navegadores a recargar el script (si no, sirven el cacheado). -->
-  <script src="/ntl-attrib.js?v=2"></script>
+  <script src="/ntl-consent.js?v=1"></script>
+  <script src="/ntl-attrib.js?v=3"></script>
   <!-- Recomendador "Don't know what to visit? We do." (usa window.NTL_CATALOG y
        reaplica la atribucion tras pintar). Sube ?v=N al modificarlo. -->
   <script src="/recommend.js?v=3"></script>
@@ -1281,5 +1282,14 @@
       else init();
     })();
   </script>
+  <footer style="background:#fff;border-top:1px solid #e5e7eb;padding:2rem 1.5rem;margin-top:3rem;
+                 font:400 .85rem/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;">
+    <div style="max-width:60rem;margin:0 auto;display:flex;flex-wrap:wrap;gap:1.25rem;color:#666;">
+      <a href="/aviso-legal" style="color:#666;text-decoration:none;">Aviso legal</a>
+      <a href="/privacidad" style="color:#666;text-decoration:none;">Privacidad</a>
+      <a href="/cookies" style="color:#666;text-decoration:none;">Cookies</a>
+      <a href="#" data-ntl-cookies style="color:#666;text-decoration:none;">Configurar cookies</a>
+    </div>
+  </footer>
 </body>
 </html>

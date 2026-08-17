@@ -1,6 +1,6 @@
 # Pruebas de la web (navegador real)
 
-Trece baterías sobre `web/` y el motor de reservas del CRM, con Playwright.
+Catorce baterías sobre `web/` y el motor de reservas del CRM, con Playwright.
 Cubren lo que no se puede ver leyendo el código: que la **atribución**
 sobreviva a cada cambio, que los filtros y las vistas funcionen, que se pueda
 reservar de principio a fin sin salir de la web, y que nada desborde en móvil.
@@ -24,6 +24,7 @@ node tests/test-cesta.mjs                 # la cesta de los planes, su dia y su 
 node tests/test-plan-propio.mjs           # reservar un plan entero de una vez
 node tests/test-import-gyg.mjs            # leer el export de ventas de GetYourGuide
 node tests/test-facturas.mjs              # la puerta por donde entran los PDF
+node tests/test-consentimiento.mjs        # el aviso de cookies y lo que NO puede romper
 ```
 
 Cada una imprime `=== N/N pruebas OK ===`. Las capturas van a `tools/capturas/`.
@@ -115,6 +116,29 @@ garantías se comprueban contra un Postgres real y hay que rehacerlo si se toca
 5. borrar un establecimiento con ventas **sigue estando prohibido**: que el
    campo admita nulos no puede convertirse en que borrar un bar pase sus ventas
    a directas y borre en silencio lo que le debemos.
+
+`test-consentimiento.mjs` vigila una sola regla de negocio, y vale dinero:
+
+> **Rechazar las cookies no puede hacer que el establecimiento pierda su venta.**
+
+El código del local viaja en la dirección (`?ref=`), así que esa visita se
+atribuye igual sin guardar nada en el móvil. Lo único que el rechazo apaga es la
+memoria entre visitas. Si alguien mete toda la atribución detrás del
+consentimiento, la web seguirá pareciendo correcta y los estancos empezarán a
+cobrar de menos sin que salte ningún error: ése es el fallo del que nació esta
+batería.
+
+Vigila también lo contrario —que sin permiso no se guarde nada, que es la
+infracción del artículo 22.2 de la LSSI—, que **Aceptar y Rechazar sean el mismo
+botón en tamaño y posición** (si «Rechazar» es un enlace pequeño, la AEPD no da
+por válido el consentimiento), que retirar el permiso **borre** la cookie ya
+guardada en vez de sólo dejar de escribirla, y que el aviso **no tape** la parte
+baja de la página: va fijo abajo, y sin reservar hueco se comía el botón de
+reservar de `tickets.html`. Eso último no da ningún error, sólo pierde reservas.
+
+Las baterías `test-web.mjs` y `test-reservas.mjs` dan el consentimiento por
+aceptado antes de navegar (`CONSENT_ACEPTADO`), porque prueban la atribución y
+no el aviso. Sin eso, el aviso tapa la parte baja y los clics fallan.
 
 `test-facturas.mjs` cubre el archivo de facturas, que tiene dos partes donde un
 fallo no se ve mirando la pantalla.
