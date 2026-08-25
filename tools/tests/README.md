@@ -24,6 +24,7 @@ node tests/test-cesta.mjs                 # la cesta de los planes, su dia y su 
 node tests/test-plan-propio.mjs           # reservar un plan entero de una vez
 node tests/test-import-gyg.mjs            # leer el export de ventas de GetYourGuide
 node tests/test-facturas.mjs              # la puerta por donde entran los PDF
+node tests/test-consentimiento.mjs        # cookies: rechazar no puede costar la venta
 node tests/test-consentimiento.mjs        # el aviso de cookies y lo que NO puede romper
 ```
 
@@ -139,6 +140,22 @@ reservar de `tickets.html`. Eso último no da ningún error, sólo pierde reserv
 Las baterías `test-web.mjs` y `test-reservas.mjs` dan el consentimiento por
 aceptado antes de navegar (`CONSENT_ACEPTADO`), porque prueban la atribución y
 no el aviso. Sin eso, el aviso tapa la parte baja y los clics fallan.
+
+`test-consentimiento.mjs` vigila una sola regla de negocio, y vale dinero:
+**rechazar las cookies no puede hacer que el establecimiento pierda su venta**.
+El codigo del local viaja en la direccion (`?ref=`), asi que la visita del QR se
+atribuye igual sin guardar nada; lo unico que el rechazo apaga es la memoria
+entre visitas. Si alguien "simplifica" `ntl-attrib.js` metiendo toda la
+atribucion detras del consentimiento, la web seguira pareciendo correcta y los
+estancos empezaran a cobrar de menos sin que se entere nadie.
+
+Comprueba tambien lo contrario —que sin permiso no se guarde nada, que es la
+infraccion del articulo 22.2 de la LSSI—, que Aceptar y Rechazar tengan el mismo
+tamaño y esten a la misma altura (si Rechazar cuesta mas, el consentimiento no
+vale), que se pueda retirar el permiso y que al retirarlo se **borre** lo ya
+guardado, y que el aviso reserve hueco al final de la pagina: va fijo abajo y
+sin ese hueco tapa el boton de reservar, que es un fallo que no da ningun error
+y solo se nota en la facturacion.
 
 `test-facturas.mjs` cubre el archivo de facturas, que tiene dos partes donde un
 fallo no se ve mirando la pantalla.

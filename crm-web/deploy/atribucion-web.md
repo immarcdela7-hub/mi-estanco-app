@@ -127,3 +127,53 @@ Esperado: `HTTP 200 · tipo=application/javascript` y la línea del `<script>`.
 - El script actúa sobre los `<a href>` presentes al cargar la página. Si algún
   día los enlaces de GYG pasan a generarse por JavaScript o mediante widgets
   incrustados, habría que adaptar el fragmento.
+
+## La ventana de GetYourGuide: 31 dias (medido, no supuesto)
+
+**Este es el numero que gobierna el negocio.** Nuestra cookie decide que
+establecimiento cobra; la de GetYourGuide decide si cobramos nosotros. Son dos
+cookies en dominios distintos y la segunda no la controlamos: la pone GYG en
+`getyourguide.com` y dura lo que ellos digan.
+
+Medido el 25 de agosto de 2026 en Chrome: tras llegar por un QR y pulsar una
+actividad, la cookie de GYG que contiene `partner_id=IBO5PAK` caducaba el **25
+de septiembre**. Es decir, **31 dias desde el clic**.
+
+### Lo que se descubrio de paso, y es mas importante que el numero
+
+En la primera medicion salio una fecha mas corta (9 dias vista). No era una
+ventana corta: era una cookie **anterior** que el clic nuevo **no refresco**.
+
+O sea: **volver a pasar por notaxlost.com no reinicia el contador mientras haya
+una cookie viva**. Conviene no dar por hecho lo contrario al planificar. Se
+observo una sola vez, asi que no es una certeza absoluta, pero es lo que se vio.
+
+### Consecuencias practicas
+
+- **Alargar nuestra cookie no alarga nada de esto.** Si el turista compra el dia
+  45, la cookie de GYG ya caduco y no hay comision para nadie, tenga la nuestra
+  30 dias o 120.
+- Donde SI sirve una ventana propia larga: si el turista vuelve a notaxlost.com
+  pasado el dia 31 y pulsa, GYG abre una cookie nueva de 31 dias, y la nuestra
+  es la que mantiene pegado el codigo del establecimiento. Sin ella esa venta
+  seria directa (nos quedariamos el 100% en vez del 70%).
+- Por tanto alargar nuestra cookie **es un coste**, no un ingreso: reparte en
+  mas ventas. Puede compensar como inversion para que los locales mantengan el
+  cartel, pero conviene decidirlo sabiendo eso.
+
+### Como volver a medirlo
+
+Estas ventanas se cambian sin avisar. Repetir cada pocos meses, en Chrome de
+escritorio y en ventana normal (nunca incognito, que se borra al cerrar):
+
+1. F12 (o clic derecho, Inspeccionar) -> pestaña **Aplicacion**.
+2. **Almacenamiento -> Cookies -> `https://www.getyourguide.com`**.
+3. Borrar TODAS las cookies de ese dominio. Sin esto se mide una cookie vieja y
+   el resultado engaña, que es justo lo que paso la primera vez.
+4. Ir a `notaxlost.com/tickets?ref=<codigo>` y pulsar una actividad.
+5. Filtrar por `IBO5PAK` y leer la columna **Expires / Max-Age**.
+
+Restar la fecha de hoy. Eso es la ventana.
+
+> Sigue pendiente pedirle a GetYourGuide la cifra **por escrito**: lo medido en
+> un navegador describe como se comporta hoy, no un compromiso contractual.
