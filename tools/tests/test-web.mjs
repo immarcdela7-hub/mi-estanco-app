@@ -78,11 +78,26 @@ await page.waitForTimeout(400);
 const vCombo = await visibles();
 log('Combinado Barcelona+Culture', vCombo > 0 && vCombo <= vBcn, `${vCombo} visibles`);
 
+// El catalogo ya no sale como un muro de 153 fichas: por defecto se hojea por
+// temas (filas) y el grid completo esta detras del boton "See all". Donde estas
+// pruebas comprueban que "se ve todo", hay que pulsarlo primero.
 await page.click('button.province-btn[data-province="all"]');
 await page.click('[data-filter="all"]');
 await page.waitForTimeout(400);
+const enFilas = await page.evaluate(() => ({
+  filas: document.querySelectorAll('.ntl-row').length,
+  tarjetas: document.querySelectorAll('.ntl-rowcard').length,
+  gridOculto: document.getElementById('ntlGridWrap').style.display === 'none',
+}));
+log('Sin filtros se hojea por temas', enFilas.filas >= 6 && enFilas.tarjetas > 40 && enFilas.gridOculto,
+  `${enFilas.filas} filas, ${enFilas.tarjetas} tarjetas, grid oculto=${enFilas.gridOculto}`);
+
+await page.click('#ntlVerTodo');
+await page.waitForTimeout(400);
 const vAll = await visibles();
-log('Reset a todo', vAll === 153, `${vAll} visibles`);
+log('Y con "See all" se ven las 153', vAll === 153, `${vAll} visibles`);
+await page.click('#ntlVerTodo');
+await page.waitForTimeout(300);
 
 // Combinacion vacia (Lleida + una categoria que quiza no tenga)
 await page.click('button.province-btn[data-province="lleida"]');
@@ -122,7 +137,7 @@ mob.on('pageerror', (e) => mobErrors.push(e.message));
 await mob.goto(BASE + '?ref=PRUEBA1', { waitUntil: 'domcontentloaded' });
 // Esperar a que existan las tarjetas, no un tiempo fijo: con 153 el render
 // tarda mas y un sleep corto daba "0 tarjetas" sin que nada estuviera roto.
-await mob.waitForSelector('.experience-item', { timeout: 20000 });
+await mob.waitForSelector('.experience-item', { state: 'attached', timeout: 20000 });
 await mob.waitForTimeout(600);
 const overflow = await mob.evaluate(() => ({
   scrollW: document.documentElement.scrollWidth,
@@ -150,6 +165,10 @@ const nBotones = await cp.locator('.ntl-card-dates').count();
 log('Todas las tarjetas ofrecen ver fechas', nBotones === 153, `${nBotones} botones`);
 log('La ventana empieza cerrada', await cp.locator('#availModal').isHidden());
 
+// El boton de fechas vive en las fichas del grid, que por defecto esta detras
+// de "See all". Se abre primero, que es lo que haria el visitante.
+await cp.click('#ntlVerTodo');
+await cp.waitForTimeout(500);
 await cp.locator('.ntl-card-dates').first().click();
 await cp.waitForTimeout(400);
 const modal = await cp.evaluate(() => {

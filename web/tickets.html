@@ -631,6 +631,84 @@
             .ntl-filterbar { flex-wrap: nowrap; overflow-x: auto; justify-content: flex-start; -ms-overflow-style: none; scrollbar-width: none; }
             .ntl-filterbar::-webkit-scrollbar { display: none; }
         }
+
+        /* ---------- Filas por categoria (vista por defecto del catalogo) ----------
+           153 tarjetas de golpe es un muro: nadie las mira. En filas se hojea
+           por temas, que es como la gente decide que hacer en un viaje. El
+           grid completo sigue existiendo y aparece en cuanto se busca o se
+           filtra, porque entonces si quieres verlo todo junto. */
+        .ntl-rows { max-width:72rem; margin:0 auto; padding:0 1.5rem 2rem; }
+        .ntl-row { margin-bottom:2.25rem; }
+        .ntl-row-head { display:flex; align-items:baseline; justify-content:space-between; gap:1rem; margin-bottom:.85rem; }
+        .ntl-row-title { font-size:1.35rem; font-weight:800; letter-spacing:-.02em; color:#111827; }
+        .ntl-row-sub { font-size:.8rem; color:#6b7280; font-weight:500; }
+        .ntl-row-wrap { position:relative; }
+        /* El carril desborda a lo ancho DENTRO de si mismo. Sin min-width:0 en un
+           contenedor flex/grid el desbordamiento se escapa a la pagina y el movil
+           se va de ancho, que es justo lo que vigila test-web. */
+        .ntl-row-track {
+            display:flex; gap:1rem; overflow-x:auto; overflow-y:hidden; min-width:0;
+            scroll-snap-type:x mandatory; scroll-behavior:smooth;
+            padding:.25rem .25rem 1rem; margin:-.25rem -.25rem 0;
+            scrollbar-width:none; -ms-overflow-style:none;
+        }
+        .ntl-row-track::-webkit-scrollbar { display:none; }
+        .ntl-rowcard {
+            flex:0 0 15.5rem; max-width:15.5rem; scroll-snap-align:start;
+            background:#fff; border:1px solid #f3f4f6; border-radius:1rem; overflow:hidden;
+            box-shadow:0 1px 2px rgba(0,0,0,.05); transition:box-shadow .2s, transform .2s;
+            display:flex; flex-direction:column;
+        }
+        .ntl-rowcard:hover { box-shadow:0 12px 24px -8px rgba(0,0,0,.18); transform:translateY(-2px); }
+        .ntl-rowcard > a { display:flex; flex-direction:column; height:100%; }
+        .ntl-rowcard-img { position:relative; aspect-ratio:16/10; background:#f3f4f6; overflow:hidden; }
+        .ntl-rowcard-img img { width:100%; height:100%; object-fit:cover; display:block; }
+        .ntl-rowcard-body { padding:.7rem .85rem .85rem; display:flex; flex-direction:column; gap:.35rem; flex:1; }
+        .ntl-rowcard-cat { font-size:.6rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:rgb(0 123 190); }
+        .ntl-rowcard-tit {
+            font-size:.9rem; font-weight:700; color:#111827; line-height:1.3;
+            display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
+        }
+        .ntl-rowcard-pie { margin-top:auto; padding-top:.5rem; display:flex; align-items:center; justify-content:space-between; gap:.5rem; }
+        .ntl-rowcard-rat { font-size:.72rem; font-weight:700; color:#4b5563; display:flex; align-items:center; gap:.2rem; }
+        .ntl-rowcard-pre { font-size:.85rem; font-weight:800; color:#111827; }
+        .ntl-row-nav {
+            position:absolute; top:38%; z-index:5; width:2.4rem; height:2.4rem; border-radius:9999px;
+            background:#fff; border:1px solid #e5e7eb; box-shadow:0 4px 14px rgba(0,0,0,.16);
+            display:none; align-items:center; justify-content:center; cursor:pointer; color:rgb(0 43 91);
+        }
+        .ntl-row-nav:hover { background:rgb(0 43 91); color:#fff; }
+        .ntl-row-nav[data-dir="prev"] { left:-1.1rem; }
+        .ntl-row-nav[data-dir="next"] { right:-1.1rem; }
+        .ntl-row-nav svg { width:1.1rem; height:1.1rem; }
+        /* Las flechas solo tienen sentido con raton: en movil se arrastra. */
+        @media (hover:hover) and (min-width:768px) { .ntl-row-wrap:hover .ntl-row-nav { display:flex; } }
+
+        .ntl-vertodo { max-width:72rem; margin:0 auto; padding:0 1.5rem 2.5rem; text-align:center; }
+        .ntl-vertodo button {
+            border:2px solid rgb(0 43 91); background:#fff; color:rgb(0 43 91);
+            border-radius:9999px; padding:.7rem 1.6rem; font-weight:700; font-size:.9rem; cursor:pointer;
+            transition:background .15s, color .15s;
+        }
+        .ntl-vertodo button:hover { background:rgb(0 43 91); color:#fff; }
+
+        /* ---------- Buscador que sigue al bajar ----------
+           Aparece cuando el buscador grande del hero se sale de pantalla, y se
+           queda pegado justo debajo de la cabecera. */
+        .ntl-sticky-search {
+            display:none; position:sticky; top:var(--ntl-hd-h, 4rem); z-index:40;
+            background:rgba(255,255,255,.97); backdrop-filter:blur(6px);
+            border-bottom:1px solid #eef0f2; padding:.6rem 1.5rem;
+        }
+        .ntl-sticky-search.is-on { display:block; }
+        .ntl-sticky-inner { max-width:36rem; margin:0 auto; position:relative; }
+        .ntl-sticky-search input {
+            width:100%; border:1px solid #e5e7eb; border-radius:9999px;
+            padding:.6rem 1rem .6rem 2.6rem; font-size:.875rem; font-weight:500; color:#111827;
+            background:#fff; box-shadow:0 1px 3px rgba(0,0,0,.06);
+        }
+        .ntl-sticky-search input:focus { outline:none; border-color:rgb(0 123 190); box-shadow:0 0 0 3px rgba(0,200,83,.25); }
+        .ntl-sticky-search svg { position:absolute; left:.9rem; top:50%; transform:translateY(-50%); width:1.05rem; height:1.05rem; color:#9ca3af; pointer-events:none; }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-900 font-sans antialiased pb-20">
@@ -656,6 +734,16 @@
             </div>
         </div>
     </header>
+
+    <!-- Buscador que acompaña al bajar. Va fuera de <header> a proposito: la
+         cabecera tiene su propia rejilla de tres columnas y meterle una fila
+         dentro la descuadraba en movil. -->
+    <div class="ntl-sticky-search" id="ntlStickySearch" data-view="catalog">
+        <div class="ntl-sticky-inner">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            <input type="text" id="hdSearchInput" placeholder="Search for Sagrada, Boat, Tour..." aria-label="Search experiences">
+        </div>
+    </div>
 
     <!-- Hero Section -->
     <section class="ntl-hero bg-ntl-navy text-white pt-12 pb-20 px-6 text-center rounded-b-[2.5rem] shadow-2xl relative overflow-hidden" data-view="catalog">
@@ -757,8 +845,18 @@
         </div>
     </section>
 
+    <!-- Catalogo por temas. Es la vista por defecto; el grid completo de
+         abajo se enseña en cuanto hay busqueda o filtro. -->
+    <div class="ntl-rows" id="ntlRows" data-view="catalog"></div>
+
+    <!-- El muro completo sigue estando, pero detras de un boton: la vista por
+         defecto es hojear por temas. -->
+    <div class="ntl-vertodo" id="ntlVerTodoWrap" data-view="catalog">
+        <button type="button" id="ntlVerTodo"></button>
+    </div>
+
     <!-- Dynamic Container -->
-    <div class="px-6 max-w-6xl mx-auto mb-10" data-view="catalog">
+    <div class="px-6 max-w-6xl mx-auto mb-10" id="ntlGridWrap" data-view="catalog">
         
         <!-- View Controls -->
         <div class="flex items-center justify-between mb-4">
@@ -1037,7 +1135,192 @@
 
                 emptyState.classList.toggle('hidden', visibleCount !== 0);
                 updateCityWidget();
+                // Sin filtros se hojea por temas; con filtros, el grid completo.
+                actualizarVistaFilas(searchTerm === '' && activeCategory === 'all'
+                    && activeProvince === 'all' && cityFilter === 'all' && !isTopRatedActive);
             }
+
+            // ---------- CATALOGO POR TEMAS (filas) ----------
+            // La gente no elige un viaje leyendo 153 fichas seguidas: elige por
+            // tema. Estas categorias se calculan sobre titulo + keywords, que es
+            // texto libre en catalog.csv, asi que una actividad puede salir en
+            // varias filas y eso esta bien: en un catalogo de recomendacion la
+            // repeticion ayuda, no estorba.
+            //
+            // Para añadir una fila basta con meterla aqui. Si una fila se queda
+            // con menos de MIN_POR_FILA actividades no se pinta, para no dejar
+            // huecos tristes de dos tarjetas.
+            const MIN_POR_FILA = 4;
+            const MAX_POR_FILA = 14;
+
+            const TEMAS = [
+                { id: 'top',        titulo: 'Must-see in Catalunya',   sub: 'The ones almost nobody skips',
+                  test: (a, b) => parseFloat(a.rating) >= 4.7 },
+                { id: 'gaudi',      titulo: 'Gaudí & Modernism',       sub: 'Sagrada Família, Güell, Batlló',
+                  test: (a, b) => /gaud|sagrada|guell|güell|batll|pedrera|casa mil|modernis|palau de la m/.test(b) },
+                { id: 'mar',        titulo: 'On the water',            sub: 'Sailing, kayaking and the coast',
+                  test: (a, b) => a.categoria === 'sea' || /sail|boat|catamaran|kayak|snorkel|jet ski|yacht|paddle|cruise|sunset/.test(b) },
+                { id: 'gastro',     titulo: 'Food & tapas',            sub: 'Markets, cooking and long lunches',
+                  test: (a, b) => /tapas|paella|food|cooking|market|boqueria|chef|gastro|dinner|brunch|cheese|jamon|tasting tour/.test(b) },
+                { id: 'bebidas',    titulo: 'Wine, cava & vermouth',   sub: 'Cellars and old-school bars',
+                  test: (a, b) => /wine|cava|vermouth|vermut|winery|bodega|brewery|beer|cocktail|sangria|gin/.test(b) },
+                { id: 'noche',      titulo: 'Flamenco & nightlife',    sub: 'When the sun goes down',
+                  test: (a, b) => /flamenco|nightlife|show|concert|music|party|club|night|tablao/.test(b) },
+                { id: 'escapadas',  titulo: 'Day trips',               sub: 'Out of the city',
+                  test: (a, b) => /day trip|day tour|montserrat|costa brava|andorra|excursion|full.day|sitges|girona|tarragona|priorat/.test(b) },
+                { id: 'familia',    titulo: 'With kids',               sub: 'Plans that last all afternoon',
+                  test: (a, b) => /aquarium|family|kids|zoo|tibidabo|dinosaur|magic fountain|park guell|bus tour/.test(b) },
+                { id: 'adrenalina', titulo: 'Adrenaline',              sub: "For those who can't sit still",
+                  test: (a, b) => /jet ski|helicopter|quad|bungee|parasail|karting|skydiv|hot air|climbing|zip/.test(b) },
+                { id: 'museos',     titulo: 'Museums & art',           sub: 'For a rainy day',
+                  test: (a, b) => /museum|picasso|miro|miró|dali|dalí|art |gallery|exhibition|museu/.test(b) },
+            ];
+
+            // Texto sobre el que se buscan las palabras clave de cada tema.
+            function blobDe(a) {
+                return [a.titulo, a.keywords, a.categoriaLabel, a.city, a.descripcion]
+                    .join(' ').toLowerCase();
+            }
+
+            function rowCardHtml(a) {
+                const etiqueta = DISTINTIVO_LABEL[a.distintivo];
+                const distintivo = etiqueta
+                    ? `<div class="ntl-badge ${DISTINTIVO_CLASE[a.distintivo]}">${esc(etiqueta)}</div>`
+                    : '';
+                return `
+                <div class="ntl-rowcard">
+                  <a href="${esc(a.url)}">
+                    <div class="ntl-rowcard-img">
+                      <img src="${esc(a.imagen)}" alt="${esc(a.titulo)}" loading="lazy">
+                      ${distintivo}
+                    </div>
+                    <div class="ntl-rowcard-body">
+                      <div class="ntl-rowcard-cat">${esc(a.categoriaLabel)}</div>
+                      <div class="ntl-rowcard-tit">${esc(a.titulo)}</div>
+                      <div class="ntl-rowcard-pie">
+                        <span class="ntl-rowcard-rat">${a.rating ? STAR + ' ' + esc(a.rating) : ''}</span>
+                        <span class="ntl-rowcard-pre">${esc(a.precioDisplay)}</span>
+                      </div>
+                    </div>
+                  </a>
+                </div>`;
+            }
+
+            const rowsHost = document.getElementById('ntlRows');
+
+            function pintarFilas() {
+                if (!rowsHost || !CATALOG.length) return;
+                const blobs = new Map(CATALOG.map((a) => [a, blobDe(a)]));
+                const trozos = [];
+
+                TEMAS.forEach((t) => {
+                    const items = CATALOG
+                        .filter((a) => { try { return t.test(a, blobs.get(a)); } catch (e) { return false; } })
+                        .sort((x, y) => parseInt(x.order) - parseInt(y.order))
+                        .slice(0, MAX_POR_FILA);
+                    if (items.length < MIN_POR_FILA) return;
+                    trozos.push(`
+                    <section class="ntl-row" data-tema="${esc(t.id)}">
+                      <div class="ntl-row-head">
+                        <div>
+                          <div class="ntl-row-title">${esc(t.titulo)}</div>
+                          <div class="ntl-row-sub">${esc(t.sub)}</div>
+                        </div>
+                      </div>
+                      <div class="ntl-row-wrap">
+                        <button class="ntl-row-nav" data-dir="prev" type="button" aria-label="Anterior">
+                          <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+                        </button>
+                        <div class="ntl-row-track">${items.map(rowCardHtml).join('')}</div>
+                        <button class="ntl-row-nav" data-dir="next" type="button" aria-label="Siguiente">
+                          <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                        </button>
+                      </div>
+                    </section>`);
+                });
+
+                rowsHost.innerHTML = trozos.join('');
+
+                // CRITICO: las tarjetas de las filas son enlaces nuevos a
+                // GetYourGuide. Sin esto se quedan sin cmp y el establecimiento
+                // no cobra lo que se reserve desde aqui.
+                if (typeof window.ntlApplyAttribution === 'function') window.ntlApplyAttribution();
+
+                rowsHost.querySelectorAll('.ntl-row-nav').forEach((b) => {
+                    b.addEventListener('click', () => {
+                        const carril = b.parentElement.querySelector('.ntl-row-track');
+                        if (!carril) return;
+                        const paso = Math.max(240, carril.clientWidth * 0.8);
+                        carril.scrollBy({ left: b.dataset.dir === 'next' ? paso : -paso, behavior: 'smooth' });
+                    });
+                });
+            }
+
+            // Filas cuando se hojea; grid completo cuando se busca, se filtra, o
+            // cuando el visitante pide verlo todo a proposito.
+            let verTodo = false;
+            const btnVerTodo = document.getElementById('ntlVerTodo');
+            const verTodoWrap = document.getElementById('ntlVerTodoWrap');
+
+            function actualizarVistaFilas(sinFiltros) {
+                if (!rowsHost) return;
+                const hayFilas = rowsHost.children.length > 0;
+                const modoFilas = sinFiltros && hayFilas;
+                rowsHost.style.display = modoFilas ? '' : 'none';
+                const grid = document.getElementById('ntlGridWrap');
+                if (grid) grid.style.display = (modoFilas && !verTodo) ? 'none' : '';
+                if (verTodoWrap) verTodoWrap.style.display = modoFilas ? '' : 'none';
+                if (btnVerTodo) {
+                    btnVerTodo.textContent = verTodo ? 'Show fewer' : `See all ${CATALOG.length} experiences`;
+                }
+            }
+
+            if (btnVerTodo) {
+                btnVerTodo.addEventListener('click', () => {
+                    verTodo = !verTodo;
+                    filterAndSortExperiences();
+                    if (verTodo) {
+                        const grid = document.getElementById('ntlGridWrap');
+                        if (grid) grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            }
+
+            pintarFilas();
+
+            // ---------- Buscador que sigue al bajar ----------
+            (function () {
+                const barra = document.getElementById('ntlStickySearch');
+                const hdInput = document.getElementById('hdSearchInput');
+                const heroSearch = document.querySelector('.ntl-hero-search');
+                const cabecera = document.querySelector('.ntl-header');
+                if (!barra || !hdInput || !heroSearch) return;
+
+                // La barra se pega justo debajo de la cabecera, que es sticky y
+                // cuya altura cambia con el ancho. Se mide en vez de fijarla.
+                function medirCabecera() {
+                    const h = cabecera ? cabecera.getBoundingClientRect().height : 64;
+                    document.documentElement.style.setProperty('--ntl-hd-h', h + 'px');
+                }
+                medirCabecera();
+                window.addEventListener('resize', medirCabecera);
+
+                // Los dos campos son el mismo buscador: se copian el texto y
+                // disparan el mismo filtrado.
+                hdInput.addEventListener('input', () => {
+                    searchInput.value = hdInput.value;
+                    filterAndSortExperiences();
+                });
+                searchInput.addEventListener('input', () => { hdInput.value = searchInput.value; });
+
+                // Aparece cuando el buscador grande del hero se va de pantalla.
+                if ('IntersectionObserver' in window) {
+                    new IntersectionObserver((entradas) => {
+                        entradas.forEach((e) => barra.classList.toggle('is-on', !e.isIntersecting));
+                    }, { rootMargin: '-70px 0px 0px 0px' }).observe(heroSearch);
+                }
+            })();
+
 
             // Las actividades propias llegan del CRM despues de pintar el
             // catalogo (own.js). Se registran aqui para que entren en los

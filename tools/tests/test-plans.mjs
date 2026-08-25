@@ -22,7 +22,11 @@ await page.waitForTimeout(1200);
 
 // ---------- Estado inicial: catalogo, planes ocultos ----------
 log('La vista de planes empieza oculta', await page.locator('#ntlPlansView').isHidden());
-log('El catalogo se ve', await page.locator('#experiencesContainer').isVisible());
+// "El catalogo se ve" ya no significa el grid: por defecto se hojea por temas
+// y el muro completo esta detras de "See all". Vale cualquiera de los dos.
+const catalogoVisible = async () =>
+  (await page.locator('#ntlRows').isVisible()) || (await page.locator('#experiencesContainer').isVisible());
+log('El catalogo se ve', await catalogoVisible());
 log('El boton de planes esta a la vista', await page.locator('#btnPlans').isVisible());
 
 // ---------- La cabecera: flecha con texto + logo centrado ----------
@@ -172,7 +176,7 @@ log('La flecha de cabecera vuelve a las tarjetas', await page.locator('#plansGri
   && (await page.locator('#planDetail').isHidden()));
 await page.click('#hdBack');
 await page.waitForTimeout(500);
-log('La flecha de cabecera vuelve al catalogo', await page.locator('#experiencesContainer').isVisible()
+log('La flecha de cabecera vuelve al catalogo', await catalogoVisible()
   && (await page.locator('#ntlPlansView').isHidden()));
 log('Y reaparece la barra de recomendaciones', await page.locator('#ntlHelper').isVisible());
 

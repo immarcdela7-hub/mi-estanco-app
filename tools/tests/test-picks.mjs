@@ -172,6 +172,10 @@ const unkErr = [];
 pUnk.on('pageerror', (e) => unkErr.push(e.message));
 await pUnk.goto(BASE + '?ref=EST-Z&zona=cuenca', { waitUntil: 'domcontentloaded' });
 await pUnk.waitForTimeout(1000);
+// Una zona que no existe no puede dejar la pagina en blanco. Con el catalogo
+// por temas eso se comprueba pulsando "See all", que es lo que haria el visitante.
+await pUnk.click('#ntlVerTodo').catch(() => {});
+await pUnk.waitForTimeout(400);
 const unkVis = await pUnk.evaluate(() =>
   [...document.querySelectorAll('.experience-item:not(.ntl-own)')].filter((e) => e.offsetParent !== null).length);
 log('Ciudad desconocida no rompe nada', unkVis === 153 && unkErr.length === 0, `${unkVis} visibles, ${unkErr.length} errores`);

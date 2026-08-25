@@ -52,7 +52,10 @@ await page.route(`${CRM}/api/publico/**`, (route) => route.fulfill({
 }));
 
 await page.goto(BASE + '?ref=PRUEBA1', { waitUntil: 'domcontentloaded' });
-await page.waitForSelector('.experience-item', { timeout: 20000 });
+// El catalogo ya no sale como un muro de 153 fichas: por defecto se hojea por
+// temas (filas) y el grid completo esta detras del boton "See all". Donde estas
+// pruebas comprueban que "se ve todo", hay que pulsarlo primero.
+await page.waitForSelector('.experience-item', { state: 'attached', timeout: 20000 });
 await page.waitForSelector('.experience-item.ntl-own', { timeout: 8000 }).catch(() => {});
 
 // ---------- 1. Como mucho UN distintivo por tarjeta ----------
@@ -182,7 +185,7 @@ await mob.route(`${CRM}/api/publico/**`, (route) => route.fulfill({
     ? JSON.stringify({ actividades: [PROPIA] }) : '{}',
 }));
 await mob.goto(BASE + '?ref=PRUEBA1', { waitUntil: 'domcontentloaded' });
-await mob.waitForSelector('.experience-item', { timeout: 20000 });
+await mob.waitForSelector('.experience-item', { state: 'attached', timeout: 20000 });
 await mob.waitForTimeout(1200);
 const movil = await mob.evaluate(() => {
   let desbordan = 0;

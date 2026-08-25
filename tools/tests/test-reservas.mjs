@@ -111,6 +111,10 @@ const errores = [];
 page.on('pageerror', (e) => errores.push(e.message));
 await simularCrm(page);
 await page.goto(BASE + '?ref=EST-00012', { waitUntil: 'domcontentloaded' });
+// El catalogo por defecto se hojea por temas; el grid completo (y con el las
+// fichas de actividad propia) esta detras del boton "See all".
+await page.click('#ntlVerTodo').catch(() => {});
+await page.waitForTimeout(400);
 await page.waitForSelector('.experience-item.ntl-own', { timeout: 5000 }).catch(() => {});
 
 const propias = await page.locator('.experience-item.ntl-own').count();
@@ -321,6 +325,9 @@ const p2 = await browser.newPage({ viewport: { width: 1280, height: 900 } });
 await p2.context().addCookies(CONSENT_ACEPTADO);
 await simularCrm(p2);
 await p2.goto(BASE, { waitUntil: 'domcontentloaded' });
+// El grid (donde vive la ficha propia) esta detras de "See all".
+await p2.click('#ntlVerTodo').catch(() => {});
+await p2.waitForTimeout(400);
 await p2.waitForSelector('.ntl-own-dates', { timeout: 5000 });
 await p2.click('.ntl-own-dates');
 await p2.waitForSelector('.ntl-bk-day', { timeout: 4000 });
@@ -359,7 +366,7 @@ await simularCrm(p3);
 await p3.goto(BASE + '?ref=EST-00012', { waitUntil: 'domcontentloaded' });
 // Esperar a que existan las tarjetas, no un tiempo fijo: con 153 el render tarda
 // mas y 1,5 s daba "0 tarjetas" como si el catalogo se hubiera roto.
-await p3.waitForSelector('.experience-item', { timeout: 20000 });
+await p3.waitForSelector('.experience-item', { state: 'attached', timeout: 20000 });
 await p3.waitForTimeout(500);
 const sinCrm = await p3.evaluate(() => {
   const as = [...document.querySelectorAll('a[href*="getyourguide."]')];
@@ -383,6 +390,9 @@ const mob = await browser.newPage({ viewport: { width: 390, height: 844 }, isMob
 await mob.context().addCookies(CONSENT_ACEPTADO);
 await simularCrm(mob);
 await mob.goto(BASE, { waitUntil: 'domcontentloaded' });
+// El grid (donde vive la ficha propia) esta detras de "See all".
+await mob.click('#ntlVerTodo').catch(() => {});
+await mob.waitForTimeout(400);
 await mob.waitForSelector('.ntl-own-dates', { timeout: 5000 });
 await mob.click('.ntl-own-dates');
 await mob.waitForSelector('.ntl-bk-day', { timeout: 4000 });

@@ -76,8 +76,14 @@ async function verZona(zona, ref = 'EST-00012') {
   return page.evaluate(() => {
     const vis = [...document.querySelectorAll('.experience-item')]
       .filter((e) => e.offsetParent !== null);
+    // Con una zona desconocida no se filtra nada, asi que la pagina cae en la
+    // vista por temas y el grid queda detras de "See all". Se cuentan las dos
+    // cosas: lo que importa es que al visitante se le siga ofreciendo algo.
+    const enFilas = [...document.querySelectorAll('.ntl-rowcard')]
+      .filter((e) => e.offsetParent !== null).length;
     return {
       visibles: vis.length,
+      enFilas,
       ciudades: vis.map((e) => e.dataset.city),
       provincia: (document.querySelector('.province-btn.active') || {}).dataset?.province || null,
     };
@@ -115,7 +121,7 @@ for (const zona of ['reus', 'terrassa', 'cornella-de-llobregat']) {
 // ---------- 4. La atribucion no se rompe en ninguna zona ----------
 {
   await page.goto(`${BASE}?ref=PRUEBA1&zona=reus`, { waitUntil: 'domcontentloaded', timeout: 60000 });
-  await page.waitForSelector('.experience-item', { timeout: 30000 });
+  await page.waitForSelector('.experience-item', { state: 'attached', timeout: 30000 });
   await page.waitForTimeout(700);
   const atrib = await page.evaluate(() => {
     const as = [...document.querySelectorAll('.experience-item a[href*="getyourguide."]')];
@@ -133,7 +139,8 @@ for (const zona of ['reus', 'terrassa', 'cornella-de-llobregat']) {
 // ---------- 5. Una zona que no existe no rompe nada ----------
 {
   const r = await verZona('villarriba-de-abajo');
-  log('Una zona desconocida no deja la pagina vacia', r.visibles > 0, `${r.visibles} visibles`);
+  log('Una zona desconocida no deja la pagina vacia', r.visibles + r.enFilas > 0,
+    `${r.visibles} en el grid, ${r.enFilas} en las filas por tema`);
 }
 
 log('Sin errores de JS en consola', errores.length === 0, errores.slice(0, 3).join(' | ') || 'ninguno');

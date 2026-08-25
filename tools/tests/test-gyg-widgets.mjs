@@ -57,7 +57,7 @@ page.on('pageerror', (e) => errores.push('PAGEERROR: ' + e.message));
 page.on('console', (m) => { if (m.type() === 'error') errores.push(m.text()); });
 
 await page.goto(BASE + '?ref=PRUEBA1', { waitUntil: 'domcontentloaded' });
-await page.waitForSelector('.experience-item', { timeout: 20000 });
+await page.waitForSelector('.experience-item', { state: 'attached', timeout: 20000 });
 // El script de GYG es async: sin el no hay widget que valga.
 await page.waitForFunction(() => typeof window.GYG !== 'undefined', { timeout: 20000 }).catch(() => {});
 
@@ -180,7 +180,7 @@ blocked.on('pageerror', (e) => erroresBloqueo.push('PAGEERROR: ' + e.message));
 await blocked.route('**widget.getyourguide.com/**', (route) =>
   route.fulfill({ status: 204, body: '', contentType: 'application/javascript' }));
 await blocked.goto(BASE + '?ref=PRUEBA1', { waitUntil: 'domcontentloaded' });
-await blocked.waitForSelector('.experience-item', { timeout: 20000 });
+await blocked.waitForSelector('.experience-item', { state: 'attached', timeout: 20000 });
 await abrirPrimerPlan(blocked);
 await blocked.click('.ntl-step-dates');
 await blocked.waitForTimeout(4500);            // deja pasar el timeout de 3,5 s

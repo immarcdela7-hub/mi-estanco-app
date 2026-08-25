@@ -527,3 +527,40 @@ otro camino.
 | `add-activities.mjs` | enriquece y añade actividades nuevas al CSV |
 | `build-catalog.mjs` | **`catalog.csv` → `catalog.js`** (el que usarás a menudo) |
 | `verify.mjs` | prueba en navegador (render, filtros, atribución) |
+
+
+## El catalogo se hojea por temas, no como un muro
+
+`tickets.html` ya no abre con las 153 fichas seguidas. Por defecto pinta filas
+horizontales por tema (`#ntlRows`): Must-see, Gaudi, On the water, Food & tapas,
+Wine, Flamenco & nightlife, Day trips, With kids, Adrenaline, Museums. El muro
+completo sigue existiendo y aparece de dos formas: pulsando **See all** o en
+cuanto se busca o se filtra, porque entonces si quieres verlo todo junto.
+
+Los temas se definen en un solo sitio, la constante `TEMAS` dentro de
+`tickets.html`. Cada uno es un titulo, un subtitulo y una funcion que decide si
+una actividad entra, mirando titulo + keywords + descripcion (texto libre de
+`catalog.csv`). Una actividad puede salir en varias filas y eso es deseable: en
+un catalogo de recomendacion la repeticion ayuda. Una fila con menos de cuatro
+actividades no se pinta, para no dejar huecos de dos tarjetas.
+
+Los titulos van en **ingles** como el resto de la pagina: el visitante es un
+turista extranjero.
+
+**Lo que no se puede romper:** las tarjetas de las filas son enlaces nuevos a
+GetYourGuide, asi que hay que llamar a `window.ntlApplyAttribution()` despues de
+pintarlas. Sin eso se quedan sin `cmp` y el establecimiento no cobra lo que se
+reserve desde ahi, sin que salte ningun error. Lo vigila `test-web.mjs`.
+
+**Pendiente:** las actividades propias (`.experience-item.ntl-own`, que las monta
+`own.js`) viven en el grid, o sea que quedan detras de **See all**. Son las de
+mas margen, asi que cuando haya alguna conviene darles su propia fila arriba.
+Hoy no hay ninguna en produccion.
+
+## El buscador acompaña al bajar
+
+Cuando el buscador grande del hero se sale de pantalla aparece `#ntlStickySearch`,
+que se queda pegado justo debajo de la cabecera. Los dos campos son el mismo
+buscador: se copian el texto y disparan el mismo filtrado. La altura de la
+cabecera se mide en tiempo real (`--ntl-hd-h`) porque cambia con el ancho; fijarla
+a mano dejaba el buscador solapado en movil.
