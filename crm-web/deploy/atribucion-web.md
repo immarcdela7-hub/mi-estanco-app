@@ -177,3 +177,45 @@ Restar la fecha de hoy. Eso es la ventana.
 
 > Sigue pendiente pedirle a GetYourGuide la cifra **por escrito**: lo medido en
 > un navegador describe como se comporta hoy, no un compromiso contractual.
+
+## La atribucion es a ULTIMO clic, y su propia publicidad nos pisa
+
+Medido el 25 de agosto de 2026, en el mismo navegador y una cosa detras de otra:
+
+1. Se llega por el QR y se pincha una actividad. En las cookies de
+   `getyourguide.com` aparece nuestro `IBO5PAK`.
+2. Se busca "get your guide" en Google y se pincha **su anuncio de pago**
+   (`partner_id=CD951&cmp=brand&gclid=...`, que es su campana de marca).
+   Resultado: **`IBO5PAK` desaparece y queda `CD951`**.
+3. Se vuelve a entrar por notaxlost.com. Resultado: **vuelve `IBO5PAK`**.
+
+Es decir: **gana el ultimo clic etiquetado**, y se puede perder y recuperar.
+
+Junto con lo de la seccion anterior (un clic del MISMO partner no refresca la
+cookie), el modelo que encaja con lo observado es: la cookie solo se reescribe
+cuando **cambia** el partner. Son observaciones sueltas, no documentacion
+oficial de GetYourGuide, pero es lo que se vio.
+
+### Por que esto importa mas que la duracion de nuestra cookie
+
+El agujero real del negocio no es que la cookie dure 31 dias o 120. Es este:
+
+> El turista escanea el QR en el bar, mira, se va. Dias despues quiere reservar,
+> teclea "getyourguide" en Google, pincha el primer resultado —que es el anuncio
+> de ellos— y **nos borra**. Esa venta la pierde NoTaxLost y la pierde el bar.
+
+Y pasa constantemente, porque nadie se guarda la web del bar: la gente teclea el
+nombre de la marca que recuerda. Contra eso, una cookie mas larga no hace nada
+en absoluto: el turista no ha pasado por nuestra web, asi que nuestra cookie ni
+se consulta.
+
+Lo unico que lo combate es **acortar la distancia entre el interes y el clic de
+salida**, y **tener una forma de traerlo de vuelta por nuestra web** (un enlace
+que quiera guardar, el plan por correo con su permiso). Si vuelve por
+notaxlost.com antes de comprar, se recupera la atribucion.
+
+### Pendiente de comprobar
+
+Cuando se recupera la atribucion (paso 3), ¿la cookie vuelve a durar 31 dias
+desde ese momento, o conserva la fecha que traia? Se mira igual: filtrar por
+`IBO5PAK` y leer **Expires / Max-Age**.
